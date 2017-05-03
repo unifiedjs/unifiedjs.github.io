@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>unified</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="index.css"></head>
+  <body>
+    <header>
+      <h1><a href=".."><span class="hl unified">uni</span>fied</a></h1>
+    </header>
+    <main>
+      <section>
+        <h2 id="using-unified"><a class="anchor" href="#using-unified">#</a>Using unified</h2>
+        <p>
+          This guide delves into how unified can be used to
+          transform a markdown file to HTML. It’ll also show how to
+          generate a table of contents, and sidestep into checking prose.
+        </p>
+        <blockquote>
+          <p>
+            Stuck? A good place to get help fast is <a href="https://gitter.im/unifiedjs/Lobby">Gitter</a>.
+            Have an idea for another guide? Share it on Gitter!
+          </p>
+        </blockquote>
+        <article>
+          <h3 id="contents"><a class="anchor" href="#contents">#</a>Contents</h3>
+          <ul>
+            <li><a href="#tree-transformations">Tree transformations</a></li>
+            <li><a href="#plugins">Plugins</a></li>
+            <li><a href="#reporting">Reporting</a></li>
+            <li><a href="#checking-prose">Checking prose</a></li>
+            <li><a href="#further-exercises">Further exercises</a></li>
+          </ul>
+        </article>
+        <article>
+          <h3 id="tree-transformations"><a class="anchor" href="#tree-transformations">#</a>Tree transformations</h3>
+          <p>
+            For this example, we’ll start out with markdown content,
+            then transform to HTML. We need a markdown parser and an
+            HTML stringifier for that. The relevant projects are
+            respectively <a href="https://github.com/wooorm/remark/tree/master/packages/remark-parse"><code>remark-parse</code></a> and
+            <a href="https://github.com/wooorm/rehype/tree/master/packages/rehype-stringify"><code>rehype-stringify</code></a>.
+            To transform between the two syntaxes, we’ll use
+            <a href="https://github.com/wooorm/remark-rehype"><code>remark-rehype</code></a>. Finally, we’ll use unified
+            itself to glue these together, and <a href="https://github.com/unifiedjs/unified-stream"><code>unified-stream</code></a>
+            for streaming.
+          </p>
+          <p>Let’s install those with <a href="https://www.npmjs.com">npm</a>, which comes bundled with <a href="https://nodejs.org">Node</a>.</p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre><span class="input delay-output">npm install unified unified-stream remark-parse remark-rehype rehype-stringify</span><span class="output">
+/Users/tilde/example
+├── rehype-stringify@3.0.0
+├── remark-parse@3.0.1
+├── remark-rehype@2.0.1
+├── unified-stream@1.0.0
+└── unified@6.1.3</span></pre>
+          </figure>
+          <p>
+            Let’s first create a markdown file that we’re going
+            to transform.
+          </p>
+          <figure class="window gist">
+            <figcaption>example.md</figcaption>
+            <pre><code class="language-markdown"><span class="hljs-section"># Hello World</span>
+
+<span class="hljs-section">## Table of Content</span>
+
+<span class="hljs-section">## Install</span>
+
+A <span class="hljs-strong">**example**</span>.
+
+<span class="hljs-section">## Use</span>
+
+More <span class="hljs-code">`text`</span>.
+
+<span class="hljs-section">## License</span>
+
+MIT</code></pre>
+          </figure>
+          <p>
+            Then, create an <code>index.js</code> script as well. It’ll transform markdown
+            to HTML. It’s hooked up to read from stdin and write to stdout.
+          </p>
+          <figure class="window gist">
+            <figcaption>index.js</figcaption>
+            <pre><code class="language-javascript"><span class="hljs-keyword">var</span> unified = <span class="hljs-built_in">require</span>(<span class="hljs-string">'unified'</span>);
+<span class="hljs-keyword">var</span> stream = <span class="hljs-built_in">require</span>(<span class="hljs-string">'unified-stream'</span>);
+<span class="hljs-keyword">var</span> markdown = <span class="hljs-built_in">require</span>(<span class="hljs-string">'remark-parse'</span>);
+<span class="hljs-keyword">var</span> remark2rehype = <span class="hljs-built_in">require</span>(<span class="hljs-string">'remark-rehype'</span>);
+<span class="hljs-keyword">var</span> html = <span class="hljs-built_in">require</span>(<span class="hljs-string">'rehype-stringify'</span>);
+
+<span class="hljs-keyword">var</span> processor = unified()
+  .use(markdown)
+  .use(remark2rehype)
+  .use(html);
+
+process.stdin.pipe(stream(processor)).pipe(process.stdout);</code></pre>
+          </figure>
+          <p>
+            Now, running our script with <a href="https://nodejs.org">Node</a> (this uses your Shell to read
+            <code>example.md</code> and write <code>example.html</code>):
+          </p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre class="no-final-prompt"><span class="input">node index.js &#x3C; example.md > example.html</span></pre>
+          </figure>
+          <p>...gives us an <code>example.html</code> file that looks as follows:</p>
+          <figure class="window gist">
+            <figcaption>example.html</figcaption>
+            <pre><code class="language-html"><span class="hljs-tag">&#x3C;<span class="hljs-name">h1</span>></span>Hello World<span class="hljs-tag">&#x3C;/<span class="hljs-name">h1</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">h2</span>></span>Table of Content<span class="hljs-tag">&#x3C;/<span class="hljs-name">h2</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">h2</span>></span>Install<span class="hljs-tag">&#x3C;/<span class="hljs-name">h2</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">p</span>></span>A <span class="hljs-tag">&#x3C;<span class="hljs-name">strong</span>></span>example<span class="hljs-tag">&#x3C;/<span class="hljs-name">strong</span>></span>.<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">h2</span>></span>Use<span class="hljs-tag">&#x3C;/<span class="hljs-name">h2</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">p</span>></span>More <span class="hljs-tag">&#x3C;<span class="hljs-name">code</span>></span>text<span class="hljs-tag">&#x3C;/<span class="hljs-name">code</span>></span>.<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">h2</span>></span>License<span class="hljs-tag">&#x3C;/<span class="hljs-name">h2</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">p</span>></span>MIT<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span></code></pre>
+          </figure>
+          <blockquote>
+            <p>
+              Note that <a href="https://github.com/wooorm/remark-rehype"><code>remark-rehype</code></a> doesn’t deal with HTML inside
+              the markdown. You’ll need <a href="https://github.com/wooorm/rehype-raw"><code>rehype-raw</code></a> if you’re planning
+              on doing that.
+            </p>
+          </blockquote>
+          <p>
+            🎉 Nifty! It doesn’t do much yet, but we’ll get there.
+            In the next section, we’ll make this more useful by
+            introducing plugins.
+          </p>
+        </article>
+        <article>
+          <h3 id="plugins"><a class="anchor" href="#plugins">#</a>Plugins</h3>
+          <p>
+            We’re still missing some things, notably a table of
+            contents, and proper HTML document structure.
+          </p>
+          <p>
+            Respectively, we can use <a href="https://github.com/wooorm/remark-toc"><code>remark-toc</code></a> and
+            <a href="https://github.com/wooorm/rehype-document"><code>rehype-document</code></a> to do these two tasks.
+          </p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre><span class="input delay-output">npm install remark-toc rehype-document</span><span class="output">
+/Users/tilde/example
+├── remark-toc@4.0.0
+└── rehype-document@2.0.0</span></pre>
+          </figure>
+          <p>
+            Let’s now use those two as well, by modifying our
+            <code>index.js</code> file:
+          </p>
+          <figure class="window gist">
+            <figcaption>index.js</figcaption>
+            <pre><code class="language-diff"> var unified = require('unified');
+ var stream = require('unified-stream');
+ var markdown = require('remark-parse');
+<span class="hljs-addition">var toc = require('remark-toc');</span>
+ var remark2rehype = require('remark-rehype');
+<span class="hljs-addition">var doc = require('rehype-document');</span>
+ var html = require('rehype-stringify');
+
+ var processor = unified()
+   .use(markdown)
+<span class="hljs-addition">  .use(toc)</span>
+   .use(remark2rehype)
+<span class="hljs-addition">  .use(doc, {title: 'Contents'})</span>
+   .use(html);
+
+ process.stdin.pipe(stream(processor)).pipe(process.stdout);</code></pre>
+          </figure>
+          <p>
+            We pass options to <code>rehype-document</code>. In this case, we use that to make
+            sure we get a proper <code>&#x3C;title></code> element in our <code>&#x3C;head></code>, as required by
+            the HTML specification. More options are accepted by <code>rehype-document</code>, such
+            as which language tag to use. These are described in detail in its
+            <a href="https://github.com/wooorm/rehype-document"><code>readme.md</code></a>. Many other plugins accept options as well,
+            so make sure to read through their docs when you’ve got the time.
+          </p>
+          <blockquote>
+            <p>
+              Note that <a href="https://github.com/wooorm/remark"><span class="hl remark">re</span>mark</a> plugins work on a markdown tree, and <a href="https://github.com/wooorm/rehype"><span class="hl rehype">re</span>hype</a>
+              plugins work on an HTML tree. It’s important that you place
+              your <code>.use</code> calls in the correct places.
+            </p>
+          </blockquote>
+          <p>
+            Now, when running our script like before, we’d get the
+            following <code>example.html</code> file:
+          </p>
+          <figure class="window gist">
+            <figcaption>example.html</figcaption>
+            <pre><code class="language-html"><span class="hljs-meta">&#x3C;!doctype html></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">html</span> <span class="hljs-attr">lang</span>=<span class="hljs-string">"en"</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">head</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">charset</span>=<span class="hljs-string">"utf-8"</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">title</span>></span>Contents<span class="hljs-tag">&#x3C;/<span class="hljs-name">title</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">meta</span> <span class="hljs-attr">name</span>=<span class="hljs-string">"viewport"</span> <span class="hljs-attr">content</span>=<span class="hljs-string">"width=device-width, initial-scale=1"</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">head</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">h1</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"hello-world"</span>></span>Hello World<span class="hljs-tag">&#x3C;/<span class="hljs-name">h1</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">h2</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"table-of-content"</span>></span>Table of Content<span class="hljs-tag">&#x3C;/<span class="hljs-name">h2</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#install"</span>></span>Install<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#use"</span>></span>Use<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">li</span>></span><span class="hljs-tag">&#x3C;<span class="hljs-name">a</span> <span class="hljs-attr">href</span>=<span class="hljs-string">"#license"</span>></span>License<span class="hljs-tag">&#x3C;/<span class="hljs-name">a</span>></span><span class="hljs-tag">&#x3C;/<span class="hljs-name">li</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">ul</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">h2</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"install"</span>></span>Install<span class="hljs-tag">&#x3C;/<span class="hljs-name">h2</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">p</span>></span>A <span class="hljs-tag">&#x3C;<span class="hljs-name">strong</span>></span>example<span class="hljs-tag">&#x3C;/<span class="hljs-name">strong</span>></span>.<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">h2</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"use"</span>></span>Use<span class="hljs-tag">&#x3C;/<span class="hljs-name">h2</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">p</span>></span>More <span class="hljs-tag">&#x3C;<span class="hljs-name">code</span>></span>text<span class="hljs-tag">&#x3C;/<span class="hljs-name">code</span>></span>.<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">h2</span> <span class="hljs-attr">id</span>=<span class="hljs-string">"license"</span>></span>License<span class="hljs-tag">&#x3C;/<span class="hljs-name">h2</span>></span>
+<span class="hljs-tag">&#x3C;<span class="hljs-name">p</span>></span>MIT<span class="hljs-tag">&#x3C;/<span class="hljs-name">p</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">body</span>></span>
+<span class="hljs-tag">&#x3C;/<span class="hljs-name">html</span>></span></code></pre>
+          </figure>
+          <blockquote>
+            <p>
+              You may noticed the document isn’t formatted nicely. There’s a
+              plugin for that though! Feel free to add
+              <a href="https://github.com/wooorm/rehype-format"><code>rehype-format</code></a> to the plugins, below <code>doc</code>!
+            </p>
+          </blockquote>
+          <p>💯 You’re acing it! This is getting pretty useful, right?</p>
+          <p>
+            In the next section, we’ll lay the groundwork for creating
+            a report.
+          </p>
+        </article>
+        <article>
+          <h3 id="reporting"><a class="anchor" href="#reporting">#</a>Reporting</h3>
+          <p>
+            Before we check some prose (yes, we’re getting there), we’ll first
+            switch up our <code>index.js</code> file to print a pretty report (we’ll fill
+            it in the next section).
+          </p>
+          <p>
+            We can use <a href="https://github.com/vfile/to-vfile"><code>to-vfile</code></a> to read and write virtual files from
+            the file-system, and we can use <a href="https://github.com/vfile/vfile-reporter"><code>vfile-reporter</code></a> to report
+            messages relating to those files. Let’s install those.
+          </p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre><span class="input delay-output">npm install to-vfile vfile-reporter</span><span class="output">
+/Users/tilde/example
+├── to-vfile@2.1.1
+└── vfile-reporter@3.0.0</span></pre>
+          </figure>
+          <p>
+            ...and now unhook stdin/stdout from our example and use
+            the file-system instead, like so:
+          </p>
+          <figure class="window gist">
+            <figcaption>index.js</figcaption>
+            <pre><code class="language-diff"> var unified = require('unified');
+<span class="hljs-deletion">var stream = require('unified-stream');</span>
+<span class="hljs-addition">var vfile = require('to-vfile');</span>
+<span class="hljs-addition">var report = require('vfile-reporter');</span>
+ var markdown = require('remark-parse');
+ var toc = require('remark-toc');
+ var remark2rehype = require('remark-rehype');
+ var doc = require('rehype-document');
+ var html = require('rehype-stringify');
+
+ var processor = unified()
+   .use(markdown)
+   .use(toc)
+   .use(remark2rehype)
+   .use(doc, {title: 'Contents'})
+   .use(html);
+
+<span class="hljs-deletion">process.stdin.pipe(stream(processor)).pipe(process.stdout);</span>
+<span class="hljs-addition">processor.process(vfile.readSync('example.md'), function (err, file) {</span>
+<span class="hljs-addition">  if (err) throw err;</span>
+<span class="hljs-addition">  console.error(report(file));</span>
+<span class="hljs-addition">  file.extname = '.html';</span>
+<span class="hljs-addition">  vfile.writeSync(file);</span>
+<span class="hljs-addition">});</span></code></pre>
+          </figure>
+          <p>
+            If we now run our script on its own, without shell redirects,
+            we get a report showing everything’s fine:
+          </p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre><span class="input">node index.js</span><span class="output">
+example.md: no issues found</span></pre>
+          </figure>
+          <p>
+            But everything’s not fine, there’s a typo in the markdown!
+            The next section shows how to detect prose errors by adding <a href="https://github.com/wooorm/retext"><span class="hl retext">re</span>text</a>.
+          </p>
+        </article>
+        <article>
+          <h3 id="checking-prose"><a class="anchor" href="#checking-prose">#</a>Checking prose</h3>
+          <p>
+            I did notice a typo in there, so let’s check some prose to prevent
+            that from happening in the future. We can use <a href="https://github.com/wooorm/retext"><span class="hl retext">re</span>text</a> and its ecosystem
+            for our natural language parsing. As we’re writing in English, we use
+            <a href="https://github.com/wooorm/retext/tree/master/packages/retext-english"><code>retext-english</code></a> specifically to parse English natural
+            language. The problem in our <code>example.md</code> file is that it has
+            <code>a example</code> instead of <code>an example</code>, which is conveniently checked for
+            by <a href="https://github.com/wooorm/retext-indefinite-article"><code>retext-indefinite-article</code></a>. To bridge from
+            markup to prose, we’ll use <a href="https://github.com/wooorm/remark-retext"><code>remark-retext</code></a>. First,
+            let’s install these dependencies as well.
+          </p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre><span class="input delay-output">npm install remark-retext retext-english retext-indefinite-article</span><span class="output">
+/Users/tilde/example
+├── remark-retext@3.0.0
+├── retext-english@3.0.0
+└── retext-indefinite-article@1.1.0</span></pre>
+          </figure>
+          <p>...and change our <code>index.js</code> like so:</p>
+          <figure class="window gist">
+            <figcaption>index.js</figcaption>
+            <pre><code class="language-diff"> var unified = require('unified');
+ var vfile = require('to-vfile');
+ var report = require('vfile-reporter');
+ var markdown = require('remark-parse');
+ var toc = require('remark-toc');
+<span class="hljs-addition">var remark2retext = require('remark-retext');</span>
+<span class="hljs-addition">var english = require('retext-english');</span>
+<span class="hljs-addition">var indefiniteArticle = require('retext-indefinite-article');</span>
+ var remark2rehype = require('remark-rehype');
+ var doc = require('rehype-document');
+ var html = require('rehype-stringify');
+
+ var processor = unified()
+   .use(markdown)
+<span class="hljs-addition">  .use(remark2retext, unified().use(english).use(indefiniteArticle))</span>
+   .use(toc)
+   .use(remark2rehype)
+   .use(doc, {title: 'Contents'})
+   .use(html);
+
+ processor.process(vfile.readSync('example.md'), function (err, file) {
+   if (err) throw err;
+   console.error(report(file));
+   file.extname = '.html';
+   vfile.writeSync(file);
+ });</code></pre>
+          </figure>
+          <p>
+            As the code shows, <code>remark-retext</code> receives another <code>unified</code>
+            middleware pipeline. A natural language pipeline. The plugin
+            will transform the origin syntax (markdown) with the given pipeline’s parser.
+            Then, it’ll run the attached plugins on the natural language syntax tree.
+          </p>
+          <p>Now, when running our script one final time:</p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre><span class="input">node index.js</span><span class="output">
+example.md
+7:1-7:2  warning  Use `An` before `example`, not `A`  retext-indefinite-article  retext-indefinite-article
+
+⚠ 1 warning</span></pre>
+          </figure>
+          <p>...we’ll get a useful message.</p>
+          <p>
+            💃 You’ve got a really cool system set up already, nicely done!
+            That’s a wrap though, check out the next section for further
+            exercises and resources.
+          </p>
+        </article>
+        <article>
+          <h3 id="further-exercises"><a class="anchor" href="#further-exercises">#</a>Further exercises</h3>
+          <p>
+            Finally, check out the lists of available plugins
+            for <a href="https://github.com/wooorm/retext/blob/master/doc/plugins.md">retext</a>, <a href="https://github.com/wooorm/remark/blob/master/doc/plugins.md">remark</a>, and
+            <a href="https://github.com/wooorm/rehype/blob/master/doc/plugins.md">rehype</a>, and try some of them out.
+          </p>
+          <p>If you haven’t already, check out the other <a href="/#guides">guides</a>!</p><!--Definitions--></article>
+      </section>
+    </main>
+    <footer>
+      <p>made with ❤️ by <a href="https://github.com/wooorm">@wooorm</a> and <a href="https://github.com/wooorm">https://github.com/unifiedjs/unifiedjs.github.io/graphs/contributors</a></p>
+      <p>view the project on <a href="https://github.com/unifiedjs/unified">GitHub</a></p>
+      <p>☔</p>
+    </footer>
+    <script src="index.js"></script>
+  </body>
+</html>

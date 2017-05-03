@@ -1,0 +1,40 @@
+// Normal Words
+performant
+hacky
+plugin
+plugins
+acing
+
+// Jargon
+debounced
+linter
+linting
+stringifier
+minify
+AST
+CST
+ASTs
+CSTs
+stdin
+stdout
+HSL
+
+// Names, products, etc.
+Gitter
+Shopify
+Mapbox
+NodeSchool
+npm
+xo
+browserify
+workshopper
+
+unist
+unified
+vfile
+nlcst
+mdast
+hast
+retext
+remark
+rehype

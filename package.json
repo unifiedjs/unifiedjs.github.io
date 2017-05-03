@@ -1,0 +1,101 @@
+{
+  "private": true,
+  "name": "unified.js.org",
+  "version": "1.0.0",
+  "description": "Site for unified",
+  "license": "MIT",
+  "keywords": [],
+  "repository": "https://github.com/unifiedjs/unifiedjs.github.io",
+  "bugs": "https://github.com/unifiedjs/unifiedjs.github.io/issues",
+  "author": "Titus Wormer <tituswormer@gmail.com>",
+  "contributors": [
+    "Titus Wormer <tituswormer@gmail.com>"
+  ],
+  "devDependencies": {
+    "async": "^2.0.1",
+    "bail": "^1.0.1",
+    "browserify": "^14.0.0",
+    "budo": "^10.0.0",
+    "dictionary-en-gb": "^1.2.1",
+    "glob": "^7.0.6",
+    "hast-util-find-and-replace": "^1.0.0",
+    "hast-util-from-string": "^1.0.0",
+    "hast-util-select": "^1.0.0",
+    "hast-util-to-string": "^1.0.0",
+    "hastscript": "^3.0.1",
+    "lowlight": "^1.2.0",
+    "pluralize": "^4.0.0",
+    "rehype-autolink-headings": "^2.0.0",
+    "rehype-cli": "^2.0.0",
+    "rehype-document": "^2.0.0",
+    "rehype-format": "^2.0.0",
+    "rehype-highlight": "^2.0.0",
+    "rehype-parse": "^3.0.0",
+    "rehype-raw": "^1.0.0",
+    "rehype-retext": "^2.0.0",
+    "rehype-slug": "^2.0.0",
+    "rehype-stringify": "^3.0.0",
+    "remark-cli": "^3.0.1",
+    "remark-lint-first-heading-level": "^1.0.0",
+    "remark-parse": "^3.0.0",
+    "remark-preset-wooorm": "^2.0.0",
+    "remark-rehype": "^2.0.0",
+    "remark-retext": "^3.0.0",
+    "remark-toc": "^4.0.0",
+    "remark-validate-links": "^6.0.0",
+    "retext-contractions": "^2.0.0",
+    "retext-diacritics": "^1.0.0",
+    "retext-english": "^3.0.0",
+    "retext-equality": "^3.0.0",
+    "retext-indefinite-article": "^1.0.3",
+    "retext-passive": "^1.0.0",
+    "retext-profanities": "^4.0.0",
+    "retext-quotes": "^2.0.0",
+    "retext-readability": "^4.0.0",
+    "retext-redundant-acronyms": "^1.1.0",
+    "retext-repeated-words": "^1.0.0",
+    "retext-sentence-spacing": "^2.0.0",
+    "retext-simplify": "^4.1.0",
+    "retext-spell": "^2.2.0",
+    "retext-syntax-mentions": "^1.1.2",
+    "strip-comments": "^0.4.4",
+    "stylelint": "^7.10.1",
+    "stylelint-config-standard": "^16.0.0",
+    "to-vfile": "^2.1.0",
+    "trim": "0.0.1",
+    "trough": "^1.0.0",
+    "unified": "^6.1.0",
+    "unist-util-visit": "^1.1.0",
+    "vfile-reporter": "^3.0.0",
+    "xo": "^0.18.0"
+  },
+  "scripts": {
+    "start": "budo --dir .",
+    "build": "node script && remark src -qo",
+    "lint": "xo && stylelint index.css && remark src -qf && rehype src -qf",
+    "test": "npm run build && npm run lint"
+  },
+  "dependencies": {
+    "in-view": "^0.6.0"
+  },
+  "xo": {
+    "space": true,
+    "esnext": false,
+    "ignore": [
+      "index.js"
+    ]
+  },
+  "stylelint": {
+    "extends": "stylelint-config-standard"
+  },
+  "remarkConfig": {
+    "plugins": [
+      "./script/markdown/preset-md"
+    ]
+  },
+  "rehype": {
+    "plugins": [
+      "./script/html/preset"
+    ]
+  }
+}

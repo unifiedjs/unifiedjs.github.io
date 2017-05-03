@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>unified</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1"><link rel="stylesheet" href="index.css"></head>
+  <body>
+    <header>
+      <h1><a href=".."><span class="hl unified">uni</span>fied</a></h1>
+    </header>
+    <main>
+      <section>
+        <h2 id="creating-a-plugin-with-unified"><a class="anchor" href="#creating-a-plugin-with-unified">#</a>Creating a plugin with unified</h2>
+        <p>
+          This guide shows how to create a plugin for <a href="https://github.com/wooorm/retext"><span class="hl retext">re</span>text</a> that checks the
+          amount of spaces between sentences. The concepts here apply to the
+          other syntaxes of unified as well.
+        </p>
+        <blockquote>
+          <p>
+            Stuck? A good place to get help fast is <a href="https://gitter.im/unifiedjs/Lobby">Gitter</a>.
+            Have an idea for another guide? Share it on Gitter!
+          </p>
+        </blockquote>
+        <article>
+          <h3 id="contents"><a class="anchor" href="#contents">#</a>Contents</h3>
+          <ul>
+            <li><a href="#plugin-basics">Plugin basics</a></li>
+            <li><a href="#case">Case</a></li>
+            <li><a href="#setting-up">Setting up</a></li>
+            <li><a href="#plugin">Plugin</a></li>
+            <li><a href="#further-exercises">Further exercises</a></li>
+          </ul>
+        </article>
+        <article>
+          <h3 id="plugin-basics"><a class="anchor" href="#plugin-basics">#</a>Plugin basics</h3>
+          <p>
+            A unified plugin changes the way the applied-on processor works,
+            in several ways. In this guide we’ll review how to inspect
+            syntax trees.
+          </p>
+          <p>
+            Plugins can contain two parts: an <strong>attacher</strong>, which is a function
+            that is invoked when someone calls <code>.use</code>, and a <strong>transformer</strong>,
+            which is an optional function invoked each time a file is processed
+            with a syntax tree and a virtual file.
+          </p>
+          <p>
+            In this case, we wan’t to check the syntax tree of each processed
+            file, so we do specify a transformer.
+          </p>
+          <p>Now you know the basics of plugins in unified. On to our case!</p>
+        </article>
+        <article>
+          <h3 id="case"><a class="anchor" href="#case">#</a>Case</h3>
+          <p>
+            Before we start, let’s first outline what we want to make.
+            Say we have the following text file:
+          </p>
+          <figure class="window gist">
+            <figcaption>example.md</figcaption>
+            <pre><code class="language-markdown">One sentence. Two sentences.
+
+One sentence.  Two sentences.</code></pre>
+          </figure>
+          <p>
+            We want to get a warning for the second paragraph, saying that one
+            space instead of two spaces should be used.
+          </p>
+          <p>In the next step we’ll write the code to use our plugin.</p>
+        </article>
+        <article>
+          <h3 id="setting-up"><a class="anchor" href="#setting-up">#</a>Setting up</h3>
+          <p>
+            Now, let’s create an <code>example.js</code> file that will process our text file
+            and report any found problems.
+          </p>
+          <figure class="window gist">
+            <figcaption>example.js</figcaption>
+            <pre><code class="language-javascript"><span class="hljs-keyword">var</span> fs = <span class="hljs-built_in">require</span>(<span class="hljs-string">'fs'</span>);
+<span class="hljs-keyword">var</span> retext = <span class="hljs-built_in">require</span>(<span class="hljs-string">'retext'</span>);
+<span class="hljs-keyword">var</span> report = <span class="hljs-built_in">require</span>(<span class="hljs-string">'vfile-reporter'</span>);
+<span class="hljs-keyword">var</span> spacing = <span class="hljs-built_in">require</span>(<span class="hljs-string">'./index.js'</span>);
+
+<span class="hljs-keyword">var</span> doc = fs.readFileSync(<span class="hljs-string">'example.md'</span>);
+
+retext().use(spacing).process(doc, <span class="hljs-function"><span class="hljs-keyword">function</span> (<span class="hljs-params">err, file</span>) </span>{
+  <span class="hljs-built_in">console</span>.error(report(err || file));
+});</code></pre>
+          </figure>
+          <blockquote>
+            <p>Don’t forget to <code>npm install</code> dependencies!</p>
+          </blockquote>
+          <p>
+            If you read the guide on <a href="/using-unified.html">using unified</a>,
+            you’ll see some familiar statements.
+            First, we load dependencies, then we read the file in.
+            We process that file with the plugin we’ll create in a second,
+            and finally we report either a fatal error or any found linting
+            messages.
+          </p>
+          <p>
+            Note that we directly depend on <a href="https://github.com/wooorm/retext"><span class="hl retext">re</span>text</a>. This is a package which
+            exposes a unified processor, and comes with the parser and compiler
+            attached.
+          </p>
+          <p>
+            When running our example (it doesn’t work yet though) we want to see
+            a message for the second paragraph, saying that one space instead of
+            two spaces should be used.
+          </p>
+          <p>
+            Now we’ve got everything set up except for the plugin itself.
+            We’ll do that in the next section.
+          </p>
+        </article>
+        <article>
+          <h3 id="plugin"><a class="anchor" href="#plugin">#</a>Plugin</h3>
+          <p>
+            As we read in Plugin Basics, we’ll need an attacher, and
+            for our case also a transformer. Let’s create them in our
+            plugin file <code>index.js</code>:
+          </p>
+          <figure class="window gist">
+            <figcaption>index.js</figcaption>
+            <pre><code class="language-javascript"><span class="hljs-built_in">module</span>.exports = attacher;
+
+<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">attacher</span>(<span class="hljs-params"></span>) </span>{
+  <span class="hljs-keyword">return</span> transformer;
+
+  <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-title">transformer</span>(<span class="hljs-params">tree, file</span>) </span>{
+  }
+}</code></pre>
+          </figure>
+          <p>
+            First things first, we need to check <code>tree</code> for a pattern. We can use
+            a utility to help us do recursively walk our tree, namely
+            <a href="https://github.com/syntax-tree/unist-util-visit"><code>unist-util-visit</code></a>. Let’s add that.
+          </p>
+          <figure class="window gist">
+            <figcaption>index.js</figcaption>
+            <pre><code class="language-diff"><span class="hljs-addition">var visit = require('unist-util-visit');</span>
+<span class="hljs-addition"></span>
+module.exports = attacher;
+
+function attacher() {
+  return transformer;
+
+  function transformer(tree, file) {
+<span class="hljs-addition">    visit(tree, 'ParagraphNode', visitor);</span>
+<span class="hljs-addition"></span>
+<span class="hljs-addition">    function visitor(node) {</span>
+<span class="hljs-addition">      console.log(node);</span>
+<span class="hljs-addition">    }</span>
+  }
+}</code></pre>
+          </figure>
+          <blockquote>
+            <p>Don’t forget to <code>npm install</code> the utility!</p>
+          </blockquote>
+          <p>
+            If we now run our example with Node, as follows, we’ll see
+            that visitor is invoked with both paragraphs in our example:
+          </p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre><span class="input">node example.js</span><span class="output">
+{ type: 'ParagraphNode',
+children:
+[ { type: 'SentenceNode', children: [Object] },
+{ type: 'WhiteSpaceNode', value: ' ' },
+{ type: 'SentenceNode', children: [Object] } ] }
+{ type: 'ParagraphNode',
+children:
+[ { type: 'SentenceNode', children: [Object] },
+{ type: 'WhiteSpaceNode', value: '  ' },
+{ type: 'SentenceNode', children: [Object] } ] }
+no issues found</span></pre>
+          </figure>
+          <p>
+            This output already shows that paragraphs contain two types of nodes:
+            <code>SentenceNode</code> and <code>WhiteSpaceNode</code>. The latter is what we want to
+            check, but the former is important because we only warn about
+            white-space between sentences in this plugin (that could be another
+            plugin though).
+          </p>
+          <p>
+            Let’s now loop through the children of each paragraph. Only checking
+            white-space between sentences. We use a small utility for checking
+            node types: <a href="https://github.com/syntax-tree/unist-util-is"><code>unist-util-is</code></a>.
+          </p>
+          <figure class="window gist">
+            <figcaption>index.js</figcaption>
+            <pre><code class="language-diff"> var visit = require('unist-util-visit');
+<span class="hljs-addition">var is = require('unist-util-is');</span>
+
+ module.exports = attacher;
+
+ function attacher() {
+   return transformer;
+
+   function transformer(tree, file) {
+     visit(tree, 'ParagraphNode', visitor);
+
+     function visitor(node) {
+<span class="hljs-deletion">      console.log(node);</span>
+<span class="hljs-addition">      var children = node.children;</span>
+<span class="hljs-addition"></span>
+<span class="hljs-addition">      children.forEach(function (child, index) {</span>
+<span class="hljs-addition">        if (</span>
+<span class="hljs-addition">          is('SentenceNode', children[index - 1]) &#x26;&#x26;</span>
+<span class="hljs-addition">          is('WhiteSpaceNode', child) &#x26;&#x26;</span>
+<span class="hljs-addition">          is('SentenceNode', children[index + 1])</span>
+<span class="hljs-addition">        ) {</span>
+<span class="hljs-addition">          console.log(child);</span>
+<span class="hljs-addition">        }</span>
+<span class="hljs-addition">      });</span>
+     }
+   }
+}</code></pre>
+          </figure>
+          <blockquote>
+            <p>Don’t forget to <code>npm install</code> the utility!</p>
+          </blockquote>
+          <p>
+            If we now run our example with Node, as follows, we’ll see
+            that only white-space between sentences is logged.
+          </p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre><span class="input">node example.js</span><span class="output">
+{ type: 'WhiteSpaceNode', value: ' ' }
+{ type: 'WhiteSpaceNode', value: '  ' }
+no issues found</span></pre>
+          </figure>
+          <p>
+            Finally, let’s add a warning for the second white-space,
+            as it has more characters than needed. We can use
+            <a href="https://github.com/vfile/vfile#vfilemessagereason-position-ruleid"><code>file.message()</code></a> to associate a message with the file.
+          </p>
+          <figure class="window gist">
+            <figcaption>index.js</figcaption>
+            <pre><code class="language-diff"> var visit = require('unist-util-visit');
+ var is = require('unist-util-is');
+
+ module.exports = attacher;
+
+ function attacher() {
+   return transformer;
+
+   function transformer(tree, file) {
+     visit(tree, 'ParagraphNode', visitor);
+
+     function visitor(node) {
+       var children = node.children;
+
+       children.forEach(function (child, index) {
+         if (
+           is('SentenceNode', children[index - 1]) &#x26;&#x26;
+           is('WhiteSpaceNode', child) &#x26;&#x26;
+           is('SentenceNode', children[index + 1])
+         ) {
+<span class="hljs-deletion">          console.log(child);</span>
+<span class="hljs-addition">          if (child.value.length !== 1) {</span>
+<span class="hljs-addition">            file.message(</span>
+<span class="hljs-addition">              'Expected 1 space between sentences, not ' +</span>
+<span class="hljs-addition">              child.value.length,</span>
+<span class="hljs-addition">              child</span>
+<span class="hljs-addition">            );</span>
+<span class="hljs-addition">          }</span>
+         }
+       });
+     }
+   }
+ }</code></pre>
+          </figure>
+          <p>
+            If we now run our example one final time, we’ll see
+            a message for our problem!
+          </p>
+          <figure class="window terminal">
+            <figcaption>sh</figcaption>
+            <pre><span class="input">node example.js</span><span class="output">
+3:14-3:16  warning  Expected 1 space between sentences, not 2
+
+⚠ 1 warning</span></pre>
+          </figure>
+        </article>
+        <article>
+          <h3 id="further-exercises"><a class="anchor" href="#further-exercises">#</a>Further exercises</h3>
+          <p>
+            One space between sentences isn’t for everyone. This plugin
+            could receive the preferred amount of spaces instead of a
+            hard-coded <code>1</code>.
+          </p>
+          <p>
+            If you want to warn for tabs or newlines between sentences,
+            maybe create a plugin for that too?
+          </p>
+          <p>If you haven’t already, check out the other <a href="/#guides">guides</a>!</p><!--Definitions--></article>
+      </section>
+    </main>
+    <footer>
+      <p>made with ❤️ by <a href="https://github.com/wooorm">@wooorm</a> and <a href="https://github.com/wooorm">https://github.com/unifiedjs/unifiedjs.github.io/graphs/contributors</a></p>
+      <p>view the project on <a href="https://github.com/unifiedjs/unified">GitHub</a></p>
+      <p>☔</p>
+    </footer>
+    <script src="index.js"></script>
+  </body>
+</html>
