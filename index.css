@@ -235,9 +235,6 @@ footer > :last-child {
   .pull {
     margin-top: 4rem;
     margin-bottom: 4rem;
-    text-align: justify;
-    -moz-text-align-last: center;
-    text-align-last: center;
   }
 }
 
