@@ -19,6 +19,11 @@ function section() {
           'view the project on ',
           h('a', {href: 'https://github.com/unifiedjs/unified'}, 'GitHub')
         ]),
+        h('p', [
+          h('a', {
+            href: 'https://github.com/unifiedjs/unifiedjs.github.io'
+          }, 'fork this site')
+        ]),
         h('p', '☔')
       ])
     );
