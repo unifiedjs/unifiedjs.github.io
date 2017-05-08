@@ -215,7 +215,7 @@ footer {
   margin-top: 4rem;
   padding-top: 4rem;
   padding-bottom: 4rem;
-  border-top: 1px hsla(192, 100%, 11%, 0.2) solid;
+  border-top: 1px #aaa solid;
   text-align: center;
 }
 
@@ -293,15 +293,17 @@ footer > :last-child {
   overflow: hidden;
 }
 
-.gist {
-  border-color: #e6eaed;
-  color: #aaa;
+.gist,
+.browser {
+  border-color: #ddd;
+  color: #777;
   background-color: #fdfdfc;
 }
 
-.gist figcaption {
+.gist figcaption,
+.browser figcaption {
   background: #fafafa;
-  border-bottom-color: #f0f0f0;
+  border-bottom-color: inherit;
   border-top-left-radius: inherit;
   border-top-right-radius: inherit;
 }
@@ -311,20 +313,7 @@ footer > :last-child {
 }
 
 .gist .chrome.button {
-  background-color: rgb(219, 219, 219);
-}
-
-.browser {
-  border-color: #e6eaed;
-  color: #ccc;
-  background-color: #fdfdfc;
-}
-
-.browser figcaption {
-  background: #fafafa;
-  border-bottom-color: #f0f0f0;
-  border-top-left-radius: inherit;
-  border-top-right-radius: inherit;
+  background-color: #ccc;
 }
 
 .browser div {
@@ -345,7 +334,7 @@ footer > :last-child {
 .browser .chrome.title a,
 .browser .chrome.title .link {
   background-color: rgba(0, 0, 0, 0.05);
-  color: rgba(0, 0, 0, 0.25);
+  color: #777;
   border-radius: 4px;
   padding: 0.25em 2em;
   margin: 0.5em auto;
@@ -381,6 +370,7 @@ footer > :last-child {
 .terminal {
   color: #93a1a1;
   background-color: #002b36;
+  border-width: 0;
 }
 
 .terminal figcaption {
@@ -571,7 +561,7 @@ footer > :last-child {
 .guide + .guide::before,
 .guide + .guide::after {
   position: absolute;
-  color: hsla(192, 100%, 11%, 0.2);
+  color: #aaa;
   line-height: 1;
   top: 0;
 }
