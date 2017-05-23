@@ -36,7 +36,7 @@ $ npm install unified unified-stream remark-parse remark-rehype rehype-stringify
 ├── remark-parse@3.0.1
 ├── remark-rehype@2.0.1
 ├── unified-stream@1.0.0
-└── unified@6.1.3
+└── unified@6.1.4
 ```
 
 Let’s first create a markdown file that we’re going
