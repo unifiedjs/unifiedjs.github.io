@@ -70,7 +70,7 @@
     "xo": "^0.18.0"
   },
   "scripts": {
-    "start": "budo --dir .",
+    "start": "budo --dir build",
     "build": "node script && remark src -qo",
     "lint": "xo && stylelint src/index.css && remark src -qf && rehype src -qf",
     "test": "npm run build && npm run lint"
