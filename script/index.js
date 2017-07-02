@@ -1,6 +1,7 @@
 var path = require('path');
 var glob = require('glob');
 var bail = require('bail');
+var mkdirp = require('mkdirp');
 var async = require('async');
 var trough = require('trough');
 var vfile = require('to-vfile');
@@ -33,7 +34,14 @@ var filePipeline = trough()
   })
   .use(function (file) {
     var sep = path.sep;
-    file.dirname = file.dirname.split(sep).slice(1).join(sep);
+    var paths = file.dirname.split(sep);
+    paths[0] = 'build';
+    file.dirname = paths.join(sep);
+  })
+  .use(function (file, next) {
+    mkdirp(file.dirname, function (err) {
+      next(err);
+    });
   })
   .use(function (file, next) {
     return vfile.write(file, file.processed ? 'utf8' : 'binary', next);

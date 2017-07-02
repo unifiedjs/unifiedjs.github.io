@@ -25,6 +25,7 @@
     "hast-util-to-string": "^1.0.0",
     "hastscript": "^3.0.1",
     "lowlight": "^1.2.0",
+    "mkdirp": "^0.5.1",
     "pluralize": "^5.0.0",
     "rehype-autolink-headings": "^2.0.0",
     "rehype-cli": "^3.0.0",
@@ -67,7 +68,7 @@
   "scripts": {
     "start": "budo --dir .",
     "build": "node script && remark src -qo",
-    "lint": "xo && stylelint index.css && remark src -qf && rehype src -qf",
+    "lint": "xo && stylelint src/index.css && remark src -qf && rehype src -qf",
     "test": "npm run build && npm run lint"
   },
   "dependencies": {
