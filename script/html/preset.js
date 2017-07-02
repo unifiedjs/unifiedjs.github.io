@@ -6,5 +6,5 @@ exports.plugins = [
   require('rehype-highlight'),
   require('./plugin/link'),
   require('./plugin/abbreviate'),
-  require('rehype-format')
+  require('rehype-preset-minify')
 ];

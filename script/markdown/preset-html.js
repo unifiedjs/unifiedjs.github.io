@@ -25,5 +25,5 @@ exports.plugins = [
       js: 'index.js'
     }
   ],
-  require('rehype-format')
+  require('rehype-preset-minify')
 ];
