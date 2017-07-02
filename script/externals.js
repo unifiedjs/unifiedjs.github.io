@@ -1,1 +1,0 @@
-exports.js = require('./javascript');

@@ -12,19 +12,16 @@ var externals = require('./externals');
 var filePipeline = trough()
   .use(vfile.read)
   .use(function (file, next) {
-    var ext = file.extname.slice(1);
-    var processor = processors[ext];
-    var external = externals[ext];
+    var ext = file.extname;
 
-    if (processor) {
-      processor().process(file, function (err) {
-        file.extname = processor.extname;
+    if (ext in processors) {
+      processors[ext]().process(file, function (err) {
+        file.extname = processors[ext].extname;
         file.processed = true;
         next(err);
       });
-    } else if (external) {
-      external(file, function (err, contents) {
-        file.contents = contents;
+    } else if (ext in externals) {
+      externals[ext].run(file, function (err) {
         file.processed = true;
         next(err);
       });
