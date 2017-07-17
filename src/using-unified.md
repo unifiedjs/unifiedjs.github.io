@@ -36,7 +36,7 @@ $ npm install unified unified-stream remark-parse remark-rehype rehype-stringify
 ├── remark-parse@3.0.1
 ├── remark-rehype@2.0.1
 ├── unified-stream@1.0.0
-└── unified@6.1.4
+└── unified@6.1.5
 ```
 
 Let’s first create a markdown file that we’re going
@@ -117,8 +117,8 @@ Respectively, we can use [`remark-toc`][toc] and
 ```bash sh
 $ npm install remark-toc rehype-document
 /Users/tilde/example
-├── remark-toc@4.0.0
-└── rehype-document@2.0.0
+├── remark-toc@4.0.1
+└── rehype-document@2.0.1
 ```
 
 Let’s now use those two as well, by modifying our
@@ -205,8 +205,8 @@ messages relating to those files.  Let’s install those.
 ```bash sh
 $ npm install to-vfile vfile-reporter
 /Users/tilde/example
-├── to-vfile@2.1.1
-└── vfile-reporter@3.0.0
+├── to-vfile@2.1.2
+└── vfile-reporter@4.0.0
 ```
 
 ...and now unhook stdin/stdout from our example and use
@@ -265,9 +265,9 @@ let’s install these dependencies as well.
 ```bash sh
 $ npm install remark-retext retext-english retext-indefinite-article
 /Users/tilde/example
-├── remark-retext@3.0.0
+├── remark-retext@3.0.1
 ├── retext-english@3.0.0
-└── retext-indefinite-article@1.1.0
+└── retext-indefinite-article@1.1.1
 ```
 
 ...and change our `index.js` like so:
