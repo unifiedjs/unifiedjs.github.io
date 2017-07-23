@@ -33,9 +33,9 @@ Let’s install those with [npm][], which comes bundled with [Node][].
 $ npm install unified unified-stream remark-parse remark-rehype rehype-stringify
 /Users/tilde/example
 ├── rehype-stringify@3.0.0
-├── remark-parse@3.0.1
+├── remark-parse@4.0.0
 ├── remark-rehype@2.0.1
-├── unified-stream@1.0.0
+├── unified-stream@1.0.1
 └── unified@6.1.5
 ```
 
