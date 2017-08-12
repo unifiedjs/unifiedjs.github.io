@@ -26,8 +26,6 @@ bundler
 
 // Names, products, etc.
 Gitter
-Shopify
-Mapbox
 NodeSchool
 npm
 xo
