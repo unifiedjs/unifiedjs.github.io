@@ -265,9 +265,9 @@ let’s install these dependencies as well.
 ```bash sh
 $ npm install remark-retext retext-english retext-indefinite-article
 /Users/tilde/example
-├── remark-retext@3.0.1
+├── remark-retext@3.1.0
 ├── retext-english@3.0.0
-└── retext-indefinite-article@1.1.1
+└── retext-indefinite-article@1.1.2
 ```
 
 ...and change our `index.js` like so:
