@@ -4,6 +4,7 @@ hacky
 plugin
 plugins
 acing
+middleware
 
 // Jargon
 debounced
@@ -18,6 +19,10 @@ CSTs
 stdin
 stdout
 HSL
+syntaxes
+readme
+DOM
+bundler
 
 // Names, products, etc.
 Gitter
@@ -38,3 +43,4 @@ hast
 retext
 remark
 rehype
+attacher
