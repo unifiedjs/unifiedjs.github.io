@@ -517,7 +517,7 @@ footer > :last-child {
   display: block;
   border-radius: 3px;
   margin: calc(2em + 2ex) 0;
-  padding: calc(2em + 2ex);
+  padding: calc(2em + 2ex) 0;
   background-color: transparent;
   box-shadow: 0 0 0 3px transparent;
   border-color: transparent;
@@ -630,8 +630,13 @@ footer > :last-child {
   }
 
   .content {
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .thumbnail {
+    margin-left: 0;
+    margin-right: 0;
   }
 
   .guide .window {
@@ -645,5 +650,10 @@ footer > :last-child {
   ol,
   ul {
     padding-left: 1rem;
+  }
+
+  .thumbnail-content,
+  .guide p {
+    text-align: left;
   }
 }
