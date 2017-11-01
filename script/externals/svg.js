@@ -10,11 +10,11 @@ var svgo = new SVGO({
 module.exports = trough().use(transform);
 
 function transform(file, next) {
-  svgo.optimize(file.toString('utf8'), function (res) {
+  svgo.optimize(file.toString('utf8')).then(function (res) {
     if (res.data) {
       file.contents = res.data;
     }
 
     next();
-  });
+  }, next);
 }
