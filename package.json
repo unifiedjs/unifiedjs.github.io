@@ -6,7 +6,7 @@
   "license": "MIT",
   "keywords": [],
   "homepage": "https://unifiedjs.github.io",
-  "repository": "https://github.com/unifiedjs/unifiedjs.github.io",
+  "repository": "unifiedjs/unifiedjs.github.io",
   "bugs": "https://github.com/unifiedjs/unifiedjs.github.io/issues",
   "author": "Titus Wormer <tituswormer@gmail.com>",
   "contributors": [
