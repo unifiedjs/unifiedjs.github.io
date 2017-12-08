@@ -334,19 +334,19 @@ If you haven’t already, check out the other [guides][]!
 
 [gitter]: https://gitter.im/unifiedjs/Lobby
 
-[parse]: https://github.com/wooorm/remark/tree/master/packages/remark-parse
+[parse]: https://github.com/remarkjs/remark/tree/master/packages/remark-parse
 
-[stringify]: https://github.com/wooorm/rehype/tree/master/packages/rehype-stringify
+[stringify]: https://github.com/rehypejs/rehype/tree/master/packages/rehype-stringify
 
-[remark-rehype]: https://github.com/wooorm/remark-rehype
+[remark-rehype]: https://github.com/remarkjs/remark-rehype
 
 [npm]: https://www.npmjs.com
 
 [node]: https://nodejs.org
 
-[toc]: https://github.com/wooorm/remark-toc
+[toc]: https://github.com/remarkjs/remark-toc
 
-[document]: https://github.com/wooorm/rehype-document
+[document]: https://github.com/rehypejs/rehype-document
 
 [to-vfile]: https://github.com/vfile/to-vfile
 
@@ -354,20 +354,20 @@ If you haven’t already, check out the other [guides][]!
 
 [unified-stream]: https://github.com/unifiedjs/unified-stream
 
-[english]: https://github.com/wooorm/retext/tree/master/packages/retext-english
+[english]: https://github.com/retextjs/retext/tree/master/packages/retext-english
 
-[indefinite-article]: https://github.com/wooorm/retext-indefinite-article
+[indefinite-article]: https://github.com/retextjs/retext-indefinite-article
 
-[remark-retext]: https://github.com/wooorm/remark-retext
+[remark-retext]: https://github.com/remarkjs/remark-retext
 
-[retext-plugins]: https://github.com/wooorm/retext/blob/master/doc/plugins.md
+[retext-plugins]: https://github.com/retextjs/retext/blob/master/doc/plugins.md
 
-[remark-plugins]: https://github.com/wooorm/remark/blob/master/doc/plugins.md
+[remark-plugins]: https://github.com/remarkjs/remark/blob/master/doc/plugins.md
 
-[rehype-plugins]: https://github.com/wooorm/rehype/blob/master/doc/plugins.md
+[rehype-plugins]: https://github.com/rehypejs/rehype/blob/master/doc/plugins.md
 
-[rehype-raw]: https://github.com/wooorm/rehype-raw
+[rehype-raw]: https://github.com/rehypejs/rehype-raw
 
-[rehype-format]: https://github.com/wooorm/rehype-format
+[rehype-format]: https://github.com/rehypejs/rehype-format
 
 [guides]: /#guides

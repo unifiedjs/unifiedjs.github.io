@@ -29,10 +29,10 @@ function initialise() {
   var result = {};
   var dictionary = {
     'v|file': 'vfile/vfile',
-    're|mark': 'wooorm/remark',
-    're|text': 'wooorm/retext',
-    're|hype': 'wooorm/rehype',
-    'uni|st': 'wooorm/unist',
+    're|mark': 'remarkjs/remark',
+    're|text': 'retextjs/retext',
+    're|hype': 'rehypejs/rehype',
+    'uni|st': 'syntax-tree/unist',
     'nl|cst': 'syntax-tree/nlcst',
     'md|ast': 'syntax-tree/mdast',
     'h|ast': 'syntax-tree/hast'
