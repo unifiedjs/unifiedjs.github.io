@@ -33,10 +33,10 @@ Let’s install those with [npm][], which comes bundled with [Node][].
 $ npm install unified unified-stream remark-parse remark-rehype rehype-stringify
 /Users/tilde/example
 ├── rehype-stringify@3.0.0
-├── remark-parse@4.0.0
-├── remark-rehype@2.0.1
+├── remark-parse@5.0.0
+├── remark-rehype@3.0.0
 ├── unified-stream@1.0.1
-└── unified@6.1.5
+└── unified@6.1.6
 ```
 
 Let’s first create a markdown file that we’re going
@@ -117,7 +117,7 @@ Respectively, we can use [`remark-toc`][toc] and
 ```bash sh
 $ npm install remark-toc rehype-document
 /Users/tilde/example
-├── remark-toc@4.0.1
+├── remark-toc@5.0.0
 └── rehype-document@2.0.1
 ```
 
@@ -267,7 +267,7 @@ $ npm install remark-retext retext-english retext-indefinite-article
 /Users/tilde/example
 ├── remark-retext@3.1.0
 ├── retext-english@3.0.0
-└── retext-indefinite-article@1.1.2
+└── retext-indefinite-article@1.1.3
 ```
 
 ...and change our `index.js` like so:

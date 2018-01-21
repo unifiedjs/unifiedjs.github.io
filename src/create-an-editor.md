@@ -66,7 +66,7 @@ Keep `index.js`, `index.html`, and `index.css` empty for now, and fill
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "browserify": "^14.0.0",
+    "browserify": "^15.0.0",
     "xo": "^0.18.0"
   },
   "scripts": {
