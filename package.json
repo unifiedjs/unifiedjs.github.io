@@ -1,11 +1,11 @@
 {
   "private": true,
-  "name": "unifiedjs.github.io",
+  "name": "unified.js.org",
   "version": "1.0.0",
   "description": "Site for unified",
   "license": "MIT",
   "keywords": [],
-  "homepage": "https://unifiedjs.github.io",
+  "homepage": "https://unified.js.org",
   "repository": "unifiedjs/unifiedjs.github.io",
   "bugs": "https://github.com/unifiedjs/unifiedjs.github.io/issues",
   "author": "Titus Wormer <tituswormer@gmail.com>",
@@ -73,7 +73,7 @@
   "scripts": {
     "start": "budo --dir build",
     "build": "node script && remark src -qo",
-    "lint": "xo && stylelint src/index.css && remark src -qf && rehype src -qf",
+    "lint": "xo && stylelint src/index.css && remark src -q && rehype src -qf",
     "test": "npm run build && npm run lint"
   },
   "dependencies": {

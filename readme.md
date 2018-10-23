@@ -1,3 +1,3 @@
-#### [`unifiedjs.github.io`](https://unifiedjs.github.io)
+#### [`unified.js.org`](https://unified.js.org)
 
-[![screenshot](screenshot.png)](https://unifiedjs.github.io)
+[![screenshot](screenshot.png)](https://unified.js.org)

@@ -1,3 +1,4 @@
+var url = require('url');
 var path = require('path');
 var glob = require('glob');
 var bail = require('bail');
@@ -6,6 +7,7 @@ var async = require('async');
 var trough = require('trough');
 var vfile = require('to-vfile');
 var reporter = require('vfile-reporter');
+var pack = require('../package.json');
 var processors = require('./process');
 var externals = require('./externals');
 
@@ -52,5 +54,9 @@ trough()
   .use(glob)
   .use(function (paths, done) {
     return async.map(paths, filePipeline.run, done);
+  })
+  .use(function (files, next) {
+    var contents = url.parse(pack.homepage).host + '\n';
+    vfile.write({dirname: 'build', basename: 'CNAME', contents: contents}, next);
   })
   .run('src/**/*.*', bail);
