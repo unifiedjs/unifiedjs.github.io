@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 import styled from 'styled-components'
-
 import {Box, Flex, Heading, Text, theme} from 'unified-ui'
-
+import {Indicator} from './Indicator'
 import Link from './Link'
 
 const BIG_BREAKPOINT = '@media screen and (min-width: 48em)'
@@ -15,17 +14,6 @@ const toggleTransform = ({isOpen}) =>
 const UnstyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
-`
-
-const Indicator = styled(Box)`
-  display: inline-block;
-  width: 5px;
-  height: 5px;
-  border-radius: 100%;
-  background: ${theme.colors.unified};
-  vertical-align: text-top;
-  position: relative;
-  margin: 3px;
 `
 
 export const SidebarLayout = styled(Flex)`

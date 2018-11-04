@@ -48,14 +48,16 @@ const Layout = ({children}) => (
 
               <SidebarLayout.NavGroup>
                 <SidebarLayout.NavHeading>Contents</SidebarLayout.NavHeading>
-                <SidebarLayout.NavItem href="/">About</SidebarLayout.NavItem>
-                <SidebarLayout.NavItem href="/coop">
+                <SidebarLayout.NavItem href="/about">
+                  About
+                </SidebarLayout.NavItem>
+                <SidebarLayout.NavItem href="/projects">
                   Projects
                 </SidebarLayout.NavItem>
                 <SidebarLayout.NavItem isNew href="/micromark">
                   micromark
                 </SidebarLayout.NavItem>
-                <SidebarLayout.NavItem isNew href="/coop">
+                <SidebarLayout.NavItem isNew href="/collective">
                   Collective
                 </SidebarLayout.NavItem>
                 <SidebarLayout.NavItem href="/blog">Blog</SidebarLayout.NavItem>

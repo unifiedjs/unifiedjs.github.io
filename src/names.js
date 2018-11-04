@@ -10,7 +10,8 @@ export const wordMap = {
   rehype: 're|hype',
   hast: 'h|ast',
   retext: 're|text',
-  nlcst: 'nl|cst'
+  nlcst: 'nl|cst',
+  mdx: 'm|dx'
 }
 
 export const initialMap = {
@@ -23,7 +24,8 @@ export const initialMap = {
   rehype: 'r|e',
   hast: 'h|a',
   retext: 'r|e',
-  nlcst: 'n|c'
+  nlcst: 'n|c',
+  mdx: 'm|dx'
 }
 
 export const colors = {
@@ -36,7 +38,8 @@ export const colors = {
   rehype: 'rehype',
   hast: 'rehype',
   retext: 'retext',
-  nlcst: 'retext'
+  nlcst: 'retext',
+  mdx: 'mdx'
 }
 
 export const urls = {
@@ -54,5 +57,7 @@ export const urls = {
   [base + 'syntax-tree/hast']: 'hast',
   [base + 'retextjs/retext']: 'retext',
   [base + 'retextjs']: 'retext',
-  [base + 'syntax-tree/nlcst']: 'nlcst'
+  [base + 'syntax-tree/nlcst']: 'nlcst',
+  [base + 'mdx-js']: 'mdx',
+  [base + 'mdx-js/mdx']: 'mdx'
 }

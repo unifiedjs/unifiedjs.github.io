@@ -1,68 +1,63 @@
 import { Logo } from '../components/Logo'
 import { Unified as UnifiedExample } from '../components/Examples'
+import { Indicator } from '../components/Indicator'
 
 # <Logo name="unified" />
 
-Some other links [example!](https://example.com)
+> Building a bridge between formats
 
-unified is an interface for processing text with syntax trees and transforming between them.
+unified is an ecosystem for dealing with content in its many forms.
+It enables [Gatsby][] to pull in markdown as data to make blazing fast sites.
+It’s what generates the HTML for [Node][]’s API docs.
+It’s what allows [Prettier][] to format markdown.
+It’s what lets you write JSX inside markdown when you’re creating a
+presentation with [mdx-deck][].
 
-## Core
+[Continue reading »](/about)
 
-The unified library itself is a small module.
-It’s a rather small API.
-Plugins do everything else: minify HTML, lint markdown, check indefinite
-articles (“a”, “an”), and more.
+## <Logo name="micromark" /><Indicator />
 
-Three syntaxes are connected to unified, each coming with a syntax tree
-definition, and a parser and stringifier:
-[mdast][] with [remark][] for markdown,
-[nlcst][] with [retext][] for prose, and
-[hast][] with [rehype][] for HTML.
+**micromark** is a low-level markdown parser in JavaScript.
+In nerdy terms, it’s a lexer.
 
-unified defers part of its logic to [vfile][], which is a virtual file format
-representing documents being processed, and [unist][], a schema for syntax
-trees.
+It’s a new project under the unified umbrella that’s smaller, faster, and
+compliant to commonmark.
+We’re building it to lay a better foundation for markdown parsers like
+[remark][] build from the beginning to support extensions like [mdx][].
+micromark is written in TypeScript so that it’s possible to compile it to WASM.
 
-## Virtual files
+micromark will allow other projects to create a CST from markdown and will
+provide a better base for remark.
 
-[vfile][] stores metadata about documents being processed (often, but not
-always, from the file system).
-Mainly, it houses a path to files, and their contents.
-Additionally, it tracks messages associated with files and where they occurred.
-This powers code linting, such as with [`remark-cli`][remark-cli],
-[`remark-validate-links`][remark-validate-links], and
-[`remark-preset-lint-consistent`][remark-preset-lint-consistent].
+[Continue reading »](/micromark)
 
-## Syntax tree
+## Collective<Indicator />
 
-[unist][] discloses documents as syntax trees.
-Syntax trees come in two flavours: Concrete (CST) and Abstract (AST).
-The first has all information needed to restore the original document
-completely, the latter does not.
-But, ASTs can recreate an exact syntactic representation.
-For example, CSTs house info on style such as tabs or spaces, but ASTs do not.
-This makes ASTs often easier to work with.
+The current landscape of open source software seems to indicate that only big,
+existing projects, with a giant direct user base, can be sustainable.
+We believe that projects which are more low-level, like unified, and projects
+which are new, like [micromark][], should also be sustainable.
 
+To reach this goal, we’re creating a collective of hundreds of projects,
+spanning from low-level building blocks to high-level user-facing projects,
+all sharing the same support pool.
 
-[unist]: https://github.com/syntax-tree/unist
+[Continue reading »](/collective)
 
-[mdast]: https://github.com/syntax-tree/mdast
+## Sponsors
 
-[hast]: https://github.com/syntax-tree/hast
+<!-- TODO: list of sponsors. -->
 
-[nlcst]: https://github.com/syntax-tree/nlcst
+<!-- Definitions -->
+
+[gatsby]: https://www.gatsbyjs.org
+
+[node]: https://nodejs.org/en/
+
+[prettier]: https://prettier.io
+
+[mdx-deck]: https://github.com/jxnblk/mdx-deck
 
 [remark]: https://github.com/remarkjs/remark
 
-[remark-cli]: https://github.com/remarkjs/remark/tree/master/packages/remark-cli
-
-[rehype]: https://github.com/rehypejs/rehype
-
-[retext]: https://github.com/retextjs/retext
-
-[vfile]: https://github.com/vfile/vfile
-
-[remark-validate-links]: https://github.com/remarkjs/remark-validate-links
-
-[remark-preset-lint-consistent]: https://github.com/remarkjs/remark-lint/tree/master/packages/remark-preset-lint-consistent
+[mdx]: https://github.com/mdx-js/mdx
