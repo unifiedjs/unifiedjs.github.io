@@ -1,15 +1,24 @@
 {
   "name": "unified-site",
+  "version": "2.0.0",
   "description": "Official website for the unified ecosystem",
   "license": "MIT",
-  "author": "John Otander",
-  "repository": "unified/site",
-  "scripts": {
-    "start": "npm run develop",
-    "build": "gatsby build",
-    "develop": "gatsby develop",
-    "format": "prettier --single-quote --write '**/*.js'"
-  },
+  "keywords": [
+    "process",
+    "design",
+    "system",
+    "rehype",
+    "retext",
+    "remark"
+  ],
+  "homepage": "https://unified.js.org",
+  "repository": "unifiedjs/unifiedjs.github.io",
+  "bugs": "https://github.com/unifiedjs/unifiedjs.github.io/issues",
+  "author": "John Otander <johnotander@gmail.com> (http://johnotander.com)",
+  "contributors": [
+    "John Otander <johnotander@gmail.com> (http://johnotander.com)",
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+  ],
   "dependencies": {
     "@mdx-js/mdx": "^0.15.7",
     "@mdx-js/runtime": "^0.15.7",
@@ -24,6 +33,7 @@
     "gatsby-plugin-react-helmet": "^3.0.1",
     "gatsby-source-graphql": "^2.0.5",
     "prettier": "^1.14.3",
+    "prop-types": "^15.6.2",
     "react": "^16.6.0",
     "react-dom": "^16.6.0",
     "react-helmet": "^5.2.0",
@@ -31,5 +41,44 @@
     "styled-system": "^3.1.11",
     "system-components": "^3.0.1",
     "unified-ui": "0.0.2-13"
+  },
+  "scripts": {
+    "format": "remark . -qfo && prettier \"**/*.js\" --write && xo --fix",
+    "develop": "gatsby develop",
+    "build": "gatsby build",
+    "start": "npm run develop",
+    "test": "npm run format && npm run build"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "semi": false,
+    "trailingComma": "none"
+  },
+  "xo": {
+    "prettier": true,
+    "extends": [
+      "xo-react"
+    ],
+    "parser": "babel-eslint",
+    "rules": {
+      "import/no-unassigned-import": "off",
+      "unicorn/filename-case": "off",
+      "react/jsx-pascal-case": "off",
+      "camelcase": "off"
+    }
+  },
+  "remarkConfig": {
+    "plugins": [
+      "preset-wooorm"
+    ]
+  },
+  "devDependencies": {
+    "eslint-config-xo-react": "^0.17.0",
+    "remark-cli": "^6.0.0",
+    "remark-preset-wooorm": "^4.0.0",
+    "xo": "^0.23.0"
   }
 }

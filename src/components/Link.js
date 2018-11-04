@@ -1,4 +1,4 @@
-import React from 'react';
-import { Link } from 'gatsby';
+import React from 'react'
+import {Link} from 'gatsby'
 
-export default ({ href, ...props }) => <Link to={href} {...props} />;
+export default ({href, ...props}) => <Link to={href} {...props} />

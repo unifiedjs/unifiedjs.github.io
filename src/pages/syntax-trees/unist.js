@@ -1,9 +1,10 @@
-import React from 'react';
-import { graphql } from 'gatsby';
-import MDX from '@mdx-js/runtime';
-import { mdComponents, theme } from 'unified-ui';
+import React from 'react'
+import PropTypes from 'prop-types'
+import {graphql} from 'gatsby'
+import MDX from '@mdx-js/runtime'
+import {mdComponents, theme} from 'unified-ui'
 
-import Layout from '../../components/Layout';
+import Layout from '../../components/Layout'
 
 /* eslint-disable jsx-a11y/anchor-has-content */
 mdComponents.a = props => (
@@ -14,13 +15,18 @@ mdComponents.a = props => (
     }}
     {...props}
   />
-);
+)
 
-export default ({ data }) => (
-  <Layout>
-    <MDX components={mdComponents}>{data.github.repository.object.text}</MDX>
-  </Layout>
-);
+export default function Unist({data}) {
+  return (
+    <Layout>
+      <MDX components={mdComponents}>{data.github.repository.object.text}</MDX>
+    </Layout>
+  )
+}
+Unist.propTypes = {
+  data: PropTypes.object.isRequired
+}
 
 export const query = () => graphql`
   query GitHubReadme {
@@ -34,4 +40,4 @@ export const query = () => graphql`
       }
     }
   }
-`;
+`

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Text } from 'unified-ui';
+import React from 'react'
+import {Text} from 'unified-ui'
 
 export const Unified = props => (
   <Text as="span" {...props}>
@@ -8,4 +8,4 @@ export const Unified = props => (
     </Text>
     fied
   </Text>
-);
+)

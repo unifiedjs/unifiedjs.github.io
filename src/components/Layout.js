@@ -1,15 +1,15 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import Helmet from 'react-helmet';
-import { StaticQuery, graphql } from 'gatsby';
-import { Provider } from 'unified-ui';
+import React from 'react'
+import PropTypes from 'prop-types'
+import Helmet from 'react-helmet'
+import {StaticQuery, graphql} from 'gatsby'
+import {Provider} from 'unified-ui'
 
-import { SidebarLayout } from './SidebarLayout';
-import { Unified } from './Logo';
+import {SidebarLayout} from './SidebarLayout'
+import {Unified} from './Logo'
 
-import '../base.css';
+import '../base.css'
 
-const Layout = ({ children }) => (
+const Layout = ({children}) => (
   <StaticQuery
     query={graphql`
       query SiteTitleQuery {
@@ -25,8 +25,8 @@ const Layout = ({ children }) => (
         <Helmet
           title={data.site.siteMetadata.title}
           meta={[
-            { name: 'description', content: 'Sample' },
-            { name: 'keywords', content: 'sample, something' }
+            {name: 'description', content: 'Sample'},
+            {name: 'keywords', content: 'sample, something'}
           ]}
         >
           <html lang="en" />
@@ -76,10 +76,10 @@ const Layout = ({ children }) => (
       </>
     )}
   />
-);
+)
 
 Layout.propTypes = {
   children: PropTypes.node.isRequired
-};
+}
 
-export default Layout;
+export default Layout

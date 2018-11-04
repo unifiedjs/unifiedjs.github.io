@@ -1,4 +1,4 @@
-require('dotenv').config();
+require('dotenv').config()
 
 module.exports = {
   siteMetadata: {
@@ -39,4 +39,4 @@ module.exports = {
     },
     'gatsby-plugin-offline'
   ]
-};
+}

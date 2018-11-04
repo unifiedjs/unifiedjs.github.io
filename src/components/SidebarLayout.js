@@ -1,27 +1,28 @@
-import React from 'react';
-import styled from 'styled-components';
+import React from 'react'
+import PropTypes from 'prop-types'
+import styled from 'styled-components'
 
-import { Box, Flex, Heading, Text, theme } from 'unified-ui';
+import {Box, Flex, Heading, Text, theme} from 'unified-ui'
 
-import Link from './Link';
+import Link from './Link'
 
-const MOBILE_BREAKPOINT = '@media screen and (min-width: 48em)';
-const SIDEBAR_WIDTH = 256;
+const MOBILE_BREAKPOINT = '@media screen and (min-width: 48em)'
+const SIDEBAR_WIDTH = 256
 
-const toggleTransform = ({ isOpen }) =>
-  isOpen ? { transform: 'none' } : { transform: 'translateX(-100%)' };
+const toggleTransform = ({isOpen}) =>
+  isOpen ? {transform: 'none'} : {transform: 'translateX(-100%)'}
 
 const UnstyledLink = styled(Link)`
   text-decoration: none;
   color: inherit;
-`;
+`
 
 export const SidebarLayout = styled(Flex)`
   min-height: 100vh;
   max-width: 1024px;
   margin: auto;
   background-color: white;
-`;
+`
 
 SidebarLayout.Main = styled(Box)`
   min-height: calc(100vh - 200px);
@@ -29,10 +30,10 @@ SidebarLayout.Main = styled(Box)`
   ${MOBILE_BREAKPOINT} {
     padding-left: ${SIDEBAR_WIDTH}px;
   }
-`;
+`
 SidebarLayout.Main.defaultProps = {
   mt: 4
-};
+}
 
 const NavWrap = styled(Box)`
   width: ${SIDEBAR_WIDTH}px;
@@ -49,28 +50,37 @@ const NavWrap = styled(Box)`
   ${toggleTransform} ${MOBILE_BREAKPOINT} {
     transform: none;
   }
-`;
+`
 NavWrap.defaultProps = {
   p: 4
-};
+}
 
-SidebarLayout.Title = ({ href, logo, children }) => (
+SidebarLayout.Title = ({href, logo, children}) => (
   <UnstyledLink href={href}>
     <Flex alignItems="center">
       <Box>{logo}</Box>
       <Text>{children}</Text>
     </Flex>
   </UnstyledLink>
-);
+)
+SidebarLayout.Title.propTypes = {
+  href: PropTypes.string.isRequired,
+  logo: PropTypes.node,
+  children: PropTypes.node
+}
+SidebarLayout.Title.defaultProps = {
+  logo: null,
+  children: null
+}
 
 SidebarLayout.NavGroup = styled(Box)`
   list-style-type: none;
   margin: 0;
   padding: 0;
-`;
+`
 SidebarLayout.NavGroup.defaultProps = {
   as: 'ul'
-};
+}
 
 SidebarLayout.NavItem = props => (
   <Text as="li" fontSize={2} color="grays.8">
@@ -81,14 +91,14 @@ SidebarLayout.NavItem = props => (
       {...props}
     />
   </Text>
-);
+)
 
 SidebarLayout.NavHeading = props => (
   <Heading mt={4} mb={2} fontSize={2} {...props} />
-);
+)
 
 SidebarLayout.Nav = props => (
   <nav>
     <NavWrap {...props} />
   </nav>
-);
+)
