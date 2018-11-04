@@ -5,7 +5,7 @@ import {StaticQuery, graphql} from 'gatsby'
 import {Provider} from 'unified-ui'
 
 import {SidebarLayout} from './SidebarLayout'
-import {Logo} from './Logo'
+import {WordMark} from './Logo'
 
 import '../base.css'
 
@@ -42,7 +42,7 @@ const Layout = ({children}) => (
           <SidebarLayout>
             <SidebarLayout.Nav>
               <SidebarLayout.Title href="/">
-                <Logo name={data.site.siteMetadata.title} />
+                <WordMark name={data.site.siteMetadata.title} />
               </SidebarLayout.Title>
 
               <SidebarLayout.NavGroup>

@@ -13,13 +13,13 @@ const map = {
   hast: 'h|ast'
 }
 
-export const Logo = ({name, ...props}) => {
+export const WordMark = ({name, ...props}) => {
   const value = name.toLowerCase()
   const split = map[value].split('|')
 
   return (
-    <Text as="span" {...props}>
-      <Text as="span" color={value}>
+    <Text as="span" {...props} fontWeight="bold">
+      <Text as="span" color={value} fontSize="null">
         {split[0]}
       </Text>
       {split[1]}

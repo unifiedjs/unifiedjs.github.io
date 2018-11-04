@@ -1,4 +1,4 @@
 import React from 'react'
-import Link from '../components/Link'
+import Home from './home.mdx'
 
-export default () => <Link href="/introduction">Docs</Link>
+export default () => <Home />
