@@ -43,7 +43,7 @@ const Layout = ({children}) => (
           <SidebarLayout>
             <SidebarLayout.Nav>
               <SidebarLayout.Title href="/">
-                <Logo type="initials" name={data.site.siteMetadata.title} />
+                <Logo name={data.site.siteMetadata.title} />
               </SidebarLayout.Title>
 
               <SidebarLayout.NavGroup>
