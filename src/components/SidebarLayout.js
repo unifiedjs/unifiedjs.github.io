@@ -84,12 +84,7 @@ SidebarLayout.NavGroup.defaultProps = {
 
 SidebarLayout.NavItem = props => (
   <Text as="li" fontSize={2} color="grays.8">
-    <UnstyledLink
-      activeStyle={{
-        color: theme.colors.unified
-      }}
-      {...props}
-    />
+    <UnstyledLink activeStyle={{color: theme.colors.unified}} {...props} />
   </Text>
 )
 
