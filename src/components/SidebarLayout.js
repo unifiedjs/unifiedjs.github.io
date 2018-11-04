@@ -6,7 +6,7 @@ import {Box, Flex, Heading, Text, theme} from 'unified-ui'
 
 import Link from './Link'
 
-const MOBILE_BREAKPOINT = '@media screen and (min-width: 48em)'
+const BIG_BREAKPOINT = '@media screen and (min-width: 48em)'
 const SIDEBAR_WIDTH = 256
 
 const toggleTransform = ({isOpen}) =>
@@ -17,9 +17,20 @@ const UnstyledLink = styled(Link)`
   color: inherit;
 `
 
+const Indicator = styled(Box)`
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  border-radius: 100%;
+  background: ${theme.colors.unified};
+  vertical-align: text-top;
+  position: relative;
+  margin: 3px;
+`
+
 export const SidebarLayout = styled(Flex)`
   min-height: 100vh;
-  max-width: 1024px;
+  max-width: 64em;
   margin: auto;
   background-color: white;
 `
@@ -27,12 +38,12 @@ export const SidebarLayout = styled(Flex)`
 SidebarLayout.Main = styled(Box)`
   min-height: calc(100vh - 200px);
 
-  ${MOBILE_BREAKPOINT} {
+  ${BIG_BREAKPOINT} {
     padding-left: ${SIDEBAR_WIDTH}px;
   }
 `
 SidebarLayout.Main.defaultProps = {
-  mt: 4
+  p: 4
 }
 
 const NavWrap = styled(Box)`
@@ -47,7 +58,7 @@ const NavWrap = styled(Box)`
   transition: transform 0.2s ease-out;
   background-color: white;
 
-  ${toggleTransform} ${MOBILE_BREAKPOINT} {
+  ${toggleTransform} ${BIG_BREAKPOINT} {
     transform: none;
   }
 `
@@ -82,15 +93,24 @@ SidebarLayout.NavGroup.defaultProps = {
   as: 'ul'
 }
 
-SidebarLayout.NavItem = props => (
+SidebarLayout.NavItem = ({isNew, ...props}) => (
   <Text as="li" fontSize={2} color="grays.8">
     <UnstyledLink activeStyle={{color: theme.colors.unified}} {...props} />
+    {isNew && <Indicator />}
   </Text>
 )
 
 SidebarLayout.NavHeading = props => (
   <Heading mt={4} mb={2} fontSize={2} {...props} />
 )
+
+SidebarLayout.Bar = styled(Box)`
+  width: 100%;
+  height: 5px;
+  background: ${theme.colors.unified};
+  position: fixed;
+  z-index: 1;
+`
 
 SidebarLayout.Nav = props => (
   <nav>

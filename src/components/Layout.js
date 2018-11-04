@@ -39,41 +39,26 @@ const Layout = ({children}) => (
           />
         </Helmet>
         <Provider>
+          <SidebarLayout.Bar />
           <SidebarLayout>
             <SidebarLayout.Nav>
               <SidebarLayout.Title href="/">
-                <Logo name={data.site.siteMetadata.title} />
+                <Logo type="initials" name={data.site.siteMetadata.title} />
               </SidebarLayout.Title>
 
               <SidebarLayout.NavGroup>
-                <SidebarLayout.NavHeading>
-                  Getting started
-                </SidebarLayout.NavHeading>
-                <SidebarLayout.NavItem href="/introduction">
-                  Introduction
+                <SidebarLayout.NavHeading>Contents</SidebarLayout.NavHeading>
+                <SidebarLayout.NavItem href="/">About</SidebarLayout.NavItem>
+                <SidebarLayout.NavItem href="/coop">
+                  Projects
                 </SidebarLayout.NavItem>
-                <SidebarLayout.NavItem href="/installation">
-                  Installation
+                <SidebarLayout.NavItem isNew href="/micromark">
+                  micromark
                 </SidebarLayout.NavItem>
-                <SidebarLayout.NavItem href="/guides">
-                  Usage
+                <SidebarLayout.NavItem isNew href="/coop">
+                  Collective
                 </SidebarLayout.NavItem>
-              </SidebarLayout.NavGroup>
-
-              <SidebarLayout.NavGroup>
-                <SidebarLayout.NavHeading>Guides</SidebarLayout.NavHeading>
-                <SidebarLayout.NavItem href="/guides/use-unified">
-                  Use unified
-                </SidebarLayout.NavItem>
-                <SidebarLayout.NavItem href="/guides/write-mdx">
-                  Write with MDX
-                </SidebarLayout.NavItem>
-                <SidebarLayout.NavItem href="/guides/create-plugin">
-                  Create a plugin{' '}
-                </SidebarLayout.NavItem>
-                <SidebarLayout.NavItem href="/guides/create-online-editor">
-                  Create an online editor
-                </SidebarLayout.NavItem>
+                <SidebarLayout.NavItem href="/blog">Blog</SidebarLayout.NavItem>
               </SidebarLayout.NavGroup>
             </SidebarLayout.Nav>
 
