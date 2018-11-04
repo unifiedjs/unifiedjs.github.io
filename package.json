@@ -11,16 +11,16 @@
     "format": "prettier --single-quote --write '**/*.js'"
   },
   "dependencies": {
-    "@mdx-js/mdx": "^0.15.6",
-    "@mdx-js/runtime": "^0.15.6",
+    "@mdx-js/mdx": "^0.15.7",
+    "@mdx-js/runtime": "^0.15.7",
     "@mdx-js/tag": "^0.15.6",
     "@reach/menu-button": "^0.1.7",
     "core-js": "^2.5.7",
     "dotenv": "^6.1.0",
-    "gatsby": "^2.0.35",
+    "gatsby": "^2.0.38",
     "gatsby-mdx": "^0.2.0",
     "gatsby-plugin-manifest": "^2.0.7",
-    "gatsby-plugin-offline": "^2.0.10",
+    "gatsby-plugin-offline": "^2.0.11",
     "gatsby-plugin-react-helmet": "^3.0.1",
     "gatsby-source-graphql": "^2.0.5",
     "prettier": "^1.14.3",
@@ -30,6 +30,6 @@
     "styled-components": "^4.0.3",
     "styled-system": "^3.1.11",
     "system-components": "^3.0.1",
-    "unified-ui": "0.0.2-4"
+    "unified-ui": "0.0.2-13"
   }
 }
