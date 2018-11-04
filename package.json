@@ -72,7 +72,11 @@
   },
   "remarkConfig": {
     "plugins": [
-      "preset-wooorm"
+      "preset-wooorm",
+      [
+        "validate-links",
+        false
+      ]
     ]
   },
   "devDependencies": {
