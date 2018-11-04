@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Helmet from 'react-helmet';
 import { StaticQuery, graphql } from 'gatsby';
-import { Provider, Code } from 'unified-ui';
+import { Provider } from 'unified-ui';
 
 import { SidebarLayout } from './SidebarLayout';
 import { Unified } from './Logo';

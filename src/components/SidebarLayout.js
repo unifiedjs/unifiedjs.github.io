@@ -54,30 +54,6 @@ NavWrap.defaultProps = {
   p: 4
 };
 
-const SidebarSpacer = styled.div`
-  ${MOBILE_BREAKPOINT} {
-    width: ${SIDEBAR_WIDTH};
-  }
-`;
-
-const MobileOnly = styled.div`
-  ${MOBILE_BREAKPOINT} {
-    display: none;
-  }
-`;
-
-const MenuIcon = ({ size = 24, ...props }) => (
-  <svg
-    {...props}
-    viewBox="0 0 24 24"
-    width={size}
-    height={size}
-    fill="currentcolor"
-  >
-    <path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z" />
-  </svg>
-);
-
 SidebarLayout.Title = ({ href, logo, children }) => (
   <UnstyledLink href={href}>
     <Flex alignItems="center">

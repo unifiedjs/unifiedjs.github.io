@@ -5,6 +5,7 @@ import { mdComponents, theme } from 'unified-ui';
 
 import Layout from '../../components/Layout';
 
+/* eslint-disable jsx-a11y/anchor-has-content */
 mdComponents.a = props => (
   <a
     style={{
