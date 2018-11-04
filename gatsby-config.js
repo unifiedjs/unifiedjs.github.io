@@ -1,19 +1,25 @@
+const ui = require('unified-ui')
+const {name, description, keywords, homepage} = require('./package.json')
+
 require('dotenv').config()
 
 module.exports = {
   siteMetadata: {
-    title: 'Unified'
+    title: name,
+    siteUrl: homepage,
+    description,
+    keywords
   },
   plugins: [
     'gatsby-plugin-react-helmet',
     {
       resolve: 'gatsby-plugin-manifest',
       options: {
-        name: 'Unified',
-        short_name: 'Unified',
+        name,
+        short_name: name,
         start_url: '/',
-        background_color: '#663399',
-        theme_color: '#663399',
+        background_color: ui.theme.colors[name],
+        theme_color: ui.theme.colors[name],
         display: 'minimal-ui'
       }
     },

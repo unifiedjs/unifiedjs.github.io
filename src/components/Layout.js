@@ -16,6 +16,8 @@ const Layout = ({children}) => (
         site {
           siteMetadata {
             title
+            description
+            keywords
           }
         }
       }
@@ -23,13 +25,18 @@ const Layout = ({children}) => (
     render={data => (
       <>
         <Helmet
-          title={data.site.siteMetadata.title}
-          meta={[
-            {name: 'description', content: 'Sample'},
-            {name: 'keywords', content: 'sample, something'}
-          ]}
+          defaultTitle={data.site.siteMetadata.title}
+          titleTemplate={'%s - ' + data.site.siteMetadata.title}
         >
           <html lang="en" />
+          <meta
+            name="description"
+            content={data.site.siteMetadata.description}
+          />
+          <meta
+            name="keywords"
+            content={data.site.siteMetadata.keywords.join(',')}
+          />
         </Helmet>
         <Provider>
           <SidebarLayout>
