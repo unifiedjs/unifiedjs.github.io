@@ -74,6 +74,9 @@ const Layout = ({children}) => (
                 <SidebarLayout.NavItem href="https://spectrum.chat/unified">
                   Spectrum
                 </SidebarLayout.NavItem>
+                <SidebarLayout.NavItem href="https://opencollective.com/unified">
+                  OpenCollective
+                </SidebarLayout.NavItem>
               </SidebarLayout.NavGroup>
             </SidebarLayout.Nav>
 
