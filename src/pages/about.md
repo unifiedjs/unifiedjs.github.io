@@ -1,4 +1,4 @@
-# about unified
+# about
 
 > Building a bridge between formats
 
@@ -71,9 +71,7 @@ of times each month.
 We create low-level software that tackles syntax (such as [micromark][]) and
 high-level software to abstract it away (such as [mdx][]).
 
-<!-- TODO: add link -->
-
-View projects »
+[View projects »](/projects)
 
 ## Users
 
