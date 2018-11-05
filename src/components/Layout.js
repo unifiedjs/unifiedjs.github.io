@@ -48,6 +48,9 @@ const Layout = ({children}) => (
 
               <SidebarLayout.NavGroup>
                 <SidebarLayout.NavHeading>Contents</SidebarLayout.NavHeading>
+                <SidebarLayout.NavItem href="/introduction">
+                  Introduction
+                </SidebarLayout.NavItem>
                 <SidebarLayout.NavItem href="/about">
                   About
                 </SidebarLayout.NavItem>
