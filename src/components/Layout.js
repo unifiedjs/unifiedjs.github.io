@@ -62,6 +62,19 @@ const Layout = ({children}) => (
                 </SidebarLayout.NavItem>
                 <SidebarLayout.NavItem href="/blog">Blog</SidebarLayout.NavItem>
               </SidebarLayout.NavGroup>
+
+              <SidebarLayout.NavGroup>
+                <SidebarLayout.NavHeading>External</SidebarLayout.NavHeading>
+                <SidebarLayout.NavItem href="https://twitter.com/unifiedjs">
+                  Twitter
+                </SidebarLayout.NavItem>
+                <SidebarLayout.NavItem href="https://github.com/unifiedjs">
+                  GitHub
+                </SidebarLayout.NavItem>
+                <SidebarLayout.NavItem href="https://spectrum.chat/unified">
+                  Spectrum
+                </SidebarLayout.NavItem>
+              </SidebarLayout.NavGroup>
             </SidebarLayout.Nav>
 
             <SidebarLayout.Main>{children}</SidebarLayout.Main>

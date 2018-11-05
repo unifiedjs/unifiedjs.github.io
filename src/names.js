@@ -2,6 +2,7 @@ const base = 'https://github.com/'
 
 export const wordMap = {
   unified: 'uni|fied',
+  'syntax-tree': 'syntax|-tree',
   unist: 'uni|st',
   vfile: 'v|file',
   remark: 're|mark',
@@ -17,6 +18,7 @@ export const wordMap = {
 export const initialMap = {
   unified: 'u|ni',
   unist: 's|t',
+  'syntax-tree': 's|t',
   vfile: 'v|f',
   remark: 'r|e',
   micromark: 'm|m',
@@ -44,7 +46,7 @@ export const colors = {
 
 export const urls = {
   [base + 'unifiedjs/unified']: 'unified',
-  [base + 'syntax-tree']: 'unist',
+  [base + 'syntax-tree']: ['syntax-tree', 'unist'],
   [base + 'syntax-tree/unist']: 'unist',
   [base + 'vfile/vfile']: 'vfile',
   [base + 'remarkjs/remark']: 'remark',
