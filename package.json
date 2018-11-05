@@ -20,18 +20,18 @@
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
   ],
   "dependencies": {
-    "@mdx-js/mdx": "^0.15.7",
-    "@mdx-js/runtime": "^0.15.7",
-    "@mdx-js/tag": "^0.15.6",
+    "@mdx-js/mdx": "^0.16.0",
+    "@mdx-js/runtime": "^0.16.0",
+    "@mdx-js/tag": "^0.16.0",
     "@reach/menu-button": "^0.1.7",
     "core-js": "^2.5.7",
     "dotenv": "^6.1.0",
-    "gatsby": "^2.0.38",
+    "gatsby": "^2.0.39",
     "gatsby-mdx": "^0.2.0",
     "gatsby-plugin-manifest": "^2.0.7",
-    "gatsby-plugin-offline": "^2.0.11",
+    "gatsby-plugin-offline": "^2.0.12",
     "gatsby-plugin-react-helmet": "^3.0.1",
-    "gatsby-source-graphql": "^2.0.5",
+    "gatsby-source-graphql": "^2.0.6",
     "prettier": "^1.14.3",
     "prop-types": "^15.6.2",
     "react": "^16.6.0",
@@ -40,7 +40,7 @@
     "styled-components": "^4.0.3",
     "styled-system": "^3.1.11",
     "system-components": "^3.0.2",
-    "unified-ui": "0.0.2-16"
+    "unified-ui": "0.0.2-17"
   },
   "scripts": {
     "format": "remark . -qfo && prettier \"**/*.js\" --write && xo --fix",
