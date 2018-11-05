@@ -39,8 +39,8 @@
     "react-helmet": "^5.2.0",
     "styled-components": "^4.0.3",
     "styled-system": "^3.1.11",
-    "system-components": "^3.0.1",
-    "unified-ui": "0.0.2-13"
+    "system-components": "^3.0.2",
+    "unified-ui": "0.0.2-16"
   },
   "scripts": {
     "format": "remark . -qfo && prettier \"**/*.js\" --write && xo --fix",
