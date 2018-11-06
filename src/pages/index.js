@@ -1,7 +1,17 @@
 import React from 'react'
-import {Provider, Flex, Box, Image, Text, Heading, Button, Container} from 'unified-ui'
+import {
+  Provider,
+  Flex,
+  Box,
+  Image,
+  Text,
+  Heading,
+  Button,
+  Container
+} from 'unified-ui'
 
-const HERO_IMG = 'https://c8r.imgix.net/db688dfd97f57c1949e758a1/undraw-working-late.svg'
+const HERO_IMG =
+  'https://c8r.imgix.net/db688dfd97f57c1949e758a1/undraw-working-late.svg'
 
 export default () => (
   <Provider>
@@ -31,10 +41,7 @@ export default () => (
           </Box>
         </Box>
         <Box width={[1, 1 / 2, 1 / 2]}>
-          <Image
-            maxWidth={[1, 1, 'initial']}
-            src={HERO_IMG}
-          />
+          <Image maxWidth={[1, 1, 'initial']} src={HERO_IMG} />
         </Box>
       </Flex>
     </Container>
