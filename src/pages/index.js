@@ -68,7 +68,7 @@ export default () => (
               unified provides numerous plugins so you can
               create a table of contents from your markdown,
               linkify headings,
-              or ensure your titles adhere to Chicago-style
+              or ensure your titles adhere to Chicago-style.
             </Text>
             <Link href="/usage">View plugins »</Link>
           </Box>
