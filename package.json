@@ -40,7 +40,7 @@
     "styled-components": "^4.0.3",
     "styled-system": "^3.1.11",
     "system-components": "^3.0.2",
-    "unified-ui": "0.0.2-17"
+    "unified-ui": "0.0.2-19"
   },
   "scripts": {
     "format": "remark . -qfo && prettier \"**/*.js\" --write && xo --fix",
