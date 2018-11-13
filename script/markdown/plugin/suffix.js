@@ -1,9 +1,9 @@
-var h = require('hastscript');
+var h = require('hastscript')
 
-module.exports = section;
+module.exports = section
 
 function section() {
-  return transform;
+  return transform
   function transform(tree) {
     tree.children.push(
       h('footer', [
@@ -11,21 +11,30 @@ function section() {
           'made by ',
           h('a', {href: 'https://github.com/wooorm'}, '@wooorm'),
           ' and ',
-          h('a', {
-            href: 'https://github.com/unifiedjs/unifiedjs.github.io/graphs/contributors'
-          }, 'contributors')
+          h(
+            'a',
+            {
+              href:
+                'https://github.com/unifiedjs/unifiedjs.github.io/graphs/contributors'
+            },
+            'contributors'
+          )
         ]),
         h('p', [
           'view the project on ',
           h('a', {href: 'https://github.com/unifiedjs/unified'}, 'GitHub')
         ]),
         h('p', [
-          h('a', {
-            href: 'https://github.com/unifiedjs/unifiedjs.github.io'
-          }, 'fork this site')
+          h(
+            'a',
+            {
+              href: 'https://github.com/unifiedjs/unifiedjs.github.io'
+            },
+            'fork this site'
+          )
         ]),
         h('p', '☔')
       ])
-    );
+    )
   }
 }

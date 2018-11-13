@@ -1,201 +1,201 @@
 /* global document */
 
-var inView = require('in-view');
+var inView = require('in-view')
 
-document.body.addEventListener('click', onclick);
+document.body.addEventListener('click', onclick)
 
-when('.terminal', terminal);
+when('.terminal', terminal)
 
-windows();
+windows()
 
-when('.move', enter);
+when('.move', enter)
 
 function enter($node) {
-  $node.classList.remove('move');
-  $node.classList.add('enter');
+  $node.classList.remove('move')
+  $node.classList.add('enter')
 }
 
 function terminal($terminal) {
-  var $pre = $terminal.lastElementChild;
-  var $cmd = $pre.firstElementChild;
-  var $out = $pre.lastElementChild;
-  var $text = $cmd.childNodes[0];
-  var cmd = $text.data;
-  var length = cmd.length;
-  var $caret;
-  var index = 0;
+  var $pre = $terminal.lastElementChild
+  var $cmd = $pre.firstElementChild
+  var $out = $pre.lastElementChild
+  var $text = $cmd.childNodes[0]
+  var cmd = $text.data
+  var length = cmd.length
+  var $caret
+  var index = 0
 
   if ($terminal.dataset.animate === 'no') {
-    return;
+    return
   }
 
   if ($out === $cmd) {
-    $out = null;
+    $out = null
   }
 
-  $caret = document.createElement('span');
-  $caret.textContent = '_';
-  $caret.className = 'caret';
-  $cmd.appendChild($caret);
+  $caret = document.createElement('span')
+  $caret.textContent = '_'
+  $caret.className = 'caret'
+  $cmd.appendChild($caret)
 
-  $text.data = '';
+  $text.data = ''
 
   if ($out) {
-    $out.style.visibility = 'hidden';
+    $out.style.visibility = 'hidden'
   }
 
-  queue();
+  queue()
 
   function done() {
-    var $line = document.createElement('div');
+    var $line = document.createElement('div')
 
-    $line.className = 'command';
-    $caret.className += ' blink';
-    $line.appendChild($caret);
+    $line.className = 'command'
+    $caret.className += ' blink'
+    $line.appendChild($caret)
 
     if (!$pre.classList.contains('no-final-prompt')) {
-      $pre.appendChild($line);
+      $pre.appendChild($line)
     }
 
     if ($out) {
-      $out.style.visibility = '';
+      $out.style.visibility = ''
     }
   }
 
   function one(char) {
-    $text.data += char;
+    $text.data += char
   }
 
   function tick() {
     if (index === length) {
-      $cmd.removeChild($caret);
+      $cmd.removeChild($caret)
       if ($cmd.classList.contains('delay-output')) {
-        delay();
+        delay()
       } else {
-        complete();
+        complete()
       }
-      return;
+      return
     }
 
-    one(cmd.charAt(index));
-    index++;
-    queue();
+    one(cmd.charAt(index))
+    index++
+    queue()
   }
 
   function complete() {
-    setTimeout(done, time() * 3);
+    setTimeout(done, time() * 3)
   }
 
   function delay() {
-    var $spinner = document.createElement('span');
-    var frames = '⠾⠷⠯⠟⠻⠽'.split('');
-    var index = -1;
-    var length = frames.length * 6;
+    var $spinner = document.createElement('span')
+    var frames = '⠾⠷⠯⠟⠻⠽'.split('')
+    var index = -1
+    var length = frames.length * 6
 
-    $spinner.className = 'spinner';
-    $pre.insertBefore($spinner, $out);
+    $spinner.className = 'spinner'
+    $pre.insertBefore($spinner, $out)
 
-    tock();
+    tock()
 
     function tock() {
       if (index > length) {
-        $pre.removeChild($spinner);
-        complete();
+        $pre.removeChild($spinner)
+        complete()
       } else {
-        $spinner.textContent = '\n' + frames[++index % frames.length];
-        setTimeout(tock, time());
+        $spinner.textContent = '\n' + frames[++index % frames.length]
+        setTimeout(tock, time())
       }
     }
   }
 
   function queue() {
-    setTimeout(tick, time());
+    setTimeout(tick, time())
   }
 
   function time() {
-    return 30 + (Math.random() * 70);
+    return 30 + Math.random() * 70
   }
 }
 
 function when(selector, cb) {
-  var seen = [];
+  var seen = []
 
-  inView(selector).on('enter', onenter);
+  inView(selector).on('enter', onenter)
 
   function onenter($node) {
     if (seen.indexOf($node) === -1) {
-      seen.push($node);
-      cb($node);
+      seen.push($node)
+      cb($node)
     }
   }
 }
 
 function windows() {
-  var buttons = ['close', 'minimize', 'fullscreen'];
-  var $nodes = document.getElementsByClassName('window');
-  var length = $nodes.length;
-  var index = -1;
-  var $node;
-  var $caption;
-  var $button;
-  var $title;
-  var offset;
-  var count;
+  var buttons = ['close', 'minimize', 'fullscreen']
+  var $nodes = document.getElementsByClassName('window')
+  var length = $nodes.length
+  var index = -1
+  var $node
+  var $caption
+  var $button
+  var $title
+  var offset
+  var count
 
   while (++index < length) {
-    $node = $nodes[index];
-    $caption = $node.getElementsByTagName('figcaption')[0];
+    $node = $nodes[index]
+    $caption = $node.getElementsByTagName('figcaption')[0]
 
-    $title = document.createElement('span');
-    $title.className = 'chrome title';
+    $title = document.createElement('span')
+    $title.className = 'chrome title'
 
     while ($caption.firstChild) {
-      $title.appendChild($caption.firstChild);
+      $title.appendChild($caption.firstChild)
     }
 
-    offset = -1;
-    count = buttons.length;
+    offset = -1
+    count = buttons.length
 
     while (++offset < count) {
-      $button = document.createElement('span');
-      $button.className = 'chrome button ' + buttons[offset];
-      $caption.appendChild($button);
+      $button = document.createElement('span')
+      $button.className = 'chrome button ' + buttons[offset]
+      $caption.appendChild($button)
     }
 
-    $caption.appendChild($title);
+    $caption.appendChild($title)
   }
 }
 
 function onclick(ev) {
-  var target = ev.target;
+  var target = ev.target
 
   if (
     target.classList.contains('chrome') &&
     target.classList.contains('button') &&
     target.classList.contains('close')
   ) {
-    prevent();
+    prevent()
   }
 }
 
 function prevent() {
-  var index = -1;
+  var index = -1
   var messages = [
     'Are you sure?',
     'Are you really sure?',
     'No but really, are you sure?',
     'You can’t 🙃\n\nEnjoy your day though!'
-  ];
+  ]
 
-  bug();
+  bug()
 
   function bug() {
-    var message = messages[++index];
+    var message = messages[++index]
 
     /* global confirm */
     /* eslint-disable no-alert */
     if (message && confirm(message)) {
-      bug();
+      bug()
     }
   }
 }

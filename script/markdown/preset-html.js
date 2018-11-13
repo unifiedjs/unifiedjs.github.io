@@ -26,4 +26,4 @@ exports.plugins = [
     }
   ],
   require('rehype-preset-minify')
-];
+]

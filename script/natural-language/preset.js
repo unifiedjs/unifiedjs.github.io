@@ -1,9 +1,9 @@
-'use strict';
+'use strict'
 
-var fs = require('fs');
-var strip = require('strip-comments');
+var fs = require('fs')
+var strip = require('strip-comments')
 
-var personal = strip(fs.readFileSync('dictionary.txt', 'utf8'));
+var personal = strip(fs.readFileSync('dictionary.txt', 'utf8'))
 
 exports.plugins = [
   require('retext-english'),
@@ -18,4 +18,4 @@ exports.plugins = [
     require('retext-spell'),
     {dictionary: require('dictionary-en-gb'), personal: personal}
   ]
-];
+]

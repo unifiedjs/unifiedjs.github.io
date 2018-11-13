@@ -1,15 +1,15 @@
-var h = require('hastscript');
+var h = require('hastscript')
 
-module.exports = section;
+module.exports = section
 
 function section() {
-  return transform;
+  return transform
   function transform(tree) {
     tree.children.unshift(
-      h('header', h('h1', h('a', {href: '..'}, [
-        h('span.hl.unified', 'uni'),
-        'fied'
-      ])))
-    );
+      h(
+        'header',
+        h('h1', h('a', {href: '..'}, [h('span.hl.unified', 'uni'), 'fied']))
+      )
+    )
   }
 }

@@ -64,18 +64,18 @@ Then, create an `index.js` script as well.  It’ll transform markdown
 to HTML.  It’s hooked up to read from stdin and write to stdout.
 
 ```javascript index.js
-var unified = require('unified');
-var stream = require('unified-stream');
-var markdown = require('remark-parse');
-var remark2rehype = require('remark-rehype');
-var html = require('rehype-stringify');
+var unified = require('unified')
+var stream = require('unified-stream')
+var markdown = require('remark-parse')
+var remark2rehype = require('remark-rehype')
+var html = require('rehype-stringify')
 
 var processor = unified()
   .use(markdown)
   .use(remark2rehype)
-  .use(html);
+  .use(html)
 
-process.stdin.pipe(stream(processor)).pipe(process.stdout);
+process.stdin.pipe(stream(processor)).pipe(process.stdout)
 ```
 
 Now, running our script with [Node][] (this uses your Shell to read
@@ -125,22 +125,22 @@ Let’s now use those two as well, by modifying our
 `index.js` file:
 
 ```diff index.js
- var unified = require('unified');
- var stream = require('unified-stream');
- var markdown = require('remark-parse');
-+var toc = require('remark-toc');
- var remark2rehype = require('remark-rehype');
-+var doc = require('rehype-document');
- var html = require('rehype-stringify');
+ var unified = require('unified')
+ var stream = require('unified-stream')
+ var markdown = require('remark-parse')
++var toc = require('remark-toc')
+ var remark2rehype = require('remark-rehype')
++var doc = require('rehype-document')
+ var html = require('rehype-stringify')
 
  var processor = unified()
    .use(markdown)
 +  .use(toc)
    .use(remark2rehype)
 +  .use(doc, {title: 'Contents'})
-   .use(html);
+   .use(html)
 
- process.stdin.pipe(stream(processor)).pipe(process.stdout);
+ process.stdin.pipe(stream(processor)).pipe(process.stdout)
 ```
 
 We pass options to `rehype-document`.  In this case, we use that to make
@@ -213,30 +213,30 @@ $ npm install to-vfile vfile-reporter
 the file-system instead, like so:
 
 ```diff index.js
- var unified = require('unified');
--var stream = require('unified-stream');
-+var vfile = require('to-vfile');
-+var report = require('vfile-reporter');
- var markdown = require('remark-parse');
- var toc = require('remark-toc');
- var remark2rehype = require('remark-rehype');
- var doc = require('rehype-document');
- var html = require('rehype-stringify');
+ var unified = require('unified')
+-var stream = require('unified-stream')
++var vfile = require('to-vfile')
++var report = require('vfile-reporter')
+ var markdown = require('remark-parse')
+ var toc = require('remark-toc')
+ var remark2rehype = require('remark-rehype')
+ var doc = require('rehype-document')
+ var html = require('rehype-stringify')
 
  var processor = unified()
    .use(markdown)
    .use(toc)
    .use(remark2rehype)
    .use(doc, {title: 'Contents'})
-   .use(html);
+   .use(html)
 
--process.stdin.pipe(stream(processor)).pipe(process.stdout);
-+processor.process(vfile.readSync('example.md'), function (err, file) {
-+  if (err) throw err;
-+  console.error(report(file));
-+  file.extname = '.html';
-+  vfile.writeSync(file);
-+});
+-process.stdin.pipe(stream(processor)).pipe(process.stdout)
++processor.process(vfile.readSync('example.md'), function(err, file) {
++  if (err) throw err
++  console.error(report(file))
++  file.extname = '.html'
++  vfile.writeSync(file)
++})
 ```
 
 If we now run our script on its own, without shell redirects,
@@ -273,32 +273,38 @@ $ npm install remark-retext retext-english retext-indefinite-article
 ...and change our `index.js` like so:
 
 ```diff index.js
- var unified = require('unified');
- var vfile = require('to-vfile');
- var report = require('vfile-reporter');
- var markdown = require('remark-parse');
- var toc = require('remark-toc');
-+var remark2retext = require('remark-retext');
-+var english = require('retext-english');
-+var indefiniteArticle = require('retext-indefinite-article');
- var remark2rehype = require('remark-rehype');
- var doc = require('rehype-document');
- var html = require('rehype-stringify');
+ var unified = require('unified')
+ var vfile = require('to-vfile')
+ var report = require('vfile-reporter')
+ var markdown = require('remark-parse')
+ var toc = require('remark-toc')
++var remark2retext = require('remark-retext')
++var english = require('retext-english')
++var indefiniteArticle = require('retext-indefinite-article')
+ var remark2rehype = require('remark-rehype')
+ var doc = require('rehype-document')
+ var html = require('rehype-stringify')
 
  var processor = unified()
    .use(markdown)
-+  .use(remark2retext, unified().use(english).use(indefiniteArticle))
++  .use(
++    remark2retext,
++    unified()
++      .use(english)
++      .use(indefiniteArticle)
++  )
    .use(toc)
    .use(remark2rehype)
    .use(doc, {title: 'Contents'})
-   .use(html);
+   .use(html)
 
- processor.process(vfile.readSync('example.md'), function (err, file) {
-   if (err) throw err;
-   console.error(report(file));
-   file.extname = '.html';
-   vfile.writeSync(file);
- });
+ processor.process(vfile.readSync('example.md'), function(err, file) {
+   if (err) throw err
+   console.error(report(file))
+   file.extname = '.html'
+   vfile.writeSync(file)
+ })
+
 ```
 
 As the code shows, `remark-retext` receives another `unified`

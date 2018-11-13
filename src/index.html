@@ -8,9 +8,9 @@
   </head>
   <body>
     <script>
-    var s=document.createElement('style');
-    s.textContent = '.move{opacity:0}';
-    document.body.insertBefore(s, document.body.firstChild);
+    var s=document.createElement('style')
+    s.textContent = '.move{opacity:0}'
+    document.body.insertBefore(s, document.body.firstChild)
     </script>
 
     <header>
@@ -43,14 +43,14 @@ MIT</code></pre>
 
       <figure class="gist move window" data-nlcst="ignore">
         <figcaption>example.js</figcaption>
-        <pre><code class="language-js">var unified = require('unified');
-var stream = require('unified-stream');
-var markdown = require('remark-parse');
-var toc = require('remark-toc');
-var remark2rehype = require('remark-rehype');
-var doc = require('rehype-document');
-var format = require('rehype-format');
-var html = require('rehype-stringify');
+        <pre><code class="language-js">var unified = require('unified')
+var stream = require('unified-stream')
+var markdown = require('remark-parse')
+var toc = require('remark-toc')
+var remark2rehype = require('remark-rehype')
+var doc = require('rehype-document')
+var format = require('rehype-format')
+var html = require('rehype-stringify')
 
 var processor = unified()
   .use(markdown)
@@ -58,16 +58,14 @@ var processor = unified()
   .use(remark2rehype)
   .use(doc, {title: 'Contents'})
   .use(format)
-  .use(html);
+  .use(html)
 
-process.stdin
-  .pipe(stream(processor))
-  .pipe(process.stdout);</code></pre>
+process.stdin.pipe(stream(processor)).pipe(process.stdout)</code></pre>
       </figure>
 
       <figure class="gist window" data-nlcst="ignore">
         <figcaption>output.html</figcaption>
-        <pre><code class="language-html">&lt;!DOCTYPE html>
+        <pre><code class="language-html">&lt;!doctype html>
 &lt;html lang="en">
   &lt;head>
     &lt;meta charset="utf-8">
@@ -403,17 +401,17 @@ comments, given a root file as a path.
         <h2>Use unified</h2>
         <figure class="gist window" data-nlcst="ignore">
           <figcaption>example.js</figcaption>
-          <pre><code class="language-js">var unified = require('unified');
-var vfile = require('to-vfile');
-var report = require('vfile-reporter');
-var markdown = require('remark-parse');
-var toc = require('remark-toc');
-var remark2retext = require('remark-retext');
-var english = require('retext-english');
-var indefiniteArticle = require('retext-indefinite-article');
-var remark2rehype = require('remark-rehype');
-var doc = require('rehype-document');
-var html = require('rehype-stringify');</code></pre>
+          <pre><code class="language-js">var unified = require('unified')
+var vfile = require('to-vfile')
+var report = require('vfile-reporter')
+var markdown = require('remark-parse')
+var toc = require('remark-toc')
+var remark2retext = require('remark-retext')
+var english = require('retext-english')
+var indefiniteArticle = require('retext-indefinite-article')
+var remark2rehype = require('remark-rehype')
+var doc = require('rehype-document')
+var html = require('rehype-stringify')</code></pre>
         </figure>
         <p>
           Learn how to use unified by transforming markdown to HTML.
@@ -425,19 +423,19 @@ var html = require('rehype-stringify');</code></pre>
         <h2>Create a plugin</h2>
         <figure class="gist window" data-nlcst="ignore">
           <figcaption>plugin.js</figcaption>
-          <pre><code class="language-js">var visit = require('unist-util-visit');
-var is = require('unist-util-is');
+          <pre><code class="language-js">var visit = require('unist-util-visit')
+var is = require('unist-util-is')
 
-module.exports = attacher;
+module.exports = attacher
 
 function attacher() {
-  return transformer;
+  return transformer
 
   function transformer(tree, file) {
-    visit(tree, 'ParagraphNode', visitor);
+    visit(tree, 'ParagraphNode', visitor)
 
     function visitor(node) {
-      var children = node.children;</code></pre>
+      var children = node.children</code></pre>
         </figure>
         <p>
           Learn how to create a plugin for unified by creating a plugin

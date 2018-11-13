@@ -29,6 +29,7 @@
     "lowlight": "^1.2.0",
     "mkdirp": "^0.5.1",
     "pluralize": "^7.0.0",
+    "prettier": "^1.15.2",
     "rehype-autolink-headings": "^2.0.0",
     "rehype-cli": "^6.0.0",
     "rehype-document": "^2.0.0",
@@ -41,7 +42,7 @@
     "rehype-stringify": "^4.0.0",
     "remark-cli": "^6.0.0",
     "remark-lint-first-heading-level": "^1.0.0",
-    "remark-lint-no-dead-urls": "^0.4.0",
+    "remark-lint-no-dead-urls": "^0.3.0",
     "remark-parse": "^6.0.0",
     "remark-preset-wooorm": "^4.0.0",
     "remark-rehype": "^3.0.0",
@@ -71,18 +72,26 @@
     "xo": "^0.23.0"
   },
   "scripts": {
+    "format": "remark src -qo && rehype src -qf && prettier --write '**/*.js' && xo --fix",
     "start": "budo --dir build",
-    "build": "node script && remark src -qo",
-    "lint": "xo && stylelint src/index.css && remark src -q && rehype src -qf",
-    "test": "npm run build && npm run lint"
+    "build": "node script",
+    "test": "npm run format && npm run build"
   },
   "dependencies": {
     "in-view": "^0.6.0"
   },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "semi": false,
+    "trailingComma": "none"
+  },
   "xo": {
-    "space": true,
+    "prettier": true,
     "esnext": false,
-    "ignore": [
+    "ignores": [
       "index.js"
     ]
   },

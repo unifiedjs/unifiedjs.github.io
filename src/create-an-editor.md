@@ -66,8 +66,8 @@ Keep `index.js`, `index.html`, and `index.css` empty for now, and fill
   "private": true,
   "dependencies": {},
   "devDependencies": {
-    "browserify": "^15.0.0",
-    "xo": "^0.18.0"
+    "browserify": "^16.0.0",
+    "xo": "^0.23.0"
   },
   "scripts": {
     "build": "browserify index.js > build.js",
@@ -116,23 +116,23 @@ Alright!  Now, let’s set up our JavaScript.  Start by adding
 the following to `index.js`:
 
 ```js index.js
-var h = require('virtual-dom/h');
-var createElement = require('virtual-dom/create-element');
-var diff = require('virtual-dom/diff');
-var patch = require('virtual-dom/patch');
+var h = require('virtual-dom/h')
+var createElement = require('virtual-dom/create-element')
+var diff = require('virtual-dom/diff')
+var patch = require('virtual-dom/patch')
 
-var root = document.getElementById('root');
-var tree = render('The initial text.');
-var dom = root.appendChild(createElement(tree));
+var root = document.getElementById('root')
+var tree = render('The initial text.')
+var dom = root.appendChild(createElement(tree))
 
 function onchange(ev) {
-  var next = render(ev.target.value);
-  dom = patch(dom, diff(tree, next));
-  tree = next;
+  var next = render(ev.target.value)
+  dom = patch(dom, diff(tree, next))
+  tree = next
 }
 
 function render(text) {
-  var node = parse(text);
+  var node = parse(text)
 
   return h('div', {className: 'editor'}, [
     h('div', {key: 'draw', className: 'draw'}, highlight(node)),
@@ -141,7 +141,7 @@ function render(text) {
       value: text,
       oninput: onchange
     })
-  ]);
+  ])
 
   function parse() {}
 
@@ -231,24 +231,24 @@ natural language.
 Change `index.js` like so:
 
 ```diff index.js
-@@ -2,7 +2,10 @@ var h = require('virtual-dom/h');
- var createElement = require('virtual-dom/create-element');
- var diff = require('virtual-dom/diff');
- var patch = require('virtual-dom/patch');
-+var unified = require('unified');
-+var english = require('retext-english');
+@@ -2,7 +2,10 @@ var h = require('virtual-dom/h')
+ var createElement = require('virtual-dom/create-element')
+ var diff = require('virtual-dom/diff')
+ var patch = require('virtual-dom/patch')
++var unified = require('unified')
++var english = require('retext-english')
 
-+var processor = unified().use(english);
- var root = document.getElementById('root');
- var tree = render('The initial text.');
- var dom = root.appendChild(createElement(tree));
++var processor = unified().use(english)
+ var root = document.getElementById('root')
+ var tree = render('The initial text.')
+ var dom = root.appendChild(createElement(tree))
 @@ -25,7 +28,9 @@ function render(text) {
      })
-   ]);
+   ])
 
 -  function parse() {}
 +  function parse(value) {
-+    return processor.runSync(processor.parse(value));
++    return processor.runSync(processor.parse(value))
 +  }
 
    function highlight() {}
@@ -268,26 +268,26 @@ so let’s add code to fill it:
 
 ```diff index.js
 @@ -32,5 +32,21 @@ function render(text) {
-     return processor.runSync(processor.parse(value));
+     return processor.runSync(processor.parse(value))
    }
 
 -  function highlight() {}
 +  function highlight(node) {
-+    var children = node.children;
-+    var length = children.length;
-+    var index = -1;
-+    var results = [];
++    var children = node.children
++    var length = children.length
++    var index = -1
++    var results = []
 +
 +    while (++index < length) {
-+      results = results.concat(one(children[index]));
++      results = results.concat(one(children[index]))
 +    }
 +
-+    return results;
++    return results
 +  }
 +
 +  function one(node) {
-+    var result = 'value' in node ? node.value : highlight(node);
-+    return result;
++    var result = 'value' in node ? node.value : highlight(node)
++    return result
 +  }
  }
 ```
@@ -307,25 +307,25 @@ detect sentences, and apply styles to them.  Change `index.js` like so:
 @@ -18,6 +18,7 @@ function onchange(ev) {
 
  function render(text) {
-   var node = parse(text);
-+  var key = 0;
+   var node = parse(text)
++  var key = 0
 
    return h('div', {className: 'editor'}, [
      h('div', {key: 'draw', className: 'draw'}, highlight(node)),
 @@ -47,6 +48,19 @@ function render(text) {
 
    function one(node) {
-     var result = 'value' in node ? node.value : highlight(node);
+     var result = 'value' in node ? node.value : highlight(node)
 +
 +    if (node.type === 'SentenceNode') {
-+      key++;
++      key++
 +      result = h('span', {
 +        key: 's-' + key,
 +        style: {backgroundColor: color(count(node))}
-+      }, result);
++      }, result)
 +    }
 +
-     return result;
+     return result
    }
 +
 +  function count() {}
@@ -349,39 +349,39 @@ a corresponding colour.
 Now, let’s add colours.  Update `index.js` like so:
 
 ```diff index.js
-@@ -4,6 +4,11 @@ var diff = require('virtual-dom/diff');
- var patch = require('virtual-dom/patch');
- var unified = require('unified');
- var english = require('retext-english');
-+var visit = require('unist-util-visit');
+@@ -4,6 +4,11 @@ var diff = require('virtual-dom/diff')
+ var patch = require('virtual-dom/patch')
+ var unified = require('unified')
+ var english = require('retext-english')
++var visit = require('unist-util-visit')
 +
 +var hues = [
 +  0
-+];
++]
 
- var processor = unified().use(english);
- var root = document.getElementById('root');
+ var processor = unified().use(english)
+ var root = document.getElementById('root')
 @@ -60,7 +65,20 @@ function render(text) {
-     return result;
+     return result
    }
 
 -  function count() {}
 +  function count(node) {
-+    var value = 0;
++    var value = 0
 +
-+    visit(node, 'WordNode', add);
++    visit(node, 'WordNode', add)
 
-+    return value;
++    return value
 +
 +    function add() {
-+      value++;
++      value++
 +    }
 +  }
 +
 -  function color() {}
 +  function color(count) {
-+    var val = count < hues.length ? hues[count] : hues[hues.length - 1];
-+    return 'hsl(' + [val, '93%', '85%'].join(', ') + ')';
++    var val = count < hues.length ? hues[count] : hues[hues.length - 1]
++    return 'hsl(' + [val, '93%', '85%'].join(', ') + ')'
 +  }
  }
 ```
@@ -410,8 +410,8 @@ course use any hues you like!
 To match that image, change `hues` like so:
 
 ```diff index.js
-@@ -7,7 +7,20 @@ var english = require('retext-english');
- var visit = require('unist-util-visit');
+@@ -7,7 +7,20 @@ var english = require('retext-english')
+ var visit = require('unist-util-visit')
 
  var hues = [
 +  60,
@@ -428,9 +428,9 @@ To match that image, change `hues` like so:
 +  120,
 +  120,
 +  180
- ];
+ ]
 
- var processor = unified().use(english);
+ var processor = unified().use(english)
 ```
 
 ### Squashing bugs
@@ -445,22 +445,22 @@ absolutely on top of the drawing area.  The easiest way to get both areas the
 same height, is with the following slightly hacky code:
 
 ```diff index.js
-@@ -28,10 +28,13 @@ var root = document.getElementById('root');
- var tree = render('The initial text.');
- var dom = root.appendChild(createElement(tree));
+@@ -28,10 +28,13 @@ var root = document.getElementById('root')
+ var tree = render('The initial text.')
+ var dom = root.appendChild(createElement(tree))
 
-+setTimeout(resize, 4);
++setTimeout(resize, 4)
 +
  function onchange(ev) {
-   var next = render(ev.target.value);
-   dom = patch(dom, diff(tree, next));
-   tree = next;
-+  setTimeout(resize, 4);
+   var next = render(ev.target.value)
+   dom = patch(dom, diff(tree, next))
+   tree = next
++  setTimeout(resize, 4)
  }
 
  function render(text) {
 @@ -95,3 +98,10 @@ function render(text) {
-     return 'hsl(' + [val, '93%', '85%'].join(', ') + ')';
+     return 'hsl(' + [val, '93%', '85%'].join(', ') + ')'
    }
  }
 +
@@ -468,7 +468,7 @@ same height, is with the following slightly hacky code:
 +  dom.lastChild.rows = Math.ceil(
 +    dom.firstChild.getBoundingClientRect().height /
 +    parseInt(window.getComputedStyle(dom.firstChild).lineHeight, 10)
-+  ) + 1;
++  ) + 1
 +}
 ```
 

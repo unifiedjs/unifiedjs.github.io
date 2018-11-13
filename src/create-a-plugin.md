@@ -53,16 +53,18 @@ Now, let’s create an `example.js` file that will process our text file
 and report any found problems.
 
 ```javascript example.js
-var fs = require('fs');
-var retext = require('retext');
-var report = require('vfile-reporter');
-var spacing = require('./index.js');
+var fs = require('fs')
+var retext = require('retext')
+var report = require('vfile-reporter')
+var spacing = require('.')
 
-var doc = fs.readFileSync('example.md');
+var doc = fs.readFileSync('example.md')
 
-retext().use(spacing).process(doc, function (err, file) {
-  console.error(report(err || file));
-});
+retext()
+  .use(spacing)
+  .process(doc, function(err, file) {
+    console.error(report(err || file))
+  })
 ```
 
 > Don’t forget to `npm install` dependencies!
@@ -92,10 +94,10 @@ for our case also a transformer.  Let’s create them in our
 plugin file `index.js`:
 
 ```javascript index.js
-module.exports = attacher;
+module.exports = attacher
 
 function attacher() {
-  return transformer;
+  return transformer
 
   function transformer(tree, file) {
   }
@@ -107,18 +109,18 @@ a utility to help us do recursively walk our tree, namely
 [`unist-util-visit`][visit].  Let’s add that.
 
 ```diff index.js
-+var visit = require('unist-util-visit');
++var visit = require('unist-util-visit')
 +
-module.exports = attacher;
+module.exports = attacher
 
 function attacher() {
-  return transformer;
+  return transformer
 
   function transformer(tree, file) {
-+    visit(tree, 'ParagraphNode', visitor);
++    visit(tree, 'ParagraphNode', visitor)
 +
 +    function visitor(node) {
-+      console.log(node);
++      console.log(node)
 +    }
   }
 }
@@ -155,32 +157,32 @@ white-space between sentences.  We use a small utility for checking
 node types: [`unist-util-is`][is].
 
 ```diff index.js
- var visit = require('unist-util-visit');
-+var is = require('unist-util-is');
+var visit = require('unist-util-visit')
++var is = require('unist-util-is')
 
- module.exports = attacher;
+module.exports = attacher
 
- function attacher() {
-   return transformer;
+function attacher() {
+  return transformer
 
-   function transformer(tree, file) {
-     visit(tree, 'ParagraphNode', visitor);
+  function transformer(tree, file) {
+    visit(tree, 'ParagraphNode', visitor)
 
-     function visitor(node) {
--      console.log(node);
-+      var children = node.children;
+    function visitor(node) {
+-      console.log(node)
++      var children = node.children
 +
-+      children.forEach(function (child, index) {
++      children.forEach(function(child, index) {
 +        if (
 +          is('SentenceNode', children[index - 1]) &&
 +          is('WhiteSpaceNode', child) &&
 +          is('SentenceNode', children[index + 1])
 +        ) {
-+          console.log(child);
++          console.log(child)
 +        }
-+      });
-     }
-   }
++      })
+    }
+  }
 }
 ```
 
@@ -201,39 +203,38 @@ as it has more characters than needed.  We can use
 [`file.message()`][message] to associate a message with the file.
 
 ```diff index.js
- var visit = require('unist-util-visit');
- var is = require('unist-util-is');
+var visit = require('unist-util-visit')
+var is = require('unist-util-is')
 
- module.exports = attacher;
+module.exports = attacher
 
- function attacher() {
-   return transformer;
+function attacher() {
+  return transformer
 
-   function transformer(tree, file) {
-     visit(tree, 'ParagraphNode', visitor);
+  function transformer(tree, file) {
+    visit(tree, 'ParagraphNode', visitor)
 
-     function visitor(node) {
-       var children = node.children;
+    function visitor(node) {
+      var children = node.children
 
-       children.forEach(function (child, index) {
-         if (
-           is('SentenceNode', children[index - 1]) &&
-           is('WhiteSpaceNode', child) &&
-           is('SentenceNode', children[index + 1])
-         ) {
--          console.log(child);
+      children.forEach(function(child, index) {
+        if (
+          is('SentenceNode', children[index - 1]) &&
+          is('WhiteSpaceNode', child) &&
+          is('SentenceNode', children[index + 1])
+        ) {
+-          console.log(child)
 +          if (child.value.length !== 1) {
 +            file.message(
-+              'Expected 1 space between sentences, not ' +
-+              child.value.length,
++              'Expected 1 space between sentences, not ' + child.value.length,
 +              child
-+            );
++            )
 +          }
-         }
-       });
-     }
-   }
- }
+        }
+      })
+    }
+  }
+}
 ```
 
 If we now run our example one final time, we’ll see

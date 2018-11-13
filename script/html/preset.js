@@ -1,4 +1,4 @@
-'use strict';
+'use strict'
 
 exports.plugins = [
   [require('rehype-retext'), require('../natural-language')()],
@@ -7,4 +7,4 @@ exports.plugins = [
   require('./plugin/link'),
   require('./plugin/abbreviate'),
   require('rehype-preset-minify')
-];
+]
