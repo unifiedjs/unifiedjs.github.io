@@ -17,31 +17,23 @@ function highlight() {
 
   function visitor(node, index, parent) {
     var lang = node.lang
-    var name
+    var meta = node.meta
     var fn
 
-    if (!lang) {
+    if (!lang || !meta) {
       return
     }
 
-    lang = lang.split(/\s+/)
-    name = lang.slice(1).join('')
-    lang = lang[0]
-
-    if (!lang || !name) {
-      return
-    }
-
-    fn = name === 'sh' ? sh : gist
+    fn = meta === 'sh' ? sh : gist
 
     parent.children[index] = {
       type: 'unknown',
       data: {
         hName: 'figure',
         hProperties: {
-          className: ['window', name === 'sh' ? 'terminal' : 'gist']
+          className: ['window', meta === 'sh' ? 'terminal' : 'gist']
         },
-        hChildren: [h('figcaption', name)].concat(fn(node, lang))
+        hChildren: [h('figcaption', meta)].concat(fn(node, lang))
       }
     }
   }
