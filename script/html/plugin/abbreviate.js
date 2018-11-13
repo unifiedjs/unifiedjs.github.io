@@ -14,7 +14,8 @@ var titles = {
   CST: 'Concrete Syntax Tree',
   DOM: null,
   HSL: 'Hue Saturation Lightness',
-  HTML: null
+  HTML: null,
+  ZEIT: null
 }
 
 function link() {

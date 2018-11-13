@@ -504,6 +504,22 @@ footer > :last-child {
   box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.02);
 }
 
+.gold .thumbnail-content {
+  background-color: rgba(218, 165, 32, 0.2);
+  box-shadow: 0 0 0 3px rgba(218, 165, 32, 0.4);
+}
+
+.sponsors .thumbnail:not(.gold) .thumbnail-content {
+  width: 120px;
+  height: 120px;
+}
+
+@media (min-width: 60em) {
+  .sponsors .thumbnails + .thumbnails {
+    margin-top: -3rem;
+  }
+}
+
 .thumbnail-caption {
   max-width: 20em;
   margin: auto;
