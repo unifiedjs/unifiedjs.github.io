@@ -15,7 +15,8 @@ var titles = {
   DOM: null,
   HSL: 'Hue Saturation Lightness',
   HTML: null,
-  ZEIT: null
+  ZEIT: null,
+  MDX: null
 }
 
 function link() {

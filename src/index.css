@@ -205,6 +205,18 @@ ul {
   font-size: 1.5em;
 }
 
+.ad {
+  background-color: rgba(3, 103, 216, 0.2);
+  padding: 0 calc(1em + 1ex);
+  border-radius: 3px;
+  border: 1px solid #0367d8;
+  text-align: center;
+}
+
+.ad a {
+  font-weight: bold;
+}
+
 .content {
   padding-left: 2rem;
   padding-right: 2rem;
