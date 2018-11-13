@@ -7,6 +7,7 @@ acing
 middleware
 
 // Jargon
+formatter
 debounced
 linter
 linting
@@ -32,6 +33,7 @@ xo
 browserify
 workshopper
 ZEIT
+prettyhtml
 
 unist
 unified
