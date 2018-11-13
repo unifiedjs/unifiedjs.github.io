@@ -10,7 +10,7 @@ module.exports = trough()
 
 function bundle(file, next) {
   browserify(file.path)
-    .plugin('bundle-collapser/plugin')
+    .plugin('tinyify')
     .bundle(done)
 
   function done(err, buf) {

@@ -304,7 +304,6 @@ $ npm install remark-retext retext-english retext-indefinite-article
    file.extname = '.html'
    vfile.writeSync(file)
  })
-
 ```
 
 As the code shows, `remark-retext` receives another `unified`
