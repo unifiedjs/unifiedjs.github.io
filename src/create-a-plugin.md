@@ -4,8 +4,8 @@ This guide shows how to create a plugin for retext that checks the
 amount of spaces between sentences.  The concepts here apply to the
 other syntaxes of unified as well.
 
-> Stuck?  A good place to get help fast is [Gitter][].
-> Have an idea for another guide?  Share it on Gitter!
+> Stuck?  A good place to get help fast is [spectrum][].
+> Have an idea for another guide?  Share it on spectrum!
 
 ### Contents
 
@@ -260,7 +260,7 @@ If you haven’t already, check out the other [guides][]!
 
 <!--Definitions-->
 
-[gitter]: https://gitter.im/unifiedjs/Lobby
+[spectrum]: https://spectrum.chat/unified
 
 [use]: /using-unified.html
 

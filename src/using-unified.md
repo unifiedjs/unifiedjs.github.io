@@ -4,8 +4,8 @@ This guide delves into how unified can be used to
 transform a markdown file to HTML.  It’ll also show how to
 generate a table of contents, and sidestep into checking prose.
 
-> Stuck?  A good place to get help fast is [Gitter][gitter].
-> Have an idea for another guide?  Share it on Gitter!
+> Stuck?  A good place to get help fast is [spectrum][].
+> Have an idea for another guide?  Share it on spectrum!
 
 ### Contents
 
@@ -338,7 +338,7 @@ If you haven’t already, check out the other [guides][]!
 
 <!--Definitions-->
 
-[gitter]: https://gitter.im/unifiedjs/Lobby
+[spectrum]: https://spectrum.chat/unified
 
 [parse]: https://github.com/remarkjs/remark/tree/master/packages/remark-parse
 

@@ -25,7 +25,6 @@ DOM
 bundler
 
 // Names, products, etc.
-Gitter
 NodeSchool
 WebFundamentals
 npm

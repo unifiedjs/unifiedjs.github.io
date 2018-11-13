@@ -2,7 +2,7 @@
 
 > I’m not entirely sure how to call this thing.  “Demo” is too generic,
 > “dingus” too vague, and I think editor is pretty apt.  Anyway, drop a line
-> on [Gitter][] if you know a better name.
+> on [spectrum][] if you know a better name.
 
 This guide shows how to create an interactive online editor with unified.
 In it we’ll visualise syntactic properties of text by “syntax highlighting”
@@ -15,8 +15,8 @@ on [a tweet by @gregoryciotti][tweet].
 
 You can also [view this project][write-music] with some more features online.
 
-> Stuck?  A good place to get help fast is [Gitter][].
-> Have an idea for another guide?  Share it on Gitter!
+> Stuck?  A good place to get help fast is [spectrum][].
+> Have an idea for another guide?  Share it on spectrum!
 
 ### Contents
 
@@ -492,7 +492,7 @@ If you haven’t already, check out the other [guides][]!
 
 <!--Definitions-->
 
-[gitter]: https://gitter.im/unifiedjs/Lobby
+[spectrum]: https://spectrum.chat/unified
 
 [guides]: /#guides
 
