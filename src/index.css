@@ -205,7 +205,7 @@ ul {
   font-size: 1.5em;
 }
 
-.ad {
+.announcement {
   background-color: rgba(3, 103, 216, 0.2);
   padding: 0 calc(1em + 1ex);
   border-radius: 3px;
@@ -213,7 +213,7 @@ ul {
   text-align: center;
 }
 
-.ad a {
+.announcement a {
   font-weight: bold;
 }
 
