@@ -26,7 +26,7 @@ that is invoked when someone calls `.use`, and a **transformer**,
 which is an optional function invoked each time a file is processed
 with a syntax tree and a virtual file.
 
-In this case, we wan’t to check the syntax tree of each processed
+In this case, we want to check the syntax tree of each processed
 file, so we do specify a transformer.
 
 Now you know the basics of plugins in unified.  On to our case!
