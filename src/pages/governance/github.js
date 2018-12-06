@@ -3,10 +3,10 @@ import {graphql} from 'gatsby'
 export {default} from '../../components/GitHubMDXRenderer'
 
 export const query = () => graphql`
-  query SyntaxTreeUnistReadme {
+  query UnifiedjsGovernanceGitHub {
     github {
-      repository(owner: "syntax-tree", name: "unist") {
-        object(expression: "master:readme.md") {
+      repository(owner: "unifiedjs", name: "governance") {
+        object(expression: "master:github.md") {
           ... on GitHub_Blob {
             text
           }
