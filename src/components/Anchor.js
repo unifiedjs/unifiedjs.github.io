@@ -1,8 +1,8 @@
 import React from 'react'
-import {Link} from 'gatsby'
 import {theme} from 'unified-ui'
 import {urls} from '../names'
 import {Logo} from './Logo'
+import Link from './Link'
 
 export const Anchor = ({href, ...props}) => {
   const {children} = props
@@ -22,7 +22,7 @@ export const Anchor = ({href, ...props}) => {
 
   return (
     <Link
-      to={href}
+      href={href}
       style={{color: theme.colors.unified, textDecoration: 'none'}}
       {...props}
     />
