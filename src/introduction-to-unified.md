@@ -17,7 +17,7 @@ After reading this guide you will:
 **unified is a friendly interface backed by an ecosystem of plugins built for
 creating and manipulating content**. unified does this by taking markdown, HTML,
 or plain text prose, turning it into structured data, and making it available
-to over 100 plugins. Tasks like text analysis, preprocessing, spellchecking,
+to over 100 plugins.  Tasks like text analysis, preprocessing, spellchecking,
 linting, and more can all be done through compatible tools, and even chained
 together.
 
@@ -28,13 +28,14 @@ and output it as a single source.
 
 **Bottom line: with unified, you don’t manually handle syntax or parsing.**
 
-However, the heavy lifting isn‘t being done by unified itself, it‘s a rather
+However, the heavy lifting isn’t being done by unified itself, it’s a rather
 small module that acts as an interface to unify the handling of different
-content formats. What makes unified powerful are the plugins that can be chained
-to the handler of a content format. A module that handles a certain content
-format, for instance [remark][remark] for markdown, is called a **processor**.
+content formats.  What makes unified powerful are the plugins that can be 
+chained to the handler of a content format.  A module that handles a certain
+content format, for instance [remark][remark] for markdown,
+is called a **processor**.
 
-unified has a family of processors, tooling, and specifications. It‘s called
+unified has a family of processors, tooling, and specifications.  It’s called
 the unified collective.
 
 ### unified collective
@@ -44,7 +45,7 @@ on the innovation of content through seamless, interchangeable,
 and extendible tooling.
 
 Depending on what you want to do you will reference different organisations.
-But before getting into the examples, let‘s do an introduction round!
+But before getting into the examples, let’s do an introduction round!
 
 #### Processors
 
@@ -69,7 +70,7 @@ There is also a new markdown parser in the works, [micromark][micromark]!
 
 * * *
 
-Don‘t worry, we‘ll get to how all of this comes together in unified.
+Don’t worry, we’ll get to how all of this comes together in unified.
 But if you are already feeling adventurous; you can go directly to
 [“Using unified”](<>) or [“How to get started with plugins”](<>).
 
@@ -78,7 +79,7 @@ But if you are already feeling adventurous; you can go directly to
 ### How does it all come together
 
 unified can integrate with the file-system through
-[unified-engine][unified-engine]. On top of that, CLI apps can be created with
+[unified-engine][unified-engine].  On top of that, CLI apps can be created with
 [unified-args][unified-args], Gulp plugins with
 [unified-engine-gulp][unified-engine-gulp], and Atom Linters with
 [unified-engine-atom][unified-engine-atom].
@@ -86,16 +87,16 @@ unified can integrate with the file-system through
 But how do these specifications, tools, and processors fit together?
 **Essentially, unified is a three part act**:
 
-1.  **Parse.** Whether your input is natural text, HTML, or markdown
+1.  **Parse.**  Whether your input is natural text, HTML, or markdown
     — it needs to be parsed to a universal workable format.
     The processors (e.g [remark][remark]) are responsible for doing just that.
     The specifications (e.g [mdast][mdast] for remark) make sure these formats
     are enforced standards.
-2.  **Transform.** This is where the magic happens. Plugins are able to easily
-    hook into this phase and add, change, or remove anything that it is given.
-    Thanks to unified‘s pipeline, you can compose plugins and define the order
+2.  **Transform.**  This is where the magic happens.  Plugins are able to easily
+    hook into this phase and add, change, or remove anything that it’s given.
+    Thanks to unified’s pipeline, you can compose plugins and define the order
     they run in.
-3.  **Stringify.** When all plugins have ran, the final step is to take the
+3.  **Stringify.**  When all plugins have ran, the final step is to take the
     (adjusted) representation and transform it back to its original format
     (or to a different format!).
 
@@ -117,7 +118,7 @@ Unified makes it easier for developers to develop by providing the means to
 quickly iterate, manipulate, and create content.
 
 > A large part of MDX’s success has been leveraging the unified and remark
-> ecosystem. I was able to get a prototype working in a few hours because
+> ecosystem.  I was able to get a prototype working in a few hours because
 > I didn’t have to worry about markdown parsing: remark gave it to me for free.
 > It provided the primitives to build on.
 >
