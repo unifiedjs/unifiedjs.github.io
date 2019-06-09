@@ -12,7 +12,7 @@ After reading this guide you will:
 
 * * *
 
-![](https://cdn-images-1.medium.com/max/2600/1*j0qPjM4niq2S5kH9So1xww.png)
+![Example of using unified](./image/unified-overview.png)
 
 **unified is a friendly interface backed by an ecosystem of plugins built for
 creating and manipulating content**. unified does this by taking markdown, HTML,
@@ -24,7 +24,7 @@ together.
 This and more is possible thanks to unified’s plugin pipeline, which lets you
 typically write one line of code to chain a feature into this process.
 It’s also possible to stitch together content from different sources
- and output it as a single source.
+and output it as a single source.
 
 **Bottom line: with unified, you don’t manually handle syntax or parsing.**
 
@@ -32,7 +32,7 @@ However, the heavy lifting isn‘t being done by unified itself, it‘s a rather
 small module that acts as an interface to unify the handling of different
 content formats. What makes unified powerful are the plugins that can be chained
 to the handler of a content format. A module that handles a certain content
- format, for instance [remark][remark] for markdown, is called a **processor**.
+format, for instance [remark][remark] for markdown, is called a **processor**.
 
 unified has a family of processors, tooling, and specifications. It‘s called
 the unified collective.
@@ -133,7 +133,7 @@ the unified pipeline to do interesting things:
 *   [retext-equality][retext-equality] — check possibly insensitive language.
 *   [remark-math][remark-math] support math in markdown / HTML.
 *   [retext-repeated-words][retext-repeated-words]
-     —  check for for repeated words.
+    —  check for for repeated words.
 *   [rehype-minify][rehype-minify]  —  minify HTML.
 *   …explore all [remark][all-remark-plugins], [rehype][all-rehype-plugins],
     or [retext][all-retext-plugins] plugins.
