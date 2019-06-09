@@ -34,8 +34,8 @@ content formats. What makes unified powerful are the plugins that can be chained
 to the handler of a content format. A module that handles a certain content
  format, for instance [remark][remark] for markdown, is called a **processor**.
 
-unified has a family of processors, tooling, and specifications. I
-t‘s called the unified collective.
+unified has a family of processors, tooling, and specifications. It‘s called
+the unified collective.
 
 ### unified collective
 
