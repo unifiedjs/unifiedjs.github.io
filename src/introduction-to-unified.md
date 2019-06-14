@@ -101,9 +101,9 @@ This allows for even more powerful compositions.
 
 Bridging formats can be done with the following plugins:
 
-*   [remark-rehype][remark-rehype] — markdown to HTML.
-*   [rehype-remark][rehype-remark] — HTML to markdown.
-*   [remark-retext][remark-retext] — markdown to prose.
+*   [remark-rehype][remark-rehype] — Markdown to HTML.
+*   [rehype-remark][rehype-remark] — HTML to Markdown.
+*   [remark-retext][remark-retext] — Markdown to prose.
 *   [rehype-retext][rehype-retext] — HTML to prose.
 
 ### Use cases
