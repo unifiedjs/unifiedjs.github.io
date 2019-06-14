@@ -15,7 +15,7 @@ After reading this guide you will:
 ![](./image/unified-overview.png)
 
 **unified is a friendly interface backed by an ecosystem of plugins built for
-creating and manipulating content**.  unified does this by taking markdown,
+creating and manipulating content**.  unified does this by taking Markdown,
 HTML, or plain text prose, turning it into structured data, and making it
 available to over 100 plugins.  Tasks like text analysis, preprocessing,
 spellchecking, linting, and more can all be done through compatible plugins,
@@ -29,7 +29,7 @@ typically write one line of code to chain a plugin into this process.
 The heavy lifting isn’t being done by unified itself, it’s a rather
 small module that acts as an interface to unify the handling of different
 content formats, such as Markdown, HTML, or prose.  A module that handles a
-certain content format, for instance [remark][remark] for markdown,
+certain content format, for instance [remark][remark] for Markdown,
 is called a **processor**.
 
 unified has a family of processors, tooling, and specifications.  It’s called
@@ -73,14 +73,14 @@ But if you are already feeling adventurous; you can go directly to
 
 ### How does it all come together
 
-unified can bey used programmatically in node, it can also run
+unified can be used programmatically in Node, it can also run
 in the browser but that does require a build step.  Furthermore, the processors
 also have an CLI alternative and often a Gulp version.
 
 But how do these specifications, tools, and processors fit together?
 **Essentially, unified is a three part act**:
 
-1.  **Parse**:  Whether your input is natural text, HTML, or markdown
+1.  **Parse**:  Whether your input is natural text, HTML, or Markdown
     — it needs to be parsed to a universal workable format.
     The processors (such as [remark][remark]) are responsible for doing that.
     The specifications (for example [mdast][mdast] for remark) make sure these
@@ -96,7 +96,7 @@ But how do these specifications, tools, and processors fit together?
 #### Bridging formats
 
 What makes unified unique is that it can continuously switch between formats,
-markdown to HTML for instance, in the same process.
+Markdown to HTML for instance, in the same process.
 This allows for even more powerful compositions.
 
 Bridging formats can be done with the following plugins:
@@ -114,7 +114,7 @@ to HTML; you can use [remark][remark] directly (or similar projects like
 [marked][marked]).  unified becomes truly useful when you want to go further
 than only transforming.  When you want tasks like enforcing format rules,
 spell checking, dynamic generation of content (such as a table of contents),
-and (potentially) much more — that’s when opt for unified.
+and (potentially) much more — that’s when to opt for unified.
 
 > A large part of MDX’s success has been leveraging the unified and remark
 > ecosystem.  I was able to get a prototype working in a few hours because
