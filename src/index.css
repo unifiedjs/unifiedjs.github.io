@@ -408,6 +408,14 @@ footer > :last-child {
   color: #dc322f;
 }
 
+.terminal .ok {
+  color: #b4fdb4;
+}
+
+.terminal .underline {
+  text-decoration: underline;
+}
+
 .terminal .ll {
   color: #586e75;
 }
