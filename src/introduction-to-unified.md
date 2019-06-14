@@ -149,7 +149,6 @@ the unified pipeline to do interesting things:
 *   unified’s plugin pipeline lets you typically write one line of code to chain
     a feature into the process.  Bridging formats (such as markdown to HTML)
     can be done in a single line of code as well.
-*   unified can integrate the file-system, the CLI, Gulp, or Atom Linters.
 
 ### Next steps
 
