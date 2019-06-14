@@ -46,7 +46,7 @@ But before getting into the examples, let’s do an introduction round!
 
 #### Processors
 
-*   [remark][remark] — markdown.
+*   [remark][remark] — Markdown.
 *   [rehype][rehype] — HTML.
 *   [retext][retext] — natural language.
 *   [redot][redot] — Graphviz.
