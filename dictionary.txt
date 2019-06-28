@@ -10,6 +10,7 @@ programmatically
 math
 
 // Jargon
+formatter
 debounced
 linter
 linting
@@ -40,6 +41,7 @@ browserify
 workshopper
 ZEIT
 Otander
+prettyhtml
 
 unist
 unified
