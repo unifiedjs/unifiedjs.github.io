@@ -5,6 +5,9 @@ plugin
 plugins
 acing
 middleware
+pluggable
+programmatically
+math
 
 // Jargon
 formatter
@@ -24,6 +27,10 @@ syntaxes
 readme
 DOM
 bundler
+CLI
+MDX
+mdx
+mdx-js
 
 // Names, products, etc.
 NodeSchool
@@ -33,6 +40,7 @@ xo
 browserify
 workshopper
 ZEIT
+Otander
 prettyhtml
 
 unist
