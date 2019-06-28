@@ -15,31 +15,29 @@ After reading this guide you will:
 ![](./image/unified-overview.png)
 
 **unified is a friendly interface backed by an ecosystem of plugins built for
-creating and manipulating content**.  unified does this by taking Markdown,
+creating and manipulating content**.  It does this by taking Markdown,
 HTML, or plain text prose, turning it into structured data, and making it
-available to over 100 plugins.  Tasks like text analysis, preprocessing,
-spellchecking, linting, and more can all be done through compatible plugins,
-and even chained together.
+available to over 100 plugins.  Including, but not limited to, are tasks like
+text analysis, preprocessing, spellchecking, and linting.
 
 This and more is possible thanks to unified’s plugin pipeline, which lets you
 typically write one line of code to chain a plugin into this process.
 
-**Bottom line: with unified, you don’t manually handle syntax or parsing.**
+Bottom line: with unified, you don’t manually handle syntax or parsing.
 
-The heavy lifting isn’t being done by unified itself, it’s a rather
-small module that acts as an interface to unify the handling of different
-content formats, such as Markdown, HTML, or prose.  A module that handles a
-certain content format, for instance [remark][remark] for Markdown,
-is called a **processor**.
+unified is a rather small module that acts as an interface to unify the
+handling of different content formats, such as Markdown, HTML, or prose.
+A module that handles a certain content format, for instance
+[remark][remark] for Markdown, is called a **processor**.
 
 unified has a family of processors, tooling, and specifications.  It’s called
 the unified collective.
 
 ### unified collective
 
-The unified collective are like-minded organisations to collaboratively work
-on the innovation of content through seamless, interchangeable,
-and pluggable tooling.
+The unified collective are like-minded organisations.  These organisations
+have the shared goal to innovate content processing.  Seamless, interchangeable,
+and pluggable tooling is how we achieve that.
 
 Depending on what you want to do you will reference different organisations.
 But before getting into the examples, let’s do an introduction round!
@@ -65,7 +63,7 @@ But before getting into the examples, let’s do an introduction round!
 
 * * *
 
-Don’t worry, we’ll get to how all of this comes together in unified.
+Don’t worry, we’ll get to how this comes together in unified.
 But if you are already feeling adventurous; you can go directly to
 [“Using unified”](<>) or [“How to get started with plugins”](<>).
 
@@ -74,7 +72,7 @@ But if you are already feeling adventurous; you can go directly to
 ### How does it all come together
 
 unified can be used programmatically in Node, it can also run
-in the browser but that does require a build step.  Furthermore, the processors
+in the browser but that needs a build step.  Furthermore, the processors
 also have an CLI alternative and often a Gulp version.
 
 But how do these specifications, tools, and processors fit together?
@@ -86,10 +84,10 @@ But how do these specifications, tools, and processors fit together?
     The specifications (for example [mdast][mdast] for remark) make sure these
     formats are enforced standards.
 2.  **Transform**:  This is where the magic happens.  Plugins are able to
-    hook into this phase and transform and inspect anything that it’s given.
+    plug in into this phase and transform and inspect anything that it’s given.
     Thanks to unified’s pipeline, you can compose plugins and define the order
     they run in.
-3.  **Stringify**:  When all plugins are done, the final step is to take the
+3.  **Stringify**:  When all plugins finish, the final step is to take the
     (adjusted) representation and transform it back to its original format
     (or to a different format!)
 
@@ -99,7 +97,7 @@ What makes unified unique is that it can continuously switch between formats,
 Markdown to HTML for instance, in the same process.
 This allows for even more powerful compositions.
 
-Bridging formats can be done with the following plugins:
+The following formats bridge formats:
 
 *   [remark-rehype][remark-rehype] — Markdown to HTML.
 *   [rehype-remark][rehype-remark] — HTML to Markdown.
@@ -133,7 +131,7 @@ the unified pipeline to do interesting things:
 *   [retext-equality][retext-equality] — check possibly insensitive language.
 *   [remark-math][remark-math] — support math in markdown / HTML.
 *   [retext-repeated-words][retext-repeated-words]
-    — check for for repeated words.
+    — check `for for` repeated words.
 *   [rehype-minify][rehype-minify] — minify HTML.
 *   …explore all [remark][all-remark-plugins], [rehype][all-rehype-plugins],
     or [retext][all-retext-plugins] plugins.
@@ -143,12 +141,12 @@ the unified pipeline to do interesting things:
 *   unified is a friendly interface backed by an ecosystem of plugins built for
     creating and manipulating content.  You don’t have to worry about parsing
     as you have the primitives to build on.
-*   There are hundreds of plugins available.
+*   Hundreds of plugins are available.
 *   [remark][remark] is used for markdown, [rehype][rehype] for HTML, and
     [retext][retext] for natural language.
 *   unified’s plugin pipeline lets you typically write one line of code to chain
-    a feature into the process.  Bridging formats (such as markdown to HTML)
-    can be done in a single line of code as well.
+    a feature into the process, such as bridging formats
+    (such as markdown to HTML).
 
 ### Next steps
 
