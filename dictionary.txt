@@ -8,6 +8,10 @@ middleware
 pluggable
 programmatically
 math
+transpile
+config
+configs
+fulfill
 
 // Jargon
 formatter
@@ -42,6 +46,12 @@ workshopper
 ZEIT
 Otander
 prettyhtml
+webpack
+polyfill
+javascript
+ES2015
+ES2016
+IE
 
 unist
 unified
