@@ -1,7 +1,5 @@
-var url = require('url')
 var path = require('path')
 var glob = require('glob')
-var bail = require('bail')
 var mkdirp = require('mkdirp')
 var async = require('async')
 var trough = require('trough')
@@ -56,7 +54,12 @@ trough()
     return async.map(paths, filePipeline.run, done)
   })
   .use(function(files, next) {
-    var contents = url.parse(pack.homepage).host + '\n'
+    var contents = new URL(pack.homepage).host + '\n'
     vfile.write({dirname: 'build', basename: 'CNAME', contents: contents}, next)
   })
-  .run('src/**/*.*', bail)
+  .run('src/**/*.*', function(err) {
+    if (err) {
+      console.error(err)
+      process.exitCode = 1
+    }
+  })

@@ -11,6 +11,7 @@ var ignore = findAndReplace.ignore.concat(['pre', 'code'])
 var titles = {
   AST: 'Abstract Syntax Tree',
   API: null,
+  CLI: 'Command-line Interface',
   CST: 'Concrete Syntax Tree',
   DOM: null,
   HSL: 'Hue Saturation Lightness',

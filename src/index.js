@@ -36,7 +36,7 @@ function terminal($terminal) {
   $caret = document.createElement('span')
   $caret.textContent = '_'
   $caret.className = 'caret'
-  $cmd.appendChild($caret)
+  $cmd.append($caret)
 
   $text.data = ''
 
@@ -51,10 +51,10 @@ function terminal($terminal) {
 
     $line.className = 'command'
     $caret.className += ' blink'
-    $line.appendChild($caret)
+    $line.append($caret)
 
     if (!$pre.classList.contains('no-final-prompt')) {
-      $pre.appendChild($line)
+      $pre.append($line)
     }
 
     if ($out) {
@@ -74,6 +74,7 @@ function terminal($terminal) {
       } else {
         complete()
       }
+
       return
     }
 
@@ -132,7 +133,7 @@ function when(selector, cb) {
 
 function windows() {
   var buttons = ['close', 'minimize', 'fullscreen']
-  var $nodes = document.getElementsByClassName('window')
+  var $nodes = document.querySelectorAll('.window')
   var length = $nodes.length
   var index = -1
   var $node
@@ -144,13 +145,13 @@ function windows() {
 
   while (++index < length) {
     $node = $nodes[index]
-    $caption = $node.getElementsByTagName('figcaption')[0]
+    $caption = $node.querySelector('figcaption')
 
     $title = document.createElement('span')
     $title.className = 'chrome title'
 
     while ($caption.firstChild) {
-      $title.appendChild($caption.firstChild)
+      $title.append($caption.firstChild)
     }
 
     offset = -1
@@ -159,10 +160,10 @@ function windows() {
     while (++offset < count) {
       $button = document.createElement('span')
       $button.className = 'chrome button ' + buttons[offset]
-      $caption.appendChild($button)
+      $caption.append($button)
     }
 
-    $caption.appendChild($title)
+    $caption.append($title)
   }
 }
 
@@ -193,7 +194,7 @@ function prevent() {
     var message = messages[++index]
 
     /* global confirm */
-    /* eslint-disable no-alert */
+    /* eslint-disable-next-line no-alert */
     if (message && confirm(message)) {
       bug()
     }
