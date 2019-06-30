@@ -71,7 +71,7 @@
     "xo": "^0.24.0"
   },
   "scripts": {
-    "format": "remark src -qo && rehype src -q && prettier --write '**/*.js' && xo --fix",
+    "format": "remark src -qo && rehype src -q && prettier --write \"**/*.js\" && xo --fix",
     "start": "budo --dir build",
     "build": "node script",
     "test": "npm run format && npm run build"
