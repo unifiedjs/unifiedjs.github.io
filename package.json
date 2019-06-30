@@ -65,7 +65,6 @@
     "to-vfile": "^6.0.0",
     "trim": "0.0.1",
     "trough": "^1.0.0",
-    "uglify-js": "^3.0.0",
     "unified": "^8.0.0",
     "unist-util-visit": "^1.0.0",
     "vfile-reporter": "^6.0.0",

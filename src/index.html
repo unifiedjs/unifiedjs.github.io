@@ -14,11 +14,14 @@
     </script>
 
     <header>
-      <h1><a href="./"><span class="hl unified">uni</span>fied</a></h1>
+      <h1><a href="./" class="unified"><span class="hl">uni</span>fied</a></h1>
     </header>
 
     <section class="pull content">
-      <p>unified is an interface for processing text with syntax trees and transforming between them.</p>
+      <p>
+        unified is an interface for processing text with syntax trees and
+        transforming between them.
+      </p>
     </section>
 
     <section class="announcement">
@@ -104,17 +107,20 @@ process.stdin.pipe(stream(processor)).pipe(process.stdout)</code></pre>
     <article class="content">
       <h1>Core</h1>
       <p>
-        The unified library itself is a small module.  It’s a rather small API.
-        Plugins do everything else: minify HTML, lint markdown, check
-        indefinite articles (“a”, “an”), and more.
+        The unified library itself is a small module.
+        It’s a rather small API.
+        Plugins do everything else: minify HTML, lint markdown, check indefinite
+        articles (“a”, “an”), and more.
       </p>
       <p>
-        Three syntaxes are connected to unified, each coming with a syntax tree definition, and a parser and stringifier: mdast with remark for markdown, nlcst with retext for prose, and hast with rehype for HTML.
+        Three syntaxes are connected to unified, each coming with a syntax tree
+        definition, and a parser and stringifier: mdast with remark for Markdown,
+        nlcst with retext for prose, and hast with rehype for HTML.
       </p>
       <p>
-        unified defers part of its logic to vfile, which is a virtual
-        file format representing documents being processed, and unist,
-        a schema for syntax trees.
+        unified defers part of its logic to vfile, which is a virtual file
+        format representing documents being processed, and unist, a schema for
+        syntax trees.
       </p>
     </article>
 
@@ -191,14 +197,17 @@ process.stdin.pipe(stream(processor)).pipe(process.stdout)</code></pre>
     <article class="content">
       <h1>Virtual files</h1>
       <p>
-        vfile stores metadata about documents being processed (often,
-        but not always, from the file system).  Mainly, it houses a
-        <code>path</code> to files, and their <code>contents</code>.
-        Additionally, it tracks messages associated with files and where
-        they occurred.  This powers code linting, shown below with
+        vfile stores metadata about documents being processed (often, but not
+        always, from the file system).
+        Mainly, it houses a <code>path</code> to files, and their
+        <code>contents</code>.
+        Additionally, it tracks messages associated with files and where they
+        occurred.
+        This powers code linting, shown below with
         <a href="https://github.com/remarkjs/remark/tree/master/packages/remark-cli"><code>remark-cli</code></a>,
         <a href="https://github.com/remarkjs/remark-validate-links"><code>remark-validate-links</code></a>,
-        and <a href="https://github.com/remarkjs/remark-lint/tree/master/packages/remark-preset-lint-consistent"><code>remark-preset-lint-consistent</code></a>.
+        and
+        <a href="https://github.com/remarkjs/remark-lint/tree/master/packages/remark-preset-lint-consistent"><code>remark-preset-lint-consistent</code></a>.
       </p>
 
       <figure class="terminal window" data-nlcst="ignore">
@@ -277,12 +286,13 @@ process.stdin.pipe(stream(processor)).pipe(process.stdout)</code></pre>
     <article class="content">
       <h1>Syntax tree</h1>
       <p>
-        unist discloses documents as syntax trees.  Syntax trees come
-        in two flavours: Concrete (CST) and Abstract (AST).  The first
-        has all information needed to restore the original document
-        completely, the latter does not.  But, ASTs can recreate an
-        exact <em>syntactic</em> representation.  For example, CSTs
-        house info on style such as tabs or spaces, but ASTs do not.
+        unist discloses documents as syntax trees.
+        Syntax trees come in two flavours: Concrete (CST) and Abstract (AST).
+        The first has all information needed to restore the original document
+        completely, the latter does not.
+        ASTs <em>can</em> recreate an exact <em>syntactic</em> representation.
+        For example, CSTs house info on style such as tabs or spaces, but ASTs
+        do not.
         This makes ASTs often easier to work with.
       </p>
 
@@ -313,8 +323,8 @@ process.stdin.pipe(stream(processor)).pipe(process.stdout)</code></pre>
       </figure>
 
       <p>
-        These trees also come with positional information (not shown above),
-        so every node knows where it originates from.
+        These trees also come with positional information (not shown above), so
+        every node knows where it originates from.
       </p>
 
       <p>Read more about unist in it’s <a href="https://github.com/syntax-tree/unist">readme</a>.</p>
@@ -327,8 +337,8 @@ process.stdin.pipe(stream(processor)).pipe(process.stdout)</code></pre>
         <h2>write-music</h2>
         <p>
           <a href="http://wooorm.com/write-music/">write-music</a> visualises
-          sentence length with unified.  Varying sentence length can make
-          reading more enjoyable.
+          sentence length with unified.
+          Varying sentence length can make reading more enjoyable.
         </p>
 
         <figure class="browser window" data-nlcst="ignore">
@@ -362,8 +372,7 @@ process.stdin.pipe(stream(processor)).pipe(process.stdout)</code></pre>
         <h2>awesome-lint</h2>
         <p>
           <a href="https://github.com/sindresorhus/awesome-lint"><code>awesome-lint</code></a>
-          uses unified to make it easier to create and maintain Awesome
-          lists.
+          uses unified to make it easier to create and maintain Awesome lists.
         </p>
 
         <figure class="terminal window" data-nlcst="ignore">
@@ -481,8 +490,8 @@ var html = require('rehype-stringify')</code></pre>
         </figure>
         <p>
           Learn how to use unified by transforming markdown to HTML.
-          It’ll also show how to use plugins, add a table of contents, and
-          check prose.
+          It’ll also show how to use plugins, add a table of contents, and check
+          prose.
         </p>
       </a>
       <a class="guide" href="./create-a-plugin.html">

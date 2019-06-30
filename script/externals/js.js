@@ -2,11 +2,8 @@
 
 var trough = require('trough')
 var browserify = require('browserify')
-var Uglify = require('uglify-js')
 
-module.exports = trough()
-  .use(bundle)
-  .use(mangle)
+module.exports = trough().use(bundle)
 
 function bundle(file, next) {
   browserify(file.path)
@@ -20,8 +17,4 @@ function bundle(file, next) {
 
     next(err)
   }
-}
-
-function mangle(file) {
-  file.contents = Uglify.minify(file.contents, {toplevel: true}).code
 }

@@ -32,10 +32,14 @@ function initialise() {
     're|mark': 'remarkjs/remark',
     're|text': 'retextjs/retext',
     're|hype': 'rehypejs/rehype',
+    're|dot': 'redotjs/redot',
+    'syntax|-tree': 'syntax-tree',
     'uni|st': 'syntax-tree/unist',
     'nl|cst': 'syntax-tree/nlcst',
     'md|ast': 'syntax-tree/mdast',
-    'h|ast': 'syntax-tree/hast'
+    'h|ast': 'syntax-tree/hast',
+    'dot|ast': 'redotjs/dotast',
+    'MD|X': 'mdx-js/mdx'
   }
 
   Object.keys(dictionary).forEach(add)
@@ -50,10 +54,11 @@ function initialise() {
     result[name] = replacer
 
     function replacer() {
-      return h('a', {href: 'https://github.com/' + slug}, [
-        h('span.hl.' + name, parts[0]),
-        parts[1]
-      ])
+      return h(
+        'a.' + name.toLowerCase(),
+        {href: 'https://github.com/' + slug},
+        [h('span.hl', parts[0]), parts[1]]
+      )
     }
   }
 }
