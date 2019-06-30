@@ -18,8 +18,10 @@ formatter
 debounced
 linter
 linting
+stringify
 stringifier
 minify
+minifying
 AST
 CST
 ASTs
@@ -32,11 +34,9 @@ readme
 DOM
 bundler
 CLI
-MDX
-mdx
-mdx-js
 
 // Names, products, etc.
+Node.js
 NodeSchool
 WebFundamentals
 npm
@@ -44,6 +44,8 @@ xo
 browserify
 workshopper
 ZEIT
+JSX
+MDX
 Otander
 prettyhtml
 webpack

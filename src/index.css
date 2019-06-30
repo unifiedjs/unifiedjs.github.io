@@ -1,5 +1,15 @@
 html {
-  font-family: Roboto, -apple-system, BlinkMacSystemFont, "Helvetica Neue", "Segoe UI", "Oxygen", "Ubuntu", "Cantarell", "Open Sans", sans-serif;
+  font-family:
+    Roboto,
+    -apple-system,
+    BlinkMacSystemFont,
+    'Helvetica Neue',
+    'Segoe UI',
+    'Oxygen',
+    'Ubuntu',
+    'Cantarell',
+    'Open Sans',
+    sans-serif;
 }
 
 body {
@@ -124,34 +134,53 @@ a:focus .hl {
   transition: color 200ms;
 }
 
-a:hover .hl.unified,
-a:hover .hl.unist,
-a:hover .hl.vfile,
-a:focus .hl.unified,
-a:focus .hl.unist,
-a:focus .hl.vfile {
+.unified:hover .hl,
+.syntax-tree:hover .hl,
+.unist:hover .hl,
+.vfile:hover .hl,
+.unified:focus .hl,
+.syntax-tree:focus .hl,
+.unist:focus .hl,
+.vfile:focus .hl {
   color: hsl(212, 97%, 43%);
 }
 
-a:hover .hl.remark,
-a:hover .hl.mdast,
-a:focus .hl.remark,
-a:focus .hl.mdast {
+.remark:hover .hl,
+.mdast:hover .hl,
+.remark:focus .hl,
+.mdast:focus .hl {
   color: hsl(0, 97%, 43%);
 }
 
-a:hover .hl.retext,
-a:hover .hl.nlcst,
-a:focus .hl.retext,
-a:focus .hl.nlcst {
+.mdx:hover,
+.mdx:focus {
+  color: #f9ac00;
+}
+
+.mdx:hover .hl,
+.mdx:focus .hl {
+  color: initial;
+}
+
+.retext:hover .hl,
+.nlcst:hover .hl,
+.retext:focus .hl,
+.nlcst:focus .hl {
   color: hsl(120, 97%, 43%);
 }
 
-a:hover .hl.rehype,
-a:hover .hl.hast,
-a:focus .hl.rehype,
-a:focus .hl.hast {
+.rehype:hover .hl,
+.hast:hover .hl,
+.rehype:focus .hl,
+.hast:focus .hl {
   color: hsl(45, 97%, 43%);
+}
+
+.redot:hover .hl,
+.dotast:hover .hl,
+.redot:focus .hl,
+.dotast:focus .hl {
+  color: hsl(300, 97%, 43%);
 }
 
 a:hover,
@@ -179,7 +208,7 @@ blockquote {
 
 pre,
 code {
-  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  font-family: Consolas, 'Liberation Mono', Menlo, Courier, monospace;
   font-size: small;
 }
 
@@ -198,6 +227,10 @@ p {
 ol,
 ul {
   padding: 0;
+}
+
+img {
+  max-width: 100%;
 }
 
 .pull {
@@ -443,10 +476,14 @@ footer > :last-child {
 
 @keyframes blink {
   0%,
-  49% { opacity: 0; }
+  49% {
+    opacity: 0;
+  }
 
   50%,
-  100% { opacity: 1; }
+  100% {
+    opacity: 1;
+  }
 }
 
 .gallery {
@@ -619,30 +656,97 @@ footer > :last-child {
   padding-right: 0.25em;
 }
 
-.hljs-addition::before { content: '+'; }
-.hljs-deletion::before { content: '-'; }
+.hljs-addition::before {
+  content: '+';
+}
 
-.language-html { color: #222; }
-.hljs-keyword { color: hsl(332, 70%, 45%); }
-.hljs-number { color: hsl(332, 70%, 45%); }
-.hljs-built_in { color: hsl(195, 100%, 35%); }
-.hljs-attribute { color: hsl(195, 100%, 35%); }
-.hljs-literal { color: hsl(195, 100%, 35%); }
-.hljs-section { color: hsl(225, 72%, 35%); }
-.hljs-string { color: hsl(225, 72%, 35%); }
-.hljs-params { color: black; }
-.hljs-strong { color: black; }
-.hljs-code { color: hsl(264, 28%, 35%); }
-.hljs-selector-class { color: hsl(264, 28%, 35%); }
-.hljs-meta { color: hsl(40, 58%, 35%); }
-.hljs-name { color: hsl(114, 28%, 35%); }
-.hljs-attr { color: hsl(264, 50%, 50%); }
-.hljs-tag { color: #777; }
-.hljs-selector-tag { color: hsl(114, 28%, 55%); }
-.language-html .hljs-name { color: hsl(114, 28%, 55%); }
-.language-html .hljs-attr { color: hsl(264, 50%, 70%); }
-.language-html .hljs-string { color: hsl(225, 72%, 75%); }
-.hljs-comment { color: #aaa; }
+.hljs-deletion::before {
+  content: '-';
+}
+
+.language-html {
+  color: #222;
+}
+
+.hljs-keyword {
+  color: hsl(332, 70%, 45%);
+}
+
+.hljs-number {
+  color: hsl(332, 70%, 45%);
+}
+
+.hljs-built_in {
+  color: hsl(195, 100%, 35%);
+}
+
+.hljs-attribute {
+  color: hsl(195, 100%, 35%);
+}
+
+.hljs-literal {
+  color: hsl(195, 100%, 35%);
+}
+
+.hljs-section {
+  color: hsl(225, 72%, 35%);
+}
+
+.hljs-string {
+  color: hsl(225, 72%, 35%);
+}
+
+.hljs-params {
+  color: black;
+}
+
+.hljs-strong {
+  color: black;
+}
+
+.hljs-code {
+  color: hsl(264, 28%, 35%);
+}
+
+.hljs-selector-class {
+  color: hsl(264, 28%, 35%);
+}
+
+.hljs-meta {
+  color: hsl(40, 58%, 35%);
+}
+
+.hljs-name {
+  color: hsl(114, 28%, 35%);
+}
+
+.hljs-attr {
+  color: hsl(264, 50%, 50%);
+}
+
+.hljs-tag {
+  color: #777;
+}
+
+.hljs-selector-tag {
+  color: hsl(114, 28%, 55%);
+}
+
+.language-html .hljs-name {
+  color: hsl(114, 28%, 55%);
+}
+
+.language-html .hljs-attr {
+  color: hsl(264, 50%, 70%);
+}
+
+.language-html .hljs-string {
+  color: hsl(225, 72%, 75%);
+}
+
+.hljs-comment {
+  color: #aaa;
+}
 
 .hljs-addition {
   color: hsl(102, 53%, 42%);
@@ -654,17 +758,49 @@ footer > :last-child {
   background-color: hsl(0, 100%, 96%);
 }
 
-.hlt-wrapper { font-family: monospace; }
-.guide .hlt-wrapper { color: transparent !important; }
-.hlt-wrapper > :first-child { margin-top: 0; }
-.hlt-wrapper > :last-child { margin-bottom: 0; }
-.hlt-a { background-color: hsl(0, 95%, 85%); }
-.hlt-b { background-color: hsl(60, 95%, 85%); }
-.hlt-c { background-color: hsl(120, 95%, 85%); }
-.hlt-d { background-color: hsl(300, 95%, 85%); }
-.hlt-e { background-color: hsl(180, 95%, 85%); }
-.hlt-f { background-color: hsl(30, 95%, 85%); }
-.hlt-g { background-color: hsl(90, 95%, 85%); }
+.hlt-wrapper {
+  font-family: monospace;
+}
+
+.guide .hlt-wrapper {
+  color: transparent !important;
+}
+
+.hlt-wrapper > :first-child {
+  margin-top: 0;
+}
+
+.hlt-wrapper > :last-child {
+  margin-bottom: 0;
+}
+
+.hlt-a {
+  background-color: hsl(0, 95%, 85%);
+}
+
+.hlt-b {
+  background-color: hsl(60, 95%, 85%);
+}
+
+.hlt-c {
+  background-color: hsl(120, 95%, 85%);
+}
+
+.hlt-d {
+  background-color: hsl(300, 95%, 85%);
+}
+
+.hlt-e {
+  background-color: hsl(180, 95%, 85%);
+}
+
+.hlt-f {
+  background-color: hsl(30, 95%, 85%);
+}
+
+.hlt-g {
+  background-color: hsl(90, 95%, 85%);
+}
 
 @media (max-width: 36em) {
   body {

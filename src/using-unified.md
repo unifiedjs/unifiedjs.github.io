@@ -1,11 +1,14 @@
 ## Using unified
 
-This guide delves into how unified can be used to
-transform a markdown file to HTML.  It’ll also show how to
-generate a table of contents, and sidestep into checking prose.
+This guide delves into how unified can be used to transform a Markdown file to
+HTML.
+It’ll also show how to generate a table of contents, and sidestep into checking
+prose.
 
-> Stuck?  A good place to get help fast is [spectrum][].
-> Have an idea for another guide?  Share it on spectrum!
+> Stuck?
+> A good place to get help fast is [Spectrum][].
+> Have an idea for another guide?
+> Share it on Spectrum!
 
 ### Contents
 
@@ -17,30 +20,28 @@ generate a table of contents, and sidestep into checking prose.
 
 ### Tree transformations
 
-For this example, we’ll start out with markdown content,
-then transform to HTML.  We need a markdown parser and an
-HTML stringifier for that.  The relevant projects are
-respectively [`remark-parse`][parse] and
+For this example, we’ll start out with Markdown content, then transform to HTML.
+We need a Markdown parser and an HTML stringifier for that.
+The relevant projects are respectively [`remark-parse`][parse] and
 [`rehype-stringify`][stringify].
 To transform between the two syntaxes, we’ll use
-[`remark-rehype`][remark-rehype].  Finally, we’ll use unified
-itself to glue these together, and [`unified-stream`][unified-stream]
-for streaming.
+[`remark-rehype`][remark-rehype].
+Finally, we’ll use unified itself to glue these together, and
+[`unified-stream`][unified-stream] for streaming.
 
 Let’s install those with [npm][], which comes bundled with [Node][].
 
 ```bash sh
 $ npm install unified unified-stream remark-parse remark-rehype rehype-stringify
 /Users/tilde/example
-├── rehype-stringify@3.0.0
-├── remark-parse@5.0.0
-├── remark-rehype@3.0.0
-├── unified-stream@1.0.1
-└── unified@6.1.6
+├── rehype-stringify@6.0.0
+├── remark-parse@6.0.3
+├── remark-rehype@4.0.1
+├── unified-stream@1.0.5
+└── unified@8.0.0
 ```
 
-Let’s first create a markdown file that we’re going
-to transform.
+Let’s first create a Markdown file that we’re going to transform.
 
 ```markdown example.md
 # Hello World
@@ -60,8 +61,9 @@ More `text`.
 MIT
 ```
 
-Then, create an `index.js` script as well.  It’ll transform markdown
-to HTML.  It’s hooked up to read from stdin and write to stdout.
+Then, create an `index.js` script as well.
+It’ll transform Markdown to HTML.
+It’s hooked up to read from stdin and write to stdout.
 
 ```javascript index.js
 var unified = require('unified')
@@ -85,7 +87,7 @@ Now, running our script with [Node][] (this uses your Shell to read
 $ node index.js < example.md > example.html
 ```
 
-...gives us an `example.html` file that looks as follows:
+…gives us an `example.html` file that looks as follows:
 
 ```html example.html
 <h1>Hello World</h1>
@@ -98,31 +100,30 @@ $ node index.js < example.md > example.html
 <p>MIT</p>
 ```
 
-> Note that [`remark-rehype`][remark-rehype] doesn’t deal with HTML inside
-> the markdown.  You’ll need [`rehype-raw`][rehype-raw] if you’re planning
-> on doing that.
+> Note that [`remark-rehype`][remark-rehype] doesn’t deal with HTML inside the
+> Markdown.
+> You’ll need [`rehype-raw`][rehype-raw] if you’re planning on doing that.
 
-🎉 Nifty!  It doesn’t do much yet, but we’ll get there.
-In the next section, we’ll make this more useful by
-introducing plugins.
+🎉 Nifty!
+It doesn’t do much yet, but we’ll get there.
+In the next section, we’ll make this more useful by introducing plugins.
 
 ### Plugins
 
-We’re still missing some things, notably a table of
-contents, and proper HTML document structure.
+We’re still missing some things, notably a table of contents, and proper HTML
+document structure.
 
-Respectively, we can use [`remark-toc`][toc] and
-[`rehype-document`][document] to do these two tasks.
+Respectively, we can use [`remark-toc`][toc] and [`rehype-document`][document]
+to do these two tasks.
 
 ```bash sh
 $ npm install remark-toc rehype-document
 /Users/tilde/example
-├── remark-toc@5.0.0
-└── rehype-document@2.0.1
+├── remark-toc@6.0.0
+└── rehype-document@3.0.1
 ```
 
-Let’s now use those two as well, by modifying our
-`index.js` file:
+Let’s now use those two as well, by modifying our `index.js` file:
 
 ```diff index.js
  var unified = require('unified')
@@ -143,19 +144,21 @@ Let’s now use those two as well, by modifying our
  process.stdin.pipe(stream(processor)).pipe(process.stdout)
 ```
 
-We pass options to `rehype-document`.  In this case, we use that to make
-sure we get a proper `<title>` element in our `<head>`, as required by
-the HTML specification.  More options are accepted by `rehype-document`, such
-as which language tag to use.  These are described in detail in its
-[`readme.md`][document].  Many other plugins accept options as well,
-so make sure to read through their docs when you’ve got the time.
+We pass options to `rehype-document`.
+In this case, we use that to make sure we get a proper `<title>` element in our
+`<head>`, as required by the HTML specification.
+More options are accepted by `rehype-document`, such as which language tag to
+use.
+These are described in detail in its [`readme.md`][document].
+Many other plugins accept options as well, so make sure to read through their
+docs to learn more.
 
-> Note that remark plugins work on a markdown tree, and rehype
-> plugins work on an HTML tree.  It’s important that you place
-> your `.use` calls in the correct places.
+> Note that remark plugins work on a Markdown tree, and rehype plugins work on
+> an HTML tree.
+> It’s important that you place your `.use` calls in the correct places.
 
-Now, when running our script like before, we’d get the
-following `example.html` file:
+Now, when running our script like before, we’d get the following `example.html`
+file:
 
 ```html example.html
 <!doctype html>
@@ -183,34 +186,34 @@ following `example.html` file:
 </html>
 ```
 
-> You may noticed the document isn’t formatted nicely.  There’s a
-> plugin for that though!  Feel free to add
-> [`rehype-format`][rehype-format] to the plugins, below `doc`!
+> You may noticed the document isn’t formatted nicely.
+> There’s a plugin for that though!
+> Feel free to add [`rehype-format`][rehype-format] to the plugins, below `doc`!
 
-💯 You’re acing it!  This is getting pretty useful, right?
+💯 You’re acing it!
+This is getting pretty useful, right?
 
-In the next section, we’ll lay the groundwork for creating
-a report.
+In the next section, we’ll lay the groundwork for creating a report.
 
 ### Reporting
 
-Before we check some prose (yes, we’re getting there), we’ll first
-switch up our `index.js` file to print a pretty report (we’ll fill
-it in the next section).
+Before we check some prose (yes, we’re getting there), we’ll first switch up our
+`index.js` file to print a pretty report (we’ll fill it in the next section).
 
-We can use [`to-vfile`][to-vfile] to read and write virtual files from
-the file-system, and we can use [`vfile-reporter`][reporter] to report
-messages relating to those files.  Let’s install those.
+We can use [`to-vfile`][to-vfile] to read and write virtual files from the file
+system, and we can use [`vfile-reporter`][reporter] to report messages relating
+to those files.
+Let’s install those.
 
 ```bash sh
 $ npm install to-vfile vfile-reporter
 /Users/tilde/example
-├── to-vfile@2.1.2
-└── vfile-reporter@4.0.0
+├── to-vfile@6.0.0
+└── vfile-reporter@6.0.0
 ```
 
-...and now unhook stdin/stdout from our example and use
-the file-system instead, like so:
+…and now unhook stdin/stdout from our example and use the file-system instead,
+like so:
 
 ```diff index.js
  var unified = require('unified')
@@ -239,38 +242,39 @@ the file-system instead, like so:
 +})
 ```
 
-If we now run our script on its own, without shell redirects,
-we get a report showing everything’s fine:
+If we now run our script on its own, without shell redirects, we get a report
+showing everything’s fine:
 
 ```bash sh
 $ node index.js
 example.md: no issues found
 ```
 
-But everything’s not fine, there’s a typo in the markdown!
+But everything’s not fine, there’s a typo in the Markdown!
 The next section shows how to detect prose errors by adding retext.
 
 ### Checking prose
 
-I did notice a typo in there, so let’s check some prose to prevent
-that from happening in the future.  We can use retext and its ecosystem
-for our natural language parsing.  As we’re writing in English, we use
-[`retext-english`][english] specifically to parse English natural
-language.  The problem in our `example.md` file is that it has
-`a example` instead of `an example`, which is conveniently checked for
-by [`retext-indefinite-article`][indefinite-article].  To bridge from
-markup to prose, we’ll use [`remark-retext`][remark-retext].  First,
-let’s install these dependencies as well.
+I did notice a typo in there, so let’s check some prose to prevent that from
+happening in the future.
+We can use retext and its ecosystem for our natural language parsing.
+As we’re writing in English, we use [`retext-english`][english] specifically to
+parse English natural language.
+The problem in our `example.md` file is that it has `a example` instead of
+`an example`, which is conveniently checked for by
+[`retext-indefinite-article`][indefinite-article].
+To bridge from markup to prose, we’ll use [`remark-retext`][remark-retext].
+First, let’s install these dependencies as well.
 
 ```bash sh
 $ npm install remark-retext retext-english retext-indefinite-article
 /Users/tilde/example
-├── remark-retext@3.1.0
-├── retext-english@3.0.0
-└── retext-indefinite-article@1.1.3
+├── remark-retext@3.1.3
+├── retext-english@3.0.3
+└── retext-indefinite-article@1.1.7
 ```
 
-...and change our `index.js` like so:
+…and change our `index.js` like so:
 
 ```diff index.js
  var unified = require('unified')
@@ -306,9 +310,11 @@ $ npm install remark-retext retext-english retext-indefinite-article
  })
 ```
 
-As the code shows, `remark-retext` receives another `unified`
-middleware pipeline.  A natural language pipeline.  The plugin
-will transform the origin syntax (markdown) with the given pipeline’s parser.
+As the code shows, `remark-retext` receives another `unified` middleware
+pipeline.
+A natural language pipeline.
+The plugin will transform the origin syntax (Markdown) with the given pipeline’s
+parser.
 Then, it’ll run the attached plugins on the natural language syntax tree.
 
 Now, when running our script one final time:
@@ -321,17 +327,17 @@ example.md
 ⚠ 1 warning
 ```
 
-...we’ll get a useful message.
+…we’ll get a useful message.
 
 💃 You’ve got a really cool system set up already, nicely done!
-That’s a wrap though, check out the next section for further
-exercises and resources.
+That’s a wrap though, check out the next section for further exercises and
+resources.
 
 ### Further exercises
 
-Finally, check out the lists of available plugins
-for [retext][retext-plugins], [remark][remark-plugins], and
-[rehype][rehype-plugins], and try some of them out.
+Finally, check out the lists of available plugins for [retext][retext-plugins],
+[remark][remark-plugins], and [rehype][rehype-plugins], and try some of them
+out.
 
 If you haven’t already, check out the other [guides][]!
 

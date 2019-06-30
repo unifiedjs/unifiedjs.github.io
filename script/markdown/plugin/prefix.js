@@ -8,7 +8,7 @@ function section() {
     tree.children.unshift(
       h(
         'header',
-        h('h1', h('a', {href: '..'}, [h('span.hl.unified', 'uni'), 'fied']))
+        h('h1', h('a.unified', {href: '..'}, [h('span.hl', 'uni'), 'fied']))
       )
     )
   }

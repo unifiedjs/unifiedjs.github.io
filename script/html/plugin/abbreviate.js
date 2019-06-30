@@ -11,12 +11,11 @@ var ignore = findAndReplace.ignore.concat(['pre', 'code'])
 var titles = {
   AST: 'Abstract Syntax Tree',
   API: null,
+  CLI: 'Command-line Interface',
   CST: 'Concrete Syntax Tree',
   DOM: null,
   HSL: 'Hue Saturation Lightness',
   HTML: null,
-  ZEIT: null,
-  MDX: null,
   IE: 'Internet Explorer',
   ES2016: 'ECMAScript2016',
   ES2015: 'ECMAScript2015'
