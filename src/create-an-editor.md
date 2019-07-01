@@ -519,7 +519,7 @@ If you haven’t already, check out the other [guides][]!
 
 [tweet]: https://twitter.com/gregoryciotti/status/639837682844090369
 
-[write-music]: http://wooorm.com/write-music/
+[write-music]: https://wooorm.com/write-music/
 
 [xo]: https://github.com/sindresorhus/xo
 
