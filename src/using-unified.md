@@ -113,12 +113,13 @@ In the next section, we’ll make this more useful by introducing plugins.
 We’re still missing some things, notably a table of contents, and proper HTML
 document structure.
 
-Respectively, we can use [`remark-toc`][toc] and [`rehype-document`][document]
-to do these two tasks.
+We can use [`remark-slug`][slug] and [`remark-toc`][toc] for the former, and
+[`rehype-document`][document] to do the latter tasks.
 
 ```bash sh
 $ npm install remark-toc rehype-document
 /Users/tilde/example
+├── remark-slug@5.1.2
 ├── remark-toc@6.0.0
 └── rehype-document@3.0.1
 ```
@@ -129,6 +130,7 @@ Let’s now use those two as well, by modifying our `index.js` file:
  var unified = require('unified')
  var stream = require('unified-stream')
  var markdown = require('remark-parse')
++var slug = require('remark-slug')
 +var toc = require('remark-toc')
  var remark2rehype = require('remark-rehype')
 +var doc = require('rehype-document')
@@ -136,6 +138,7 @@ Let’s now use those two as well, by modifying our `index.js` file:
 
  var processor = unified()
    .use(markdown)
++  .use(slug)
 +  .use(toc)
    .use(remark2rehype)
 +  .use(doc, {title: 'Contents'})
@@ -221,6 +224,7 @@ like so:
 +var vfile = require('to-vfile')
 +var report = require('vfile-reporter')
  var markdown = require('remark-parse')
+ var slug = require('remark-slug')
  var toc = require('remark-toc')
  var remark2rehype = require('remark-rehype')
  var doc = require('rehype-document')
@@ -228,6 +232,7 @@ like so:
 
  var processor = unified()
    .use(markdown)
+   .use(slug)
    .use(toc)
    .use(remark2rehype)
    .use(doc, {title: 'Contents'})
@@ -281,6 +286,7 @@ $ npm install remark-retext retext-english retext-indefinite-article
  var vfile = require('to-vfile')
  var report = require('vfile-reporter')
  var markdown = require('remark-parse')
+ var slug = require('remark-slug')
  var toc = require('remark-toc')
 +var remark2retext = require('remark-retext')
 +var english = require('retext-english')
@@ -297,6 +303,7 @@ $ npm install remark-retext retext-english retext-indefinite-article
 +      .use(english)
 +      .use(indefiniteArticle)
 +  )
+   .use(slug)
    .use(toc)
    .use(remark2rehype)
    .use(doc, {title: 'Contents'})
@@ -354,6 +361,8 @@ If you haven’t already, check out the other [guides][]!
 [npm]: https://www.npmjs.com
 
 [node]: https://nodejs.org
+
+[slug]: https://github.com/remarkjs/remark-slug
 
 [toc]: https://github.com/remarkjs/remark-toc
 
