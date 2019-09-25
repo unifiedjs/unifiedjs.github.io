@@ -8,6 +8,10 @@ middleware
 pluggable
 programmatically
 math
+transpile
+config
+configs
+fulfill
 
 // Jargon
 formatter
@@ -41,10 +45,16 @@ xo
 browserify
 workshopper
 ZEIT
-Otander
-prettyhtml
 JSX
 MDX
+Otander
+prettyhtml
+webpack
+polyfill
+javascript
+ES2015
+ES2016
+IE
 
 unist
 unified
