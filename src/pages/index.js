@@ -56,7 +56,7 @@ export default () => (
         <Flex mt={[3, 4, 5]} justifyContent="space-between" flexWrap="wrap">
           <Box pr={3} width={[1, 1, 1/3]}>
             <Heading as="h2">Powerful</Heading>
-            <Text mt={2} mb={3} fontSize={2} color="grays.8" mb={3}>
+            <Text mt={2} mb={3} fontSize={2} color="grays.8">
               There's a vibrant ecosystem that's well documented
               to allow developers to focus on value rather than syntax.
             </Text>
@@ -93,7 +93,7 @@ export default () => (
           <Box pr={3} width={[1, 1, 1/3]}>
             <Logo domain="google.com" height={64} mb={3} />
             <Box width={2/3} m='auto'>
-              <Text mt={2} mb={3} fontSize={2} color="grays.8" mb={3}>
+              <Text mt={2} mb={3} fontSize={2} color="grays.8">
                 <Link href="https://developers.google.com/web/fundamentals">WebFundamentals</Link> by Google uses unified to check markup and build HTML
               </Text>
             </Box>
@@ -101,7 +101,7 @@ export default () => (
           <Box px={3} width={[1, 1, 1/3]}>
             <Logo domain="nodejs.org" height={64} mb={3}  />
             <Box width={2/3} m='auto'>
-              <Text mt={2} mb={3} fontSize={2} color="grays.8" mb={3}>
+              <Text mt={2} mb={3} fontSize={2} color="grays.8">
                 <Link href="https://nodejs.org">Node</Link> uses unified to check markup in their docs
               </Text>
             </Box>
@@ -109,7 +109,7 @@ export default () => (
           <Box pl={3} width={[1, 1, 1/3]}>
             <Logo domain="reactjs.org" height={64} mb={3} />
             <Box width={2/3} mx='auto'>
-              <Text mt={2} mb={3} fontSize={2} color="grays.8" mb={3}>
+              <Text mt={2} mb={3} fontSize={2} color="grays.8">
                 <Link href="https://reactjs.org">React</Link> by Facebook uses unified through Gatsby with custom plugins to build their site
               </Text>
             </Box>
@@ -120,7 +120,7 @@ export default () => (
           <Box pr={3} width={[1, 1, 1/3]}>
             <Logo domain="mozilla.com" height={64} mb={3} />
             <Box width={2/3} m='auto'>
-              <Text mt={2} mb={3} fontSize={2} color="grays.8" mb={3}>
+              <Text mt={2} mb={3} fontSize={2} color="grays.8">
                 <Link href="https://github.com/devtools-html/debugger.html">Debugger</Link> by Mozilla uses unified to check their markup and prose
               </Text>
             </Box>
@@ -128,7 +128,7 @@ export default () => (
           <Box px={3} width={[1, 1, 1/3]}>
             <Logo domain="gatsbyjs.com" height={64} mb={3}  />
             <Box width={2/3} m='auto'>
-              <Text mt={2} mb={3} fontSize={2} color="grays.8" mb={3}>
+              <Text mt={2} mb={3} fontSize={2} color="grays.8">
                 <Link href="https://gatsbyjs.org">Gatsby</Link> uses unified to process markdown for blazing fast static site generation
               </Text>
             </Box>
@@ -136,7 +136,7 @@ export default () => (
           <Box pl={3} width={[1, 1, 1/3]}>
             <Logo domain="github.com" height={64} mb={3} />
             <Box width={2/3} m='auto'>
-              <Text mt={2} mb={3} fontSize={2} color="grays.8" mb={3}>
+              <Text mt={2} mb={3} fontSize={2} color="grays.8">
                 <Link href="https://opensource.guide">Open Source Guides</Link> by GitHub (and you) uses unified to check markup and prose style
               </Text>
             </Box>

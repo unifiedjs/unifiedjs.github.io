@@ -17,27 +17,28 @@
   "author": "John Otander <johnotander@gmail.com> (http://johnotander.com)",
   "contributors": [
     "John Otander <johnotander@gmail.com> (http://johnotander.com)",
-    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)"
+    "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+    "Christian Murphy christian.murphy.42@gmail.com>"
   ],
   "dependencies": {
-    "@mdx-js/mdx": "^0.16.0",
-    "@mdx-js/runtime": "^0.16.0",
-    "@mdx-js/tag": "^0.16.0",
-    "core-js": "^2.5.7",
-    "gatsby": "^2.0.40",
-    "gatsby-mdx": "^0.2.0",
-    "gatsby-plugin-manifest": "^2.0.7",
-    "gatsby-plugin-offline": "^2.0.12",
-    "gatsby-plugin-react-helmet": "^3.0.1",
-    "gatsby-source-graphql": "^2.0.6",
+    "@mdx-js/mdx": "^1.5.1",
+    "@mdx-js/react": "^1.5.1",
+    "@mdx-js/runtime": "^1.5.1",
+    "core-js": "^3.3.5",
+    "gatsby": "^2.17.6",
+    "gatsby-plugin-manifest": "^2.2.25",
+    "gatsby-plugin-mdx": "^1.0.54",
+    "gatsby-plugin-offline": "^3.0.17",
+    "gatsby-plugin-react-helmet": "^3.1.13",
+    "gatsby-source-graphql": "^2.1.21",
     "is-url": "^1.2.4",
-    "prop-types": "^15.6.2",
-    "react": "^16.6.0",
-    "react-dom": "^16.6.0",
-    "react-helmet": "^5.2.0",
-    "styled-components": "^4.0.3",
-    "styled-system": "^3.1.11",
-    "unified-ui": "0.0.2-25"
+    "prop-types": "^15.7.2",
+    "react": "^16.11.0",
+    "react-dom": "^16.11.0",
+    "react-helmet": "^5.2.1",
+    "styled-components": "^4.4.0",
+    "styled-system": "^5.1.2",
+    "unified-ui": "0.0.3"
   },
   "scripts": {
     "format": "remark . -qfo && prettier \"**/*.js\" --write && xo --fix",
@@ -77,11 +78,11 @@
     ]
   },
   "devDependencies": {
-    "dotenv": "^6.1.0",
-    "eslint-config-xo-react": "^0.17.0",
-    "prettier": "^1.14.3",
-    "remark-cli": "^6.0.0",
-    "remark-preset-wooorm": "^4.0.0",
-    "xo": "^0.23.0"
+    "dotenv": "^8.2.0",
+    "eslint-config-xo-react": "^0.20.0",
+    "prettier": "^1.18.2",
+    "remark-cli": "^7.0.0",
+    "remark-preset-wooorm": "^6.0.1",
+    "xo": "^0.25.3"
   }
 }
