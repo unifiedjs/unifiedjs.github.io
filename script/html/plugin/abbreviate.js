@@ -32,7 +32,7 @@ function link() {
 
     function replace($0) {
       var id = singular($0)
-      var first = cache.indexOf(id) === -1
+      var first = !cache.includes(id)
       var title = titles[id]
       var props
 

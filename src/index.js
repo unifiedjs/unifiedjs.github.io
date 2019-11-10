@@ -124,7 +124,7 @@ function when(selector, cb) {
   inView(selector).on('enter', onenter)
 
   function onenter($node) {
-    if (seen.indexOf($node) === -1) {
+    if (!seen.includes($node)) {
       seen.push($node)
       cb($node)
     }
