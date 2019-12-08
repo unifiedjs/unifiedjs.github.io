@@ -55,7 +55,7 @@ trough()
     pAll(
       paths.map(path => () => run(path)),
       {concurrency: 3}
-    ).then(done, done)
+    ).then(files => done(null, files), done)
   })
   .use(function(files, next) {
     var contents = new URL(pack.homepage).host + '\n'
