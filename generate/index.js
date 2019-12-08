@@ -81,7 +81,11 @@ var sections = [
   }
 })
 
-page(() => home({...data, articles: entries, sponsors, users}), {pathname: '/'})
+page(() => home({...data, articles: entries, sponsors, users}), {
+  description:
+    'Content as structured data: unified compiles content and provides hundreds of packages to work with content',
+  pathname: '/'
+})
 
 entries.forEach(file => {
   tasks.push(() =>
