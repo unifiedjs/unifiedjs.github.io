@@ -15,35 +15,50 @@
     "Merlijn Vos <merlijn@soverin.net>"
   ],
   "devDependencies": {
-    "async": "^3.0.0",
-    "bail": "^1.0.0",
     "browserify": "^16.0.0",
     "budo": "^11.0.0",
+    "chalk": "^3.0.0",
+    "compute-mean": "^3.0.0",
     "cssnano": "^4.0.0",
+    "cssnano-preset-advanced": "^4.0.0",
+    "d3-scale": "^3.0.0",
+    "deepmerge": "^4.0.0",
     "dictionary-en-gb": "^2.0.0",
+    "dotenv": "^8.2.0",
+    "flexsearch": "^0.6.0",
     "glob": "^7.0.0",
     "hast-util-find-and-replace": "^2.0.0",
-    "hast-util-from-string": "^1.0.0",
-    "hast-util-select": "^3.0.0",
-    "hast-util-to-string": "^1.0.0",
+    "hast-util-sanitize": "^2.0.0",
+    "hast-util-to-dom": "^2.0.0",
     "hastscript": "^5.0.0",
-    "lowlight": "^1.0.0",
-    "mkdirp": "^0.5.0",
+    "hosted-git-info": "^3.0.0",
+    "humanize-url": "^2.0.0",
+    "js-yaml": "^3.0.0",
+    "node-fetch": "^2.0.0",
+    "number-abbreviate": "^2.0.0",
+    "p-all": "^2.0.0",
+    "pick-random": "^2.0.0",
     "pluralize": "^8.0.0",
+    "postcss": "^7.0.0",
+    "postcss-preset-env": "^6.0.0",
     "prettier": "^1.0.0",
+    "pretty-bytes": "^5.0.0",
     "rehype-autolink-headings": "^2.0.0",
-    "rehype-cli": "^8.0.0",
     "rehype-document": "^3.0.0",
     "rehype-highlight": "^3.0.0",
-    "rehype-parse": "^6.0.0",
+    "rehype-meta": "^1.0.0",
     "rehype-preset-minify": "^4.0.0",
     "rehype-raw": "^4.0.0",
-    "rehype-retext": "^2.0.0",
+    "rehype-sanitize": "^3.0.0",
     "rehype-slug": "^2.0.0",
     "rehype-stringify": "^6.0.0",
     "remark-cli": "^7.0.0",
+    "remark-frontmatter": "^1.0.0",
+    "remark-gemoji": "^4.0.0",
+    "remark-gemoji-to-emoji": "^1.0.0",
     "remark-lint-first-heading-level": "^1.0.0",
     "remark-lint-no-dead-urls": "^1.0.0",
+    "remark-lint-no-html": "^1.0.0",
     "remark-parse": "^7.0.0",
     "remark-preset-wooorm": "^6.0.0",
     "remark-rehype": "^5.0.0",
@@ -59,28 +74,36 @@
     "retext-simplify": "^5.0.0",
     "retext-spell": "^3.0.0",
     "retext-syntax-mentions": "^1.0.0",
+    "sharp": "^0.23.0",
+    "spdx-license-list": "^6.0.0",
     "strip-comments": "^1.0.0",
-    "stylelint": "^11.0.0",
+    "stylelint": "^12.0.0",
     "stylelint-config-standard": "^19.0.0",
-    "svgo": "^1.0.0",
     "tinyify": "^2.0.0",
     "to-vfile": "^6.0.0",
-    "trim": "0.0.1",
     "trough": "^1.0.0",
     "unified": "^8.0.0",
     "unist-util-visit": "^2.0.0",
+    "vfile-matter": "^1.0.0",
+    "vfile-mkdirp": "^1.0.0",
+    "vfile-rename": "^1.0.0",
     "vfile-reporter": "^6.0.0",
     "xo": "^0.25.0"
   },
   "scripts": {
-    "format": "remark src -qo && rehype src -q && prettier --write \"**/*.js\" && xo --fix",
     "start": "budo --dir build",
-    "build": "node script",
-    "test": "npm run format && npm run build"
+    "format": "remark . -qo && prettier --write \"**/*.{js,css}\" && stylelint \"**/*.css\" --fix && xo --fix",
+    "crawl:sponsors": "mkdir -p data; node crawl/sponsors",
+    "crawl:team": "mkdir -p data; node crawl/team",
+    "crawl:ecosystem": "mkdir -p data; mkdir -p data/readme; node crawl/ecosystem",
+    "crawl": "npm run crawl:sponsors && npm run crawl:team && npm run crawl:ecosystem",
+    "generate:asset": "node generate/asset",
+    "generate:pages": "node generate/index",
+    "generate:theme": "cp node_modules/highlight.js/styles/atom-one-light.css build/syntax-light.css && cp node_modules/highlight.js/styles/atom-one-dark.css build/syntax-dark.css",
+    "generate": "npm run generate:asset && npm run generate:pages && npm run generate:theme",
+    "test": "npm run format && npm run crawl && npm run generate"
   },
-  "dependencies": {
-    "in-view": "^0.6.0"
-  },
+  "dependencies": {},
   "prettier": {
     "tabWidth": 2,
     "useTabs": false,
@@ -91,25 +114,12 @@
   },
   "xo": {
     "prettier": true,
-    "esnext": false,
-    "ignores": [
-      "index.js"
-    ]
+    "esnext": false
   },
   "stylelint": {
     "extends": "stylelint-config-standard",
     "rules": {
       "no-descending-specificity": null
     }
-  },
-  "remarkConfig": {
-    "plugins": [
-      "./script/markdown/preset-md"
-    ]
-  },
-  "rehype": {
-    "plugins": [
-      "./script/html/preset"
-    ]
   }
 }

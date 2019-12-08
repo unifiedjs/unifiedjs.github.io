@@ -1,0 +1,160 @@
+:root {
+  --hl: var(--blue-3-83);
+}
+
+body {
+  background-color: var(--gray-9);
+  color: var(--gray-2);
+}
+
+.content .mdx:hover,
+.content .mdx:focus {
+  color: #f9ac00;
+}
+
+.mdx .hl,
+.content .mdx:hover .hl,
+.content .mdx:focus .hl {
+  color: var(--gray-2);
+}
+
+.box {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: black;
+}
+
+.thumbnail {
+  box-shadow: 0 0 0 0.2em var(--gray-9);
+}
+
+.card {
+  background-color: rgba(0, 0, 0, 0.2);
+  box-shadow:
+    0 0 0 0.2em rgba(46, 143, 255, 0),
+    0 13px 27px -5px rgba(0, 0, 43, 0.25),
+    0 8px 16px -8px rgba(0, 0, 0, 0.3),
+    0 -6px 16px -6px rgba(0, 0, 0, 0.025);
+}
+
+.card:hover {
+  box-shadow:
+    0 0 0 0.2em rgba(46, 143, 255, 0),
+    0 30px 60px -12px rgba(0, 0, 43, 0.25),
+    0 18px 36px -18px rgba(0, 0, 0, 0.3),
+    0 -12px 36px -8px rgba(0, 0, 0, 0.025);
+}
+
+.more {
+  border-color: black;
+}
+
+.tag {
+  color: var(--blue-3);
+  background-color: var(--blue-7);
+}
+
+.count {
+  background-color: var(--blue-3);
+  color: var(--blue-7);
+}
+
+a.tag:hover,
+a.tag:focus {
+  color: var(--gray-2);
+}
+
+a.tag:hover .count,
+a.tag:focus .count {
+  background-color: var(--gray-2);
+}
+
+.search button,
+.search input {
+  color: var(--gray-0);
+  border-color: black;
+}
+
+.search input {
+  background-color: var(--gray-8);
+}
+
+.search button {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.search input:hover,
+.search input:focus,
+.search button:hover,
+.search button:focus,
+.search button:active {
+  border-color: var(--hl);
+}
+
+.search button:active {
+  background-color: var(--hl);
+  color: var(--gray-0);
+}
+
+.card:focus {
+  /* --blue-3-83 */
+  box-shadow:
+    0 0 0 0.2em rgb(46, 143, 255),
+    0 30px 60px -12px rgba(0, 0, 43, 0.25),
+    0 18px 36px -18px rgba(0, 0, 0, 0.3),
+    0 -12px 36px -8px rgba(0, 0, 0, 0.025);
+}
+
+.content h1,
+.content h2 {
+  border-bottom-color: var(--gray-7);
+}
+
+.content kbd {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-color: var(--gray-8);
+  box-shadow: inset 0 -1px 0 black;
+  color: var(--gray-2);
+}
+
+.content pre {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.content code {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.content hr {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.content tr {
+  background-color: var(--gray-9);
+  border-top-color: var(--gray-6);
+}
+
+.content tr:nth-child(2n) {
+  background-color: var(--gray-8);
+}
+
+.content td,
+.content th {
+  border-color: var(--gray-6);
+}
+
+.content blockquote {
+  color: var(--gray-4);
+}
+
+.content blockquote::before {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.content abbr.first {
+  border-bottom-color: var(--gray-6);
+}
+
+/* Not enough contrast */
+.hljs-comment {
+  color: var(--gray-4);
+}
