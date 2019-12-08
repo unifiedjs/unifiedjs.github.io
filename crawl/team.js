@@ -3,6 +3,8 @@ var {join, basename, extname} = require('path')
 var yaml = require('js-yaml')
 var fetch = require('node-fetch')
 
+require('dotenv').config()
+
 var headers = {Authorization: 'bearer ' + process.env.GH_TOKEN}
 
 var base = 'https://raw.githubusercontent.com/unifiedjs/collective/master/data/'
