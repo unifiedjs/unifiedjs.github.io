@@ -55,6 +55,13 @@ module.exports = unified()
     siteTags: ['unified', 'parse', 'stringify', 'process', 'ast', 'transform'],
     siteAuthor: 'unified collective',
     siteTwitter: '@unifiedjs',
+    image: {
+      url: 'https://unifiedjs.com/image/cover-1200.png',
+      width: 1200,
+      height: 690,
+      alt:
+        'We compile content to syntax trees and syntax trees to content. We also provide hundreds of packages to work on the trees in between. You can build on the unified collective to make all kinds of interesting things.'
+    },
     color: '#0366d6'
   })
   .use(defer)
