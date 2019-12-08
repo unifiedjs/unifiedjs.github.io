@@ -13,7 +13,7 @@ function npm(name) {
 
   if (name) {
     href = base + (name.charAt(0) === '~' ? '' : 'package/') + name
-    node = h('a', {href}, node)
+    node = h('a.tap-target', {href}, node)
   }
 
   return h('li', node)

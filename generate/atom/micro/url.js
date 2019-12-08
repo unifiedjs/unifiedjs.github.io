@@ -8,6 +8,9 @@ module.exports = url
 
 function url(value) {
   return value
-    ? h('li.ellipsis', h('a', {href: value}, [icon(), ' ', fmt(value)]))
+    ? h(
+        'li.ellipsis',
+        h('a.tap-target', {href: value}, [icon(), ' ', fmt(value)])
+      )
     : ''
 }

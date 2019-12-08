@@ -9,7 +9,7 @@ function twitter(name) {
   var node = icon()
 
   if (name) {
-    node = h('a', {href: 'https://twitter.com/' + name}, node)
+    node = h('a.tap-target', {href: 'https://twitter.com/' + name}, node)
   }
 
   return h('li', node)

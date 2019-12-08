@@ -10,7 +10,7 @@ function downloads(value, name) {
   var node = [icon(), ' ', fmt(value)]
 
   if (name) {
-    node = h('a', {href: 'https://www.npmtrends.com/' + name}, node)
+    node = h('a.tap-target', {href: 'https://www.npmtrends.com/' + name}, node)
   }
 
   return h('li', node)

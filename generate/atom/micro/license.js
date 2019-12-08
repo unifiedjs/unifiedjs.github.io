@@ -11,7 +11,7 @@ function license(value) {
   var node = value ? [icon(), ' ', value] : ''
 
   if (url) {
-    node = h('a', {href: url}, node)
+    node = h('a.tap-target', {href: url}, node)
   }
 
   return node ? h('li', node) : ''

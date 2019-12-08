@@ -9,7 +9,7 @@ function oc(name) {
   var node = icon()
 
   if (name) {
-    node = h('a', {href: 'https://opencollective.com/' + name}, node)
+    node = h('a.tap-target', {href: 'https://opencollective.com/' + name}, node)
   }
 
   return h('li', node)
