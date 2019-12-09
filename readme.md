@@ -11,7 +11,8 @@ Takes about 20 minutes (🤯) on my tiny trusted 12 inch MacBook.
 The reason for this is that it crawls the whole ecosystem.
 We contact 5 API’s: GitHub, npm, npms, OpenCollective, and BundlePhobia.
 When generating, it builds a performant static site.
-Everything is minified and images are highly optimised.
+Everything is minified.
+Images are highly optimised.
 
 To build the site, create a `.env` file with the following tokens:
 
