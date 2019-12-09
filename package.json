@@ -29,7 +29,7 @@
     "glob": "^7.0.0",
     "hast-util-find-and-replace": "^2.0.0",
     "hast-util-sanitize": "^2.0.0",
-    "hast-util-to-dom": "^2.0.0",
+    "hast-util-to-dom": "^2.0.2",
     "hastscript": "^5.0.0",
     "hosted-git-info": "^3.0.0",
     "humanize-url": "^2.0.0",
