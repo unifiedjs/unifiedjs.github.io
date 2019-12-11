@@ -127,8 +127,8 @@ function transformPng(file, next) {
   var sizes = [200, 600, 1200, 2000]
   var formats = ['webp', 'png']
   var options = {
-    webp: {quality: 50},
-    png: {compressionLevel: 9, adaptiveFiltering: false}
+    webp: {quality: 50, alphaQuality: 50},
+    png: {quality: 50, compressionLevel: 9}
   }
 
   var run = promisify(imagePipeline.run)
