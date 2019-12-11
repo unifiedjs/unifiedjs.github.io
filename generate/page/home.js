@@ -55,7 +55,7 @@ function home(data) {
           'together, to make all kinds of interesting new things. '
         ])
       ]),
-      cases(data.users, {max: 3, more: usecases}),
+      cases(data.users, {max: 3}),
       h('.article.content', [
         h('h2', 'Learn'),
         h('p', [
@@ -66,7 +66,9 @@ function home(data) {
           'make things with unified. '
         ])
       ]),
-      articlesList({}, articlesSort(data.articles), {max: 3, more: learn}),
+      articlesList({pathname: '/learn/'}, articlesSort(data.articles), {
+        max: 3
+      }),
       h('.article.content', [
         h('h2', 'Explore'),
         h('p', [
@@ -100,50 +102,25 @@ function home(data) {
       sponsors(data.sponsors, {max: 6})
     ]
   )
-}
 
-function explore() {
-  return block(
-    h(
-      'a.box.more',
-      {href: '/explore/'},
-      h('.column', [
-        h('h3', 'Explore the ecosystem'),
-        h('p', 'Search or browse the projects and packages in the ecosystem.')
-      ])
-    )
-  )
-}
-
-function usecases() {
-  return block(
-    h(
-      'a.card.more',
-      {href: '/community/case/'},
-      h('.column', [
-        h('h3', 'unified use cases'),
-        h('p', [
-          'See a selection of cases using unified to do interesting things.'
+  function explore() {
+    return block(
+      h(
+        'a.box.more',
+        {href: '/explore/'},
+        h('.column', [
+          h(
+            'p',
+            'See ' +
+              names.length +
+              ' packages and ' +
+              repos.length +
+              ' projects'
+          )
         ])
-      ])
+      )
     )
-  )
-}
-
-function learn() {
-  return block(
-    h(
-      'a.card.more',
-      {href: '/learn/'},
-      h('.column', [
-        h('h3', 'Learn unified'),
-        h('p', [
-          'Browse articles ranging from recipes that complete small, specific ',
-          'tasks, to guides that walk through how to complete bigger tasks.'
-        ])
-      ])
-    )
-  )
+  }
 }
 
 function sum(a, b) {
