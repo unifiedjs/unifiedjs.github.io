@@ -1,8 +1,6 @@
 'use strict'
 
 var h = require('hastscript')
-var st = require('../atom/icon/st')
-var oc = require('../atom/icon/oc')
 var tw = require('../atom/icon/tw')
 var gh = require('../atom/icon/gh')
 
@@ -19,18 +17,6 @@ function header() {
           h('li', h('a', {href: '/community/'}, 'Community'))
         ]),
         h('ol.row.x-show-l.justify-end-l', [
-          h('li', [
-            h('a', {href: 'https://spectrum.chat/unified'}, [
-              enlarge(st()),
-              h('span.x-hide-l', 'Spectrum')
-            ])
-          ]),
-          h('li', [
-            h('a', {href: 'https://opencollective.com/unified'}, [
-              enlarge(oc()),
-              h('span.x-hide-l', 'OpenCollective')
-            ])
-          ]),
           h('li', [
             h('a', {href: 'https://twitter.com/unifiedjs'}, [
               enlarge(tw()),
