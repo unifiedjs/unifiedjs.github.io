@@ -33,9 +33,8 @@ function home(data) {
             'We ',
             h('em', 'also'),
             ' provide hundreds of packages to work on the trees in ',
-            'between. '
-          ]),
-          h('p', [
+            'between. ',
+            h('br'),
             h('strong', 'You'),
             ' can build on the ',
             h('strong', 'unified collective'),
