@@ -8,6 +8,21 @@
   url: https://www.gatsbyjs.org
   gh: gatsbyjs/gatsby
   src: /image/gatsby.png
+- title: Write Music
+  short: Uses unified to visualize sentence length
+  url: https://wooorm.com/write-music/
+  gh: wooorm/write-music
+  src: /image/write-music.png
+- title: Node.js
+  short: Uses unified to check and build their docs
+  url: https://nodejs.org
+  gh: nodejs/node
+  src: /image/node.png
+- title: alex
+  short: Uses unified to catch insensitive, inconsiderate writing
+  url: https://alexjs.com
+  gh: get-alex/alex
+  src: /image/alex.png
 - title: MDX
   short: Uses unified to combine Markdown with JSX
   url: https://mdxjs.com
@@ -32,11 +47,6 @@
   short: Uses unified to build their help site
   url: https://help.github.com
   src: /image/github-help.png
-- title: Node.js
-  short: Uses unified to check and build their docs
-  url: https://nodejs.org
-  gh: nodejs/node
-  src: /image/node.png
 - title: Storybook
   short: Uses unified to check their docs
   url: https://storybook.js.org
@@ -102,21 +112,11 @@
   url: https://rexxars.github.io/react-markdown/
   gh: rexxars/react-markdown
   src: /image/react-markdown.png
-- title: Write Music
-  short: Uses unified to visualize sentence length
-  url: https://wooorm.com/write-music/
-  gh: wooorm/write-music
-  src: /image/write-music.png
 - title: Readability
   short: Uses unified to visualize readability
   url: https://wooorm.com/readability/
   gh: wooorm/readability
   src: /image/readability.png
-- title: alex
-  short: Uses unified to catch insensitive, inconsiderate writing
-  url: https://alexjs.com
-  gh: get-alex/alex
-  src: /image/alex.png
 - title: PrettyHTML
   short: Uses unified to format content
   url: https://prettyhtml.netlify.com
