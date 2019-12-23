@@ -55,7 +55,7 @@ function home(data) {
           'together, to make all kinds of interesting new things. '
         ])
       ]),
-      cases(data.users, {max: 3}),
+      cases(data.users, {max: 6}),
       h('.article.content', [
         h('h2', 'Learn'),
         h('p', [
@@ -67,7 +67,7 @@ function home(data) {
         ])
       ]),
       articlesList({pathname: '/learn/'}, articlesSort(data.articles), {
-        max: 3
+        max: 6
       }),
       h('.article.content', [
         h('h2', 'Explore'),
