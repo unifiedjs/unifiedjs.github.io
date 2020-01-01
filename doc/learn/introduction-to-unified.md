@@ -72,6 +72,7 @@ The specifications for syntax trees:
 *   unist — Universal Syntax Tree
 *   mdast — Markdown Abstract Syntax Tree format
 *   hast — HTML Abstract Syntax Tree format
+*   xast — XML Abstract Syntax Tree format
 *   nlcst — Natural Language Concrete Syntax Tree format
 
 Other building blocks:

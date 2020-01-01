@@ -291,6 +291,12 @@ abbr {
   color: hsl(45, 97%, 43%);
 }
 
+.xast .hl,
+.content .xast:hover .hl,
+.content .xast:focus .hl {
+  color: hsl(261, 51%, 51%);
+}
+
 .redot .hl,
 .dotast .hl,
 .content .redot:hover .hl,

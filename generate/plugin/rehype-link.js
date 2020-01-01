@@ -41,6 +41,7 @@ function initialise() {
     'nl|cst': 'syntax-tree/nlcst',
     'md|ast': 'syntax-tree/mdast',
     'h|ast': 'syntax-tree/hast',
+    'x|ast': 'syntax-tree/xast',
     'dot|ast': 'redotjs/dotast',
     'MD|X': 'mdx-js/mdx'
   }
