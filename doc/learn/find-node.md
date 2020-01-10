@@ -10,8 +10,7 @@ tags:
   - find
 author: Merlijn Vos
 authorTwitter: Murderlon
-description: How to find nodes in a tree
-published: 2019-12-12
+published: 2020-01-10
 modified: 2020-01-10
 ---
 
