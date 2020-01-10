@@ -78,7 +78,7 @@ yields
 }
 ```
 
-For more info on the API of see [`unist-util-find`][unist-util-find].
+Read more about [unist-util-find`][unist-util-find] in its readme.
 
 [tree-traversal]: https://unifiedjs.com/learn/recipe/tree-traversal/
 
