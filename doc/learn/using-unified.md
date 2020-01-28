@@ -133,7 +133,7 @@ We can use [`remark-slug`][slug] and [`remark-toc`][toc] for the former, and
 [`rehype-document`][document] to do the latter tasks.
 
 ```sh
-$ npm install remark-toc rehype-document
+$ npm install remark-slug remark-toc rehype-document
 /Users/tilde/example
 ├── remark-slug@5.1.2
 ├── remark-toc@6.0.0
