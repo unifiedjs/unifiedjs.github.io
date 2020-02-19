@@ -120,7 +120,7 @@ function attacher() {
 ```
 
 First things first, we need to check `tree` for a pattern.
-We can use a utility to help us do recursively walk our tree, namely
+We can use a utility to help us to recursively walk our tree, namely
 [`unist-util-visit`][visit].
 Let’s add that.
 
