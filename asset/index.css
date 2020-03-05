@@ -384,7 +384,7 @@ abbr {
 
 .box:hover,
 .box:focus {
-  border-color: currentcolor;
+  border-color: currentColor;
 }
 
 .card {
