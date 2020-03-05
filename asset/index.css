@@ -433,7 +433,7 @@ abbr {
 
 .screen {
   display: block;
-  background-image: linear-gradient(150deg, #0366d6 15%, #24292e 85%);
+  background-image: linear-gradient(150deg, #0366d6 15%, #fafbfc 85%);
   margin: calc(-0.5 * (1em + 1ex));
   padding: calc(0.5 * (1em + 1ex));
   margin-bottom: calc(0.5 * (1em + 1ex));
@@ -538,7 +538,7 @@ a.tag:focus .count {
 
 .landing {
   color: var(--gray-0);
-  background-image: linear-gradient(150deg, #0366d6 15%, #24292e 85%);
+  background-image: linear-gradient(150deg, #0366d6 15%, #fafbfc 85%);
 }
 
 .landing .article {
