@@ -72,6 +72,7 @@ trough()
   })
   .run('asset/**/*.*', function(err) {
     if (err) {
+      console.error(reporter(err))
       process.exitCode = 1
     }
   })
