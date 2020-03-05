@@ -1,6 +1,5 @@
 'use strict'
 
-var pick = require('pick-random')
 var h = require('hastscript')
 var block = require('../atom/macro/block')
 var articlesList = require('../component/article/list')
@@ -10,6 +9,7 @@ var listPkg = require('../component/package/list')
 var sponsors = require('../component/sponsor/list')
 var cases = require('../component/case/list')
 var compact = require('../util/fmt-compact')
+var pick = require('../util/pick-random')
 var page = require('./page')
 
 module.exports = home
@@ -20,7 +20,7 @@ function home(data) {
   var repos = Object.keys(projectByRepo)
   var downloads = names.map(d => packageByName[d].downloads).reduce(sum, 0)
   var stars = repos.map(d => projectByRepo[d].stars).reduce(sum, 0)
-  var slice = pick(names.slice(0, 75), {count: 5})
+  var d = pick(names.slice(0, 75), 5)
 
   return page(
     [
@@ -85,7 +85,7 @@ function home(data) {
           'by the community. '
         ])
       ]),
-      listPkg(data, slice, {trail: explore()}),
+      listPkg(data, d, {trail: explore()}),
       h('.article.content', [
         h('h2', 'Sponsor'),
         h('p', [
