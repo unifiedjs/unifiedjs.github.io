@@ -1,0 +1,19 @@
+[
+  {
+    "name": "example",
+    "latest": "0.0.0",
+    "description": "an example package",
+    "keywords": [
+      "example-keyword"
+    ],
+    "license": "MIT",
+    "dependents": 1,
+    "score": 0.75,
+    "downloads": 1337,
+    "gzip": 1337,
+    "esm": false,
+    "dependencies": 1,
+    "repo": "example/example",
+    "readmeName": "example.md"
+  }
+]

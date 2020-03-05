@@ -1,7 +1,6 @@
 .DS_Store
 *.log
 build/
-data/
 node_modules/
 .env
 yarn.lock
