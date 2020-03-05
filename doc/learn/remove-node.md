@@ -8,9 +8,10 @@ tags:
   - traverse
   - walk
   - remove
+  - delete
 author: John Letey
-published: 2020-03-04
-modified: 2020-03-04
+published: 2020-03-05
+modified: 2020-03-05
 ---
 
 ## How to remove a node
@@ -23,7 +24,7 @@ modified: 2020-03-04
 ### What is a node
 
 A node is a single language specific unit inside a [syntax tree][syntax-tree].
-For example: a heading in markdown, or anchor element in HTML. In unified, nodes
+For example: a heading in markdown, or anchor element in HTML.  In unified, nodes
 follow the [unist][] specification.
 
 ### Removing a node
@@ -32,17 +33,17 @@ The concept of removing a node involves
 [tree traversal][tree-traversal] of a [syntax tree][syntax-tree].
 
 Unified compatible utilities should be used for finding a node.
-Utilities are functions that work with nodes. All specifications
+Utilities are functions that work with nodes.  All specifications
 that extend [unist][] can use the [unist utilities][unist-utils],
 but they can also have their own utilities for more specific nodes.
 
-To start removing nodes for your input you'll need:
+To start removing nodes for your input you’ll need:
 
 *   A processor (such as [`remark`][remark]).
 *   A utility of choice.
 
 For this example we use [`remark`][remark]
-and [`unist-util-remove`][unist-util-remove]. We want to remove
+and [`unist-util-remove`][unist-util-remove].  We want to remove
 all occurrences of emphasis in our markdown.
 
 ```js
