@@ -1,5 +1,7 @@
 language: node_js
 node_js: node
+env:
+  - UNIFIED_OPTIMIZE_IMAGES=1
 deploy:
   provider: pages
   local_dir: build
