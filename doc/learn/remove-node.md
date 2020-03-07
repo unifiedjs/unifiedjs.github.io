@@ -11,7 +11,7 @@ tags:
   - delete
 author: John Letey
 published: 2020-03-05
-modified: 2020-03-05
+modified: 2020-03-07
 ---
 
 ## How to remove a node
