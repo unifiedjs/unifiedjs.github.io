@@ -5,7 +5,15 @@ var fetch = require('node-fetch')
 
 require('dotenv').config()
 
-var headers = {Authorization: 'bearer ' + process.env.GH_TOKEN}
+var ghToken = process.env.GH_TOKEN
+
+if (!ghToken) {
+  console.log('Cannot crawl team without GH token')
+  /* eslint-disable-next-line unicorn/no-process-exit */
+  process.exit()
+}
+
+var headers = {Authorization: 'bearer ' + ghToken}
 
 var base = 'https://raw.githubusercontent.com/unifiedjs/collective/master/data/'
 var files = ['humans.yml', 'teams.yml']

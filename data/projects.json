@@ -1,0 +1,11 @@
+[
+  {
+    "repo": "example/example",
+    "description": "an example project",
+    "stars": 1337,
+    "url": "https://example.com",
+    "topics": [
+      "example-topic"
+    ]
+  }
+]

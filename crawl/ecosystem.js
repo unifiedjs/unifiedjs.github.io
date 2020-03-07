@@ -9,6 +9,15 @@ var pAll = require('p-all')
 
 require('dotenv').config()
 
+var ghToken = process.env.GH_TOKEN
+var npmToken = process.env.NPM_TOKEN
+
+if (!ghToken || !npmToken) {
+  console.log('Cannot crawl ecosystem without GH or npm tokens')
+  /* eslint-disable-next-line unicorn/no-process-exit */
+  process.exit()
+}
+
 var topics = require('../generate/util/constant-topic')
 var orgs = require('../generate/util/constant-collective')
 
@@ -47,8 +56,8 @@ var main = promisify(
 )
 
 main({
-  ghToken: process.env.GH_TOKEN,
-  npmToken: process.env.NPM_TOKEN,
+  ghToken,
+  npmToken,
   repos: [],
   topics: topics,
   orgs: orgs

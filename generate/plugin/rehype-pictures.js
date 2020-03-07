@@ -11,19 +11,23 @@ var h = require('hastscript')
 module.exports = urls
 
 function urls(options) {
-  var sizes = [200, 600, 1200, 2000]
+  var sizes = [null, 200, 600, 1200, 2000]
   var formats = ['webp', 'png']
   var mimes = {webp: 'image/webp', png: 'image/png'}
   var modes = ['', '-dark']
   var base = options.base
-  var sources = formats.flatMap(format =>
-    modes.flatMap(mode =>
-      sizes.flatMap(size => ({
-        stem: {suffix: mode + '-' + size},
-        extname: '.' + format
-      }))
+  var sources = formats
+    .flatMap(format =>
+      modes.flatMap(mode =>
+        sizes.flatMap(size => ({
+          stem: {suffix: mode + (size ? '-' + size : '')},
+          extname: '.' + format
+        }))
+      )
     )
-  )
+    // Remove the default file, w/o mode (light) and w/o size: that’s what we
+    // link to already.
+    .filter(d => d.stem.suffix !== '')
 
   return transform
 
@@ -71,7 +75,7 @@ function urls(options) {
               var applicable = sizes
                 .map(size => {
                   var fp = rename(vfile({path: resolved}), {
-                    stem: {suffix: mode + '-' + size},
+                    stem: {suffix: mode + (size ? '-' + size : '')},
                     extname: '.' + format
                   }).path
 
@@ -83,7 +87,9 @@ function urls(options) {
                 ? []
                 : h('source', {
                     srcSet: applicable.map(
-                      d => ['/' + relative(base, d[0])] + ' ' + d[1] + 'w'
+                      d =>
+                        ['/' + relative(base, d[0])] +
+                        (d[1] ? ' ' + d[1] + 'w' : '')
                     ),
                     media:
                       '(prefers-color-scheme: ' +

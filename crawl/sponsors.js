@@ -4,6 +4,14 @@ var fetch = require('node-fetch')
 
 require('dotenv').config()
 
+var token = process.env.OC_TOKEN
+
+if (!token) {
+  console.log('Cannot crawl sponsors without OC token')
+  /* eslint-disable-next-line unicorn/no-process-exit */
+  process.exit()
+}
+
 var outpath = path.join('data', 'sponsors.json')
 var min = 5
 
@@ -41,7 +49,7 @@ fetch(endpoint, {
   body: JSON.stringify({query: query, variables: variables}),
   headers: {
     'Content-Type': 'application/json',
-    'Api-Key': process.env.OC_TOKEN
+    'Api-Key': token
   }
 })
   .then(res => res.json())

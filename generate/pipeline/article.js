@@ -35,7 +35,8 @@ module.exports = unified()
     HSL: 'Hue, saturation, lightness',
     HTML: 'Hypertext markup language',
     JSX: null,
-    MDX: null
+    MDX: null,
+    XML: 'Extensible Markup Language'
   })
   .use(rehypeLink)
   .use(rewriteUrls, {origin})

@@ -11,7 +11,7 @@ tags:
 author: Merlijn Vos
 authorTwitter: Murderlon
 published: 2020-01-10
-modified: 2020-01-10
+modified: 2020-03-05
 ---
 
 ## How to find a node
@@ -24,7 +24,7 @@ modified: 2020-01-10
 ### What is a node
 
 A node is a single language specific unit inside a [syntax tree][syntax-tree].
-Such as a heading in markdown, or anchor element in HTML.  In unified, nodes
+For example: a heading in markdown, or anchor element in HTML.  In unified, nodes
 follow the [unist][] specification. 
 
 ### Finding a node
@@ -37,7 +37,7 @@ Utilities are functions that work with nodes.  All specifications
 that extend [unist][] can use the [unist utilities][unist-utils],
 but they can also have their own utilities for more specific nodes.
 
-To start finding nodes for your input your need:
+To start finding nodes for your input you’ll need:
 
 *   A processor (such as [`remark`][remark]).
 *   A utility of choice.
@@ -77,7 +77,7 @@ yields
 }
 ```
 
-Read more about [unist-util-find`][unist-util-find] in its readme.
+Read more about [`unist-util-find`][unist-util-find] in its readme.
 
 [tree-traversal]: https://unifiedjs.com/learn/recipe/tree-traversal/
 

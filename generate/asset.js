@@ -14,15 +14,24 @@ var postcssPresetEnv = require('postcss-preset-env')
 var cssnano = require('cssnano')
 var pack = require('../package.json')
 
+require('dotenv').config()
+
 var externals = {
-  '.png': trough().use(transformPng),
   '.css': trough().use(transformCss),
   '.js': trough().use(bundleJs)
 }
 
+if (process.env.UNIFIED_OPTIMIZE_IMAGES) {
+  externals['.png'] = trough().use(transformPng)
+} else {
+  console.log(
+    'Not optimizing images: set `UNIFIED_OPTIMIZE_IMAGES=1` to turn on'
+  )
+}
+
 var processPipeline = trough()
   .use(vfile.read)
-  .use(process)
+  .use(processFile)
   .use(move)
   .use(mkdir)
   .use(vfile.write)
@@ -63,11 +72,12 @@ trough()
   })
   .run('asset/**/*.*', function(err) {
     if (err) {
+      console.error(reporter(err))
       process.exitCode = 1
     }
   })
 
-function process(file, next) {
+function processFile(file, next) {
   externals[file.extname].run(file, function(err) {
     file.processed = true
     next(err)
