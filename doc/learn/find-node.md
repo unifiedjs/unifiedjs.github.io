@@ -24,8 +24,8 @@ modified: 2020-03-05
 ### What is a node
 
 A node is a single language specific unit inside a [syntax tree][syntax-tree].
-For example: a heading in markdown, or anchor element in HTML.  In unified, nodes
-follow the [unist][] specification. 
+For example: a heading in markdown, or anchor element in HTML.  In unified, 
+nodes follow the [unist][] specification.
 
 ### Finding a node
 
