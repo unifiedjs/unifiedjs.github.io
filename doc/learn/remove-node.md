@@ -1,9 +1,18 @@
 ---
 group: recipe
 title: Remove a node
-description: How to remove nodes in a tree
-published: 2019-12-12
-modified: 2019-12-12
+description: How to remove a node in any unified flavored syntax tree.
+tags:
+  - node
+  - tree
+  - traverse
+  - walk
+  - remove
+  - delete
+author: John Letey
+authorTwitter: johnletey
+published: 2020-03-27
+modified: 2020-03-27
 ---
 
 ## How to remove a node
