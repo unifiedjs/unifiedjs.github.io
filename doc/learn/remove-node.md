@@ -17,8 +17,25 @@ modified: 2020-03-27
 
 ## How to remove a node
 
-Unfortunately, this guide is not yet written.
-We’re looking for help with that, if you want please edit this file on
-[GitHub][].
+### Contents
 
-[github]: https://github.com/unifiedjs/unifiedjs.github.io/blob/src/doc/learn/remove-node.md
+*   [What is a node](#what-is-a-node)
+*   [Removing a node](#removing-a-node)
+
+### What is a node
+
+A node is a single language specific unit inside a [syntax tree][syntax-tree].
+For example: a heading in markdown, or anchor element in HTML.  In unified, 
+nodes follow the [unist][] specification.
+
+### Removing a node
+
+TODO
+
+Read more about [`unist-util-remove`][unist-util-remove] in its readme.
+
+[syntax-tree]: https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/
+
+[unist]: https://github.com/syntax-tree/unist
+
+[unist-util-remove]: https://github.com/syntax-tree/unist-util-remove
