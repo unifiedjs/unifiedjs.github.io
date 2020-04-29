@@ -1,5 +1,5 @@
 language: node_js
-node_js: node
+node_js: lts/erbium
 env:
   - UNIFIED_OPTIMIZE_IMAGES=1
 deploy:
