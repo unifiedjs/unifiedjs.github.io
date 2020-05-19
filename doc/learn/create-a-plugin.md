@@ -235,9 +235,9 @@ function attacher() {
 
       children.forEach(function(child, index) {
         if (
-          is('SentenceNode', children[index - 1]) &&
-          is('WhiteSpaceNode', child) &&
-          is('SentenceNode', children[index + 1])
+          is(children[index - 1], 'SentenceNode') &&
+          is(child, 'WhiteSpaceNode') &&
+          is(children[index + 1], 'SentenceNode')
         ) {
 -          console.log(child)
 +          if (child.value.length !== 1) {
