@@ -126,7 +126,7 @@ The following plugins bridge formats:
 It’s a powerful tool, so for some tasks, such as transforming Markdown to HTML,
 you could use simpler tools like [`marked`][marked] as well.
 Where unified really shines is when you want to go further than one single task.
-For example, when you want enforcing format rules, check spelling, generate a
+For example, when you want to enforce format rules, check spelling, generate a
 table of contents, and (potentially) much more: that’s when to opt for unified.
 
 > A large part of MDX’s success has been leveraging the unified and remark
