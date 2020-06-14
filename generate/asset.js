@@ -36,19 +36,12 @@ var processPipeline = trough()
   .use(mkdir)
   .use(vfile.write)
 
-var copyPipeline = trough()
-  .use(move)
-  .use(mkdir)
-  .use(copy)
+var copyPipeline = trough().use(move).use(mkdir).use(copy)
 
-var imagePipeline = trough()
-  .use(move)
-  .use(mkdir)
-  .use(vfile.write)
-  .use(print)
+var imagePipeline = trough().use(move).use(mkdir).use(vfile.write).use(print)
 
 var filePipeline = trough()
-  .use(function(fp, next) {
+  .use(function (fp, next) {
     var file = vfile(fp)
     var ext = file.extname
     var pipeline = ext in externals ? processPipeline : copyPipeline
@@ -58,19 +51,19 @@ var filePipeline = trough()
 
 trough()
   .use(glob)
-  .use(function(paths, done) {
+  .use(function (paths, done) {
     var run = promisify(filePipeline.run)
 
     pAll(
-      paths.map(path => () => run(path)),
+      paths.map((path) => () => run(path)),
       {concurrency: 3}
-    ).then(files => done(null, files), done)
+    ).then((files) => done(null, files), done)
   })
-  .use(function(files, next) {
+  .use(function (files, next) {
     var contents = new URL(pack.homepage).host + '\n'
     vfile.write({dirname: 'build', basename: 'CNAME', contents: contents}, next)
   })
-  .run('asset/**/*.*', function(err) {
+  .run('asset/**/*.*', function (err) {
     if (err) {
       console.error(reporter(err))
       process.exitCode = 1
@@ -78,7 +71,7 @@ trough()
   })
 
 function processFile(file, next) {
-  externals[file.extname].run(file, function(err) {
+  externals[file.extname].run(file, function (err) {
     file.processed = true
     next(err)
   })
@@ -114,15 +107,13 @@ function print(file) {
 function transformCss(file) {
   return postcss(postcssPresetEnv({stage: 0}), cssnano({preset: 'advanced'}))
     .process(file.toString('utf8'), {from: file.path})
-    .then(function(result) {
+    .then(function (result) {
       file.contents = result.css
     })
 }
 
 function bundleJs(file, next) {
-  browserify(file.path)
-    .plugin('tinyify')
-    .bundle(done)
+  browserify(file.path).plugin('tinyify').bundle(done)
 
   function done(err, buf) {
     if (buf) {
@@ -146,12 +137,12 @@ function transformPng(file, next) {
 
   pipeline
     .metadata()
-    .then(metadata =>
+    .then((metadata) =>
       pAll(
         sizes
-          .flatMap(size => formats.map(format => ({size, format})))
-          .filter(d => d.size <= metadata.width)
-          .map(file => () => one(file).then(d => run(d))),
+          .flatMap((size) => formats.map((format) => ({size, format})))
+          .filter((d) => d.size <= metadata.width)
+          .map((file) => () => one(file).then((d) => run(d))),
         {concurrency: 3}
       )
     )
@@ -163,7 +154,7 @@ function transformPng(file, next) {
       .resize(media.size)
       [media.format](options[media.format])
       .toBuffer()
-      .then(buf => {
+      .then((buf) => {
         var copy = vfile(file.path)
 
         copy.contents = buf

@@ -9,14 +9,14 @@ module.exports = urls
 var own = {}.hasOwnProperty
 
 function urls(options) {
-  var opts = options || {}
+  var settings = options || {}
 
   return transform
 
   function transform(tree, file) {
     var meta = file.data.meta || {}
-    var origin = meta.origin || opts.origin
-    var pathname = meta.pathname || opts.pathname || '/'
+    var origin = meta.origin || settings.origin
+    var pathname = meta.pathname || settings.pathname || '/'
 
     if (!origin) {
       file.fail('Missing `origin` in `options` or `file.data.meta`', tree)
@@ -28,7 +28,7 @@ function urls(options) {
       var head
 
       if (own.call(map, node.tagName)) {
-        map[node.tagName].forEach(p => rewrite(node, p))
+        map[node.tagName].forEach((p) => rewrite(node, p))
       }
 
       if (node.tagName === 'a') {
@@ -146,7 +146,7 @@ function urls(options) {
           slug = rest.slice(0, length)
           slug = slug.length === 0 ? undefined : slug.join('/')
           match = packages.find(
-            d => data.packageByName[d].manifestBase === slug
+            (d) => data.packageByName[d].manifestBase === slug
           )
 
           if (match && rest.length === length) {

@@ -24,7 +24,7 @@ function learn(sections) {
         'through how to complete bigger tasks.'
       ])
     ]),
-    sections.flatMap(d => [
+    sections.flatMap((d) => [
       h('.article.content', [h('h3', d.title), h('p', d.description)]),
       list(d, sort(d.entries))
     ]),

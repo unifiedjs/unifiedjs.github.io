@@ -10,14 +10,14 @@ var gh = 'https://github.com'
 
 // Resolve relative URLs to a place in a repo on GH, making them absolute.
 function resolveUrls(options) {
-  var opts = options || {}
+  var settings = options || {}
 
   return transform
 
   function transform(tree, file) {
     var data = file.data
-    var repo = data.repo || opts.repo
-    var dirname = data.dirname || opts.dirname || '/'
+    var repo = data.repo || settings.repo
+    var dirname = data.dirname || settings.dirname || '/'
     var prefix = [repo, 'blob', 'master']
     var base
 
@@ -36,7 +36,7 @@ function resolveUrls(options) {
     function visitor(node) {
       var {tagName} = node
       if (own.call(map, tagName)) {
-        map[tagName].forEach(p => resolve(node, p, tagName))
+        map[tagName].forEach((p) => resolve(node, p, tagName))
       }
     }
 
@@ -60,25 +60,25 @@ function resolveUrls(options) {
       node.properties[prop] = result
     }
 
-    function resolveOne(val, prop, node, name) {
-      if (val === undefined || val === null) {
+    function resolveOne(value, prop, node, name) {
+      if (value === undefined || value === null) {
         return
       }
 
-      val = String(val)
+      value = String(value)
 
       // Absolute paths are interpreted relative to the base, not to GH itself.
-      if (val.charAt(0) === '/') {
-        val = '.' + val
+      if (value.charAt(0) === '/') {
+        value = '.' + value
       }
 
-      val = new URL(val, base)
+      value = new URL(value, base)
 
-      if (name === 'img' && prop === 'src' && val.host === 'github.com') {
-        val.searchParams.set('raw', 'true')
+      if (name === 'img' && prop === 'src' && value.host === 'github.com') {
+        value.searchParams.set('raw', 'true')
       }
 
-      return val.href
+      return value.href
     }
   }
 }

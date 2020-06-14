@@ -19,7 +19,7 @@ var origin = pkg.homepage
 module.exports = unified()
   .use(markdown)
   .use(frontmatter)
-  .use(remark2rehype, {allowDangerousHTML: true})
+  .use(remark2rehype, {allowDangerousHtml: true})
   .use(raw)
   .use(highlight, {subset: false, ignoreMissing: true})
   .use(slug)

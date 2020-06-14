@@ -22,10 +22,7 @@ var overwrites = {
 }
 
 function line(filepath, title) {
-  return filepath
-    .split(slash)
-    .filter(Boolean)
-    .flatMap(map)
+  return filepath.split(slash).filter(Boolean).flatMap(map)
 
   function map(d, i, data) {
     var last = data.length - 1 === i

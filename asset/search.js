@@ -25,7 +25,7 @@ var {asc, desc} = require('../generate/util/sort')
 
 var loc = window.location
 var home = '/explore/'
-var param = 'q'
+var parameter = 'q'
 var id = 'search-root'
 
 // For some reason this can be fired multiple times.
@@ -39,22 +39,22 @@ function init() {
   var keywords = Object.keys(data.packagesByKeyword)
   var topics = Object.keys(data.projectsByTopic)
   var $root = document.querySelector('#' + id)
-  var $form = toDom(searchForm(data, param))
-  var $input = $form.querySelector('[name=' + param + ']')
+  var $form = toDom(searchForm(data, parameter))
+  var $input = $form.querySelector('[name=' + parameter + ']')
 
   $root.prepend($form)
 
   var promises = [
     {
       selector: '#root-keyword',
-      create: search =>
-        new Promise(resolve =>
+      create: (search) =>
+        new Promise((resolve) =>
           window.requestAnimationFrame(() => {
-            keywords.forEach(d => search.index.add(d, d))
+            keywords.forEach((d) => search.index.add(d, d))
             resolve()
           })
         ),
-      weight: d => data.packagesByKeyword[d].length,
+      weight: (d) => data.packagesByKeyword[d].length,
       filter: keywordFilter,
       preview: keywordPreview,
       empty: keywordEmpty,
@@ -62,14 +62,14 @@ function init() {
     },
     {
       selector: '#root-topic',
-      create: search =>
-        new Promise(resolve =>
+      create: (search) =>
+        new Promise((resolve) =>
           window.requestAnimationFrame(() => {
-            topics.forEach(d => search.index.add(d, d))
+            topics.forEach((d) => search.index.add(d, d))
             resolve()
           })
         ),
-      weight: d => data.projectsByTopic[d].length,
+      weight: (d) => data.projectsByTopic[d].length,
       filter: topicFilter,
       preview: topicPreview,
       empty: topicEmpty,
@@ -77,8 +77,8 @@ function init() {
     },
     {
       selector: '#root-package',
-      create: search =>
-        new Promise(resolve => {
+      create: (search) =>
+        new Promise((resolve) => {
           var size = 100
 
           window.requestAnimationFrame(() => next(0))
@@ -87,7 +87,7 @@ function init() {
             var end = start + size
             var slice = names.slice(start, end)
 
-            slice.forEach(d =>
+            slice.forEach((d) =>
               search.index.add(d, d + ' ' + data.packageByName[d].description)
             )
 
@@ -98,15 +98,15 @@ function init() {
             }
           }
         }),
-      weight: d => data.packageByName[d].score,
+      weight: (d) => data.packageByName[d].score,
       preview: packagePreview,
       empty: packageEmpty,
       results: packageResults
     },
     {
       selector: '#root-project',
-      create: search =>
-        new Promise(resolve => {
+      create: (search) =>
+        new Promise((resolve) => {
           var size = 100
 
           window.requestAnimationFrame(() => next(0))
@@ -115,7 +115,7 @@ function init() {
             var end = start + size
             var slice = repos.slice(start, end)
 
-            slice.forEach(d =>
+            slice.forEach((d) =>
               search.index.add(d, d + ' ' + data.projectByRepo[d].description)
             )
 
@@ -126,31 +126,31 @@ function init() {
             }
           }
         }),
-      weight: d => reduceScore(data, d),
+      weight: (d) => reduceScore(data, d),
       preview: projectPreview,
       empty: projectEmpty,
       results: projectResults
     }
-  ].map(d => {
+  ].map((d) => {
     var $scope = document.querySelector(d.selector)
     var index = new FlexSearch({
       profile: 'score',
       encode: 'advanced',
       tokenize: 'full'
     })
-    var res = {...d, index, $scope}
+    var view = {...d, index, $scope}
 
-    return res.create(res).then(() => res)
+    return view.create(view).then(() => view)
   })
 
-  Promise.all(promises).then(searches => {
+  Promise.all(promises).then((searches) => {
     start()
 
     $form.addEventListener('submit', onsubmit)
     window.addEventListener('popstate', onpopstate)
 
     function start() {
-      var query = clean(new URL(loc).searchParams.get(param))
+      var query = clean(new URL(loc).searchParams.get(parameter))
 
       if (query) {
         onpopstate()
@@ -158,12 +158,12 @@ function init() {
     }
 
     function onpopstate() {
-      search(clean(new URL(loc).searchParams.get(param)))
+      search(clean(new URL(loc).searchParams.get(parameter)))
     }
 
     function onsubmit(ev) {
       var url = new URL(loc)
-      var current = clean(url.searchParams.get(param))
+      var current = clean(url.searchParams.get(parameter))
       var value = clean($input.value)
 
       ev.preventDefault()
@@ -173,9 +173,9 @@ function init() {
       }
 
       if (value) {
-        url.searchParams.set(param, value)
+        url.searchParams.set(parameter, value)
       } else {
-        url.searchParams.delete(param)
+        url.searchParams.delete(parameter)
       }
 
       history.pushState(
@@ -191,13 +191,13 @@ function init() {
       $input.value = query
 
       if (!query) {
-        searches.forEach(search => replace(search, [], query))
+        searches.forEach((search) => replace(search, [], query))
         return
       }
 
-      searches.forEach(search => {
-        search.index.search(query, {suggest: true}, function(res) {
-          var clean = res.filter(unique)
+      searches.forEach((search) => {
+        search.index.search(query, {suggest: true}, function (result) {
+          var clean = result.filter(unique)
           var weighted = desc(clean, weight)
 
           replace(search, asc(clean, combined), query)
@@ -215,19 +215,19 @@ function init() {
   })
 }
 
-function replace(search, res, query) {
+function replace(search, result, query) {
   var {$scope, filter, preview, empty, results} = search
 
   if (filter) {
-    res = filter(data, res)
+    result = filter(data, result)
   }
 
   var $next = toDom(
-    res.length === 0
+    result.length === 0
       ? query
         ? empty(data, query)
         : preview(data)
-      : results(data, res)
+      : results(data, result)
   )
 
   while ($scope.firstChild) {

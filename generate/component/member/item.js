@@ -23,7 +23,7 @@ function item(data, d) {
     footer.push(urlLine(url))
   }
 
-  data.teams.forEach(team => {
+  data.teams.forEach((team) => {
     var role = team.humans[github]
     if (role && role !== 'contributor') {
       memberships.push(h(team.collective ? 'b' : 'span', team.name))

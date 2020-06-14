@@ -52,11 +52,11 @@ fetch(endpoint, {
     'Api-Key': token
   }
 })
-  .then(res => res.json())
-  .then(function(res) {
+  .then((response) => response.json())
+  .then(function (response) {
     var seen = []
-    var members = res.data.collective.members.nodes
-      .map(d => {
+    var members = response.data.collective.members.nodes
+      .map((d) => {
         var github = d.account.githubHandle || undefined
         var twitter = d.account.twitterHandle || undefined
         var url = d.account.website || undefined
@@ -78,13 +78,13 @@ fetch(endpoint, {
           amount: d.totalDonations.value
         }
       })
-      .filter(d => {
+      .filter((d) => {
         var ignore = seen.includes(d.oc) // Ignore dupes in data.
         seen.push(d.oc)
         return d.amount > min && !ignore
       })
       .sort(sort)
-      .map(d => Object.assign(d, {amount: undefined}))
+      .map((d) => Object.assign(d, {amount: undefined}))
 
     return fs.writeFile(outpath, JSON.stringify(members, null, 2) + '\n')
   })

@@ -44,7 +44,7 @@ var tasks = []
 expandDescription(data.projectByRepo)
 expandDescription(data.packageByName)
 
-var entries = glob.sync('doc/learn/**/*.md').map(input => {
+var entries = glob.sync('doc/learn/**/*.md').map((input) => {
   var file = matter(vfile.readSync(input))
   var slug = basename(input, extname(input))
   var {group, tags} = file.data.matter
@@ -71,13 +71,13 @@ var sections = [
     description:
       'Learn unified through byte-sized articles, that stand on their own, explaining how to complete a small, specific, focussed task'
   }
-].map(d => {
+].map((d) => {
   var {slug} = d
   return {
     ...d,
     tags: [slug, 'learn'],
     pathname: '/learn/' + slug + '/',
-    entries: entries.filter(d => d.data.matter.group === slug)
+    entries: entries.filter((d) => d.data.matter.group === slug)
   }
 })
 
@@ -87,15 +87,15 @@ page(() => home({...data, articles: entries, sponsors, users}), {
   pathname: '/'
 })
 
-entries.forEach(file => {
+entries.forEach((file) => {
   tasks.push(() =>
     articlePipeline
       .run(articlePipeline.parse(file), file)
-      .then(tree => ({tree: article(tree, file), file}))
+      .then((tree) => ({tree: article(tree, file), file}))
   )
 })
 
-sections.forEach(section => {
+sections.forEach((section) => {
   var {title, description, tags, pathname, entries} = section
   var meta = {title, description, tags, pathname}
   page(() => articles(meta, entries), meta)
@@ -120,7 +120,7 @@ page(() => keywords(data), {
   pathname: '/explore/keyword/'
 })
 
-Object.keys(data.packagesByKeyword).forEach(d => {
+Object.keys(data.packagesByKeyword).forEach((d) => {
   page(() => keyword(data, d), {
     title: d + ' - Keywords',
     description:
@@ -129,7 +129,7 @@ Object.keys(data.packagesByKeyword).forEach(d => {
   })
 })
 
-Object.keys(data.packagesByScope).forEach(d => {
+Object.keys(data.packagesByScope).forEach((d) => {
   page(() => scope(data, d), {
     title: d + ' - Scope',
     description:
@@ -144,7 +144,7 @@ page(() => topics(data), {
   pathname: '/explore/topic/'
 })
 
-Object.keys(data.projectsByTopic).forEach(d => {
+Object.keys(data.projectsByTopic).forEach((d) => {
   page(() => topic(data, d), {
     title: d + ' - Topics',
     description:
@@ -153,7 +153,7 @@ Object.keys(data.projectsByTopic).forEach(d => {
   })
 })
 
-Object.keys(data.projectsByOwner).forEach(d => {
+Object.keys(data.projectsByOwner).forEach((d) => {
   page(() => owner(data, d), {
     title: '@' + d + ' - Owner',
     description: 'Explore projects in the unified ecosystem by “@' + d + '”',
@@ -173,7 +173,7 @@ page(() => projects(data), {
   pathname: '/explore/project/'
 })
 
-Object.keys(data.projectByRepo).forEach(d => {
+Object.keys(data.projectByRepo).forEach((d) => {
   var {description, topics} = data.projectByRepo[d]
 
   page(() => project(data, d), {
@@ -184,21 +184,21 @@ Object.keys(data.projectByRepo).forEach(d => {
   })
 })
 
-Object.keys(data.packageByName).forEach(d => {
+Object.keys(data.packageByName).forEach((d) => {
   var pack = data.packageByName[d]
   var {description, readmeName, repo, manifestBase, keywords} = pack
   var input = join('data', 'readme', readmeName)
   var pathname = '/explore/package/' + d + '/'
 
   tasks.push(() =>
-    vfile.read(input).then(file => {
+    vfile.read(input).then((file) => {
       var meta = {title: d, description, pathname, tags: keywords}
 
       file.data = {meta, repo, dirname: manifestBase}
 
       return readmePipeline
         .run(readmePipeline.parse(file), file)
-        .then(tree => ({tree: pkg(data, d, tree), file}))
+        .then((tree) => ({tree: pkg(data, d, tree), file}))
     })
   )
 })
@@ -227,16 +227,16 @@ page(() => cases(users), {
   pathname: '/community/case/'
 })
 
-var promises = tasks.map(fn => () => {
+var promises = tasks.map((fn) => () => {
   return Promise.resolve(fn())
     .then(({tree, file}) =>
-      pipeline.run(tree, file).then(tree => ({tree, file}))
+      pipeline.run(tree, file).then((tree) => ({tree, file}))
     )
     .then(({tree, file}) => {
       file.contents = pipeline.stringify(tree, file)
       return file
     })
-    .then(file => vfile.write(file).then(() => file))
+    .then((file) => vfile.write(file).then(() => file))
     .then(done, done)
 
   function done(x) {
@@ -253,7 +253,7 @@ function page(fn, meta) {
 }
 
 function expandDescription(map) {
-  Object.keys(map).forEach(id => {
+  Object.keys(map).forEach((id) => {
     var d = map[id]
     var tree = descriptionPipeline.parse(d.description)
     d.descriptionRich = descriptionPipeline.runSync(tree)

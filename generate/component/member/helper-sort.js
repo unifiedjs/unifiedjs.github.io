@@ -22,7 +22,7 @@ function sorter(data, d) {
   function team(team) {
     var members = team.humans
 
-    Object.keys(members).forEach(d => {
+    Object.keys(members).forEach((d) => {
       var role = members[d]
       var active = Boolean(team.collective && role === 'maintainer')
 

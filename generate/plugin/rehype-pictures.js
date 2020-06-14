@@ -17,9 +17,9 @@ function urls(options) {
   var modes = ['', '-dark']
   var base = options.base
   var sources = formats
-    .flatMap(format =>
-      modes.flatMap(mode =>
-        sizes.flatMap(size => ({
+    .flatMap((format) =>
+      modes.flatMap((mode) =>
+        sizes.flatMap((size) => ({
           stem: {suffix: mode + (size ? '-' + size : '')},
           extname: '.' + format
         }))
@@ -27,7 +27,7 @@ function urls(options) {
     )
     // Remove the default file, w/o mode (light) and w/o size: that’s what we
     // link to already.
-    .filter(d => d.stem.suffix !== '')
+    .filter((d) => d.stem.suffix !== '')
 
   return transform
 
@@ -53,7 +53,7 @@ function urls(options) {
         var resolved = join(base, src.split('/').join(sep))
         var promises = [].concat(
           // See which images exist.
-          sources.map(d => {
+          sources.map((d) => {
             var fp = rename(vfile({path: resolved}), d).path
 
             return fs.promises.access(fp, fs.constants.R_OK).then(
@@ -65,15 +65,15 @@ function urls(options) {
           sharp(resolved).metadata()
         )
 
-        return Promise.all(promises).then(res => {
-          var info = res.pop()
-          var available = res.filter(Boolean)
+        return Promise.all(promises).then((result) => {
+          var info = result.pop()
+          var available = result.filter(Boolean)
 
           // Generate the sources, but only if they exist.
-          var srcs = formats.flatMap(format =>
-            modes.flatMap(mode => {
+          var srcs = formats.flatMap((format) =>
+            modes.flatMap((mode) => {
               var applicable = sizes
-                .map(size => {
+                .map((size) => {
                   var fp = rename(vfile({path: resolved}), {
                     stem: {suffix: mode + (size ? '-' + size : '')},
                     extname: '.' + format
@@ -81,13 +81,13 @@ function urls(options) {
 
                   return available.includes(fp) ? [fp, size] : []
                 })
-                .filter(d => d.length !== 0)
+                .filter((d) => d.length !== 0)
 
               return applicable.length === 0
                 ? []
                 : h('source', {
                     srcSet: applicable.map(
-                      d =>
+                      (d) =>
                         ['/' + relative(base, d[0])] +
                         (d[1] ? ' ' + d[1] + 'w' : '')
                     ),

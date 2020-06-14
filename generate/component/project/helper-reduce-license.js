@@ -7,7 +7,7 @@ module.exports = reduce
 function reduce(data, repo) {
   var {packagesByRepo, packageByName} = data
   var licenses = packagesByRepo[repo]
-    .map(d => packageByName[d].license)
+    .map((d) => packageByName[d].license)
     .filter(Boolean)
     .filter(unique)
 

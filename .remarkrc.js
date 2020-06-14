@@ -26,6 +26,5 @@ exports.plugins = [
   [require('remark-validate-links'), false],
   [require('remark-lint-no-dead-urls'), 'https://unifiedjs.com'],
   [require('remark-lint-first-heading-level'), 2],
-  [require('remark-lint-no-html'), false],
-  [require('remark-toc'), {heading: 'contents', maxDepth: 3, tight: true}]
+  [require('remark-lint-no-html'), false]
 ]

@@ -18,8 +18,8 @@ function home(data) {
   var {packageByName, projectByRepo} = data
   var names = sortPkg(data, Object.keys(packageByName))
   var repos = Object.keys(projectByRepo)
-  var downloads = names.map(d => packageByName[d].downloads).reduce(sum, 0)
-  var stars = repos.map(d => projectByRepo[d].stars).reduce(sum, 0)
+  var downloads = names.map((d) => packageByName[d].downloads).reduce(sum, 0)
+  var stars = repos.map((d) => projectByRepo[d].stars).reduce(sum, 0)
   var d = pick(names.slice(0, 75), 5)
 
   return page(

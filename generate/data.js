@@ -13,19 +13,19 @@ var data = {
 
 module.exports = data
 
-projects.forEach(d => {
+projects.forEach((d) => {
   var {repo, topics} = d
 
   data.projectByRepo[repo] = d
 
   index(data.projectsByOwner, repo.split('/')[0], repo)
 
-  topics.forEach(d => {
+  topics.forEach((d) => {
     index(data.projectsByTopic, d, repo)
   })
 })
 
-packages.forEach(p => {
+packages.forEach((p) => {
   var {name, repo, keywords} = p
   var pos = name.indexOf('/')
   var scope = pos === -1 ? null : p.name.slice(0, pos)
@@ -39,7 +39,7 @@ packages.forEach(p => {
   }
 
   if (keywords) {
-    keywords.forEach(d => {
+    keywords.forEach((d) => {
       index(data.packagesByKeyword, d, name)
     })
   }

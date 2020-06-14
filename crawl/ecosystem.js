@@ -38,11 +38,7 @@ var topicPipeline = promisify(trough().use(searchTopic).run)
 var orgPipeline = promisify(trough().use(searchOrg).run)
 var repoPipeline = promisify(trough().use(crawlRepo).run)
 var pkgPipeline = promisify(
-  trough()
-    .use(getManifest)
-    .use(getPackage)
-    .use(getDownloads)
-    .use(getSize).run
+  trough().use(getManifest).use(getPackage).use(getDownloads).use(getSize).run
 )
 
 var main = promisify(
@@ -62,17 +58,17 @@ main({
   topics: topics,
   orgs: orgs
 }).then(
-  res => {
+  (result) => {
     console.log(
       chalk.green('✓') + ' done (%d packages, %d projects, %d readmes)',
-      res.packages.length,
-      res.projects.length,
-      res.readmes.length
+      result.packages.length,
+      result.projects.length,
+      result.readmes.length
     )
   },
-  err => {
+  (error) => {
     console.log(chalk.red('✖') + ' error')
-    console.error(err)
+    console.error(error)
   }
 )
 
@@ -80,22 +76,22 @@ async function findProjectsByTopic(ctx) {
   var {topics, repos} = ctx
 
   var results = await pAll(
-    topics.map(topic => () => topicPipeline({...ctx, topic})),
+    topics.map((topic) => () => topicPipeline({...ctx, topic})),
     concurrency
   )
 
-  return {...ctx, repos: repos.concat(results.flatMap(d => d.matches))}
+  return {...ctx, repos: repos.concat(results.flatMap((d) => d.matches))}
 }
 
 async function findProjectsInOrganizations(ctx) {
   var {orgs, repos} = ctx
 
   var results = await pAll(
-    orgs.map(org => () => orgPipeline({...ctx, org})),
+    orgs.map((org) => () => orgPipeline({...ctx, org})),
     concurrency
   )
 
-  return {...ctx, repos: repos.concat(results.flatMap(d => d.matches))}
+  return {...ctx, repos: repos.concat(results.flatMap((d) => d.matches))}
 }
 
 async function findRepositories(ctx) {
@@ -104,18 +100,18 @@ async function findRepositories(ctx) {
   repos = repos.filter((d, i, data) => data.indexOf(d) === i)
 
   var results = await pAll(
-    repos.map(repo => () => repoPipeline({...ctx, repo})),
+    repos.map((repo) => () => repoPipeline({...ctx, repo})),
     concurrency
   )
 
-  return {...ctx, projects: results.map(d => d.project)}
+  return {...ctx, projects: results.map((d) => d.project)}
 }
 
 async function findPackages(ctx) {
   var {projects} = ctx
 
-  var packages = projects.flatMap(d =>
-    d.manifests.map(m => ({manifest: m, project: d}))
+  var packages = projects.flatMap((d) =>
+    d.manifests.map((m) => ({manifest: m, project: d}))
   )
 
   var results = await pAll(
@@ -129,8 +125,8 @@ async function findPackages(ctx) {
   var projectsWithPackages = {}
 
   packages = results
-    .filter(d => d.proper)
-    .map(d => {
+    .filter((d) => d.proper)
+    .map((d) => {
       var {packageDist, readme, project} = d
       var {name} = packageDist
       var {repo} = project
@@ -143,7 +139,7 @@ async function findPackages(ctx) {
       return {...packageDist, repo, readmeName}
     })
 
-  projects = Object.values(projectsWithPackages).map(p => ({
+  projects = Object.values(projectsWithPackages).map((p) => ({
     ...p,
     default: undefined,
     manifests: undefined
@@ -175,7 +171,7 @@ async function searchTopic(ctx) {
   var matches = []
   var done = false
   var after
-  var res
+  var response
   var data
 
   var query = `
@@ -192,7 +188,7 @@ async function searchTopic(ctx) {
 
   while (!done) {
     // eslint-disable-next-line no-await-in-loop
-    res = await fetch(ghEndpoint, {
+    response = await fetch(ghEndpoint, {
       method: 'POST',
       body: JSON.stringify({
         query,
@@ -202,9 +198,9 @@ async function searchTopic(ctx) {
         'Content-Type': 'application/json',
         Authorization: 'bearer ' + ghToken
       }
-    }).then(x => x.json())
+    }).then((x) => x.json())
 
-    data = res.data.search
+    data = response.data.search
 
     if (data.pageInfo.hasNextPage) {
       after = data.pageInfo.endCursor
@@ -212,7 +208,7 @@ async function searchTopic(ctx) {
       done = true
     }
 
-    matches = matches.concat(data.nodes.map(d => d.nameWithOwner))
+    matches = matches.concat(data.nodes.map((d) => d.nameWithOwner))
   }
 
   return {matches, ...ctx}
@@ -223,7 +219,7 @@ async function searchOrg(ctx) {
   var matches = []
   var done = false
   var after
-  var res
+  var response
   var data
 
   var query = `
@@ -251,16 +247,16 @@ async function searchOrg(ctx) {
 
   while (!done) {
     // eslint-disable-next-line no-await-in-loop
-    res = await fetch(ghEndpoint, {
+    response = await fetch(ghEndpoint, {
       method: 'POST',
       body: JSON.stringify({query, variables: {org, after}}),
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'bearer ' + ghToken
       }
-    }).then(x => x.json())
+    }).then((x) => x.json())
 
-    data = res.data.organization.repositories
+    data = response.data.organization.repositories
 
     if (data.pageInfo.hasNextPage) {
       after = data.pageInfo.endCursor
@@ -271,13 +267,13 @@ async function searchOrg(ctx) {
     matches = matches.concat(
       data.nodes
         .filter(
-          d =>
+          (d) =>
             d.hasIssuesEnabled &&
             !d.isArchived &&
             !d.isDisabled &&
             !d.isTemplate
         )
-        .map(d => d.nameWithOwner)
+        .map((d) => d.nameWithOwner)
     )
   }
 
@@ -288,7 +284,7 @@ async function crawlRepo(ctx) {
   var {repo, ghToken} = ctx
   var [owner, name] = repo.split('/')
 
-  var res = await fetch(ghEndpoint, {
+  var response = await fetch(ghEndpoint, {
     method: 'POST',
     body: JSON.stringify({
       query: `
@@ -314,18 +310,18 @@ async function crawlRepo(ctx) {
       Authorization: 'bearer ' + ghToken,
       Accept: hawkgirl
     }
-  }).then(x => x.json())
+  }).then((x) => x.json())
 
   // Manifests aren’t always loaded, giving errors here: print them.
-  if (res.errors) {
+  if (response.errors) {
     console.warn(
       '%s: non-exceptional errors (probably loading manifests):',
       repo,
-      res.errors
+      response.errors
     )
   }
 
-  var data = (res.data || {}).repository || {}
+  var data = (response.data || {}).repository || {}
   var defaultBranch = (data.defaultBranchRef || {}).name || null
 
   var project = {
@@ -335,18 +331,18 @@ async function crawlRepo(ctx) {
     default: defaultBranch,
     url: data.homepageUrl || null,
     topics: ((data.repositoryTopics || {}).nodes || [])
-      .map(d => d.topic.name)
+      .map((d) => d.topic.name)
       .filter(validTag)
       .filter(unique),
     manifests: ((data.dependencyGraphManifests || {}).nodes || [])
       .filter(
-        d =>
+        (d) =>
           defaultBranch &&
           path.posix.basename(d.filename) === 'package.json' &&
           d.parseable &&
           !d.exceedsMaxSize
       )
-      .map(d => d.filename)
+      .map((d) => d.filename)
   }
 
   return {...ctx, project}
@@ -358,14 +354,14 @@ async function getManifest(ctx) {
   var [owner, name] = repo.split('/')
   var target = [project.default || 'master', manifest].join(':')
   var manifestBase = path.dirname(manifest)
-  var res
+  var response
 
   if (manifestBase === '.') {
     manifestBase = undefined
   }
 
   try {
-    res = await fetch(ghEndpoint, {
+    response = await fetch(ghEndpoint, {
       method: 'POST',
       body: JSON.stringify({
         query: `
@@ -383,7 +379,7 @@ async function getManifest(ctx) {
         'Content-Type': 'application/json',
         Authorization: 'bearer ' + ghToken
       }
-    }).then(x => x.json())
+    }).then((x) => x.json())
   } catch (error) {
     console.warn('Could not fetch manifest:', error)
   }
@@ -392,7 +388,7 @@ async function getManifest(ctx) {
   var pkg
 
   try {
-    pkg = JSON.parse((res.data.repository.object || {}).text)
+    pkg = JSON.parse((response.data.repository.object || {}).text)
   } catch (_) {
     console.warn('%s#%s: could not parse manifest', repo, manifest)
     proper = false
@@ -415,33 +411,33 @@ async function getManifest(ctx) {
 async function getPackage(ctx) {
   var {proper, manifest, manifestBase, project, packageSource} = ctx
   var {repo} = project
-  var res
+  var response
 
   if (!proper) {
     return
   }
 
-  res = await fetch(
+  response = await fetch(
     [npmsEndpoint, encodeURIComponent(packageSource.name)].join('/')
-  ).then(x => x.json())
+  ).then((x) => x.json())
 
-  if (res.code === 'NOT_FOUND') {
+  if (response.code === 'NOT_FOUND') {
     console.warn('%s#%s: could not find package', repo, manifest)
     ctx.proper = false
     return
   }
 
-  var name = res.collected.metadata.name || ''
-  var description = res.collected.metadata.description || ''
-  var keywords = res.collected.metadata.keywords || []
-  var license = res.collected.metadata.license || null
-  var deprecated = res.collected.metadata.deprecated
-  var readme = res.collected.metadata.readme || ''
-  var latest = res.collected.metadata.version || null
-  var repos = res.collected.metadata.repository
+  var name = response.collected.metadata.name || ''
+  var description = response.collected.metadata.description || ''
+  var keywords = response.collected.metadata.keywords || []
+  var license = response.collected.metadata.license || null
+  var deprecated = response.collected.metadata.deprecated
+  var readme = response.collected.metadata.readme || ''
+  var latest = response.collected.metadata.version || null
+  var repos = response.collected.metadata.repository
   var url = (repos && repos.url) || ''
-  var dependents = res.collected.npm.dependentsCount || 0
-  var score = res.score.final || 0
+  var dependents = response.collected.npm.dependentsCount || 0
+  var score = response.score.final || 0
 
   if (deprecated) {
     console.warn(
@@ -520,17 +516,17 @@ async function getDownloads(ctx) {
     packageDist.name
   ].join('/')
 
-  var res = await fetch(endpoint, {
+  var response = await fetch(endpoint, {
     headers: {Authorization: 'Bearer ' + npmToken}
-  }).then(x => x.json())
+  }).then((x) => x.json())
 
-  ctx.packageDist = {...ctx.packageDist, downloads: res.downloads}
+  ctx.packageDist = {...ctx.packageDist, downloads: response.downloads}
 }
 
 async function getSize(ctx) {
   var {proper, manifest, project, packageDist} = ctx
   var {repo} = project
-  var res
+  var response
 
   if (!proper) {
     return
@@ -542,16 +538,16 @@ async function getSize(ctx) {
     encodeURIComponent(packageDist.name + '@' + packageDist.latest)
 
   try {
-    res = await fetch(endpoint).then(x => x.json())
+    response = await fetch(endpoint).then((x) => x.json())
   } catch (error) {
     console.warn('%s#%s: could not contact bundlephobia', repo, manifest, error)
     // Still “proper”.
     return
   }
 
-  var gzip = res.gzip
-  var esm = Boolean(res.hasJSModule)
-  var dependencies = res.dependencyCount
+  var gzip = response.gzip
+  var esm = Boolean(response.hasJSModule)
+  var dependencies = response.dependencyCount
 
   ctx.packageDist = {...ctx.packageDist, gzip, esm, dependencies}
 }
@@ -561,5 +557,5 @@ function unique(d, i, data) {
 }
 
 function validTag(d) {
-  return /^[a-zA-Z0-9-]+$/.test(d)
+  return /^[a-zA-Z\d-]+$/.test(d)
 }

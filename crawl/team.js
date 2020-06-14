@@ -18,10 +18,10 @@ var headers = {Authorization: 'bearer ' + ghToken}
 var base = 'https://raw.githubusercontent.com/unifiedjs/collective/master/data/'
 var files = ['humans.yml', 'teams.yml']
 
-files.forEach(filename =>
+files.forEach((filename) =>
   fetch(base + filename, {headers})
-    .then(d => d.text())
-    .then(d => {
+    .then((d) => d.text())
+    .then((d) => {
       var stem = basename(filename, extname(filename))
       var data = JSON.stringify(yaml.safeLoad(d), null, 2) + '\n'
       return fs.writeFile(join('data', stem + '.json'), data)

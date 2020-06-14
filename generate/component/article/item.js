@@ -35,7 +35,7 @@ function item(d) {
       h('p.double-ellipsis', description || ''),
       h(
         'ol.row.ellipsis',
-        (tags || []).map(d => tag(d))
+        (tags || []).map((d) => tag(d))
       )
     ]),
     h('li.row', author)
