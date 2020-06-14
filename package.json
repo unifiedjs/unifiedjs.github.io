@@ -65,6 +65,7 @@
     "remark-retext": "^4.0.0",
     "remark-toc": "^7.0.0",
     "remark-validate-links": "^10.0.0",
+    "retext-emoji": "^7.0.0",
     "retext-english": "^3.0.0",
     "retext-equality": "^5.0.0",
     "retext-passive": "^3.0.0",
@@ -74,6 +75,7 @@
     "retext-simplify": "^6.0.0",
     "retext-spell": "^4.0.0",
     "retext-syntax-mentions": "^2.0.0",
+    "retext-syntax-urls": "^2.0.0",
     "sharp": "^0.25.0",
     "spdx-license-list": "^6.0.0",
     "strip-comments": "^2.0.0",
@@ -103,7 +105,6 @@
     "generate": "npm run generate:asset && npm run generate:pages && npm run generate:theme",
     "test": "npm run format && npm run crawl && npm run generate"
   },
-  "dependencies": {},
   "prettier": {
     "tabWidth": 2,
     "useTabs": false,

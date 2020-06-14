@@ -100,7 +100,7 @@ Now, running our script with [Node][] (this uses your Shell to read
 `example.md` and write `example.html`):
 
 ```sh
-$ node index.js < example.md > example.html
+node index.js < example.md > example.html
 ```
 
 …gives us an `example.html` file that looks as follows:
@@ -120,7 +120,8 @@ $ node index.js < example.md > example.html
 > Markdown.
 > You’ll need [`rehype-raw`][rehype-raw] if you’re planning on doing that.
 
-🎉 Nifty!
+🎉
+Nifty!
 It doesn’t do much yet, but we’ll get there.
 In the next section, we’ll make this more useful by introducing plugins.
 
@@ -209,7 +210,8 @@ file:
 > There’s a plugin for that though!
 > Feel free to add [`rehype-format`][rehype-format] to the plugins, below `doc`!
 
-💯 You’re acing it!
+💯
+You’re acing it!
 This is getting pretty useful, right?
 
 In the next section, we’ll lay the groundwork for creating a report.
@@ -352,7 +354,8 @@ example.md
 
 …we’ll get a useful message.
 
-💃 You’ve got a really cool system set up already, nicely done!
+💃
+You’ve got a really cool system set up already, nicely done!
 That’s a wrap though, check out the next section for further exercises and
 resources.
 

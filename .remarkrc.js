@@ -12,7 +12,9 @@ var naturalLanguage = unified().use([
   require('retext-profanities'),
   [require('retext-readability'), {age: 18, minWords: 8}],
   [require('retext-simplify'), {ignore: ['function', 'interface', 'maintain']}],
+  require('retext-emoji'),
   require('retext-syntax-mentions'),
+  require('retext-syntax-urls'),
   [
     require('retext-spell'),
     {dictionary: require('dictionary-en-gb'), personal: personal}

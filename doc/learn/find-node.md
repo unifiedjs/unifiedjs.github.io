@@ -24,8 +24,8 @@ modified: 2020-03-05
 ### What is a node
 
 A node is a single language specific unit inside a [syntax tree][syntax-tree].
-For example: a heading in markdown, or anchor element in HTML.  In unified, nodes
-follow the [unist][] specification. 
+For example: a heading in markdown, or anchor element in HTML.
+In unified, nodes follow the [unist][] specification.
 
 ### Finding a node
 
@@ -57,7 +57,6 @@ remark()
     function transformer(tree) {
       const node = find(tree, { type: 'emphasis' })
       console.log(node)
-      
     }
   })
   .processSync('Some _emphasis_, **strongness**, _more emphasis_, and `code`.')
@@ -79,9 +78,9 @@ yields
 
 Read more about [`unist-util-find`][unist-util-find] in its readme.
 
-[tree-traversal]: https://unifiedjs.com/learn/recipe/tree-traversal/
+[tree-traversal]: /learn/recipe/tree-traversal/
 
-[syntax-tree]: https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/
+[syntax-tree]: /learn/guide/introduction-to-syntax-trees/
 
 [unist]: https://github.com/syntax-tree/unist
 

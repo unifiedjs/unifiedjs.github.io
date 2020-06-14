@@ -426,7 +426,7 @@ If everything went okay, you should see each sentence highlighted in red.
 
 ### Colour
 
-One colour isn’t that cool, and we’re trying to recreate that [visualisation by
+One colour isn’t that cool, and we’re trying to recreate that [visual by
 @gregoryciotti][tweet].
 We need some more colours.
 From that image, I deducted the following hues.
