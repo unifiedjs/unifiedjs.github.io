@@ -9,7 +9,7 @@ var naturalLanguage = unified().use([
   require('retext-preset-wooorm'),
   require('retext-equality'),
   require('retext-passive'),
-  require('retext-profanities'),
+  [require('retext-profanities'), {sureness: 1}],
   [require('retext-readability'), {age: 18, minWords: 8}],
   [require('retext-simplify'), {ignore: ['function', 'interface', 'maintain']}],
   require('retext-emoji'),
@@ -17,7 +17,7 @@ var naturalLanguage = unified().use([
   require('retext-syntax-urls'),
   [
     require('retext-spell'),
-    {dictionary: require('dictionary-en-gb'), personal: personal}
+    {dictionary: require('dictionary-en'), personal: personal}
   ]
 ])
 

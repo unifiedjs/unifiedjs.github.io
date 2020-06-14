@@ -18,14 +18,14 @@ modified: 2019-12-12
 > Anyway, drop a line on [Spectrum][] if you know a better name.
 
 This guide shows how to create an interactive online editor with unified.
-In it we’ll visualise syntactic properties of text by “syntax highlighting”
+In it we’ll visualize syntactic properties of text by “syntax highlighting”
 them.
 The editor will run in a browser.
 It’ll be fast as we’re using [`virtual-dom`][vdom] (but you could use [React][]
 and the like too).
 
-For this example we’ll create an app that visualises sentence length.
-It’s based on a tip by [Gary Provost][gary], and the visualisation is based on
+For this example we’ll create an app that visualizes sentence length.
+It’s based on a tip by [Gary Provost][gary], and the visualization is based on
 [a tweet by @gregoryciotti][tweet].
 
 You can also [view this project][write-music] with some more features online.
@@ -43,7 +43,7 @@ You can also [view this project][write-music] with some more features online.
 *   [Natural language syntax tree](#natural-language-syntax-tree)
 *   [Virtual DOM](#virtual-dom)
 *   [Highlight](#highlight)
-*   [Colour](#colour)
+*   [Color](#color)
 *   [Squashing bugs](#squashing-bugs)
 *   [Further exercises](#further-exercises)
 
@@ -55,7 +55,7 @@ The user should be able to change text, and it should highlight live.
 
 We’ll use [xo][] as a linter, and [browserify][] as a bundler to compile our
 JavaScript with `require` calls to JavaScript that works in the browser (you
-can swap those out for your favourite linter and bundler).
+can swap those out for your favorite linter and bundler).
 
 ### Project structure
 
@@ -176,7 +176,7 @@ If that’s the case, please take some time to peruse the `virtual-dom` docs at
 your leisure.
 This guide will wait!
 
-To summarise what all these things in the code mean:
+To summarize what all these things in the code mean:
 
 *   `h` creates “virtual” nodes
 *   `createElement` turns them into DOM nodes
@@ -358,17 +358,17 @@ Change `index.js` like so:
 
 > `key` is needed for `virtual-dom` [to be performant][vdom-key].
 
-We don’t colour sentences yet, but there’s `<span>` elements wrapping them now.
+We don’t color sentences yet, but there’s `<span>` elements wrapping them now.
 You can see that in action by running `npm test` again and using your web
 inspector to inspect the drawing area.
 
 We’ve also set up two functions to highlight sentences.
 `count` will count the number of words of a given sentence, and `color` will
-pick a corresponding colour.
+pick a corresponding color.
 
 ### Highlight
 
-Now, let’s add colours.
+Now, let’s add colors.
 Update `index.js` like so:
 
 ```diff
@@ -414,7 +414,7 @@ Update `index.js` like so:
 The `count` function searches `node` for all occurrences of words, through
 [`unist-util-visit`][visit], and returns that count.
 
-`color` takes a number, and returns a nice colour in HSL for it.
+`color` takes a number, and returns a nice color in HSL for it.
 It does so based on if there’s a corresponding hue for it in `hues` (now only
 one value).
 If there’s no corresponding hue, it uses the last specified hue.
@@ -424,11 +424,11 @@ Try it out by running `npm test` again, and viewing `index.html` in your
 browser.
 If everything went okay, you should see each sentence highlighted in red.
 
-### Colour
+### Color
 
-One colour isn’t that cool, and we’re trying to recreate that [visual by
+One color isn’t that cool, and we’re trying to recreate that [visual by
 @gregoryciotti][tweet].
-We need some more colours.
+We need some more colors.
 From that image, I deducted the following hues.
 But you could use any hues you like!
 
@@ -462,7 +462,7 @@ To match that image, change `hues` like so:
 
 💃 After running `npm test` again, and reopening `index.html` in your browser,
 you should now see `The initial text` in purple!
-If you add more sentences, they each should receive colours based on how many
+If you add more sentences, they each should receive colors based on how many
 words they have.
 
 If you add more text, you’ll notice that our drawing area grows nicely, but our

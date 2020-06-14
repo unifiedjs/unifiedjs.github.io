@@ -23,7 +23,7 @@
     "cssnano-preset-advanced": "^4.0.0",
     "d3-scale": "^3.0.0",
     "deepmerge": "^4.0.0",
-    "dictionary-en-gb": "^2.0.0",
+    "dictionary-en": "^3.0.0",
     "dotenv": "^8.2.0",
     "flexsearch": "^0.6.0",
     "glob": "^7.0.0",

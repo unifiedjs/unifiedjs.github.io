@@ -9,7 +9,7 @@
 Do `npm i` and then `npm t`, which checks and builds the site.
 This basic build uses two shortcuts over the full build:
 
-*   Images are not optimised
+*   Images are not optimized
 *   Data is not crawled
 
 The full build is a slow site to properly build!
@@ -18,7 +18,7 @@ The reason for this is that it crawls the whole ecosystem.
 We contact 5 API’s: GitHub, npm, npms, OpenCollective, and BundlePhobia.
 When generating, it builds a performant static site.
 Everything is minified.
-Images are highly optimised.
+Images are highly optimized.
 
 To fully build the site, create a `.env` file with the following tokens:
 
