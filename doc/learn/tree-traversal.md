@@ -11,7 +11,7 @@ tags:
 author: Titus Wormer
 authorTwitter: wooorm
 published: 2019-12-23
-modified: 2019-12-23
+modified: 2020-06-14
 index: 1
 ---
 
@@ -63,9 +63,7 @@ var parse = require('rehype-parse')
 
 var doc = fs.readFileSync('example.html')
 
-var tree = unified()
-  .use(parse, {fragment: true})
-  .parse(doc)
+var tree = unified().use(parse, {fragment: true}).parse(doc)
 
 console.log(tree)
 ```
@@ -124,7 +122,7 @@ var visit = require('unist-util-visit')
 
 // …
 
-visit(tree, function(node) {
+visit(tree, function (node) {
   console.log(node.type)
 })
 ```
@@ -159,7 +157,7 @@ var visit = require('unist-util-visit')
 
 // …
 
-visit(tree, 'element', function(node) {
+visit(tree, 'element', function (node) {
   console.log(node.tagName)
 })
 ```
@@ -175,7 +173,7 @@ You can do this yourself as well.
 The above works the same as:
 
 ```js
-visit(tree, function(node) {
+visit(tree, function (node) {
   if (node.type === 'element') {
     console.log(node.tagName)
   }
@@ -186,7 +184,7 @@ But the test passed to `visit` can be more advanced, such as the following to
 visit different kinds of nodes.
 
 ```js
-visit(tree, ['comment', 'text'], function(node) {
+visit(tree, ['comment', 'text'], function (node) {
   console.log([node.value])
 })
 ```

@@ -8,7 +8,7 @@ tags:
   - plugin
   - retext
 published: 2017-05-03
-modified: 2019-12-12
+modified: 2020-05-18
 ---
 
 ## Creating a plugin with unified

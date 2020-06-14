@@ -11,7 +11,7 @@ tags:
   - remark
   - rehype
 published: 2017-05-03
-modified: 2019-12-12
+modified: 2020-06-14
 ---
 
 ## Using unified
@@ -50,11 +50,11 @@ Let’s install those with [npm][], which comes bundled with [Node][].
 ```sh
 $ npm install unified unified-stream remark-parse remark-rehype rehype-stringify
 /Users/tilde/example
-├── rehype-stringify@6.0.1
-├── remark-parse@7.0.2
-├── remark-rehype@5.0.0
-├── unified-stream@1.0.5
-└── unified@8.4.2
+├── rehype-stringify@8.0.0
+├── remark-parse@8.0.2
+├── remark-rehype@7.0.0
+├── unified-stream@1.0.6
+└── unified@9.0.0
 ```
 
 Let’s first create a Markdown file that we’re going to transform.
@@ -88,10 +88,7 @@ var markdown = require('remark-parse')
 var remark2rehype = require('remark-rehype')
 var html = require('rehype-stringify')
 
-var processor = unified()
-  .use(markdown)
-  .use(remark2rehype)
-  .use(html)
+var processor = unified().use(markdown).use(remark2rehype).use(html)
 
 process.stdin.pipe(stream(processor)).pipe(process.stdout)
 ```
@@ -136,9 +133,9 @@ We can use [`remark-slug`][slug] and [`remark-toc`][toc] for the former, and
 ```sh
 $ npm install remark-slug remark-toc rehype-document
 /Users/tilde/example
-├── remark-slug@5.1.2
-├── remark-toc@6.0.0
-└── rehype-document@3.1.0
+├── remark-slug@6.0.0
+├── remark-toc@7.0.0
+└── rehype-document@5.0.0
 ```
 
 Let’s now use those two as well, by modifying our `index.js` file:
@@ -153,13 +150,14 @@ Let’s now use those two as well, by modifying our `index.js` file:
 +var doc = require('rehype-document')
  var html = require('rehype-stringify')
 
- var processor = unified()
-   .use(markdown)
+-var processor = unified().use(markdown).use(remark2rehype).use(html)
++var processor = unified()
++  .use(markdown)
 +  .use(slug)
 +  .use(toc)
-   .use(remark2rehype)
++  .use(remark2rehype)
 +  .use(doc, {title: 'Contents'})
-   .use(html)
++  .use(html)
 
  process.stdin.pipe(stream(processor)).pipe(process.stdout)
 ```
@@ -229,8 +227,8 @@ Let’s install those.
 ```sh
 $ npm install to-vfile vfile-reporter
 /Users/tilde/example
-├── to-vfile@6.0.0
-└── vfile-reporter@6.0.0
+├── to-vfile@6.1.0
+└── vfile-reporter@6.0.1
 ```
 
 …and now unhook stdin/stdout from our example and use the file-system instead,
@@ -257,8 +255,8 @@ like so:
    .use(html)
 
 -process.stdin.pipe(stream(processor)).pipe(process.stdout)
-+processor.process(vfile.readSync('example.md'), function(err, file) {
-+  if (err) throw err
++processor.process(vfile.readSync('example.md'), function (error, file) {
++  if (error) throw error
 +  console.error(report(file))
 +  file.extname = '.html'
 +  vfile.writeSync(file)
@@ -292,9 +290,9 @@ First, let’s install these dependencies as well.
 ```sh
 $ npm install remark-retext retext-english retext-indefinite-article
 /Users/tilde/example
-├── remark-retext@3.1.3
+├── remark-retext@4.0.0
 ├── retext-english@3.0.4
-└── retext-indefinite-article@1.1.7
+└── retext-indefinite-article@2.0.1
 ```
 
 …and change our `index.js` like so:
@@ -315,12 +313,7 @@ $ npm install remark-retext retext-english retext-indefinite-article
 
  var processor = unified()
    .use(markdown)
-+  .use(
-+    remark2retext,
-+    unified()
-+      .use(english)
-+      .use(indefiniteArticle)
-+  )
++  .use(remark2retext, unified().use(english).use(indefiniteArticle))
    .use(slug)
    .use(toc)
    .use(remark2rehype)

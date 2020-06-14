@@ -11,7 +11,7 @@ tags:
 author: Merlijn Vos
 authorTwitter: Murderlon
 published: 2020-01-10
-modified: 2020-03-05
+modified: 2020-06-14
 ---
 
 ## How to find a node
@@ -55,7 +55,7 @@ remark()
     return transformer
 
     function transformer(tree) {
-      const node = find(tree, { type: 'emphasis' })
+      const node = find(tree, {type: 'emphasis'})
       console.log(node)
     }
   })
@@ -67,10 +67,10 @@ yields
 ```js
 {
   type: 'emphasis',
-  children: [ { type: 'text', value: 'emphasis', position: [Position] } ],
-  position: Position {
-    start: { line: 1, column: 6, offset: 5 },
-    end: { line: 1, column: 16, offset: 15 },
+  children: [{type: 'text', value: 'emphasis', position: [Position]}],
+  position: {
+    start: {line: 1, column: 6, offset: 5},
+    end: {line: 1, column: 16, offset: 15},
     indent: []
   }
 }

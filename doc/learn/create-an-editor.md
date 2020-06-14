@@ -8,7 +8,7 @@ tags:
   - editor
   - dingus
 published: 2017-05-03
-modified: 2019-12-12
+modified: 2020-06-14
 ---
 
 ## Creating an editor
@@ -83,10 +83,10 @@ Keep `index.js`, `index.html`, and `index.css` empty for now, and fill
   "dependencies": {},
   "devDependencies": {
     "browserify": "^16.0.0",
-    "xo": "^0.23.0"
+    "xo": "^0.32.0"
   },
   "scripts": {
-    "build": "browserify index.js > build.js",
+    "build": "browserify index.js -o build.js",
     "lint": "xo",
     "test": "npm run build && npm run lint"
   },
@@ -140,7 +140,7 @@ var createElement = require('virtual-dom/create-element')
 var diff = require('virtual-dom/diff')
 var patch = require('virtual-dom/patch')
 
-var root = document.getElementById('root')
+var root = document.querySelector('#root')
 var tree = render('The initial text.')
 var dom = root.appendChild(createElement(tree))
 
@@ -209,7 +209,8 @@ html {
   overflow: hidden;
 }
 
-textarea, .draw {
+textarea,
+.draw {
   margin: 0;
   padding: 0;
   width: 100%;
@@ -259,7 +260,7 @@ Change `index.js` like so:
 +var english = require('retext-english')
 
 +var processor = unified().use(english)
- var root = document.getElementById('root')
+ var root = document.querySelector('#root')
  var tree = render('The initial text.')
  var dom = root.appendChild(createElement(tree))
 @@ -25,7 +28,9 @@ function render(text) {
@@ -341,10 +342,11 @@ Change `index.js` like so:
 +
 +    if (node.type === 'SentenceNode') {
 +      key++
-+      result = h('span', {
-+        key: 's-' + key,
-+        style: {backgroundColor: color(count(node))}
-+      }, result)
++      result = h(
++        'span',
++        {key: 's-' + key, style: {backgroundColor: color(count(node))}},
++        result
++      )
 +    }
 +
      return result
@@ -378,12 +380,10 @@ Update `index.js` like so:
  var english = require('retext-english')
 +var visit = require('unist-util-visit')
 +
-+var hues = [
-+  0
-+]
++var hues = [0]
 
  var processor = unified().use(english)
- var root = document.getElementById('root')
+ var root = document.querySelector('#root')
 @@ -60,7 +65,20 @@ function render(text) {
      return result
    }
@@ -393,7 +393,7 @@ Update `index.js` like so:
 +    var value = 0
 +
 +    visit(node, 'WordNode', add)
-
++
 +    return value
 +
 +    function add() {
@@ -403,8 +403,8 @@ Update `index.js` like so:
 +
 -  function color() {}
 +  function color(count) {
-+    var val = count < hues.length ? hues[count] : hues[hues.length - 1]
-+    return 'hsl(' + [val, '93%', '85%'].join(', ') + ')'
++    var value = count < hues.length ? hues[count] : hues[hues.length - 1]
++    return 'hsl(' + [value, '93%', '85%'].join(', ') + ')'
 +  }
  }
 ```
@@ -438,22 +438,8 @@ To match that image, change `hues` like so:
 @@ -7,7 +7,20 @@ var english = require('retext-english')
  var visit = require('unist-util-visit')
 
- var hues = [
-+  60,
-+  60,
-+  60,
-+  300,
-+  300,
-   0,
-+  0,
-+  120,
-+  120,
-+  120,
-+  120,
-+  120,
-+  120,
-+  180
- ]
+-var hues = [0]
++var hues = [60, 60, 60, 300, 300, 0, 0, 120, 120, 120, 120, 120, 120, 180]
 
  var processor = unified().use(english)
 ```
