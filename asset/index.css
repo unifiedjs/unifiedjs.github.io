@@ -46,12 +46,7 @@ input {
 kbd,
 pre,
 code {
-  font-family:
-    SFMono-Regular,
-    Consolas,
-    Liberation Mono,
-    Menlo,
-    Courier,
+  font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, Courier,
     monospace;
   font-feature-settings: normal;
 }
@@ -390,19 +385,15 @@ abbr {
 .card {
   transition: 200ms;
   transition-property: color, box-shadow;
-  box-shadow:
-    0 0 0 0.2em rgba(3, 102, 214, 0),
-    0 13px 27px -5px rgba(50, 50, 93, 0.25),
-    0 8px 16px -8px rgba(0, 0, 0, 0.3),
+  box-shadow: 0 0 0 0.2em rgba(3, 102, 214, 0),
+    0 13px 27px -5px rgba(50, 50, 93, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3),
     0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 }
 
 .card:hover {
-  box-shadow:
-    0 0 0 0.2em rgba(3, 102, 214, 0),
+  box-shadow: 0 0 0 0.2em rgba(3, 102, 214, 0),
     0 30px 60px -12px rgba(50, 50, 93, 0.25),
-    0 18px 36px -18px rgba(0, 0, 0, 0.3),
-    0 -12px 36px -8px rgba(0, 0, 0, 0.025);
+    0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
 
 .nl-root {
@@ -529,11 +520,9 @@ a.tag:focus .count {
 }
 
 .card:focus {
-  box-shadow:
-    0 0 0 0.2em rgb(3, 102, 214),
+  box-shadow: 0 0 0 0.2em rgb(3, 102, 214),
     0 30px 60px -12px rgba(50, 50, 93, 0.25),
-    0 18px 36px -18px rgba(0, 0, 0, 0.3),
-    0 -12px 36px -8px rgba(0, 0, 0, 0.025);
+    0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
 
 .landing {

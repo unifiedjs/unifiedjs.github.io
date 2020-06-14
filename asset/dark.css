@@ -29,18 +29,14 @@ body {
 
 .card {
   background-color: rgba(0, 0, 0, 0.2);
-  box-shadow:
-    0 0 0 0.2em rgba(46, 143, 255, 0),
-    0 13px 27px -5px rgba(0, 0, 43, 0.25),
-    0 8px 16px -8px rgba(0, 0, 0, 0.3),
+  box-shadow: 0 0 0 0.2em rgba(46, 143, 255, 0),
+    0 13px 27px -5px rgba(0, 0, 43, 0.25), 0 8px 16px -8px rgba(0, 0, 0, 0.3),
     0 -6px 16px -6px rgba(0, 0, 0, 0.025);
 }
 
 .card:hover {
-  box-shadow:
-    0 0 0 0.2em rgba(46, 143, 255, 0),
-    0 30px 60px -12px rgba(0, 0, 43, 0.25),
-    0 18px 36px -18px rgba(0, 0, 0, 0.3),
+  box-shadow: 0 0 0 0.2em rgba(46, 143, 255, 0),
+    0 30px 60px -12px rgba(0, 0, 43, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
     0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
 
@@ -97,10 +93,8 @@ a.tag:focus .count {
 
 .card:focus {
   /* --blue-3-83 */
-  box-shadow:
-    0 0 0 0.2em rgb(46, 143, 255),
-    0 30px 60px -12px rgba(0, 0, 43, 0.25),
-    0 18px 36px -18px rgba(0, 0, 0, 0.3),
+  box-shadow: 0 0 0 0.2em rgb(46, 143, 255),
+    0 30px 60px -12px rgba(0, 0, 43, 0.25), 0 18px 36px -18px rgba(0, 0, 0, 0.3),
     0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
 

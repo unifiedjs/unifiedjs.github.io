@@ -80,6 +80,7 @@
     "spdx-license-list": "^6.0.0",
     "strip-comments": "^2.0.0",
     "stylelint": "^13.0.0",
+    "stylelint-config-prettier": "^8.0.0",
     "stylelint-config-standard": "^20.0.0",
     "tinyify": "^2.0.0",
     "to-vfile": "^6.0.0",
@@ -94,7 +95,7 @@
   },
   "scripts": {
     "start": "budo --dir build",
-    "format": "remark . -qo && prettier --write \"**/*.{js,css}\" && stylelint \"**/*.css\" --fix && xo --fix",
+    "format": "remark . -qo && prettier . --write && stylelint \"**/*.css\" --fix && xo --fix",
     "crawl:sponsors": "mkdir -p data; node crawl/sponsors",
     "crawl:team": "mkdir -p data; node crawl/team",
     "crawl:ecosystem": "mkdir -p data; mkdir -p data/readme; node crawl/ecosystem",
@@ -125,7 +126,10 @@
     }
   },
   "stylelint": {
-    "extends": "stylelint-config-standard",
+    "extends": [
+      "stylelint-config-standard",
+      "stylelint-config-prettier"
+    ],
     "rules": {
       "no-descending-specificity": null
     }
