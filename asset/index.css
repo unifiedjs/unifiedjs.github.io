@@ -22,6 +22,17 @@
   --hl: var(--blue-5);
 }
 
+.blm {
+  background-color: #121417;
+  color: var(--gray-0);
+  font-weight: 600;
+  letter-spacing: 0.0625ex;
+}
+
+.blm .row {
+  justify-content: center;
+}
+
 * {
   line-height: calc(1em + 1ex);
   box-sizing: border-box;
