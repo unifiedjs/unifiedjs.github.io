@@ -9,16 +9,22 @@ module.exports = header
 function header() {
   return [
     h('.blm', [
-      h('.row', [
-        h('p', [
-          h('a', {href: 'https://bailfunds.github.io'}, '#'),
-          h('a', {href: 'https://www.gofundme.com/f/georgefloyd'}, 'Black'),
-          h('a', {href: 'https://www.gofundme.com/f/i-run-with-maud'}, 'Lives'),
-          h(
-            'a',
-            {href: 'https://www.gofundme.com/f/justice-for-mike-ramos'},
-            'Matter'
-          )
+      h('.container', [
+        h('.row', [
+          h('p', [
+            h('a', {href: 'https://bailfunds.github.io'}, '#'),
+            h('a', {href: 'https://www.gofundme.com/f/georgefloyd'}, 'Black'),
+            h(
+              'a',
+              {href: 'https://www.gofundme.com/f/i-run-with-maud'},
+              'Lives'
+            ),
+            h(
+              'a',
+              {href: 'https://www.gofundme.com/f/justice-for-mike-ramos'},
+              'Matter'
+            )
+          ])
         ])
       ])
     ]),
