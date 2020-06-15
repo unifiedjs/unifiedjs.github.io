@@ -8,7 +8,7 @@ function oc() {
   return s(
     'svg.icon',
     {
-      ariaLabel: 'Downloads',
+      ariaLabel: 'OpenCollective',
       viewBox: [0, 0, 40, 40],
       width: 18,
       height: 18,
