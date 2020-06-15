@@ -7,7 +7,13 @@ var icon = require('../icon/downloads')
 module.exports = downloads
 
 function downloads(value, name) {
-  var node = [icon(), ' ', fmt(value)]
+  var node
+
+  if (!value) {
+    return []
+  }
+
+  node = [icon(), ' ', fmt(value)]
 
   if (name) {
     node = h('a.tap-target', {href: 'https://www.npmtrends.com/' + name}, node)
