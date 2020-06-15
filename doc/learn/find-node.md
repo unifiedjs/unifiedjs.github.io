@@ -1,7 +1,8 @@
 ---
 group: recipe
+index: 4
 title: Find a node
-description: How to find a node in any unified flavored syntax tree.
+description: How to find a node in any unist syntax tree
 tags:
   - node
   - tree

@@ -1,5 +1,6 @@
 ---
 group: recipe
+index: 3
 title: Tree traversal
 description: How to do tree traversal (also known as walking or visiting a tree)
 tags:
@@ -12,7 +13,6 @@ author: Titus Wormer
 authorTwitter: wooorm
 published: 2019-12-23
 modified: 2020-06-14
-index: 1
 ---
 
 ## How to walk a tree
