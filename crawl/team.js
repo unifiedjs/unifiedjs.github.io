@@ -15,7 +15,7 @@ if (!ghToken) {
 
 var headers = {Authorization: 'bearer ' + ghToken}
 
-var base = 'https://raw.githubusercontent.com/unifiedjs/collective/master/data/'
+var base = 'https://raw.githubusercontent.com/unifiedjs/collective/HEAD/data/'
 var files = ['humans.yml', 'teams.yml']
 
 files.forEach((filename) =>

@@ -210,4 +210,4 @@ Read more about [`unist-util-visit`][visit] in its readme.
 
 [unified]: https://github.com/unifiedjs/unified
 
-[rehype-parse]: https://github.com/rehypejs/rehype/tree/master/packages/rehype-parse
+[rehype-parse]: https://github.com/rehypejs/rehype/tree/HEAD/packages/rehype-parse

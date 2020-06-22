@@ -18,7 +18,7 @@ function resolveUrls(options) {
     var data = file.data
     var repo = data.repo || settings.repo
     var dirname = data.dirname || settings.dirname || '/'
-    var prefix = [repo, 'blob', 'master']
+    var prefix = [repo, 'blob', 'HEAD']
     var base
 
     if (!repo) {

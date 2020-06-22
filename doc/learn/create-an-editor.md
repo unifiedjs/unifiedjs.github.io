@@ -523,9 +523,9 @@ If you haven’t already, check out the other articles in the
 
 [browserify]: https://github.com/substack/node-browserify
 
-[english]: https://github.com/retextjs/retext/tree/master/packages/retext-english
+[english]: https://github.com/retextjs/retext/tree/HEAD/packages/retext-english
 
-[vdom-key]: https://github.com/Matt-Esch/virtual-dom/tree/master/virtual-hyperscript#key
+[vdom-key]: https://github.com/Matt-Esch/virtual-dom/tree/HEAD/virtual-hyperscript#key
 
 [visit]: https://github.com/syntax-tree/unist-util-visit
 

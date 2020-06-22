@@ -365,9 +365,9 @@ If you haven’t already, check out the other articles in the
 
 [spectrum]: https://spectrum.chat/unified
 
-[parse]: https://github.com/remarkjs/remark/tree/master/packages/remark-parse
+[parse]: https://github.com/remarkjs/remark/tree/HEAD/packages/remark-parse
 
-[stringify]: https://github.com/rehypejs/rehype/tree/master/packages/rehype-stringify
+[stringify]: https://github.com/rehypejs/rehype/tree/HEAD/packages/rehype-stringify
 
 [remark-rehype]: https://github.com/remarkjs/remark-rehype
 
@@ -387,17 +387,17 @@ If you haven’t already, check out the other articles in the
 
 [unified-stream]: https://github.com/unifiedjs/unified-stream
 
-[english]: https://github.com/retextjs/retext/tree/master/packages/retext-english
+[english]: https://github.com/retextjs/retext/tree/HEAD/packages/retext-english
 
 [indefinite-article]: https://github.com/retextjs/retext-indefinite-article
 
 [remark-retext]: https://github.com/remarkjs/remark-retext
 
-[retext-plugins]: https://github.com/retextjs/retext/blob/master/doc/plugins.md
+[retext-plugins]: https://github.com/retextjs/retext/blob/HEAD/doc/plugins.md
 
-[remark-plugins]: https://github.com/remarkjs/remark/blob/master/doc/plugins.md
+[remark-plugins]: https://github.com/remarkjs/remark/blob/HEAD/doc/plugins.md
 
-[rehype-plugins]: https://github.com/rehypejs/rehype/blob/master/doc/plugins.md
+[rehype-plugins]: https://github.com/rehypejs/rehype/blob/HEAD/doc/plugins.md
 
 [rehype-raw]: https://github.com/rehypejs/rehype-raw
 
