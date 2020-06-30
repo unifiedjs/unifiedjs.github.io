@@ -503,7 +503,8 @@ async function getPackage(ctx) {
 }
 
 async function getDownloads(ctx) {
-  var {proper, packageDist, npmToken} = ctx
+  var {proper, packageDist} = ctx
+  // See below: `npmToken = ctx.npmToken`.
 
   if (!proper) {
     return
@@ -517,7 +518,8 @@ async function getDownloads(ctx) {
   ].join('/')
 
   var response = await fetch(endpoint, {
-    headers: {Authorization: 'Bearer ' + npmToken}
+    // Passing an npm token recently seems to crash npm.
+    // headers: {Authorization: 'Bearer ' + npmToken}
   }).then((x) => x.json())
 
   ctx.packageDist = {...ctx.packageDist, downloads: response.downloads}
