@@ -68,7 +68,7 @@ main({
   },
   (error) => {
     console.log(chalk.red('✖') + ' error')
-    console.error(error)
+    throw error
   }
 )
 
@@ -408,7 +408,6 @@ async function getManifest(ctx) {
   return {...ctx, proper, manifestBase, packageSource: pkg}
 }
 
-/* eslint-disable-next-line complexity */
 async function getPackage(ctx) {
   var {proper, manifest, manifestBase, project, packageSource} = ctx
   var {repo} = project
@@ -422,7 +421,7 @@ async function getPackage(ctx) {
     [npmsEndpoint, encodeURIComponent(packageSource.name)].join('/')
   ).then((x) => x.json())
 
-  if (response.code === 'NOT_FOUND' || !response.collected) {
+  if (response.code === 'NOT_FOUND') {
     console.warn('%s#%s: could not find package', repo, manifest)
     ctx.proper = false
     return
