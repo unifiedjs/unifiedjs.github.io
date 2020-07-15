@@ -166,7 +166,8 @@ function urls(options) {
           return new URL('/explore/project/' + repo + '/', origin)
         }
       } else {
-        return new URL('/' + rest.join('/'), 'https://github.com')
+        url.pathname = '/' + rest.join('/')
+        return url
       }
     }
   }
