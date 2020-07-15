@@ -113,6 +113,11 @@ function urls(options) {
     if (host === 'github.com') {
       rest = url.pathname.slice(1).split('/')
 
+      // Tree goes to directories, blob to files.
+      if (rest[3] === 'master' && (rest[2] === 'tree' || rest[2] === 'blob')) {
+        rest[3] = 'HEAD'
+      }
+
       repo = rest.slice(0, 2).join('/')
 
       if (own.call(data.projectByRepo, repo)) {
@@ -160,6 +165,8 @@ function urls(options) {
         if (!url.hash && rest.length === 0) {
           return new URL('/explore/project/' + repo + '/', origin)
         }
+      } else {
+        return new URL('/' + rest.join('/'), 'https://github.com')
       }
     }
   }
