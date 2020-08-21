@@ -35,7 +35,7 @@ function team(data) {
         'There are a couple of places to get support when using unified that ',
         'are described in this section. ',
         'Before participating in unified’s communities, please read our ',
-        h('a', {href: coc}, 'Code of Conduct'),
+        h('a', {href: coc}, 'code of conduct'),
         '. ',
         'We expect that all community members adhere to the guidelines within.'
       ]),
