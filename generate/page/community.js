@@ -13,7 +13,6 @@ var page = require('./page')
 
 module.exports = team
 
-var spectrum = 'http://spectrum.chat/unified'
 var twitter = 'https://twitter.com/unifiedjs'
 var org = 'https://github.com/unifiedjs'
 var base = org + '/.github/blob/HEAD/'
@@ -41,9 +40,7 @@ function team(data) {
         'We expect that all community members adhere to the guidelines within.'
       ]),
       h('p', [
-        'Questions can be asked on ',
-        h('a', {href: spectrum}, 'Spectrum'),
-        '. ',
+        'Questions can be asked on GitHub Discussions in each org. ',
         'Take a look at ',
         h('a', {href: support}, h('code', 'support.md')),
         ' to find out how to help us help you. ',

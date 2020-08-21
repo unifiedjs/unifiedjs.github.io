@@ -22,9 +22,8 @@ It’ll also show how to generate a table of contents, and sidestep into checkin
 prose.
 
 > Stuck?
-> A good place to get help fast is [Spectrum][].
 > Have an idea for another guide?
-> Share it on Spectrum!
+> See [`support.md`][support].
 
 ### Contents
 
@@ -363,7 +362,7 @@ If you haven’t already, check out the other articles in the
 
 <!--Definitions-->
 
-[spectrum]: https://spectrum.chat/unified
+[support]: https://github.com/unifiedjs/.github/blob/main/support.md
 
 [parse]: https://github.com/remarkjs/remark/tree/HEAD/packages/remark-parse
 

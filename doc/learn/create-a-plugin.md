@@ -18,9 +18,8 @@ spaces between sentences.
 The concepts here apply to the other syntaxes of unified as well.
 
 > Stuck?
-> A good place to get help fast is [Spectrum][].
 > Have an idea for another guide?
-> Share it on spectrum!
+> See [`support.md`][support].
 
 ### Contents
 
@@ -276,7 +275,7 @@ If you haven’t already, check out the other articles in the
 
 <!--Definitions-->
 
-[spectrum]: https://spectrum.chat/unified
+[support]: https://github.com/unifiedjs/.github/blob/main/support.md
 
 [visit]: https://github.com/syntax-tree/unist-util-visit
 

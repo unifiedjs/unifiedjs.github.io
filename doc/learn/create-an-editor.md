@@ -13,10 +13,6 @@ modified: 2020-06-14
 
 ## Creating an editor
 
-> I’m not entirely sure how to call this thing.
-> “Demo” is too generic, “dingus” too vague, and I think editor is pretty apt.
-> Anyway, drop a line on [Spectrum][] if you know a better name.
-
 This guide shows how to create an interactive online editor with unified.
 In it we’ll visualize syntactic properties of text by “syntax highlighting”
 them.
@@ -31,9 +27,8 @@ It’s based on a tip by [Gary Provost][gary], and the visualization is based on
 You can also [view this project][write-music] with some more features online.
 
 > Stuck?
-> A good place to get help fast is [Spectrum][].
 > Have an idea for another guide?
-> Share it on spectrum!
+> See [`support.md`][support].
 
 ### Contents
 
@@ -507,7 +502,7 @@ If you haven’t already, check out the other articles in the
 
 <!--Definitions-->
 
-[spectrum]: https://spectrum.chat/unified
+[support]: https://github.com/unifiedjs/.github/blob/main/support.md
 
 [vdom]: https://github.com/Matt-Esch/virtual-dom
 

@@ -14,7 +14,6 @@ function footer() {
         h('li', h('a', {href: '/community/'}, 'Community'))
       ]),
       h('ol.row.justify-end-l', [
-        h('li', h('a', {href: 'https://spectrum.chat/unified'}, 'Spectrum')),
         h(
           'li',
           h('a', {href: 'https://opencollective.com/unified'}, 'OpenCollective')
