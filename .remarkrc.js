@@ -7,7 +7,7 @@ var personal = strip(fs.readFileSync('dictionary.txt', 'utf8'))
 var naturalLanguage = unified().use([
   require('retext-english'),
   require('retext-preset-wooorm'),
-  require('retext-equality'),
+  [require('retext-equality'), {ignore: ['whitespace']}],
   require('retext-passive'),
   [require('retext-profanities'), {sureness: 1}],
   [require('retext-readability'), {age: 18, minWords: 8}],
