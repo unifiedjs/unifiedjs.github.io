@@ -39,7 +39,7 @@ function item(d) {
         }),
         h('span.ellipsis', name)
       ]),
-      h('p.double-ellipsis', description)
+      description ? h('p.double-ellipsis', description) : []
     ]),
     footer
   )
