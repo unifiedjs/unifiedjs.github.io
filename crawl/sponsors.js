@@ -1,6 +1,7 @@
 var fs = require('fs').promises
 var path = require('path')
 var fetch = require('node-fetch')
+var chalk = require('chalk')
 
 require('dotenv').config()
 
@@ -44,32 +45,52 @@ var query = `query($slug: String) {
 }
 `
 
-fetch(endpoint, {
-  method: 'POST',
-  body: JSON.stringify({query: query, variables: variables}),
-  headers: {
-    'Content-Type': 'application/json',
-    'Api-Key': token
-  }
-})
-  .then((response) => response.json())
-  .then(function (response) {
+Promise.all([
+  fs.readFile(path.join('crawl', 'sponsors.txt')).then((d) => {
+    return String(d)
+      .split('\n')
+      .map((d) => {
+        var spam = d.charAt(0) === '-'
+        return {oc: spam ? d.slice(1) : d, spam: spam}
+      })
+  }),
+  fetch(endpoint, {
+    method: 'POST',
+    body: JSON.stringify({query: query, variables: variables}),
+    headers: {
+      'Content-Type': 'application/json',
+      'Api-Key': token
+    }
+  }).then((response) => response.json())
+])
+  .then(function ([control, response]) {
     var seen = []
     var members = response.data.collective.members.nodes
       .map((d) => {
+        var oc = d.account.slug
         var github = d.account.githubHandle || undefined
         var twitter = d.account.twitterHandle || undefined
         var url = d.account.website || undefined
+        var info = control.find((d) => d.oc === oc)
 
         if (url === ghBase + github || url === twBase + twitter) {
           url = undefined
         }
 
+        if (!info) {
+          console.log(
+            chalk.red('✖') +
+              ' @%s is an unknown sponsor, please define whether it’s spam or not in `sponsors.txt`',
+            oc
+          )
+        }
+
         return {
+          spam: !info || info.spam,
           name: d.account.name,
           description: d.account.description || undefined,
           image: d.account.imageUrl,
-          oc: d.account.slug,
+          oc: oc,
           github,
           twitter,
           url,
@@ -79,7 +100,7 @@ fetch(endpoint, {
         }
       })
       .filter((d) => {
-        var ignore = seen.includes(d.oc) // Ignore dupes in data.
+        var ignore = d.spam || seen.includes(d.oc) // Ignore dupes in data.
         seen.push(d.oc)
         return d.amount > min && !ignore
       })
