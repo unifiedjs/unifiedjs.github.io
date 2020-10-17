@@ -422,7 +422,7 @@ async function getPackage(ctx) {
   ).then((x) => x.json())
 
   if (response.code === 'NOT_FOUND') {
-    console.warn('%s#%s: could not find package', repo, manifest)
+    console.warn('%s#%s: could not find package (on npms)', repo, manifest)
     ctx.proper = false
     return
   }
