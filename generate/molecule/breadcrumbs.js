@@ -31,6 +31,7 @@ function line(filepath, title) {
     var node = h('a', {href}, word(last && title ? title : d, last))
 
     if (last) {
+      node.properties.rel = ['canonical']
       node = h('span.content', node)
     }
 
