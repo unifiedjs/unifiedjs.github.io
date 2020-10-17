@@ -6,11 +6,15 @@ var icon = require('../icon/link')
 
 module.exports = url
 
-function url(value) {
+function url(value, linkProps) {
   return value
     ? h(
         'li.ellipsis',
-        h('a.tap-target', {href: value}, [icon(), ' ', fmt(value)])
+        h('a.tap-target', {...linkProps, href: value}, [
+          icon(),
+          ' ',
+          fmt(value)
+        ])
       )
     : ''
 }

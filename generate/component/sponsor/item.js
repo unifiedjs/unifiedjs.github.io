@@ -25,7 +25,7 @@ function item(d) {
   }
 
   if (url) {
-    footer.push(urlLine(url))
+    footer.push(urlLine(url, {rel: ['sponsored', 'nofollow']}))
   }
 
   return card(
