@@ -48,12 +48,12 @@ function init() {
     {
       selector: '#root-keyword',
       create: (search) =>
-        new Promise((resolve) =>
+        new Promise((resolve) => {
           window.requestAnimationFrame(() => {
             keywords.forEach((d) => search.index.add(d, d))
             resolve()
           })
-        ),
+        }),
       weight: (d) => data.packagesByKeyword[d].length,
       filter: keywordFilter,
       preview: keywordPreview,
@@ -63,12 +63,12 @@ function init() {
     {
       selector: '#root-topic',
       create: (search) =>
-        new Promise((resolve) =>
+        new Promise((resolve) => {
           window.requestAnimationFrame(() => {
             topics.forEach((d) => search.index.add(d, d))
             resolve()
           })
-        ),
+        }),
       weight: (d) => data.projectsByTopic[d].length,
       filter: topicFilter,
       preview: topicPreview,

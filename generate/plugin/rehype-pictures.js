@@ -1,6 +1,6 @@
 'use strict'
 
-var {join, sep, relative} = require('path')
+var path = require('path')
 var fs = require('fs')
 var vfile = require('to-vfile')
 var sharp = require('sharp')
@@ -36,7 +36,7 @@ function urls(options) {
 
     visit(tree, 'element', visitor)
 
-    if (promises.length !== 0) {
+    if (promises.length > 0) {
       return Promise.all(promises).then(() => {})
     }
 
@@ -50,7 +50,7 @@ function urls(options) {
       promises.push(rewrite(src, node, parent))
 
       function rewrite(src, node, parent) {
-        var resolved = join(base, src.split('/').join(sep))
+        var resolved = path.join(base, src.split('/').join(path.sep))
         var promises = [].concat(
           // See which images exist.
           sources.map((d) => {
@@ -88,7 +88,7 @@ function urls(options) {
                 : h('source', {
                     srcSet: applicable.map(
                       (d) =>
-                        ['/' + relative(base, d[0])] +
+                        ['/' + path.relative(base, d[0])] +
                         (d[1] ? ' ' + d[1] + 'w' : '')
                     ),
                     media:

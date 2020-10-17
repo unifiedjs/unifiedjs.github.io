@@ -60,11 +60,8 @@ function urls(options) {
 
       // Minify / make relative.
       if (url.origin === origin) {
-        if (url.pathname === pathname) {
-          value = url.hash || '#'
-        } else {
-          value = url.pathname + url.hash
-        }
+        value =
+          url.pathname === pathname ? url.hash || '#' : url.pathname + url.hash
       } else {
         value = url.href
       }

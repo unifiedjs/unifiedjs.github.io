@@ -1,7 +1,7 @@
 'use strict'
 
 var fs = require('fs')
-var {join, basename, extname} = require('path')
+var path = require('path')
 var yaml = require('js-yaml')
 var glob = require('glob')
 var matter = require('vfile-matter')
@@ -36,7 +36,7 @@ var sponsor = require('./page/sponsors')
 var topic = require('./page/topic')
 var topics = require('./page/topics')
 
-var users = yaml.safeLoad(fs.readFileSync(join('doc', 'showcase.yml')))
+var users = yaml.safeLoad(fs.readFileSync(path.join('doc', 'showcase.yml')))
 
 var tasks = []
 
@@ -46,7 +46,7 @@ expandDescription(data.packageByName)
 
 var entries = glob.sync('doc/learn/**/*.md').map((input) => {
   var file = matter(vfile.readSync(input))
-  var slug = basename(input, extname(input))
+  var slug = path.basename(input, path.extname(input))
   var {group, tags} = file.data.matter
 
   file.data.meta = {
@@ -187,7 +187,7 @@ Object.keys(data.projectByRepo).forEach((d) => {
 Object.keys(data.packageByName).forEach((d) => {
   var pack = data.packageByName[d]
   var {description, readmeName, repo, manifestBase, keywords} = pack
-  var input = join('data', 'readme', readmeName)
+  var input = path.join('data', 'readme', readmeName)
   var pathname = '/explore/package/' + d + '/'
 
   tasks.push(() =>

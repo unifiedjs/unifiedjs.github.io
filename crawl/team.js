@@ -1,5 +1,5 @@
 var fs = require('fs').promises
-var {join, basename, extname} = require('path')
+var path = require('path')
 var yaml = require('js-yaml')
 var fetch = require('node-fetch')
 
@@ -22,8 +22,8 @@ files.forEach((filename) =>
   fetch(base + filename, {headers})
     .then((d) => d.text())
     .then((d) => {
-      var stem = basename(filename, extname(filename))
+      var stem = path.basename(filename, path.extname(filename))
       var data = JSON.stringify(yaml.safeLoad(d), null, 2) + '\n'
-      return fs.writeFile(join('data', stem + '.json'), data)
+      return fs.writeFile(path.join('data', stem + '.json'), data)
     })
 )
