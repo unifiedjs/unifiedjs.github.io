@@ -2,6 +2,7 @@
 
 // Topics used to tag projects.
 module.exports = [
+  'micromark-extension',
   'unified-plugin',
   'remark-plugin',
   'rehype-plugin',
@@ -13,6 +14,7 @@ module.exports = [
   'xast-util',
   'nlcst-util',
   'vfile-util',
-  'unifiedjs'
+  'unifiedjs',
   // 'mdx', // Used too often by unrelated things...
+  'remark-lint-rule'
 ]
