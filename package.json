@@ -117,6 +117,7 @@
     "prettier": true,
     "esnext": false,
     "rules": {
+      "unicorn/explicit-length-check": "off",
       "unicorn/no-fn-reference-in-iterator": "off",
       "unicorn/no-reduce": "off",
       "unicorn/prefer-node-remove": "off",
