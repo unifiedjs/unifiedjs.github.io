@@ -55,6 +55,7 @@
     "remark-cli": "^9.0.0",
     "remark-frontmatter": "^3.0.0",
     "remark-gemoji": "^6.0.0",
+    "remark-gfm": "^1.0.0",
     "remark-lint-first-heading-level": "^2.0.0",
     "remark-lint-no-dead-urls": "^1.0.0",
     "remark-lint-no-html": "^2.0.0",

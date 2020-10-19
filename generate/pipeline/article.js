@@ -2,6 +2,7 @@
 
 var unified = require('unified')
 var markdown = require('remark-parse')
+var gfm = require('remark-gfm')
 var frontmatter = require('remark-frontmatter')
 var remark2rehype = require('remark-rehype')
 var raw = require('rehype-raw')
@@ -18,6 +19,7 @@ var origin = pkg.homepage
 
 module.exports = unified()
   .use(markdown)
+  .use(gfm)
   .use(frontmatter)
   .use(remark2rehype, {allowDangerousHtml: true})
   .use(raw)
