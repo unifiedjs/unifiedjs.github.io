@@ -412,32 +412,42 @@ async function getPackage(ctx) {
   var {proper, manifest, manifestBase, project, packageSource} = ctx
   var {repo} = project
   var response
+  var body
 
   if (!proper) {
     return
   }
 
-  response = await fetch(
-    [npmsEndpoint, encodeURIComponent(packageSource.name)].join('/')
-  ).then((x) => x.json())
+  try {
+    response = await fetch(
+      [npmsEndpoint, encodeURIComponent(packageSource.name)].join('/')
+    )
+    body = await response.json()
+  } catch (_) {}
 
-  if (response.code === 'NOT_FOUND') {
+  if (!body) {
+    console.warn('%s#%s: could not connect to npms', repo, manifest)
+    ctx.proper = false
+    return
+  }
+
+  if (body.code === 'NOT_FOUND') {
     console.warn('%s#%s: could not find package (on npms)', repo, manifest)
     ctx.proper = false
     return
   }
 
-  var name = response.collected.metadata.name || ''
-  var description = response.collected.metadata.description || ''
-  var keywords = response.collected.metadata.keywords || []
-  var license = response.collected.metadata.license || null
-  var deprecated = response.collected.metadata.deprecated
-  var readme = response.collected.metadata.readme || ''
-  var latest = response.collected.metadata.version || null
-  var repos = response.collected.metadata.repository
+  var name = body.collected.metadata.name || ''
+  var description = body.collected.metadata.description || ''
+  var keywords = body.collected.metadata.keywords || []
+  var license = body.collected.metadata.license || null
+  var deprecated = body.collected.metadata.deprecated
+  var readme = body.collected.metadata.readme || ''
+  var latest = body.collected.metadata.version || null
+  var repos = body.collected.metadata.repository
   var url = (repos && repos.url) || ''
-  var dependents = response.collected.npm.dependentsCount || 0
-  var score = response.score.final || 0
+  var dependents = body.collected.npm.dependentsCount || 0
+  var score = body.score.final || 0
 
   if (deprecated) {
     console.warn(
