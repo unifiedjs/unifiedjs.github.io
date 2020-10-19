@@ -1,4 +1,6 @@
 -baocasino
+-github-1
+-github-sponsors
 -kasinosivut
 -masonslots
 1337lawyers
@@ -13,7 +15,6 @@ expo1
 fred-edwards
 frontendmasters
 gatsbyjs
-github-1
 holloway
 indeed
 jin-zhao
