@@ -38,7 +38,12 @@ var topicPipeline = promisify(trough().use(searchTopic).run)
 var orgPipeline = promisify(trough().use(searchOrg).run)
 var repoPipeline = promisify(trough().use(crawlRepo).run)
 var pkgPipeline = promisify(
-  trough().use(getManifest).use(getPackage).use(getDownloads).use(getSize).run
+  trough()
+    .use(getManifest)
+    .use(getPackage)
+    .use(getReadme)
+    .use(getDownloads)
+    .use(getSize).run
 )
 
 var main = promisify(
@@ -104,7 +109,7 @@ async function findRepositories(ctx) {
     concurrency
   )
 
-  return {...ctx, projects: results.map((d) => d.project)}
+  return {...ctx, repos, projects: results.map((d) => d.project)}
 }
 
 async function findPackages(ctx) {
@@ -442,7 +447,6 @@ async function getPackage(ctx) {
   var keywords = body.collected.metadata.keywords || []
   var license = body.collected.metadata.license || null
   var deprecated = body.collected.metadata.deprecated
-  var readme = body.collected.metadata.readme || ''
   var latest = body.collected.metadata.version || null
   var repos = body.collected.metadata.repository
   var url = (repos && repos.url) || ''
@@ -456,12 +460,6 @@ async function getPackage(ctx) {
       manifest,
       deprecated
     )
-    ctx.proper = false
-    return
-  }
-
-  if (!readme || readme.length < 20) {
-    console.warn('%s#%s: ignoring package without readme', repo, manifest)
     ctx.proper = false
     return
   }
@@ -498,7 +496,6 @@ async function getPackage(ctx) {
 
   return {
     ...ctx,
-    readme,
     packageDist: {
       name,
       manifestBase,
@@ -510,6 +507,82 @@ async function getPackage(ctx) {
       score
     }
   }
+}
+
+async function getReadme(ctx) {
+  var {proper, manifestBase, project} = ctx
+  var {repo} = project
+  var [owner, name] = repo.split('/')
+  var base = (project.default || 'master') + ':'
+  var response
+
+  if (!proper) {
+    return
+  }
+
+  if (manifestBase) base += manifestBase + '/'
+
+  // Instead of going through the folder and looking for the first that matches
+  // `/^readme(?=\.|$)/i`, we throw the frequently used ones at GH.
+  try {
+    response = await fetch(ghEndpoint, {
+      method: 'POST',
+      body: JSON.stringify({
+        query: `
+          query($owner: String!, $name: String!, $umd: String!, $u: String!, $cmd: String!, $c: String!, $lmd: String!, $l: String!) {
+            repository(owner: $owner, name: $name) {
+              umd: object(expression: $umd) { ... on Blob { text } }
+              u: object(expression: $u) { ... on Blob { text } }
+              cmd: object(expression: $cmd) { ... on Blob { text } }
+              c: object(expression: $c) { ... on Blob { text } }
+              lmd: object(expression: $lmd) { ... on Blob { text } }
+              l: object(expression: $l) { ... on Blob { text } }
+            }
+          }
+        `,
+        variables: {
+          owner,
+          name,
+          umd: base + 'README.md',
+          u: base + 'README',
+          cmd: base + 'Readme.md',
+          c: base + 'Readme',
+          lmd: base + 'readme.md',
+          l: base + 'readme'
+        }
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'bearer ' + ghToken
+      }
+    }).then((x) => x.json())
+  } catch (error) {
+    console.warn('Could not fetch `readme.md`:', error)
+  }
+
+  var repository = (response.data || {}).repository || {}
+  var object =
+    repository.umd ||
+    repository.u ||
+    repository.cmd ||
+    repository.c ||
+    repository.lmd ||
+    repository.l
+  var readme = (object || {}).text || ''
+
+  if (!object) {
+    console.warn('%s#%s: could not find readme', repo, base)
+    ctx.proper = false
+    return
+  }
+
+  if (readme.length < 20) {
+    console.warn('%s#%s: ignoring package without readme', repo, base)
+    ctx.proper = false
+    return
+  }
+
+  ctx.readme = readme
 }
 
 async function getDownloads(ctx) {
