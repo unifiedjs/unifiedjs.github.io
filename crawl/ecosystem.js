@@ -2,6 +2,7 @@ var fs = require('fs').promises
 var path = require('path')
 var {promisify} = require('util')
 var hostedGitInfo = require('hosted-git-info')
+var randomUseragent = require('random-useragent')
 var trough = require('trough')
 var chalk = require('chalk')
 var fetch = require('node-fetch')
@@ -623,7 +624,9 @@ async function getSize(ctx) {
     encodeURIComponent(packageDist.name + '@' + packageDist.latest)
 
   try {
-    response = await fetch(endpoint).then((x) => x.json())
+    response = await fetch(endpoint, {
+      headers: {'User-Agent': randomUseragent.getRandom()}
+    }).then((x) => x.json())
   } catch (error) {
     console.warn('%s#%s: could not contact bundlephobia', repo, manifest, error)
     // Still “proper”.
