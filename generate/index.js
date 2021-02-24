@@ -16,6 +16,7 @@ var pipeline = require('./pipeline/main')
 var articlePipeline = require('./pipeline/article')
 var readmePipeline = require('./pipeline/readme')
 var descriptionPipeline = require('./pipeline/description')
+var createReleasePipeline = require('./pipeline/release')
 var article = require('./page/article')
 var articles = require('./page/articles')
 var cases = require('./page/cases')
@@ -31,6 +32,7 @@ var pkg = require('./page/package')
 var packages = require('./page/packages')
 var project = require('./page/project')
 var projects = require('./page/projects')
+var releases = require('./page/releases')
 var scope = require('./page/scope')
 var sponsor = require('./page/sponsors')
 var topic = require('./page/topic')
@@ -43,6 +45,7 @@ var tasks = []
 // Render descriptions
 expandDescription(data.projectByRepo)
 expandDescription(data.packageByName)
+expandReleases(data.releases)
 
 var entries = glob.sync('doc/learn/**/*.md').map((input) => {
   var file = matter(vfile.readSync(input))
@@ -173,6 +176,12 @@ page(() => projects(data), {
   pathname: '/explore/project/'
 })
 
+page(() => releases(data), {
+  title: 'Releases - Explore',
+  description: 'Explore recent releases in the unified ecosystem',
+  pathname: '/explore/release/'
+})
+
 Object.keys(data.projectByRepo).forEach((d) => {
   var {description, topics} = data.projectByRepo[d]
 
@@ -257,5 +266,13 @@ function expandDescription(map) {
     var d = map[id]
     var tree = descriptionPipeline.parse(d.description)
     d.descriptionRich = descriptionPipeline.runSync(tree)
+  })
+}
+
+function expandReleases(releases) {
+  releases.forEach((d) => {
+    var pipeline = createReleasePipeline(d)
+    var tree = pipeline.parse(d.description)
+    d.descriptionRich = pipeline.runSync(tree)
   })
 }

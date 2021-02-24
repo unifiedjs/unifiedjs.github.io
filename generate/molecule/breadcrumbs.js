@@ -15,6 +15,7 @@ var overwrites = {
   topic: ['Topics', 'Topic'],
   package: ['Packages', 'Package'],
   project: ['Projects', 'Project'],
+  release: 'Releases',
   community: 'Community',
   sponsor: 'Sponsors',
   case: 'Cases',

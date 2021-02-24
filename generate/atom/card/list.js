@@ -5,6 +5,6 @@ var list = require('../macro/list')
 
 module.exports = cards
 
-function cards(names, map, options) {
-  return h('.block-big', h('ol.flow-big.cards', list(names, map, options)))
+function cards(values, map, options) {
+  return h('.block-big', h('ol.flow-big.cards', list(values, map, options)))
 }

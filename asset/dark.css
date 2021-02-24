@@ -40,6 +40,15 @@ body {
     0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
 
+.releases {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.release,
+.releases .more {
+  background-color: var(--gray-9);
+}
+
 .more {
   border-color: black;
 }

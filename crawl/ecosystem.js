@@ -14,7 +14,7 @@ var ghToken = process.env.GH_TOKEN
 var npmToken = process.env.NPM_TOKEN
 
 if (!ghToken || !npmToken) {
-  console.log('Cannot crawl ecosystem without GH or npm tokens')
+  console.warn('Cannot crawl ecosystem without GH or npm tokens')
   /* eslint-disable-next-line unicorn/no-process-exit */
   process.exit()
 }
@@ -26,6 +26,7 @@ var outpath = path.join('data')
 var readmePath = path.join(outpath, 'readme')
 var projectsPath = path.join(outpath, 'projects.json')
 var packagesPath = path.join(outpath, 'packages.json')
+var releasesPath = path.join(outpath, 'releases.json')
 
 var concurrency = {concurrency: 1}
 
@@ -37,7 +38,7 @@ var npmDownloadsEndpoint = 'https://api.npmjs.org/downloads'
 
 var topicPipeline = promisify(trough().use(searchTopic).run)
 var orgPipeline = promisify(trough().use(searchOrg).run)
-var repoPipeline = promisify(trough().use(crawlRepo).run)
+var repoPipeline = promisify(trough().use(crawlRepo).use(getReleases).run)
 var pkgPipeline = promisify(
   trough()
     .use(getManifest)
@@ -110,7 +111,12 @@ async function findRepositories(ctx) {
     concurrency
   )
 
-  return {...ctx, repos, projects: results.map((d) => d.project)}
+  return {
+    ...ctx,
+    repos,
+    projects: results.map((d) => d.project),
+    releases: results.flatMap((d) => d.releases)
+  }
 }
 
 async function findPackages(ctx) {
@@ -155,10 +161,13 @@ async function findPackages(ctx) {
 }
 
 async function writeResults(ctx) {
-  var {projects, packages} = ctx
+  var {projects, packages, releases} = ctx
+
+  console.log(releases)
 
   await fs.writeFile(projectsPath, JSON.stringify(projects, null, 2) + '\n')
   await fs.writeFile(packagesPath, JSON.stringify(packages, null, 2) + '\n')
+  await fs.writeFile(releasesPath, JSON.stringify(releases, null, 2) + '\n')
 }
 
 async function writeReadmes(ctx) {
@@ -306,6 +315,8 @@ async function crawlRepo(ctx) {
             dependencyGraphManifests(withDependencies: true, first: 100) {
               nodes { filename exceedsMaxSize parseable }
             }
+            diskUsage
+            latestRelease { publishedAt }
           }
         }
       `,
@@ -340,6 +351,8 @@ async function crawlRepo(ctx) {
       .map((d) => d.topic.name)
       .filter(validTag)
       .filter(unique),
+    // Size of repo in bytes.
+    size: data.diskUsage * 1024,
     manifests: ((data.dependencyGraphManifests || {}).nodes || [])
       .filter(
         (d) =>
@@ -351,7 +364,58 @@ async function crawlRepo(ctx) {
       .map((d) => d.filename)
   }
 
-  return {...ctx, project}
+  return {
+    ...ctx,
+    project,
+    lastReleaseAt: new Date(
+      data.latestRelease && data.latestRelease.publishedAt
+    )
+  }
+}
+
+async function getReleases(ctx) {
+  var {repo, ghToken, lastReleaseAt} = ctx
+  var [owner, name] = repo.split('/')
+  var releases = []
+
+  if (recent(lastReleaseAt)) {
+    var response = await fetch(ghEndpoint, {
+      method: 'POST',
+      body: JSON.stringify({
+        query: `
+          query($owner: String!, $name: String!) {
+            repository(owner: $owner, name: $name) {
+              releases(first: 20, orderBy: {direction: DESC, field: CREATED_AT}) {
+                nodes { publishedAt tagName url description }
+              }
+            }
+          }
+        `,
+        variables: {owner, name}
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: 'bearer ' + ghToken
+      }
+    }).then((x) => x.json())
+
+    var data = (response.data || {}).repository || {}
+    releases = ((data.releases || {}).nodes || [])
+      .filter((d) => recent(new Date(d.publishedAt)))
+      .map((d) => ({
+        repo,
+        published: d.publishedAt,
+        tag: d.tagName,
+        description: d.description
+      }))
+  }
+
+  return {...ctx, releases}
+
+  // Whether this release was in the last 60 days.
+  function recent(date) {
+    return date > Date.now() - 60 * 24 * 60 * 60 * 1000
+  }
 }
 
 async function getManifest(ctx) {
@@ -443,6 +507,15 @@ async function getPackage(ctx) {
     return
   }
 
+  console.log(
+    'npms:issues:',
+    packageSource.name,
+    (body.collected.github || {}).issues
+  )
+
+  var issues = (body.collected.github || {}).issues || {}
+  var all = issues.count || 0
+  var open = issues.openCount || 0
   var name = body.collected.metadata.name || ''
   var description = body.collected.metadata.description || ''
   var keywords = body.collected.metadata.keywords || []

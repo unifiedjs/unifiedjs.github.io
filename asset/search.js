@@ -88,7 +88,10 @@ function init() {
             var slice = names.slice(start, end)
 
             slice.forEach((d) =>
-              search.index.add(d, d + ' ' + data.packageByName[d].description)
+              search.index.add(
+                d,
+                d.split('/').join(' ') + ' ' + data.packageByName[d].description
+              )
             )
 
             if (slice.length === 0) {
@@ -115,9 +118,12 @@ function init() {
             var end = start + size
             var slice = repos.slice(start, end)
 
-            slice.forEach((d) =>
-              search.index.add(d, d + ' ' + data.projectByRepo[d].description)
-            )
+            slice.forEach((d) => {
+              search.index.add(
+                d,
+                d.split('/').join(' ') + ' ' + data.projectByRepo[d].description
+              )
+            })
 
             if (slice.length === 0) {
               resolve()
@@ -191,9 +197,12 @@ function init() {
       $input.value = query
 
       if (!query) {
+        document.querySelector('#root-release').style = ''
         searches.forEach((search) => replace(search, [], query))
         return
       }
+
+      document.querySelector('#root-release').style = 'display:none'
 
       searches.forEach((search) => {
         search.index.search(query, {suggest: true}, function (result) {

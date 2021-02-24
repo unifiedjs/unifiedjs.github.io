@@ -416,6 +416,29 @@ abbr {
     0 18px 36px -18px rgba(0, 0, 0, 0.3), 0 -12px 36px -8px rgba(0, 0, 0, 0.025);
 }
 
+.releases {
+  margin: calc(-1 * (.25em + .25ex));
+  background-color: rgba(0, 0, 0, 0.04);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.release {
+  padding: 0 calc(1.25 * (1em + 1ex));
+  overflow: hidden;
+}
+
+.release,
+.releases .more {
+  border-radius: 3px;
+  background-color: var(--gray-0);
+  margin: calc(0.25 * (1em + 1ex));
+}
+
+.release:nth-child(odd) {
+  background-color: transparent;
+}
+
 .nl-root {
   position: relative;
 }
