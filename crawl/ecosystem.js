@@ -135,21 +135,27 @@ async function findPackages(ctx) {
 
   var readmes = []
   var projectsWithPackages = {}
+  var projectsWithPackagesIssues = {}
 
   packages = results
     .filter((d) => d.proper)
     .map((d) => {
-      var {packageDist, readme, project} = d
+      var {packageDist, readme, project, issues} = d
       var {name} = packageDist
       var {repo} = project
       var readmeName = name.replace(/^@/g, '').replace(/\//g, '-') + '.md'
 
       projectsWithPackages[repo] = project
+      projectsWithPackagesIssues[repo] = issues
 
       readmes.push({name: readmeName, value: readme})
 
       return {...packageDist, repo, readmeName}
     })
+
+  Object.keys(projectsWithPackagesIssues).forEach((d) => {
+    projectsWithPackages[d].issues = projectsWithPackagesIssues[d]
+  })
 
   projects = Object.values(projectsWithPackages).map((p) => ({
     ...p,
@@ -162,8 +168,6 @@ async function findPackages(ctx) {
 
 async function writeResults(ctx) {
   var {projects, packages, releases} = ctx
-
-  console.log(releases)
 
   await fs.writeFile(projectsPath, JSON.stringify(projects, null, 2) + '\n')
   await fs.writeFile(packagesPath, JSON.stringify(packages, null, 2) + '\n')
@@ -507,15 +511,7 @@ async function getPackage(ctx) {
     return
   }
 
-  console.log(
-    'npms:issues:',
-    packageSource.name,
-    (body.collected.github || {}).issues
-  )
-
   var issues = (body.collected.github || {}).issues || {}
-  var all = issues.count || 0
-  var open = issues.openCount || 0
   var name = body.collected.metadata.name || ''
   var description = body.collected.metadata.description || ''
   var keywords = body.collected.metadata.keywords || []
@@ -570,6 +566,7 @@ async function getPackage(ctx) {
 
   return {
     ...ctx,
+    issues: {all: issues.count || 0, open: issues.openCount || 0},
     packageDist: {
       name,
       manifestBase,

@@ -9,10 +9,16 @@ var listPkg = require('../component/package/list')
 var sponsors = require('../component/sponsor/list')
 var cases = require('../component/case/list')
 var compact = require('../util/fmt-compact')
+var percent = require('../util/fmt-percent')
 var pick = require('../util/pick-random')
 var page = require('./page')
 
 module.exports = home
+
+var linux = 3166218 // Checked from the `diskUsage` result for `torvalds/linux`
+// on GHs GraphQL API.
+var mobyDick = 1.2 * 1024 * 1024
+// Apparently Gutenberg’s version is 1.2mb.
 
 function home(data) {
   var {packageByName, projectByRepo} = data
@@ -23,6 +29,14 @@ function home(data) {
     .reduce(sum, 0)
   var stars = repos.map((d) => projectByRepo[d].stars || 0).reduce(sum, 0)
   var d = pick(names.slice(0, 75), 5)
+  var issues = {all: 0, open: 0}
+
+  repos.forEach((d) => {
+    issues.all += projectByRepo[d].issues.all
+    issues.open += projectByRepo[d].issues.open
+  })
+
+  var size = repos.map((d) => projectByRepo[d].size || 0).reduce(sum, 0)
 
   return page(
     [
@@ -78,11 +92,25 @@ function home(data) {
           'today consists of ' + repos.length + ' open source projects, ',
           'with a combined ',
           h('strong', compact(stars)),
-          ' stars on GitHub. ',
+          ' stars on GitHub.',
+          'In comparison to books, the code in all unified repos is about ',
+          h('strong', String(Math.floor(size / mobyDick))),
+          ' Moby Dicks. ',
+          'Compared to Linux, that’s ',
+          h('strong', String(Math.floor(size / linux))),
+          ' Linuxes. ',
+          h('br'),
           'In the last 30 days, the ' + names.length + ' packages maintained ',
           'in those projects were downloaded ',
           h('strong', compact(downloads)),
           ' times from npm. ',
+          h('strong', compact(issues.all - issues.open)),
+          ' issues have been closed already. ',
+          h('strong', compact(issues.open)),
+          ' are currently open (',
+          percent(issues.open / issues.all),
+          ').',
+          h('br'),
           'Much of this is maintained by our teams, yet others are provided ',
           'by the community. '
         ])
