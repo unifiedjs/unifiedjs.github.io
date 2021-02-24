@@ -10,5 +10,5 @@ function sorter(data) {
 }
 
 function score(d) {
-  return (d.data.matter || {}).index || Infinity
+  return (d.data.matter || {}).index || Number.POSITIVE_INFINITY
 }

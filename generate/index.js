@@ -36,7 +36,7 @@ var sponsor = require('./page/sponsors')
 var topic = require('./page/topic')
 var topics = require('./page/topics')
 
-var users = yaml.safeLoad(fs.readFileSync(path.join('doc', 'showcase.yml')))
+var users = yaml.load(fs.readFileSync(path.join('doc', 'showcase.yml')))
 
 var tasks = []
 

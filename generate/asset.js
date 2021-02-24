@@ -63,17 +63,17 @@ trough()
     var contents = new URL(pack.homepage).host + '\n'
     vfile.write({dirname: 'build', basename: 'CNAME', contents: contents}, next)
   })
-  .run('asset/**/*.*', function (err) {
-    if (err) {
-      console.error(reporter(err))
+  .run('asset/**/*.*', function (error) {
+    if (error) {
+      console.error(reporter(error))
       process.exitCode = 1
     }
   })
 
 function processFile(file, next) {
-  externals[file.extname].run(file, function (err) {
+  externals[file.extname].run(file, function (error) {
     file.processed = true
-    next(err)
+    next(error)
   })
 }
 
@@ -84,15 +84,15 @@ function move(file) {
 
 function mkdir(file, next) {
   mkdirp(file, done)
-  function done(err) {
-    next(err)
+  function done(error) {
+    next(error)
   }
 }
 
 function copy(file, next) {
   fs.copyFile(file.history[0], file.path, done)
-  function done(err) {
-    next(err)
+  function done(error) {
+    next(error)
   }
 }
 
@@ -115,12 +115,12 @@ function transformCss(file) {
 function bundleJs(file, next) {
   browserify(file.path).plugin('tinyify').bundle(done)
 
-  function done(err, buf) {
+  function done(error, buf) {
     if (buf) {
       file.contents = String(buf)
     }
 
-    next(err)
+    next(error)
   }
 }
 

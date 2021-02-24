@@ -231,7 +231,7 @@ function replace(search, result, query) {
   )
 
   while ($scope.firstChild) {
-    $scope.removeChild($scope.firstChild)
+    $scope.firstChild.remove()
   }
 
   $scope.append($next)
