@@ -561,7 +561,7 @@ async function getReadme(ctx) {
     console.warn('Could not fetch `readme.md`:', error)
   }
 
-  var repository = (response.data || {}).repository || {}
+  var repository = ((response || {}).data || {}).repository || {}
   var object =
     repository.umd ||
     repository.u ||
