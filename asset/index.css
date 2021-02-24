@@ -297,6 +297,15 @@ abbr {
   color: hsl(45, 97%, 43%);
 }
 
+.recma .hl,
+.esast .hl,
+.content .recma:hover .hl,
+.content .esast:hover .hl,
+.content .recma:focus .hl,
+.content .esast:focus .hl {
+  color: hsl(180, 97%, 43%);
+}
+
 .xast .hl,
 .content .xast:hover .hl,
 .content .xast:focus .hl {

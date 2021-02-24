@@ -40,6 +40,7 @@ function initialise() {
     'uni|st': 'syntax-tree/unist',
     'nl|cst': 'syntax-tree/nlcst',
     'md|ast': 'syntax-tree/mdast',
+    'es|ast': 'syntax-tree/esast',
     'h|ast': 'syntax-tree/hast',
     'x|ast': 'syntax-tree/xast',
     'dot|ast': 'redotjs/dotast',

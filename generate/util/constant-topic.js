@@ -12,6 +12,7 @@ module.exports = [
   'mdast-util',
   'hast-util',
   'xast-util',
+  'esast-util',
   'nlcst-util',
   'vfile-util',
   'unifiedjs',
