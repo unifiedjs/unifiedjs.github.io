@@ -4,6 +4,7 @@ title: Create a plugin
 description: Guide that shows how to create a (retext) plugin
 author: Titus Wormer
 authorTwitter: wooorm
+authorGithub: wooorm
 tags:
   - plugin
   - retext

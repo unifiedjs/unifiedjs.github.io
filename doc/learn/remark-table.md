@@ -11,6 +11,7 @@ tags:
   - table
 author: Titus Wormer
 authorTwitter: wooorm
+authorGithub: wooorm
 published: 2021-02-24
 modified: 2021-02-24
 ---

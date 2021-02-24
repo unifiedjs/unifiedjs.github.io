@@ -4,6 +4,7 @@ title: Create an editor
 description: Guide that shows how to create a fancy app ✨
 author: Titus Wormer
 authorTwitter: wooorm
+authorGithub: wooorm
 tags:
   - editor
   - dingus

@@ -6,23 +6,20 @@ var tag = require('../../atom/micro/tag')
 
 module.exports = item
 
-var base = 'https://twitter.com/'
+var base = 'https://github.com/'
 
 function item(d) {
   var {matter, meta} = d.data
   var data = {...matter, ...meta}
-  var {title, description, author, authorTwitter, tags, pathname} = data
+  var {title, description, author, authorGithub, tags, pathname} = data
 
   author = h('span.ellipsis', author)
 
-  if (authorTwitter) {
-    author = h('a.row', {href: base + authorTwitter}, [
+  if (authorGithub) {
+    author = h('a.row', {href: base + authorGithub}, [
       h('.thumbnail', {
         role: 'presentation',
-        style:
-          'background-image:url(https://twitter-avatar.now.sh/' +
-          authorTwitter +
-          ')'
+        style: 'background-image:url(' + base + authorGithub + '.png?size=64)'
       }),
       author
     ])

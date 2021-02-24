@@ -5,6 +5,7 @@ title: Intro to unified
 description: Guide that summarises the what and why of unified
 author: Merlijn Vos
 authorTwitter: Murderlon
+authorGithub: Murderlon
 tags:
   - welcome
   - introduction

@@ -19,10 +19,9 @@ module.exports = unified()
     title: 'unified',
     js: ['/search.js'],
     link: [
-      // We take images from these three, so preconnect asap.
+      // We take images from these two, so preconnect asap.
       {rel: 'preconnect', href: 'https://github.com'},
       {rel: 'preconnect', href: 'https://images.opencollective.com'},
-      {rel: 'preconnect', href: 'https://twitter-avatar.now.sh'},
       {rel: 'stylesheet', href: '/syntax-light.css'},
       {rel: 'stylesheet', href: '/index.css'},
       {

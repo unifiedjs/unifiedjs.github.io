@@ -12,6 +12,7 @@ tags:
   - walk
 author: Titus Wormer
 authorTwitter: wooorm
+authorGithub: wooorm
 published: 2020-06-15
 modified: 2020-06-15
 ---

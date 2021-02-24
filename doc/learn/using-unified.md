@@ -5,6 +5,7 @@ title: Use unified
 description: Guide that delves into transforming Markdown to HTML
 author: Titus Wormer
 authorTwitter: wooorm
+authorGithub: wooorm
 tags:
   - use
   - transform
