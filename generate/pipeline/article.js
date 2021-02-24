@@ -34,10 +34,13 @@ module.exports = unified()
     AST: 'Abstract syntax tree',
     CLI: 'Command-line interface',
     DOM: 'Document object model',
+    ECMAScript: null,
+    GFM: 'GitHub flavored markdown',
     HSL: 'Hue, saturation, lightness',
     HTML: 'Hypertext markup language',
     JSX: null,
     MDX: null,
+    PR: 'Pull request',
     XML: 'Extensible Markup Language'
   })
   .use(rehypeLink)

@@ -24,7 +24,9 @@ syntaxes
 // Names, products, etc.
 BundlePhobia
 browserify
+CommonMark
 DOM
+GFM
 HSL
 hast
 JSX
