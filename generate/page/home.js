@@ -1,6 +1,8 @@
 'use strict'
 
 var h = require('hastscript')
+var meta = require('../../data/meta.json')
+var dataReleases = require('../../data/releases.json')
 var block = require('../atom/macro/block')
 var articlesList = require('../component/article/list')
 var articlesSort = require('../component/article/helper-sort')
@@ -8,8 +10,11 @@ var sortPkg = require('../component/package/helper-sort')
 var listPkg = require('../component/package/list')
 var sponsors = require('../component/sponsor/list')
 var cases = require('../component/case/list')
+var release = require('../component/release/explore-preview')
+var releaseFilter = require('../component/release/helper-filter')
 var compact = require('../util/fmt-compact')
 var percent = require('../util/fmt-percent')
+var orgs = require('../util/constant-collective')
 var pick = require('../util/pick-random')
 var page = require('./page')
 
@@ -29,14 +34,8 @@ function home(data) {
     .reduce(sum, 0)
   var stars = repos.map((d) => projectByRepo[d].stars || 0).reduce(sum, 0)
   var d = pick(names.slice(0, 75), 5)
-  var issues = {all: 0, open: 0}
-
-  repos.forEach((d) => {
-    issues.all += projectByRepo[d].issues.all
-    issues.open += projectByRepo[d].issues.open
-  })
-
-  var size = repos.map((d) => projectByRepo[d].size || 0).reduce(sum, 0)
+  var closed = meta.issueClosed + meta.prClosed
+  var open = meta.issueOpen + meta.prOpen
 
   return page(
     [
@@ -92,35 +91,48 @@ function home(data) {
           'today consists of ' + repos.length + ' open source projects, ',
           'with a combined ',
           h('strong', compact(stars)),
-          ' stars on GitHub.',
-          'In comparison to books, the code in all unified repos is about ',
-          h('strong', String(Math.floor(size / mobyDick))),
-          ' Moby Dicks. ',
-          'Compared to Linux, that’s ',
-          h('strong', String(Math.floor(size / linux))),
+          ' stars on GitHub. ',
+          'In comparison, the code that the collective maintains is about ',
+          String(Math.floor(meta.size / mobyDick)),
+          ' Moby Dicks or ',
+          String(Math.floor(meta.size / linux)),
           ' Linuxes. ',
-          h('br'),
           'In the last 30 days, the ' + names.length + ' packages maintained ',
           'in those projects were downloaded ',
           h('strong', compact(downloads)),
           ' times from npm. ',
-          h('strong', compact(issues.all - issues.open)),
-          ' issues have been closed already. ',
-          h('strong', compact(issues.open)),
-          ' are currently open (',
-          percent(issues.open / issues.all),
-          ').',
-          h('br'),
           'Much of this is maintained by our teams, yet others are provided ',
           'by the community. '
         ])
       ]),
       listPkg(data, d, {trail: explore()}),
       h('.article.content', [
-        h('h2', 'Sponsor'),
+        h('h2', 'Work'),
         h('p', [
           'Maintaining the collective, developing new projects, keeping ',
           'everything fast and secure, and helping users, is a lot of work. ',
+          'In total, we’ve closed ',
+          compact(closed),
+          ' issues/PRs while ',
+          compact(open),
+          ' are currently open (',
+          percent(open / (open + closed)),
+          '). ',
+          'In the last 30 days, we’ve cut ' +
+            String(
+              releaseFilter(
+                data,
+                dataReleases,
+                30 * 24 * 60 * 60 * 1000
+              ).filter((d) => orgs.includes(d.repo.split('/')[0])).length
+            ) +
+            ' new releases.'
+        ])
+      ]),
+      release(data),
+      h('.article.content', [
+        h('h2', 'Sponsor'),
+        h('p', [
           'Thankfully, we are backed financially by our sponsors. ',
           'This allows us to spend more time maintaining our projects and ',
           'developing new ones. ',

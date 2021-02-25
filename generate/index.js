@@ -37,6 +37,7 @@ var scope = require('./page/scope')
 var sponsor = require('./page/sponsors')
 var topic = require('./page/topic')
 var topics = require('./page/topics')
+var dataReleases = require('../data/releases.json')
 
 var users = yaml.load(fs.readFileSync(path.join('doc', 'showcase.yml')))
 
@@ -45,7 +46,7 @@ var tasks = []
 // Render descriptions
 expandDescription(data.projectByRepo)
 expandDescription(data.packageByName)
-expandReleases(data.releases)
+expandReleases(dataReleases)
 
 var entries = glob.sync('doc/learn/**/*.md').map((input) => {
   var file = matter(vfile.readSync(input))

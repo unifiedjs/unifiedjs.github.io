@@ -6,12 +6,13 @@ var list = require('../component/release/list')
 var filter = require('../component/release/helper-filter')
 var sort = require('../component/release/helper-sort')
 var page = require('./page')
+var dataReleases = require('../../data/releases.json')
 
 module.exports = releases
 
 function releases(data) {
   return page(
     h('.row-l.column-l', h('h2', breadcrumbs('/explore/release/'))),
-    list(data, filter(data, sort(data, data.releases)))
+    list(data, filter(data, sort(data, dataReleases)))
   )
 }

@@ -24,6 +24,7 @@ var orgs = require('../generate/util/constant-collective')
 
 var outpath = path.join('data')
 var readmePath = path.join(outpath, 'readme')
+var metaPath = path.join(outpath, 'meta.json')
 var projectsPath = path.join(outpath, 'projects.json')
 var packagesPath = path.join(outpath, 'packages.json')
 var releasesPath = path.join(outpath, 'releases.json')
@@ -153,6 +154,18 @@ async function findPackages(ctx) {
       return {...packageDist, repo, readmeName}
     })
 
+  var meta = {size: 0, issueOpen: 0, issueClosed: 0, prOpen: 0, prClosed: 0}
+
+  projects.forEach((d) => {
+    var [owner] = d.repo.split('/')
+
+    if (orgs.includes(owner)) {
+      Object.keys(meta).forEach((key) => {
+        meta[key] += d[key]
+      })
+    }
+  })
+
   Object.keys(projectsWithPackagesIssues).forEach((d) => {
     projectsWithPackages[d].issues = projectsWithPackagesIssues[d]
   })
@@ -160,15 +173,21 @@ async function findPackages(ctx) {
   projects = Object.values(projectsWithPackages).map((p) => ({
     ...p,
     default: undefined,
-    manifests: undefined
+    manifests: undefined,
+    size: undefined,
+    issueOpen: undefined,
+    issueClosed: undefined,
+    prOpen: undefined,
+    prClosed: undefined
   }))
 
-  return {...ctx, readmes, projects, packages}
+  return {...ctx, readmes, projects, packages, meta}
 }
 
 async function writeResults(ctx) {
-  var {projects, packages, releases} = ctx
+  var {projects, packages, releases, meta} = ctx
 
+  await fs.writeFile(metaPath, JSON.stringify(meta, null, 2) + '\n')
   await fs.writeFile(projectsPath, JSON.stringify(projects, null, 2) + '\n')
   await fs.writeFile(packagesPath, JSON.stringify(packages, null, 2) + '\n')
   await fs.writeFile(releasesPath, JSON.stringify(releases, null, 2) + '\n')
@@ -320,6 +339,10 @@ async function crawlRepo(ctx) {
               nodes { filename exceedsMaxSize parseable }
             }
             diskUsage
+            issueOpen: issues(states: OPEN) { totalCount }
+            issueClosed: issues(states: CLOSED) { totalCount }
+            prOpen: pullRequests(states: OPEN) { totalCount }
+            prClosed: pullRequests(states: CLOSED) { totalCount }
             latestRelease { publishedAt }
           }
         }
@@ -355,8 +378,6 @@ async function crawlRepo(ctx) {
       .map((d) => d.topic.name)
       .filter(validTag)
       .filter(unique),
-    // Size of repo in bytes.
-    size: data.diskUsage * 1024,
     manifests: ((data.dependencyGraphManifests || {}).nodes || [])
       .filter(
         (d) =>
@@ -365,7 +386,13 @@ async function crawlRepo(ctx) {
           d.parseable &&
           !d.exceedsMaxSize
       )
-      .map((d) => d.filename)
+      .map((d) => d.filename),
+    // Size of repo in bytes.
+    size: data.diskUsage * 1024,
+    issueOpen: (data.issueOpen || {}).totalCount || 0,
+    issueClosed: (data.issueClosed || {}).totalCount || 0,
+    prOpen: (data.prOpen || {}).totalCount || 0,
+    prClosed: (data.prClosed || {}).totalCount || 0
   }
 
   return {
@@ -511,7 +538,6 @@ async function getPackage(ctx) {
     return
   }
 
-  var issues = (body.collected.github || {}).issues || {}
   var name = body.collected.metadata.name || ''
   var description = body.collected.metadata.description || ''
   var keywords = body.collected.metadata.keywords || []
@@ -566,7 +592,6 @@ async function getPackage(ctx) {
 
   return {
     ...ctx,
-    issues: {all: issues.count || 0, open: issues.openCount || 0},
     packageDist: {
       name,
       manifestBase,

@@ -83,6 +83,11 @@ function team(data) {
         ' account on Twitter for news. ',
         'You can also tweet at this account with questions or suggestions, ',
         'or mention it when you made something with unified! '
+      ]),
+      h('p', [
+        'See the ',
+        h('a', {href: '/explore/release/'}, 'Releases'),
+        ' section for recent releases.'
       ])
     ])
   ])

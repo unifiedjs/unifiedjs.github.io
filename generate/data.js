@@ -1,9 +1,7 @@
-var releases = require('../data/releases')
 var projects = require('../data/projects')
 var packages = require('../data/packages')
 
 var data = {
-  releases,
   projectByRepo: {},
   packageByName: {},
   projectsByOwner: {},
