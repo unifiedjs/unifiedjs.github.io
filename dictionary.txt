@@ -20,6 +20,7 @@ stdout
 stringifier
 stringify
 syntaxes
+XSS
 
 // Names, products, etc.
 BundlePhobia

@@ -1,6 +1,6 @@
 ---
 group: recipe
-index: 5
+index: 7
 title: Remove a node
 description: How to remove nodes in any unist tree
 tags:

@@ -41,7 +41,8 @@ module.exports = unified()
     JSX: null,
     MDX: null,
     PR: 'Pull request',
-    XML: 'Extensible Markup Language'
+    XML: 'Extensible Markup Language',
+    XSS: 'Cross Site Scripting'
   })
   .use(rehypeLink)
   .use(rewriteUrls, {origin})
