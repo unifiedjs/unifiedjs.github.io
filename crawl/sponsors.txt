@@ -5,6 +5,7 @@
 -masonslots
 1337lawyers
 alex2
+balsa
 bnb
 boosthub
 compositor
