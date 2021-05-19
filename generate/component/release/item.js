@@ -2,8 +2,8 @@
 
 var h = require('hastscript')
 var TimeAgo = require('javascript-time-ago')
-var locale = require('../../util/constant-locale')
-var en = require('javascript-time-ago/locale/en')
+var locale = require('../../util/constant-locale.js')
+var en = require('javascript-time-ago/locale/en/index.js')
 
 module.exports = item
 

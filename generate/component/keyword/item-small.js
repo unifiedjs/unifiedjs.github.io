@@ -1,6 +1,6 @@
 'use strict'
 
-var tag = require('../../atom/micro/tag')
+var tag = require('../../atom/micro/tag.js')
 
 module.exports = item
 

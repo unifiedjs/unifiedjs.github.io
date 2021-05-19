@@ -1,8 +1,8 @@
 'use strict'
 
-var boxes = require('../../atom/box/list')
-var item = require('./item')
-var more = require('./more')
+var boxes = require('../../atom/box/list.js')
+var item = require('./item.js')
+var more = require('./more.js')
 
 module.exports = list
 

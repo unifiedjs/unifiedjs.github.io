@@ -1,11 +1,11 @@
 'use strict'
 
 var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs')
-var list = require('../component/release/list')
-var filter = require('../component/release/helper-filter')
-var sort = require('../component/release/helper-sort')
-var page = require('./page')
+var breadcrumbs = require('../molecule/breadcrumbs.js')
+var list = require('../component/release/list.js')
+var filter = require('../component/release/helper-filter.js')
+var sort = require('../component/release/helper-sort.js')
+var page = require('./page.js')
 var dataReleases = require('../../data/releases.json')
 
 module.exports = releases

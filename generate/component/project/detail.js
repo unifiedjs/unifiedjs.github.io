@@ -1,8 +1,8 @@
 'use strict'
 
 var h = require('hastscript')
-var list = require('../package/list')
-var sort = require('../package/helper-sort')
+var list = require('../package/list.js')
+var sort = require('../package/helper-sort.js')
 
 module.exports = detail
 

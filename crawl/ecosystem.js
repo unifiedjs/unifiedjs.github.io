@@ -19,8 +19,8 @@ if (!ghToken || !npmToken) {
   process.exit()
 }
 
-var topics = require('../generate/util/constant-topic')
-var orgs = require('../generate/util/constant-collective')
+var topics = require('../generate/util/constant-topic.js')
+var orgs = require('../generate/util/constant-collective.js')
 
 var outpath = path.join('data')
 var readmePath = path.join(outpath, 'readme')
@@ -128,8 +128,10 @@ async function findPackages(ctx) {
   )
 
   var results = await pAll(
-    packages.map(({manifest, project}) => () =>
-      pkgPipeline({...ctx, manifest, project})
+    packages.map(
+      ({manifest, project}) =>
+        () =>
+          pkgPipeline({...ctx, manifest, project})
     ),
     {concurrency: 1}
   )
@@ -197,8 +199,10 @@ async function writeReadmes(ctx) {
   var {readmes} = ctx
 
   await pAll(
-    readmes.map(({name, value}) => () =>
-      fs.writeFile(path.join(readmePath, name), value)
+    readmes.map(
+      ({name, value}) =>
+        () =>
+          fs.writeFile(path.join(readmePath, name), value)
     ),
     {concurrency: 10}
   )

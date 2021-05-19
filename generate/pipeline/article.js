@@ -10,10 +10,10 @@ var slug = require('rehype-slug')
 var autolink = require('rehype-autolink-headings')
 var highlight = require('rehype-highlight')
 var pkg = require('../../package.json')
-var rehypeLink = require('../plugin/rehype-link')
-var link = require('../atom/icon/link')
-var rewriteUrls = require('../plugin/rehype-rewrite-urls')
-var abbr = require('../plugin/rehype-abbreviate')
+var rehypeLink = require('../plugin/rehype-link.js')
+var link = require('../atom/icon/link.js')
+var rewriteUrls = require('../plugin/rehype-rewrite-urls.js')
+var abbr = require('../plugin/rehype-abbreviate.js')
 
 var origin = pkg.homepage
 

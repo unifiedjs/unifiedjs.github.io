@@ -1,9 +1,9 @@
 'use strict'
 
 var h = require('hastscript')
-var list = require('../../atom/macro/list')
-var item = require('./item')
-var more = require('./more')
+var list = require('../../atom/macro/list.js')
+var item = require('./item.js')
+var more = require('./more.js')
 
 module.exports = releases
 

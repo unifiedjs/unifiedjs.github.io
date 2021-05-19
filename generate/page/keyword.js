@@ -1,9 +1,9 @@
 'use strict'
 
 var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs')
-var detail = require('../component/keyword/detail')
-var page = require('./page')
+var breadcrumbs = require('../molecule/breadcrumbs.js')
+var detail = require('../component/keyword/detail.js')
+var page = require('./page.js')
 
 module.exports = keywords
 

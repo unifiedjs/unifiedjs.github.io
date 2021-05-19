@@ -1,5 +1,5 @@
-var projects = require('../data/projects')
-var packages = require('../data/packages')
+var projects = require('../data/projects.json')
+var packages = require('../data/packages.json')
 
 var data = {
   projectByRepo: {},

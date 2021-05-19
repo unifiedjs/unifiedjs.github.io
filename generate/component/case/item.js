@@ -1,9 +1,9 @@
 'use strict'
 
 var h = require('hastscript')
-var ghBadge = require('../../atom/micro/gh')
-var urlLine = require('../../atom/micro/url')
-var card = require('../../atom/card/item')
+var ghBadge = require('../../atom/micro/gh.js')
+var urlLine = require('../../atom/micro/url.js')
+var card = require('../../atom/card/item.js')
 
 module.exports = item
 

@@ -6,7 +6,7 @@ var gemoji = require('remark-gemoji')
 var remark2rehype = require('remark-rehype')
 var raw = require('rehype-raw')
 var sanitize = require('rehype-sanitize')
-var schema = require('./description-schema')
+var schema = require('./description-schema.js')
 
 module.exports = unified()
   .use(markdown)

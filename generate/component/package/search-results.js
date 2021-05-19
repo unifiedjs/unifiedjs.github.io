@@ -1,3 +1,3 @@
 'use strict'
 
-module.exports = require('./list')
+module.exports = require('./list.js')

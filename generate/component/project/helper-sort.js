@@ -1,7 +1,7 @@
 'use strict'
 
-var sort = require('../../util/sort')
-var reduce = require('./helper-reduce-score')
+var sort = require('../../util/sort.js')
+var reduce = require('./helper-reduce-score.js')
 
 module.exports = sorter
 

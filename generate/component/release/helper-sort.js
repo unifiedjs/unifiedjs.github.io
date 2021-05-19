@@ -1,6 +1,6 @@
 'use strict'
 
-var sort = require('../../util/sort')
+var sort = require('../../util/sort.js')
 
 module.exports = sorter
 

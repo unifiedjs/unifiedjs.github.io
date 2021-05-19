@@ -1,7 +1,7 @@
 'use strict'
 
 var h = require('hastscript')
-var fmt = require('../../util/fmt-bytes')
+var fmt = require('../../util/fmt-bytes.js')
 
 module.exports = gzip
 

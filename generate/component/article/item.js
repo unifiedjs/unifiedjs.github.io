@@ -1,8 +1,8 @@
 'use strict'
 
 var h = require('hastscript')
-var card = require('../../atom/card/item')
-var tag = require('../../atom/micro/tag')
+var card = require('../../atom/card/item.js')
+var tag = require('../../atom/micro/tag.js')
 
 module.exports = item
 

@@ -1,11 +1,11 @@
 'use strict'
 
 var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs')
-var list = require('../component/topic/list')
-var filter = require('../component/topic/helper-filter')
-var sort = require('../component/topic/helper-sort')
-var page = require('./page')
+var breadcrumbs = require('../molecule/breadcrumbs.js')
+var list = require('../component/topic/list.js')
+var filter = require('../component/topic/helper-filter.js')
+var sort = require('../component/topic/helper-sort.js')
+var page = require('./page.js')
 
 module.exports = keywords
 

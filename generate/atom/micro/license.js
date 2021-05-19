@@ -2,7 +2,7 @@
 
 var spdx = require('spdx-license-list')
 var h = require('hastscript')
-var icon = require('../icon/license')
+var icon = require('../icon/license.js')
 
 module.exports = license
 

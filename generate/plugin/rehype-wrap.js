@@ -1,5 +1,5 @@
-var header = require('../molecule/header')
-var footer = require('../molecule/footer')
+var header = require('../molecule/header.js')
+var footer = require('../molecule/footer.js')
 
 module.exports = section
 

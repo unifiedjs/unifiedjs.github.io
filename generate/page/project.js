@@ -1,8 +1,8 @@
 'use strict'
 
-var head = require('../component/project/head')
-var detail = require('../component/project/detail')
-var page = require('./page')
+var head = require('../component/project/head.js')
+var detail = require('../component/project/detail.js')
+var page = require('./page.js')
 
 module.exports = project
 

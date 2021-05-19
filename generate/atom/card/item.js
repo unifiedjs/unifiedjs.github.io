@@ -1,7 +1,7 @@
 'use strict'
 
 var h = require('hastscript')
-var block = require('../macro/block')
+var block = require('../macro/block.js')
 
 module.exports = item
 

@@ -2,7 +2,7 @@
 
 var h = require('hastscript')
 var pick = require('pick-random')
-var sortPackages = require('../component/package/helper-sort')
+var sortPackages = require('../component/package/helper-sort.js')
 
 module.exports = search
 

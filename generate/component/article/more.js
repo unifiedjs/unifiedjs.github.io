@@ -1,8 +1,8 @@
 'use strict'
 
-var card = require('../../atom/card/more')
-var compact = require('../../util/fmt-compact')
-var plural = require('../../util/fmt-plural')
+var card = require('../../atom/card/more.js')
+var compact = require('../../util/fmt-compact.js')
+var plural = require('../../util/fmt-plural.js')
 
 module.exports = more
 

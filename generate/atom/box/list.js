@@ -1,7 +1,7 @@
 'use strict'
 
 var h = require('hastscript')
-var list = require('../macro/list')
+var list = require('../macro/list.js')
 
 module.exports = boxes
 

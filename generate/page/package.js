@@ -1,8 +1,8 @@
 'use strict'
 
-var head = require('../component/package/head')
-var detail = require('../component/package/detail')
-var page = require('./page')
+var head = require('../component/package/head.js')
+var detail = require('../component/package/detail.js')
+var page = require('./page.js')
 
 module.exports = pkg
 

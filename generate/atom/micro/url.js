@@ -1,8 +1,8 @@
 'use strict'
 
 var h = require('hastscript')
-var fmt = require('../../util/fmt-url')
-var icon = require('../icon/link')
+var fmt = require('../../util/fmt-url.js')
+var icon = require('../icon/link.js')
 
 module.exports = url
 

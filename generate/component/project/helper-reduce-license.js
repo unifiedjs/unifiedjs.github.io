@@ -1,6 +1,6 @@
 'use strict'
 
-var unique = require('../../util/unique')
+var unique = require('../../util/unique.js')
 
 module.exports = reduce
 

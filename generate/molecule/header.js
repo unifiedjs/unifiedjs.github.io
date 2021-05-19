@@ -1,8 +1,8 @@
 'use strict'
 
 var h = require('hastscript')
-var tw = require('../atom/icon/tw')
-var gh = require('../atom/icon/gh')
+var tw = require('../atom/icon/tw.js')
+var gh = require('../atom/icon/gh.js')
 
 module.exports = header
 

@@ -1,7 +1,7 @@
 'use strict'
 
-var list = require('../../atom/macro/list')
-var item = require('./item')
+var list = require('../../atom/macro/list.js')
+var item = require('./item.js')
 
 module.exports = topics
 

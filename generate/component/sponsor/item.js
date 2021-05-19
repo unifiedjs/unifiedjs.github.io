@@ -1,11 +1,11 @@
 'use strict'
 
 var h = require('hastscript')
-var ocBadge = require('../../atom/micro/oc')
-var ghBadge = require('../../atom/micro/gh')
-var twitterBadge = require('../../atom/micro/tw')
-var urlLine = require('../../atom/micro/url')
-var card = require('../../atom/card/item')
+var ocBadge = require('../../atom/micro/oc.js')
+var ghBadge = require('../../atom/micro/gh.js')
+var twitterBadge = require('../../atom/micro/tw.js')
+var urlLine = require('../../atom/micro/url.js')
+var card = require('../../atom/card/item.js')
 
 module.exports = item
 

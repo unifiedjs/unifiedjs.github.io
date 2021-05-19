@@ -1,13 +1,13 @@
 'use strict'
 
 var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs')
-var pkg = require('../component/package/search-preview')
-var keyword = require('../component/keyword/search-preview')
-var project = require('../component/project/search-preview')
-var topic = require('../component/topic/search-preview')
-var release = require('../component/release/explore-preview')
-var page = require('./page')
+var breadcrumbs = require('../molecule/breadcrumbs.js')
+var pkg = require('../component/package/search-preview.js')
+var keyword = require('../component/keyword/search-preview.js')
+var project = require('../component/project/search-preview.js')
+var topic = require('../component/topic/search-preview.js')
+var release = require('../component/release/explore-preview.js')
+var page = require('./page.js')
 
 module.exports = explore
 

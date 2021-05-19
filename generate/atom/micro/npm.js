@@ -1,7 +1,7 @@
 'use strict'
 
 var h = require('hastscript')
-var icon = require('../icon/npm')
+var icon = require('../icon/npm.js')
 
 module.exports = npm
 

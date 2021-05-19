@@ -14,9 +14,9 @@ var sanitize = require('rehype-sanitize')
 var highlight = require('rehype-highlight')
 var gh = require('hast-util-sanitize/lib/github')
 var pkg = require('../../package.json')
-var link = require('../atom/icon/link')
-var resolveUrls = require('../plugin/rehype-resolve-urls')
-var rewriteUrls = require('../plugin/rehype-rewrite-urls')
+var link = require('../atom/icon/link.js')
+var resolveUrls = require('../plugin/rehype-resolve-urls.js')
+var rewriteUrls = require('../plugin/rehype-rewrite-urls.js')
 
 var origin = pkg.homepage
 

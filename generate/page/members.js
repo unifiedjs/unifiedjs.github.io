@@ -1,11 +1,11 @@
 'use strict'
 
 var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs')
-var byline = require('../component/member/byline')
-var list = require('../component/member/list')
-var sort = require('../component/member/helper-sort')
-var page = require('./page')
+var breadcrumbs = require('../molecule/breadcrumbs.js')
+var byline = require('../component/member/byline.js')
+var list = require('../component/member/list.js')
+var sort = require('../component/member/helper-sort.js')
+var page = require('./page.js')
 
 module.exports = members
 

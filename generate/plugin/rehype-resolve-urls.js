@@ -1,7 +1,7 @@
 'use strict'
 
 var visit = require('unist-util-visit')
-var map = require('../util/tag-to-url')
+var map = require('../util/tag-to-url.js')
 
 module.exports = resolveUrls
 

@@ -1,10 +1,10 @@
 'use strict'
 
 var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs')
-var list = require('../component/case/list')
-var byline = require('../component/case/byline')
-var page = require('./page')
+var breadcrumbs = require('../molecule/breadcrumbs.js')
+var list = require('../component/case/list.js')
+var byline = require('../component/case/byline.js')
+var page = require('./page.js')
 
 module.exports = showcase
 

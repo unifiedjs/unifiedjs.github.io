@@ -1,9 +1,9 @@
 'use strict'
 
 var h = require('hastscript')
-var fmt = require('../../util/fmt-percent')
-var color = require('../../util/score-color')
-var icon = require('../icon/score')
+var fmt = require('../../util/fmt-percent.js')
+var color = require('../../util/score-color.js')
+var icon = require('../icon/score.js')
 
 module.exports = score
 

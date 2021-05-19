@@ -1,8 +1,8 @@
 'use strict'
 
 var h = require('hastscript')
-var fmt = require('../../util/fmt-compact')
-var icon = require('../icon/stars')
+var fmt = require('../../util/fmt-compact.js')
+var icon = require('../icon/stars.js')
 
 module.exports = stars
 

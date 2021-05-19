@@ -1,10 +1,10 @@
 'use strict'
 
 var releases = require('../../../data/releases.json')
-var more = require('../../atom/box/more')
-var list = require('./list')
-var filter = require('./helper-filter')
-var sort = require('./helper-sort')
+var more = require('../../atom/box/more.js')
+var list = require('./list.js')
+var filter = require('./helper-filter.js')
+var sort = require('./helper-sort.js')
 
 module.exports = preview
 

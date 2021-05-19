@@ -1,6 +1,6 @@
 'use strict'
 
-var locale = require('./constant-locale')
+var locale = require('./constant-locale.js')
 
 module.exports = percent
 

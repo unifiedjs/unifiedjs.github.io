@@ -1,8 +1,8 @@
 'use strict'
 
 var visit = require('unist-util-visit')
-var data = require('../data')
-var map = require('../util/tag-to-url')
+var data = require('../data.js')
+var map = require('../util/tag-to-url.js')
 
 module.exports = urls
 

@@ -1,7 +1,7 @@
 'use strict'
 
 var h = require('hastscript')
-var item = require('./item-small')
+var item = require('./item-small.js')
 
 module.exports = list
 

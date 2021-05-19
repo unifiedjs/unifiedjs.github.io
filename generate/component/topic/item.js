@@ -1,11 +1,11 @@
 'use strict'
 
 var h = require('hastscript')
-var compact = require('../../util/fmt-compact')
-var plural = require('../../util/fmt-plural')
-var box = require('../../atom/box/more')
-var list = require('../project/list')
-var sort = require('../project/helper-sort')
+var compact = require('../../util/fmt-compact.js')
+var plural = require('../../util/fmt-plural.js')
+var box = require('../../atom/box/more.js')
+var list = require('../project/list.js')
+var sort = require('../project/helper-sort.js')
 
 module.exports = item
 

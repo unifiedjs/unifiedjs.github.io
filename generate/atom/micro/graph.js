@@ -1,7 +1,7 @@
 'use strict'
 
 var h = require('hastscript')
-var fmt = require('../../util/fmt-compact')
+var fmt = require('../../util/fmt-compact.js')
 
 module.exports = graph
 

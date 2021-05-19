@@ -1,15 +1,15 @@
 'use strict'
 
 var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs')
-var members = require('../component/member/list')
-var membersByline = require('../component/member/byline')
-var sortMembers = require('../component/member/helper-sort')
-var sponsors = require('../component/sponsor/list')
-var sponsorsByline = require('../component/sponsor/byline')
-var cases = require('../component/case/list')
-var casesByline = require('../component/case/byline')
-var page = require('./page')
+var breadcrumbs = require('../molecule/breadcrumbs.js')
+var members = require('../component/member/list.js')
+var membersByline = require('../component/member/byline.js')
+var sortMembers = require('../component/member/helper-sort.js')
+var sponsors = require('../component/sponsor/list.js')
+var sponsorsByline = require('../component/sponsor/byline.js')
+var cases = require('../component/case/list.js')
+var casesByline = require('../component/case/byline.js')
+var page = require('./page.js')
 
 module.exports = team
 

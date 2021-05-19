@@ -1,9 +1,9 @@
 'use strict'
 
 var h = require('hastscript')
-var box = require('../../atom/box/more')
-var sort = require('../package/helper-sort')
-var list = require('../package/list')
+var box = require('../../atom/box/more.js')
+var sort = require('../package/helper-sort.js')
+var list = require('../package/list.js')
 
 module.exports = detail
 

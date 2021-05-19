@@ -1,3 +1,3 @@
 'use strict'
 
-module.exports = require('./list-small')
+module.exports = require('./list-small.js')

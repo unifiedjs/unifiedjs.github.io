@@ -2,7 +2,7 @@
 
 var h = require('hastscript')
 var visit = require('unist-util-visit')
-var block = require('../macro/block')
+var block = require('../macro/block.js')
 
 module.exports = item
 

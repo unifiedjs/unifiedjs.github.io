@@ -7,9 +7,9 @@ var minify = require('rehype-preset-minify')
 var doc = require('rehype-document')
 var meta = require('rehype-meta')
 var stringify = require('rehype-stringify')
-var wrap = require('../plugin/rehype-wrap')
-var defer = require('../plugin/rehype-defer')
-var pictures = require('../plugin/rehype-pictures')
+var wrap = require('../plugin/rehype-wrap.js')
+var defer = require('../plugin/rehype-defer.js')
+var pictures = require('../plugin/rehype-pictures.js')
 
 // Pipeline that everything goes through.
 module.exports = unified()
@@ -56,8 +56,7 @@ module.exports = unified()
       url: 'https://unifiedjs.com/image/cover-1200.png',
       width: 1200,
       height: 690,
-      alt:
-        'We compile content to syntax trees and syntax trees to content. We also provide hundreds of packages to work on the trees in between. You can build on the unified collective to make all kinds of interesting things.'
+      alt: 'We compile content to syntax trees and syntax trees to content. We also provide hundreds of packages to work on the trees in between. You can build on the unified collective to make all kinds of interesting things.'
     },
     color: '#0366d6'
   })

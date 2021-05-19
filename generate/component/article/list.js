@@ -1,8 +1,8 @@
 'use strict'
 
-var cards = require('../../atom/card/list')
-var item = require('./item')
-var more = require('./more')
+var cards = require('../../atom/card/list.js')
+var item = require('./item.js')
+var more = require('./more.js')
 
 module.exports = list
 

@@ -1,10 +1,10 @@
 'use strict'
 
-var more = require('../../atom/box/more')
-var fmt = require('../../util/fmt-compact')
-var pick = require('../../util/pick-random')
-var list = require('./list')
-var sort = require('./helper-sort')
+var more = require('../../atom/box/more.js')
+var fmt = require('../../util/fmt-compact.js')
+var pick = require('../../util/pick-random.js')
+var list = require('./list.js')
+var sort = require('./helper-sort.js')
 
 module.exports = preview
 

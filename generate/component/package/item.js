@@ -1,11 +1,11 @@
 'use strict'
 
 var h = require('hastscript')
-var score = require('../../atom/micro/score')
-var verified = require('../../atom/micro/verified')
-var downloads = require('../../atom/micro/downloads')
-var gzip = require('../../atom/micro/gzip')
-var box = require('../../atom/box/item')
+var score = require('../../atom/micro/score.js')
+var verified = require('../../atom/micro/verified.js')
+var downloads = require('../../atom/micro/downloads.js')
+var gzip = require('../../atom/micro/gzip.js')
+var box = require('../../atom/box/item.js')
 
 module.exports = item
 

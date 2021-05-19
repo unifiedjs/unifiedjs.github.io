@@ -15,8 +15,8 @@ var visit = require('unist-util-visit')
 var headingRank = require('hast-util-heading-rank')
 var shiftHeading = require('hast-util-shift-heading')
 var pkg = require('../../package.json')
-var resolveUrls = require('../plugin/rehype-resolve-urls')
-var rewriteUrls = require('../plugin/rehype-rewrite-urls')
+var resolveUrls = require('../plugin/rehype-resolve-urls.js')
+var rewriteUrls = require('../plugin/rehype-rewrite-urls.js')
 
 var origin = pkg.homepage
 

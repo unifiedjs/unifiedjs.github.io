@@ -1,7 +1,7 @@
 'use strict'
 
 var h = require('hastscript')
-var icon = require('../icon/oc')
+var icon = require('../icon/oc.js')
 
 module.exports = oc
 

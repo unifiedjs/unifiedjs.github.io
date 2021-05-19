@@ -1,7 +1,7 @@
 'use strict'
 
 var h = require('hastscript')
-var icon = require('../icon/tw')
+var icon = require('../icon/tw.js')
 
 module.exports = twitter
 

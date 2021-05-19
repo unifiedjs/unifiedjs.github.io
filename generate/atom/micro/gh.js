@@ -1,7 +1,7 @@
 'use strict'
 
 var h = require('hastscript')
-var icon = require('../icon/gh')
+var icon = require('../icon/gh.js')
 
 module.exports = github
 
