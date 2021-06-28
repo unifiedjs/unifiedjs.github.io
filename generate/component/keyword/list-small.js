@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {itemSmall} from './item-small.js'
 
 export function listSmall(data, d) {

@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 
 export function searchPreview() {
   return h('p.content', [

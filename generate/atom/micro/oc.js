@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {oc as icon} from '../icon/oc.js'
 
 export function oc(name) {

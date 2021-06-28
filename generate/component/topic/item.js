@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {fmtCompact} from '../../util/fmt-compact.js'
 import {fmtPlural} from '../../util/fmt-plural.js'
 import {more as box} from '../../atom/box/more.js'

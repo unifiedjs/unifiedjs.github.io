@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {list} from '../package/list.js'
 import {helperSort} from '../package/helper-sort.js'
 

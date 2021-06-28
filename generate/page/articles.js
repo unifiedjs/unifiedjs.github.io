@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {list} from '../component/article/list.js'
 import {helperSort} from '../component/article/helper-sort.js'

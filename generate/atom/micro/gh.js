@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {gh as icon} from '../icon/gh.js'
 
 export function gh(name) {

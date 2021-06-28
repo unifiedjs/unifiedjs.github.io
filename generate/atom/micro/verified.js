@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {constantCollective} from '../../util/constant-collective.js'
 import {verified as icon} from '../icon/verified.js'
 

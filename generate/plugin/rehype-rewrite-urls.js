@@ -1,4 +1,4 @@
-import visit from 'unist-util-visit'
+import {visit} from 'unist-util-visit'
 import {tagToUrl} from '../util/tag-to-url.js'
 import {data} from '../data.js'
 

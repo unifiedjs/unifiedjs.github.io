@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {list as members} from '../component/member/list.js'
 import {byline as membersByline} from '../component/member/byline.js'

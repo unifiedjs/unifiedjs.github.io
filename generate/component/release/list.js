@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {list as macroList} from '../../atom/macro/list.js'
 import {item} from './item.js'
 import {more} from './more.js'

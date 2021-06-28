@@ -2,7 +2,7 @@
 
 import {Index} from 'flexsearch'
 import mean from 'compute-mean'
-import toDom from 'hast-util-to-dom'
+import {toDom} from 'hast-util-to-dom'
 import {data} from '../generate/data.js'
 import {search as searchForm} from '../generate/molecule/search.js'
 import {helperReduceScore} from '../generate/component/project/helper-reduce-score.js'

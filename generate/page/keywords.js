@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {list} from '../component/keyword/list.js'
 import {helperFilter} from '../component/keyword/helper-filter.js'

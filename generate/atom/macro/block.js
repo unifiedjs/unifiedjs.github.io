@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 
 export function block(main, footer) {
   return h(

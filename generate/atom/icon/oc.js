@@ -1,4 +1,4 @@
-import s from 'hastscript/svg.js'
+import {s} from 'hastscript'
 
 export function oc() {
   return s(

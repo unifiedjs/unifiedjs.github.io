@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {oc as ocBadge} from '../../atom/micro/oc.js'
 import {gh as ghBadge} from '../../atom/micro/gh.js'
 import {tw as twitterBadge} from '../../atom/micro/tw.js'

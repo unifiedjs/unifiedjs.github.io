@@ -1,5 +1,5 @@
 import spdx from 'spdx-license-list'
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {license as icon} from '../icon/license.js'
 
 export function license(value) {

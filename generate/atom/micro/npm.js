@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {npm as icon} from '../icon/npm.js'
 
 export function npm(name) {

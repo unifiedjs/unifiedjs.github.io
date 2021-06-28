@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en/index.js'
 import {constantLocale} from '../../util/constant-locale.js'

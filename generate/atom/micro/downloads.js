@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {fmtCompact} from '../../util/fmt-compact.js'
 import {downloads as icon} from '../icon/downloads.js'
 

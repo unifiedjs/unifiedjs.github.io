@@ -4,10 +4,10 @@ import {promisify} from 'util'
 import glob from 'glob'
 import sharp from 'sharp'
 import pAll from 'p-all'
-import mkdirp from 'vfile-mkdirp'
-import trough from 'trough'
-import vfile from 'to-vfile'
-import reporter from 'vfile-reporter'
+import {mkdirp} from 'vfile-mkdirp'
+import {trough} from 'trough'
+import {toVFile} from 'to-vfile'
+import {reporter} from 'vfile-reporter'
 import esbuild from 'esbuild'
 import postcss from 'postcss'
 import postcssPresetEnv from 'postcss-preset-env'
@@ -32,19 +32,19 @@ if (process.env.UNIFIED_OPTIMIZE_IMAGES) {
 }
 
 var processPipeline = trough()
-  .use(vfile.read)
+  .use(toVFile.read)
   .use(processFile)
   .use(move)
   .use(mkdir)
-  .use(vfile.write)
+  .use(toVFile.write)
 
 var copyPipeline = trough().use(move).use(mkdir).use(copy)
 
-var imagePipeline = trough().use(move).use(mkdir).use(vfile.write).use(print)
+var imagePipeline = trough().use(move).use(mkdir).use(toVFile.write).use(print)
 
 var filePipeline = trough()
   .use(function (fp, next) {
-    var file = vfile(fp)
+    var file = toVFile(fp)
     var ext = file.extname
     var pipeline = ext in externals ? processPipeline : copyPipeline
     pipeline.run(file, next)
@@ -62,8 +62,8 @@ trough()
     ).then((files) => done(null, files), done)
   })
   .use(function (files, next) {
-    var contents = new URL(pack.homepage).host + '\n'
-    vfile.write({dirname: 'build', basename: 'CNAME', contents: contents}, next)
+    var value = new URL(pack.homepage).host + '\n'
+    toVFile.write({dirname: 'build', basename: 'CNAME', value}, next)
   })
   .run('asset/**/*.*', function (error) {
     if (error) {
@@ -101,7 +101,7 @@ function copy(file, next) {
 function print(file) {
   file.stored = true
   // Clear memory.
-  file.contents = null
+  file.value = null
   console.error(reporter(file))
 }
 
@@ -109,7 +109,7 @@ function transformCss(file) {
   return postcss(postcssPresetEnv({stage: 0}), cssnano({preset: 'advanced'}))
     .process(file.toString('utf8'), {from: file.path})
     .then(function (result) {
-      file.contents = result.css
+      file.value = result.css
     })
 }
 
@@ -125,7 +125,7 @@ function bundleJs(file, next) {
       if (result.errors.length > 0) throw new Error('esbuild errors')
       if (result.warnings.length > 0) throw new Error('esbuild warnings')
       const output = result.outputFiles[0]
-      file.contents = output.contents
+      file.value = output.contents
       next()
     }, next)
 }
@@ -139,7 +139,7 @@ function transformPng(file, next) {
   }
 
   var run = promisify(imagePipeline.run)
-  var pipeline = sharp(file.contents)
+  var pipeline = sharp(file.value)
 
   pipeline
     .metadata()
@@ -161,9 +161,9 @@ function transformPng(file, next) {
       [media.format](options[media.format])
       .toBuffer()
       .then((buf) => {
-        var copy = vfile(file.path)
+        var copy = toVFile(file.path)
 
-        copy.contents = buf
+        copy.value = buf
         copy.stem += '-' + media.size
         copy.extname = '.' + media.format
 

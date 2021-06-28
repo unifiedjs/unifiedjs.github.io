@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import pickRandom from 'pick-random'
 import {helperSort} from '../component/package/helper-sort.js'
 

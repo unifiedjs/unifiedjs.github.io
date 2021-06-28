@@ -2,10 +2,10 @@ import fs from 'fs'
 import path from 'path'
 import yaml from 'js-yaml'
 import glob from 'glob'
-import matter from 'vfile-matter'
+import {matter} from 'vfile-matter'
 import all from 'p-all'
-import vfile from 'to-vfile'
-import report from 'vfile-reporter'
+import {toVFile} from 'to-vfile'
+import {reporter} from 'vfile-reporter'
 import {data} from './data.js'
 import {main as pipeline} from './pipeline/main.js'
 import {article as articlePipeline} from './pipeline/article.js'
@@ -47,7 +47,7 @@ expandDescription(data.packageByName)
 expandReleases(dataReleases)
 
 var entries = glob.sync('doc/learn/**/*.md').map((input) => {
-  var file = matter(vfile.readSync(input))
+  var file = matter(toVFile.readSync(input))
   var slug = path.basename(input, path.extname(input))
   var {group, tags} = file.data.matter
 
@@ -199,7 +199,7 @@ Object.keys(data.packageByName).forEach((d) => {
   var pathname = '/explore/package/' + d + '/'
 
   tasks.push(() =>
-    vfile.read(input).then((file) => {
+    toVFile.read(input).then((file) => {
       var meta = {title: d, description, pathname, tags: keywords}
 
       file.data = {meta, repo, dirname: manifestBase}
@@ -241,14 +241,14 @@ var promises = tasks.map((fn) => () => {
       pipeline.run(tree, file).then((tree) => ({tree, file}))
     )
     .then(({tree, file}) => {
-      file.contents = pipeline.stringify(tree, file)
+      file.value = pipeline.stringify(tree, file)
       return file
     })
-    .then((file) => vfile.write(file).then(() => file))
+    .then((file) => toVFile.write(file).then(() => file))
     .then(done, done)
 
   function done(x) {
-    console.log(report(x))
+    console.log(reporter(x))
   }
 })
 
@@ -256,7 +256,7 @@ all(promises, {concurrency: 50})
 
 function page(fn, meta) {
   tasks.push(() => {
-    return {tree: fn(), file: vfile({data: {meta}})}
+    return {tree: fn(), file: toVFile({data: {meta}})}
   })
 }
 

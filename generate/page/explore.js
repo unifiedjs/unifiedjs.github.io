@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {searchPreview as pkg} from '../component/package/search-preview.js'
 import {searchPreview as keyword} from '../component/keyword/search-preview.js'

@@ -1,9 +1,9 @@
-import h from 'hastscript'
-import findAndReplace from 'hast-util-find-and-replace'
+import {h} from 'hastscript'
+import {findAndReplace, defaultIgnore} from 'hast-util-find-and-replace'
 
 var replacements = initialise()
 
-var ignore = findAndReplace.ignore.concat([
+var ignore = defaultIgnore.concat([
   'a',
   'pre',
   'code',

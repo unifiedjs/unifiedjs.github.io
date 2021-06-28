@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 
 export function searchEmpty(data, query) {
   return h('p.content', [

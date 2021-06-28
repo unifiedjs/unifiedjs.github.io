@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {block} from '../atom/macro/block.js'
 import {list as articlesList} from '../component/article/list.js'
 import {helperSort as articlesSort} from '../component/article/helper-sort.js'

@@ -1,10 +1,10 @@
 import fs from 'fs'
 import path from 'path'
-import vfile from 'to-vfile'
+import {toVFile} from 'to-vfile'
 import sharp from 'sharp'
-import rename from 'vfile-rename'
-import visit from 'unist-util-visit'
-import h from 'hastscript'
+import {rename} from 'vfile-rename'
+import {visit} from 'unist-util-visit'
+import {h} from 'hastscript'
 
 export default function rehypePictures(options) {
   var sizes = [null, 200, 600, 1200, 2000]
@@ -50,7 +50,7 @@ export default function rehypePictures(options) {
         var promises = [].concat(
           // See which images exist.
           sources.map((d) => {
-            var fp = rename(vfile({path: resolved}), d).path
+            var fp = rename(toVFile({path: resolved}), d).path
 
             return fs.promises.access(fp, fs.constants.R_OK).then(
               () => fp,
@@ -70,7 +70,7 @@ export default function rehypePictures(options) {
             modes.flatMap((mode) => {
               var applicable = sizes
                 .map((size) => {
-                  var fp = rename(vfile({path: resolved}), {
+                  var fp = rename(toVFile({path: resolved}), {
                     stem: {suffix: mode + (size ? '-' + size : '')},
                     extname: '.' + format
                   }).path

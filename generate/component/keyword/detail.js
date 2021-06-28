@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {more} from '../../atom/box/more.js'
 import {helperSort} from '../package/helper-sort.js'
 import {list} from '../package/list.js'

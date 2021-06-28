@@ -1,5 +1,5 @@
 import path from 'path'
-import mkdirp from 'vfile-mkdirp'
+import {mkdirp} from 'vfile-mkdirp'
 import unified from 'unified'
 import rehypePresetMinify from 'rehype-preset-minify'
 import rehypeDocument from 'rehype-document'

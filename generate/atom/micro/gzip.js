@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {fmtBytes} from '../../util/fmt-bytes.js'
 
 export function gzip(value, name) {

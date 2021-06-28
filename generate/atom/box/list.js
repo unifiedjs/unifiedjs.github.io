@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {list as baseList} from '../macro/list.js'
 
 export function list(names, map, options) {

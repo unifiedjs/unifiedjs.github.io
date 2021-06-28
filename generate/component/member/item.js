@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {gh as ghBadge} from '../../atom/micro/gh.js'
 import {npm as npmBadge} from '../../atom/micro/npm.js'
 import {url as urlLine} from '../../atom/micro/url.js'

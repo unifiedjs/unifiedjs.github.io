@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {description} from '../../atom/micro/description.js'
 import {downloads} from '../../atom/micro/downloads.js'
 import {gh} from '../../atom/micro/gh.js'

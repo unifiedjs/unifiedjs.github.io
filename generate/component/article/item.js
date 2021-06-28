@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {item as card} from '../../atom/card/item.js'
 import {tag} from '../../atom/micro/tag.js'
 

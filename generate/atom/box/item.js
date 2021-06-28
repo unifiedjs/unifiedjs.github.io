@@ -1,5 +1,5 @@
-import h from 'hastscript'
-import visit from 'unist-util-visit'
+import {h} from 'hastscript'
+import {visit, SKIP} from 'unist-util-visit'
 import {block} from '../macro/block.js'
 
 export function item(href, main, footer) {
@@ -12,7 +12,7 @@ export function item(href, main, footer) {
   function cleanNestedLinks(node, index, parent) {
     if (parent && node.tagName === 'a') {
       parent.children.splice(index, 1, ...node.children)
-      return [visit.SKIP, index]
+      return [SKIP, index]
     }
   }
 }

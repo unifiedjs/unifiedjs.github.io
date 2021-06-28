@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {tw as icon} from '../icon/tw.js'
 
 export function tw(name) {

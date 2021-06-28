@@ -1,10 +1,10 @@
-import h from 'hastscript'
-import findAndReplace from 'hast-util-find-and-replace'
+import {h} from 'hastscript'
+import {findAndReplace, defaultIgnore} from 'hast-util-find-and-replace'
 import pluralize from 'pluralize'
 
 var re = /\b([A-Z]\.?[A-Z][\w.]*)\b/g
 
-var ignore = findAndReplace.ignore.concat(['pre', 'code'])
+var ignore = defaultIgnore.concat(['pre', 'code'])
 
 export default function rehypeAbbreviate(titles) {
   return transform

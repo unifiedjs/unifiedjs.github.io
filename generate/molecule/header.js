@@ -1,4 +1,4 @@
-import h from 'hastscript'
+import {h} from 'hastscript'
 import {tw} from '../atom/icon/tw.js'
 import {gh} from '../atom/icon/gh.js'
 
