@@ -8,7 +8,7 @@ var mkdirp = require('vfile-mkdirp')
 var trough = require('trough')
 var vfile = require('to-vfile')
 var reporter = require('vfile-reporter')
-var browserify = require('browserify')
+var esbuild = require('esbuild')
 var postcss = require('postcss')
 var postcssPresetEnv = require('postcss-preset-env')
 var cssnano = require('cssnano')
@@ -98,7 +98,6 @@ function copy(file, next) {
 
 function print(file) {
   file.stored = true
-
   // Clear memory.
   file.contents = null
   console.error(reporter(file))
@@ -113,15 +112,20 @@ function transformCss(file) {
 }
 
 function bundleJs(file, next) {
-  browserify(file.path).plugin('tinyify').bundle(done)
-
-  function done(error, buf) {
-    if (buf) {
-      file.contents = String(buf)
-    }
-
-    next(error)
-  }
+  esbuild
+    .build({
+      entryPoints: [file.path],
+      bundle: true,
+      minify: true,
+      write: false
+    })
+    .then(function (result) {
+      if (result.errors.length > 0) throw new Error('esbuild errors')
+      if (result.warnings.length > 0) throw new Error('esbuild warnings')
+      const output = result.outputFiles[0]
+      file.contents = output.contents
+      next()
+    }, next)
 }
 
 function transformPng(file, next) {
