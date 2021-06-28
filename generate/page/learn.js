@@ -1,14 +1,10 @@
-'use strict'
+import h from 'hastscript'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
+import {list} from '../component/article/list.js'
+import {helperSort} from '../component/article/helper-sort.js'
+import {page} from './page.js'
 
-var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs.js')
-var list = require('../component/article/list.js')
-var sort = require('../component/article/helper-sort.js')
-var page = require('./page.js')
-
-module.exports = learn
-
-function learn(sections) {
+export function learn(sections) {
   return page(h('.row-l.column-l', h('h2', breadcrumbs('/learn/'))), [
     h('.article.content', [
       h('h3', 'Intro'),
@@ -26,7 +22,7 @@ function learn(sections) {
     ]),
     sections.flatMap((d) => [
       h('.article.content', [h('h3', d.title), h('p', d.description)]),
-      list(d, sort(d.entries))
+      list(d, helperSort(d.entries))
     ]),
     h('.article.content', [
       h('h3', 'Explore'),

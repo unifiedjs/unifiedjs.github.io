@@ -1,15 +1,18 @@
-var fs = require('fs').promises
-var path = require('path')
-var {promisify} = require('util')
-var hostedGitInfo = require('hosted-git-info')
-var randomUseragent = require('random-useragent')
-var trough = require('trough')
-var chalk = require('chalk')
-var fetch = require('node-fetch')
-var pAll = require('p-all')
-var bytes = require('bytes')
+import {promises as fs} from 'fs'
+import path from 'path'
+import {promisify} from 'util'
+import hostedGitInfo from 'hosted-git-info'
+import randomUseragent from 'random-useragent'
+import trough from 'trough'
+import chalk from 'chalk'
+import fetch from 'node-fetch'
+import pAll from 'p-all'
+import bytes from 'bytes'
+import dotenv from 'dotenv'
+import {constantTopic} from '../generate/util/constant-topic.js'
+import {constantCollective} from '../generate/util/constant-collective.js'
 
-require('dotenv').config()
+dotenv.config()
 
 var ghToken = process.env.GH_TOKEN
 var npmToken = process.env.NPM_TOKEN
@@ -20,15 +23,12 @@ if (!ghToken || !npmToken) {
   process.exit()
 }
 
-var topics = require('../generate/util/constant-topic.js')
-var orgs = require('../generate/util/constant-collective.js')
-
 var outpath = path.join('data')
 var readmePath = path.join(outpath, 'readme')
-var metaPath = path.join(outpath, 'meta.json')
-var projectsPath = path.join(outpath, 'projects.json')
-var packagesPath = path.join(outpath, 'packages.json')
-var releasesPath = path.join(outpath, 'releases.json')
+var metaPath = path.join(outpath, 'meta.js')
+var projectsPath = path.join(outpath, 'projects.js')
+var packagesPath = path.join(outpath, 'packages.js')
+var releasesPath = path.join(outpath, 'releases.js')
 
 var concurrency = {concurrency: 1}
 
@@ -63,8 +63,8 @@ main({
   ghToken,
   npmToken,
   repos: [],
-  topics: topics,
-  orgs: orgs
+  topics: constantTopic,
+  orgs: constantCollective
 }).then(
   (result) => {
     console.log(
@@ -161,7 +161,7 @@ async function findPackages(ctx) {
   projects.forEach((d) => {
     var [owner] = d.repo.split('/')
 
-    if (orgs.includes(owner)) {
+    if (constantCollective.includes(owner)) {
       Object.keys(meta).forEach((key) => {
         meta[key] += d[key]
       })
@@ -189,10 +189,22 @@ async function findPackages(ctx) {
 async function writeResults(ctx) {
   var {projects, packages, releases, meta} = ctx
 
-  await fs.writeFile(metaPath, JSON.stringify(meta, null, 2) + '\n')
-  await fs.writeFile(projectsPath, JSON.stringify(projects, null, 2) + '\n')
-  await fs.writeFile(packagesPath, JSON.stringify(packages, null, 2) + '\n')
-  await fs.writeFile(releasesPath, JSON.stringify(releases, null, 2) + '\n')
+  await fs.writeFile(
+    metaPath,
+    'export const meta = ' + JSON.stringify(meta, null, 2) + '\n'
+  )
+  await fs.writeFile(
+    projectsPath,
+    'export const projects = ' + JSON.stringify(projects, null, 2) + '\n'
+  )
+  await fs.writeFile(
+    packagesPath,
+    'export const packages = ' + JSON.stringify(packages, null, 2) + '\n'
+  )
+  await fs.writeFile(
+    releasesPath,
+    'export const releases = ' + JSON.stringify(releases, null, 2) + '\n'
+  )
 }
 
 async function writeReadmes(ctx) {

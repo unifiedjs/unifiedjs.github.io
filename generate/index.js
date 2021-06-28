@@ -1,43 +1,41 @@
-'use strict'
-
-var fs = require('fs')
-var path = require('path')
-var yaml = require('js-yaml')
-var glob = require('glob')
-var matter = require('vfile-matter')
-var all = require('p-all')
-var vfile = require('to-vfile')
-var report = require('vfile-reporter')
-var sponsors = require('../data/sponsors.json')
-var humans = require('../data/humans.json')
-var teams = require('../data/teams.json')
-var data = require('./data.js')
-var pipeline = require('./pipeline/main.js')
-var articlePipeline = require('./pipeline/article.js')
-var readmePipeline = require('./pipeline/readme.js')
-var descriptionPipeline = require('./pipeline/description.js')
-var createReleasePipeline = require('./pipeline/release.js')
-var article = require('./page/article.js')
-var articles = require('./page/articles.js')
-var cases = require('./page/cases.js')
-var community = require('./page/community.js')
-var explore = require('./page/explore.js')
-var home = require('./page/home.js')
-var keyword = require('./page/keyword.js')
-var keywords = require('./page/keywords.js')
-var learn = require('./page/learn.js')
-var members = require('./page/members.js')
-var owner = require('./page/owner.js')
-var pkg = require('./page/package.js')
-var packages = require('./page/packages.js')
-var project = require('./page/project.js')
-var projects = require('./page/projects.js')
-var releases = require('./page/releases.js')
-var scope = require('./page/scope.js')
-var sponsor = require('./page/sponsors.js')
-var topic = require('./page/topic.js')
-var topics = require('./page/topics.js')
-var dataReleases = require('../data/releases.json')
+import fs from 'fs'
+import path from 'path'
+import yaml from 'js-yaml'
+import glob from 'glob'
+import matter from 'vfile-matter'
+import all from 'p-all'
+import vfile from 'to-vfile'
+import report from 'vfile-reporter'
+import {data} from './data.js'
+import {main as pipeline} from './pipeline/main.js'
+import {article as articlePipeline} from './pipeline/article.js'
+import {readme as readmePipeline} from './pipeline/readme.js'
+import {description as descriptionPipeline} from './pipeline/description.js'
+import {release as createReleasePipeline} from './pipeline/release.js'
+import {article} from './page/article.js'
+import {articles} from './page/articles.js'
+import {cases} from './page/cases.js'
+import {community} from './page/community.js'
+import {explore} from './page/explore.js'
+import {home} from './page/home.js'
+import {keyword} from './page/keyword.js'
+import {keywords} from './page/keywords.js'
+import {learn} from './page/learn.js'
+import {members} from './page/members.js'
+import {owner} from './page/owner.js'
+import {pkg} from './page/package.js'
+import {packages} from './page/packages.js'
+import {project} from './page/project.js'
+import {projects} from './page/projects.js'
+import {releases} from './page/releases.js'
+import {scope} from './page/scope.js'
+import {sponsor} from './page/sponsors.js'
+import {topic} from './page/topic.js'
+import {topics} from './page/topics.js'
+import {humans} from '../data/humans.js'
+import {releases as dataReleases} from '../data/releases.js'
+import {sponsors} from '../data/sponsors.js'
+import {teams} from '../data/teams.js'
 
 var users = yaml.load(fs.readFileSync(path.join('doc', 'showcase.yml')))
 

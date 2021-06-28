@@ -1,14 +1,10 @@
-'use strict'
+import {list as cards} from '../../atom/card/list.js'
+import {helperSort} from './helper-sort.js'
+import {item} from './item.js'
+import {more} from './more.js'
 
-var cards = require('../../atom/card/list.js')
-var sort = require('./helper-sort.js')
-var item = require('./item.js')
-var more = require('./more.js')
-
-module.exports = list
-
-function list(data, d, options) {
-  return cards(sort(data, d), map, {more, ...options})
+export function list(data, d, options) {
+  return cards(helperSort(data, d), map, {more, ...options})
   function map(d) {
     return item(data, d)
   }

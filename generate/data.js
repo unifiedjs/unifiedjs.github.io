@@ -1,7 +1,7 @@
-var projects = require('../data/projects.json')
-var packages = require('../data/packages.json')
+import {projects} from '../data/projects.js'
+import {packages} from '../data/packages.js'
 
-var data = {
+export const data = {
   projectByRepo: {},
   packageByName: {},
   projectsByOwner: {},
@@ -10,8 +10,6 @@ var data = {
   packagesByKeyword: {},
   projectsByTopic: {}
 }
-
-module.exports = data
 
 projects.forEach((d) => {
   var {repo, topics} = d

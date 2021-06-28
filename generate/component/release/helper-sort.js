@@ -1,11 +1,7 @@
-'use strict'
-
-var sort = require('../../util/sort.js')
-
-module.exports = sorter
+import {sort} from '../../util/sort.js'
 
 // Sort releases by published.
-function sorter(data, releases) {
+export function helperSort(data, releases) {
   return sort(releases, score)
 
   function score(d) {

@@ -1,13 +1,9 @@
-'use strict'
+import h from 'hastscript'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
+import {detail} from '../component/article/detail.js'
+import {page} from './page.js'
 
-var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs.js')
-var detail = require('../component/article/detail.js')
-var page = require('./page.js')
-
-module.exports = article
-
-function article(tree, file) {
+export function article(tree, file) {
   var {matter, meta} = file.data
   var {title} = matter
   var {pathname} = meta

@@ -1,11 +1,7 @@
-'use strict'
+import h from 'hastscript'
+import {gh as icon} from '../icon/gh.js'
 
-var h = require('hastscript')
-var icon = require('../icon/gh.js')
-
-module.exports = github
-
-function github(name) {
+export function gh(name) {
   var node = icon()
 
   if (name) {

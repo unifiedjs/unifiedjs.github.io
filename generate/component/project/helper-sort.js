@@ -1,15 +1,11 @@
-'use strict'
-
-var sort = require('../../util/sort.js')
-var reduce = require('./helper-reduce-score.js')
-
-module.exports = sorter
+import {sort} from '../../util/sort.js'
+import {helperReduceScore} from './helper-reduce-score.js'
 
 // Sort projects by score.
-function sorter(data, names) {
+export function helperSort(data, names) {
   return sort(names, score)
 
   function score(d) {
-    return reduce(data, d)
+    return helperReduceScore(data, d)
   }
 }

@@ -1,17 +1,15 @@
-'use strict'
+import unified from 'unified'
+import markdown from 'remark-parse'
+import gemoji from 'remark-gemoji'
+import remark2rehype from 'remark-rehype'
+import raw from 'rehype-raw'
+import sanitize from 'rehype-sanitize'
+import {descriptionSchema} from './description-schema.js'
 
-var unified = require('unified')
-var markdown = require('remark-parse')
-var gemoji = require('remark-gemoji')
-var remark2rehype = require('remark-rehype')
-var raw = require('rehype-raw')
-var sanitize = require('rehype-sanitize')
-var schema = require('./description-schema.js')
-
-module.exports = unified()
+export const description = unified()
   .use(markdown)
   .use(gemoji)
   .use(remark2rehype, {allowDangerousHtml: true})
   .use(raw)
-  .use(sanitize, schema)
+  .use(sanitize, descriptionSchema)
   .freeze()

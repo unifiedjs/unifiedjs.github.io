@@ -1,10 +1,6 @@
-'use strict'
+import s from 'hastscript/svg.js'
 
-var s = require('hastscript/svg')
-
-module.exports = twitter
-
-function twitter() {
+export function tw() {
   return s(
     'svg.icon',
     {

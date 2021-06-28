@@ -1,10 +1,6 @@
-'use strict'
+import visit from 'unist-util-visit'
 
-var visit = require('unist-util-visit')
-
-module.exports = defer
-
-function defer() {
+export default function rehypeDefer() {
   return transform
 
   function transform(tree) {

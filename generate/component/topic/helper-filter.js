@@ -1,11 +1,7 @@
-'use strict'
-
-module.exports = filter
-
 var defaults = 1
 
 // Filter topics for enough use.
-function filter(data, names, min) {
+export function helperFilter(data, names, min) {
   var {projectsByTopic} = data
   var value = min || defaults
 

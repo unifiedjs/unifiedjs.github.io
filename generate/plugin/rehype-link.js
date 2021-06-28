@@ -1,9 +1,5 @@
-'use strict'
-
-var h = require('hastscript')
-var findAndReplace = require('hast-util-find-and-replace')
-
-module.exports = link
+import h from 'hastscript'
+import findAndReplace from 'hast-util-find-and-replace'
 
 var replacements = initialise()
 
@@ -19,7 +15,7 @@ var ignore = findAndReplace.ignore.concat([
   'h6'
 ])
 
-function link() {
+export default function rehypeLink() {
   return transform
 
   function transform(tree) {

@@ -1,19 +1,15 @@
-'use strict'
+import h from 'hastscript'
+import {fmtCompact} from '../../util/fmt-compact.js'
+import {downloads as icon} from '../icon/downloads.js'
 
-var h = require('hastscript')
-var fmt = require('../../util/fmt-compact.js')
-var icon = require('../icon/downloads.js')
-
-module.exports = downloads
-
-function downloads(value, name) {
+export function downloads(value, name) {
   var node
 
   if (!value) {
     return []
   }
 
-  node = [icon(), ' ', fmt(value)]
+  node = [icon(), ' ', fmtCompact(value)]
 
   if (name) {
     node = h('a.tap-target', {href: 'https://www.npmtrends.com/' + name}, node)

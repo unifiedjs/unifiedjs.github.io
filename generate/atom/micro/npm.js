@@ -1,18 +1,15 @@
-'use strict'
+import h from 'hastscript'
+import {npm as icon} from '../icon/npm.js'
 
-var h = require('hastscript')
-var icon = require('../icon/npm.js')
-
-module.exports = npm
-
-var base = 'https://www.npmjs.com/'
-
-function npm(name) {
+export function npm(name) {
   var node = icon()
   var href
 
   if (name) {
-    href = base + (name.charAt(0) === '~' ? '' : 'package/') + name
+    href =
+      'https://www.npmjs.com/' +
+      (name.charAt(0) === '~' ? '' : 'package/') +
+      name
     node = h('a.tap-target', {href}, node)
   }
 

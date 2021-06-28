@@ -1,21 +1,19 @@
-'use strict'
-
-var path = require('path')
-var mkdirp = require('vfile-mkdirp')
-var unified = require('unified')
-var minify = require('rehype-preset-minify')
-var doc = require('rehype-document')
-var meta = require('rehype-meta')
-var stringify = require('rehype-stringify')
-var wrap = require('../plugin/rehype-wrap.js')
-var defer = require('../plugin/rehype-defer.js')
-var pictures = require('../plugin/rehype-pictures.js')
+import path from 'path'
+import mkdirp from 'vfile-mkdirp'
+import unified from 'unified'
+import rehypePresetMinify from 'rehype-preset-minify'
+import rehypeDocument from 'rehype-document'
+import rehypeMeta from 'rehype-meta'
+import rehypeStringify from 'rehype-stringify'
+import rehypeWrap from '../plugin/rehype-wrap.js'
+import rehypeDefer from '../plugin/rehype-defer.js'
+import rehypePictures from '../plugin/rehype-pictures.js'
 
 // Pipeline that everything goes through.
-module.exports = unified()
-  .use(wrap)
-  .use(pictures, {base: path.join('build')})
-  .use(doc, {
+export const main = unified()
+  .use(rehypeWrap)
+  .use(rehypePictures, {base: path.join('build')})
+  .use(rehypeDocument, {
     title: 'unified',
     js: ['/search.js'],
     link: [
@@ -41,7 +39,7 @@ module.exports = unified()
       }
     ]
   })
-  .use(meta, {
+  .use(rehypeMeta, {
     twitter: true,
     og: true,
     copyright: true,
@@ -60,11 +58,11 @@ module.exports = unified()
     },
     color: '#0366d6'
   })
-  .use(defer)
-  .use(minify)
+  .use(rehypeDefer)
+  .use(rehypePresetMinify)
   .use(move)
   .use(mkdir)
-  .use(stringify)
+  .use(rehypeStringify)
   .freeze()
 
 // Plugin that moves a file’s path to the output location

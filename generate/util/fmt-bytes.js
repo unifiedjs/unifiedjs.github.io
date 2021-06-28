@@ -1,10 +1,6 @@
-'use strict'
+import prettyBytes from 'pretty-bytes'
+import {constantLocale} from './constant-locale.js'
 
-var fmt = require('pretty-bytes')
-var locale = require('./constant-locale.js')
-
-module.exports = bytes
-
-function bytes(value) {
-  return fmt(value || 0, {locale})
+export function fmtBytes(value) {
+  return prettyBytes(value || 0, {locale: constantLocale})
 }

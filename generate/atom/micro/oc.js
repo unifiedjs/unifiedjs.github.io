@@ -1,11 +1,7 @@
-'use strict'
+import h from 'hastscript'
+import {oc as icon} from '../icon/oc.js'
 
-var h = require('hastscript')
-var icon = require('../icon/oc.js')
-
-module.exports = oc
-
-function oc(name) {
+export function oc(name) {
   var node = icon()
 
   if (name) {

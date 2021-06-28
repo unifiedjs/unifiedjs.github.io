@@ -1,10 +1,6 @@
-'use strict'
+import h from 'hastscript'
 
-var h = require('hastscript')
-
-module.exports = block
-
-function block(main, footer) {
+export function block(main, footer) {
   return h(
     'li',
     {className: footer ? ['nl-root'] : []},

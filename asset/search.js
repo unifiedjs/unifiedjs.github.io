@@ -1,27 +1,27 @@
 /* eslint-env browser */
 
-var {Index} = require('flexsearch')
-var mean = require('compute-mean')
-var toDom = require('hast-util-to-dom')
-var data = require('../generate/data.js')
-var searchForm = require('../generate/molecule/search.js')
-var reduceScore = require('../generate/component/project/helper-reduce-score.js')
-var keywordFilter = require('../generate/component/keyword/helper-filter.js')
-var keywordPreview = require('../generate/component/keyword/search-preview.js')
-var keywordEmpty = require('../generate/component/keyword/search-empty.js')
-var keywordResults = require('../generate/component/keyword/search-results.js')
-var topicFilter = require('../generate/component/topic/helper-filter.js')
-var topicPreview = require('../generate/component/topic/search-preview.js')
-var topicEmpty = require('../generate/component/topic/search-empty.js')
-var topicResults = require('../generate/component/topic/search-results.js')
-var packagePreview = require('../generate/component/package/search-preview.js')
-var packageEmpty = require('../generate/component/package/search-empty.js')
-var packageResults = require('../generate/component/package/search-results.js')
-var projectPreview = require('../generate/component/project/search-preview.js')
-var projectEmpty = require('../generate/component/project/search-empty.js')
-var projectResults = require('../generate/component/project/search-results.js')
-var unique = require('../generate/util/unique.js')
-var {asc, desc} = require('../generate/util/sort.js')
+import {Index} from 'flexsearch'
+import mean from 'compute-mean'
+import toDom from 'hast-util-to-dom'
+import {data} from '../generate/data.js'
+import {search as searchForm} from '../generate/molecule/search.js'
+import {helperReduceScore} from '../generate/component/project/helper-reduce-score.js'
+import {helperFilter as keywordFilter} from '../generate/component/keyword/helper-filter.js'
+import {searchPreview as keywordPreview} from '../generate/component/keyword/search-preview.js'
+import {searchEmpty as keywordEmpty} from '../generate/component/keyword/search-empty.js'
+import {searchResults as keywordResults} from '../generate/component/keyword/search-results.js'
+import {helperFilter as topicFilter} from '../generate/component/topic/helper-filter.js'
+import {searchPreview as topicPreview} from '../generate/component/topic/search-preview.js'
+import {searchEmpty as topicEmpty} from '../generate/component/topic/search-empty.js'
+import {searchResults as topicResults} from '../generate/component/topic/search-results.js'
+import {searchPreview as packagePreview} from '../generate/component/package/search-preview.js'
+import {searchEmpty as packageEmpty} from '../generate/component/package/search-empty.js'
+import {searchResults as packageResults} from '../generate/component/package/search-results.js'
+import {searchPreview as projectPreview} from '../generate/component/project/search-preview.js'
+import {searchEmpty as projectEmpty} from '../generate/component/project/search-empty.js'
+import {searchResults as projectResults} from '../generate/component/project/search-results.js'
+import {unique} from '../generate/util/unique.js'
+import {asc, desc} from '../generate/util/sort.js'
 
 var loc = window.location
 var home = '/explore/'
@@ -132,7 +132,7 @@ function init() {
             }
           }
         }),
-      weight: (d) => reduceScore(data, d),
+      weight: (d) => helperReduceScore(data, d),
       preview: projectPreview,
       empty: projectEmpty,
       results: projectResults

@@ -1,8 +1,4 @@
-'use strict'
-
-var h = require('hastscript')
-
-module.exports = line
+import h from 'hastscript'
 
 var slash = '/'
 
@@ -22,7 +18,7 @@ var overwrites = {
   member: 'Members'
 }
 
-function line(filepath, title) {
+export function breadcrumbs(filepath, title) {
   return filepath.split(slash).filter(Boolean).flatMap(map)
 
   function map(d, i, data) {

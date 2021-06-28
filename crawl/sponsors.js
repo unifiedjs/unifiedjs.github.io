@@ -1,9 +1,10 @@
-var fs = require('fs').promises
-var path = require('path')
-var fetch = require('node-fetch')
-var chalk = require('chalk')
+import {promises as fs} from 'fs'
+import path from 'path'
+import fetch from 'node-fetch'
+import chalk from 'chalk'
+import dotenv from 'dotenv'
 
-require('dotenv').config()
+dotenv.config()
 
 var token = process.env.OC_TOKEN
 
@@ -13,7 +14,7 @@ if (!token) {
   process.exit()
 }
 
-var outpath = path.join('data', 'sponsors.json')
+var outpath = path.join('data', 'sponsors.js')
 var min = 5
 
 var endpoint = 'https://api.opencollective.com/graphql/v2'
@@ -107,7 +108,10 @@ Promise.all([
       .sort(sort)
       .map((d) => Object.assign(d, {amount: undefined}))
 
-    return fs.writeFile(outpath, JSON.stringify(members, null, 2) + '\n')
+    return fs.writeFile(
+      outpath,
+      'export const sponsors = ' + JSON.stringify(members, null, 2) + '\n'
+    )
   })
   .catch(console.error)
 

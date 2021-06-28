@@ -1,11 +1,7 @@
-'use strict'
+import {list as cards} from '../../atom/card/list.js'
+import {item} from './item.js'
+import {more} from './more.js'
 
-var cards = require('../../atom/card/list.js')
-var item = require('./item.js')
-var more = require('./more.js')
-
-module.exports = list
-
-function list(d, options) {
+export function list(d, options) {
   return cards(d, item, {more, ...options})
 }

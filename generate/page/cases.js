@@ -1,14 +1,10 @@
-'use strict'
+import h from 'hastscript'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
+import {list} from '../component/case/list.js'
+import {byline} from '../component/case/byline.js'
+import {page} from './page.js'
 
-var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs.js')
-var list = require('../component/case/list.js')
-var byline = require('../component/case/byline.js')
-var page = require('./page.js')
-
-module.exports = showcase
-
-function showcase(showcase) {
+export function cases(showcase) {
   return page(h('.row-l.column-l', h('h2', breadcrumbs('/community/case/'))), [
     h('.article.content', [h('h3', 'Showcase'), byline()]),
     list(showcase)

@@ -1,36 +1,35 @@
-'use strict'
+import fs from 'fs'
+import unified from 'unified'
+import remarkParse from 'remark-parse'
+import remarkGfm from 'remark-gfm'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkRehype from 'remark-rehype'
+import rehypeRaw from 'rehype-raw'
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeHighlight from 'rehype-highlight'
+import rehypeLink from '../plugin/rehype-link.js'
+import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
+import rehypeAbbreviate from '../plugin/rehype-abbreviate.js'
+import {link} from '../atom/icon/link.js'
 
-var unified = require('unified')
-var markdown = require('remark-parse')
-var gfm = require('remark-gfm')
-var frontmatter = require('remark-frontmatter')
-var remark2rehype = require('remark-rehype')
-var raw = require('rehype-raw')
-var slug = require('rehype-slug')
-var autolink = require('rehype-autolink-headings')
-var highlight = require('rehype-highlight')
-var pkg = require('../../package.json')
-var rehypeLink = require('../plugin/rehype-link.js')
-var link = require('../atom/icon/link.js')
-var rewriteUrls = require('../plugin/rehype-rewrite-urls.js')
-var abbr = require('../plugin/rehype-abbreviate.js')
-
+const pkg = JSON.parse(fs.readFileSync('package.json'))
 var origin = pkg.homepage
 
-module.exports = unified()
-  .use(markdown)
-  .use(gfm)
-  .use(frontmatter)
-  .use(remark2rehype, {allowDangerousHtml: true})
-  .use(raw)
-  .use(highlight, {subset: false, ignoreMissing: true})
-  .use(slug)
-  .use(autolink, {
+export const article = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkFrontmatter)
+  .use(remarkRehype, {allowDangerousHtml: true})
+  .use(rehypeRaw)
+  .use(rehypeHighlight, {subset: false, ignoreMissing: true})
+  .use(rehypeSlug)
+  .use(rehypeAutolinkHeadings, {
     behavior: 'prepend',
     properties: {ariaLabel: 'Link to self', className: ['anchor']},
     content: link()
   })
-  .use(abbr, {
+  .use(rehypeAbbreviate, {
     AST: 'Abstract syntax tree',
     CLI: 'Command-line interface',
     DOM: 'Document object model',
@@ -45,5 +44,5 @@ module.exports = unified()
     XSS: 'Cross Site Scripting'
   })
   .use(rehypeLink)
-  .use(rewriteUrls, {origin})
+  .use(rehypeRewriteUrls, {origin})
   .freeze()

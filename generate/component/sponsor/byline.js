@@ -1,12 +1,8 @@
-'use strict'
-
-var h = require('hastscript')
-
-module.exports = byline
+import h from 'hastscript'
 
 var oc = 'http://opencollective.com/unified'
 
-function byline() {
+export function byline() {
   return h('p', [
     'Maintaining the collective, developing new projects, keeping everything ',
     'fast and secure, and helping users, is a lot of work. ',

@@ -1,8 +1,4 @@
-'use strict'
-
-module.exports = reduce
-
-function reduce(data, repo) {
+export function helperReduceScore(data, repo) {
   var {packagesByRepo, packageByName} = data
 
   return packagesByRepo[repo]

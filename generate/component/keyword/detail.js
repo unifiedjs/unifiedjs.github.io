@@ -1,16 +1,12 @@
-'use strict'
+import h from 'hastscript'
+import {more} from '../../atom/box/more.js'
+import {helperSort} from '../package/helper-sort.js'
+import {list} from '../package/list.js'
 
-var h = require('hastscript')
-var box = require('../../atom/box/more.js')
-var sort = require('../package/helper-sort.js')
-var list = require('../package/list.js')
-
-module.exports = detail
-
-function detail(data, d) {
+export function detail(data, d) {
   var {packagesByKeyword} = data
 
-  var trail = box('https://www.npmjs.com/search?q=keywords:' + d, [
+  var trail = more('https://www.npmjs.com/search?q=keywords:' + d, [
     'Find other packages matching ',
     h('span.tag', d),
     ' on npm'
@@ -18,6 +14,6 @@ function detail(data, d) {
 
   return [
     h('.content', h('h3', ['Packages matching ', d])),
-    list(data, sort(data, packagesByKeyword[d]), {trail})
+    list(data, helperSort(data, packagesByKeyword[d]), {trail})
   ]
 }

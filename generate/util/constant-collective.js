@@ -1,7 +1,5 @@
-'use strict'
-
 // The orgs in the collective.
-module.exports = [
+export const constantCollective = [
   'remarkjs',
   'rehypejs',
   'retextjs',

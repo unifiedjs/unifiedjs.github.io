@@ -1,10 +1,6 @@
-'use strict'
+import s from 'hastscript/svg.js'
 
-var s = require('hastscript/svg')
-
-module.exports = gh
-
-function gh() {
+export function gh() {
   return s(
     'svg.icon',
     {

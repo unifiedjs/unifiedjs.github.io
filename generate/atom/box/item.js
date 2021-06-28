@@ -1,12 +1,8 @@
-'use strict'
+import h from 'hastscript'
+import visit from 'unist-util-visit'
+import {block} from '../macro/block.js'
 
-var h = require('hastscript')
-var visit = require('unist-util-visit')
-var block = require('../macro/block.js')
-
-module.exports = item
-
-function item(href, main, footer) {
+export function item(href, main, footer) {
   var box = h('a.box', {href}, JSON.parse(JSON.stringify(main)))
 
   visit(box, 'element', cleanNestedLinks)

@@ -1,21 +1,17 @@
-'use strict'
+import {more} from '../../atom/box/more.js'
+import {fmtCompact} from '../../util/fmt-compact.js'
+import {pickRandom} from '../../util/pick-random.js'
+import {list} from './list.js'
+import {helperSort} from './helper-sort.js'
 
-var more = require('../../atom/box/more.js')
-var fmt = require('../../util/fmt-compact.js')
-var pick = require('../../util/pick-random.js')
-var list = require('./list.js')
-var sort = require('./helper-sort.js')
-
-module.exports = preview
-
-function preview(data) {
+export function searchPreview(data) {
   var {packageByName} = data
-  var names = sort(data, Object.keys(packageByName))
-  var d = pick(names.slice(0, 75), 5)
+  var names = helperSort(data, Object.keys(packageByName))
+  var d = pickRandom(names.slice(0, 75), 5)
 
   var trail = more('/explore/package/', [
     'Explore the ',
-    fmt(names.length),
+    fmtCompact(names.length),
     ' packages in the ecosystem'
   ])
 

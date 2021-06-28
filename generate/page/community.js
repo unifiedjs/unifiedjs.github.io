@@ -1,17 +1,13 @@
-'use strict'
-
-var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs.js')
-var members = require('../component/member/list.js')
-var membersByline = require('../component/member/byline.js')
-var sortMembers = require('../component/member/helper-sort.js')
-var sponsors = require('../component/sponsor/list.js')
-var sponsorsByline = require('../component/sponsor/byline.js')
-var cases = require('../component/case/list.js')
-var casesByline = require('../component/case/byline.js')
-var page = require('./page.js')
-
-module.exports = team
+import h from 'hastscript'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
+import {list as members} from '../component/member/list.js'
+import {byline as membersByline} from '../component/member/byline.js'
+import {helperSort as sortMembers} from '../component/member/helper-sort.js'
+import {list as sponsors} from '../component/sponsor/list.js'
+import {byline as sponsorsByline} from '../component/sponsor/byline.js'
+import {list as cases} from '../component/case/list.js'
+import {byline as casesByline} from '../component/case/byline.js'
+import {page} from './page.js'
 
 var twitter = 'https://twitter.com/unifiedjs'
 var org = 'https://github.com/unifiedjs'
@@ -21,7 +17,7 @@ var support = base + 'support.md'
 var contributing = base + 'contributing.md'
 var security = base + 'security.md'
 
-function team(data) {
+export function community(data) {
   return page(h('.row-l.column-l', h('h2', breadcrumbs('/community/'))), [
     h('.article.content', [h('h3', 'Showcase'), casesByline()]),
     cases(data.users, {max: 3}),

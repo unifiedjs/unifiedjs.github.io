@@ -1,4 +1,4 @@
-module.exports = {
+export const descriptionSchema = {
   strip: ['script'],
   ancestors: {},
   protocols: {href: ['http', 'https']},

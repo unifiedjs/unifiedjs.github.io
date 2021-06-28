@@ -1,14 +1,10 @@
-'use strict'
+import h from 'hastscript'
+import pickRandom from 'pick-random'
+import {helperSort} from '../component/package/helper-sort.js'
 
-var h = require('hastscript')
-var pick = require('pick-random')
-var sortPackages = require('../component/package/helper-sort.js')
-
-module.exports = search
-
-function search(data, name) {
+export function search(data, name) {
   var names = Object.keys(data.packageByName)
-  var random = pick(sortPackages(data, names).slice(0, 75))[0]
+  var random = pickRandom(helperSort(data, names).slice(0, 75))[0]
 
   return h('form.search', {action: '/explore/'}, [
     h('label', {for: name}, 'Search ecosystem:'),

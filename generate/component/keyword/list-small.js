@@ -1,14 +1,10 @@
-'use strict'
+import h from 'hastscript'
+import {itemSmall} from './item-small.js'
 
-var h = require('hastscript')
-var item = require('./item-small.js')
-
-module.exports = list
-
-function list(data, d) {
+export function listSmall(data, d) {
   return h('.block', h('ol.flow', d.map(map)))
 
   function map(d) {
-    return item(data, d)
+    return itemSmall(data, d)
   }
 }

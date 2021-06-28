@@ -1,7 +1,5 @@
-'use strict'
-
 // Topics used to tag projects.
-module.exports = [
+export const constantTopic = [
   'micromark-extension',
   'unified-plugin',
   'remark-plugin',

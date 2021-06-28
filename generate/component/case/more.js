@@ -1,16 +1,12 @@
-'use strict'
+import {more as card} from '../../atom/card/more.js'
+import {fmtCompact} from '../../util/fmt-compact.js'
+import {fmtPlural} from '../../util/fmt-plural.js'
 
-var card = require('../../atom/card/more.js')
-var compact = require('../../util/fmt-compact.js')
-var plural = require('../../util/fmt-plural.js')
-
-module.exports = more
-
-function more(rest) {
+export function more(rest) {
   return card('/community/case/', [
     'See ',
-    compact(rest),
+    fmtCompact(rest),
     ' other ',
-    plural(rest, {one: 'case', other: 'cases'})
+    fmtPlural(rest, {one: 'case', other: 'cases'})
   ])
 }

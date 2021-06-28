@@ -1,14 +1,12 @@
-var h = require('hastscript')
-var findAndReplace = require('hast-util-find-and-replace')
-var singular = require('pluralize').singular
-
-module.exports = link
+import h from 'hastscript'
+import findAndReplace from 'hast-util-find-and-replace'
+import pluralize from 'pluralize'
 
 var re = /\b([A-Z]\.?[A-Z][\w.]*)\b/g
 
 var ignore = findAndReplace.ignore.concat(['pre', 'code'])
 
-function link(titles) {
+export default function rehypeAbbreviate(titles) {
   return transform
 
   function transform(tree, file) {
@@ -17,7 +15,7 @@ function link(titles) {
     findAndReplace(tree, re, replace, {ignore: ignore})
 
     function replace($0) {
-      var id = singular($0)
+      var id = pluralize.singular($0)
       var first = !cache.includes(id)
       var title = titles[id]
       var props

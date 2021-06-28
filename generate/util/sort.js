@@ -1,14 +1,7 @@
-'use strict'
+const ascending = factory(compare)
+const descending = factory(invert)
 
-var ascending = factory(compare)
-var descending = factory(invert)
-
-descending.desc = descending
-ascending.desc = descending
-descending.asc = ascending
-ascending.asc = ascending
-
-module.exports = descending
+export {descending as desc, descending as sort, ascending as asc}
 
 function factory(match) {
   return sort

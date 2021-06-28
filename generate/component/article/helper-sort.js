@@ -1,12 +1,8 @@
-'use strict'
-
-var sort = require('../../util/sort.js').asc
-
-module.exports = sorter
+import {asc} from '../../util/sort.js'
 
 // Sort articles by index.
-function sorter(data) {
-  return sort(data, score)
+export function helperSort(data) {
+  return asc(data, score)
 }
 
 function score(d) {

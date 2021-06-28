@@ -1,6 +1,4 @@
-'use strict'
-
-module.exports = {
+export const tagToUrl = {
   a: ['href'],
   img: ['src', 'longDesc'],
   blockquote: ['cite'],

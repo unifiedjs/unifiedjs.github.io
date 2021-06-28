@@ -1,12 +1,8 @@
-'use strict'
+import h from 'hastscript'
+import {fmtBytes} from '../../util/fmt-bytes.js'
 
-var h = require('hastscript')
-var fmt = require('../../util/fmt-bytes.js')
-
-module.exports = gzip
-
-function gzip(value, name) {
-  var node = fmt(value)
+export function gzip(value, name) {
+  var node = fmtBytes(value)
 
   if (name) {
     node = h(

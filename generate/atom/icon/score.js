@@ -1,10 +1,6 @@
-'use strict'
+import s from 'hastscript/svg.js'
 
-var s = require('hastscript/svg')
-
-module.exports = score
-
-function score() {
+export function score() {
   return s(
     'svg.icon',
     {

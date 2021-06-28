@@ -1,10 +1,6 @@
-'use strict'
+import h from 'hastscript'
 
-var h = require('hastscript')
-
-module.exports = page
-
-function page(heading, main) {
+export function page(heading, main) {
   return {
     type: 'root',
     children: [

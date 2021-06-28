@@ -1,9 +1,7 @@
-var header = require('../molecule/header.js')
-var footer = require('../molecule/footer.js')
+import {header} from '../molecule/header.js'
+import {footer} from '../molecule/footer.js'
 
-module.exports = section
-
-function section() {
+export default function rehypeWrap() {
   return transform
 
   function transform(tree) {

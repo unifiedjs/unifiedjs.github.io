@@ -14,6 +14,7 @@
     "Dustin Deus <deusdustin@gmail.com>",
     "Merlijn Vos <merlijn@soverin.net>"
   ],
+  "type": "module",
   "devDependencies": {
     "budo": "^11.0.0",
     "bytes": "^3.0.0",
@@ -30,7 +31,7 @@
     "glob": "^7.0.0",
     "hast-util-find-and-replace": "^3.0.0",
     "hast-util-heading-rank": "^1.0.0",
-    "hast-util-sanitize": "^3.0.0",
+    "hast-util-sanitize": "^4.0.0",
     "hast-util-shift-heading": "^2.0.0",
     "hast-util-to-dom": "^2.0.0",
     "hastscript": "^6.0.0",

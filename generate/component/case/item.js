@@ -1,13 +1,9 @@
-'use strict'
+import h from 'hastscript'
+import {gh as ghBadge} from '../../atom/micro/gh.js'
+import {url as urlLine} from '../../atom/micro/url.js'
+import {item as card} from '../../atom/card/item.js'
 
-var h = require('hastscript')
-var ghBadge = require('../../atom/micro/gh.js')
-var urlLine = require('../../atom/micro/url.js')
-var card = require('../../atom/card/item.js')
-
-module.exports = item
-
-function item(d) {
+export function item(d) {
   var {title, short, url, gh, src} = d
   var footer = []
 

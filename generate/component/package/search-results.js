@@ -1,3 +1,1 @@
-'use strict'
-
-module.exports = require('./list.js')
+export {list as searchResults} from './list.js'

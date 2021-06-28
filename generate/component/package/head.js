@@ -1,23 +1,19 @@
-'use strict'
+import h from 'hastscript'
+import {description} from '../../atom/micro/description.js'
+import {downloads} from '../../atom/micro/downloads.js'
+import {gh} from '../../atom/micro/gh.js'
+import {graph} from '../../atom/micro/graph.js'
+import {gzip} from '../../atom/micro/gzip.js'
+import {license} from '../../atom/micro/license.js'
+import {npm} from '../../atom/micro/npm.js'
+import {score} from '../../atom/micro/score.js'
+import {stars} from '../../atom/micro/stars.js'
+import {verified} from '../../atom/micro/verified.js'
+import {listSmall} from '../keyword/list-small.js'
+import {helperFilter} from '../keyword/helper-filter.js'
+import {helperSort} from '../keyword/helper-sort.js'
 
-var h = require('hastscript')
-var description = require('../../atom/micro/description.js')
-var downloads = require('../../atom/micro/downloads.js')
-var github = require('../../atom/micro/gh.js')
-var graph = require('../../atom/micro/graph.js')
-var gzip = require('../../atom/micro/gzip.js')
-var license = require('../../atom/micro/license.js')
-var npm = require('../../atom/micro/npm.js')
-var score = require('../../atom/micro/score.js')
-var stars = require('../../atom/micro/stars.js')
-var verified = require('../../atom/micro/verified.js')
-var keywords = require('../keyword/list-small.js')
-var filter = require('../keyword/helper-filter.js')
-var sort = require('../keyword/helper-sort.js')
-
-module.exports = head
-
-function head(data, id) {
+export function head(data, id) {
   var {projectByRepo, packageByName} = data
   var d = packageByName[id]
   var project = projectByRepo[d.repo]
@@ -58,7 +54,7 @@ function head(data, id) {
           verified(d.repo),
           license(d.license),
           stars(project.stars, d.repo),
-          github(d.repo)
+          gh(d.repo)
         ]),
         h('ol.row.justify-end-l', [
           gzip(d.gzip, id),
@@ -67,6 +63,6 @@ function head(data, id) {
         ])
       ])
     ]),
-    keywords(data, filter(data, sort(data, d.keywords)))
+    listSmall(data, helperFilter(data, helperSort(data, d.keywords)))
   ]
 }

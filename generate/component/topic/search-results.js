@@ -1,3 +1,1 @@
-'use strict'
-
-module.exports = require('./list-small.js')
+export {listSmall as searchResults} from './list-small.js'

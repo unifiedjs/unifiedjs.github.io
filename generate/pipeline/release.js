@@ -1,41 +1,38 @@
-'use strict'
+import fs from 'fs'
+import unified from 'unified'
+import deepmerge from 'deepmerge'
+import remarkParse from 'remark-parse'
+import remarkGemoji from 'remark-gemoji'
+import remarkGfm from 'remark-gfm'
+import remarkGithub from 'remark-github'
+import remarkRehype from 'remark-rehype'
+import rehypeRaw from 'rehype-raw'
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeHighlight from 'rehype-highlight'
+import {defaultSchema} from 'hast-util-sanitize'
+import visit from 'unist-util-visit'
+import headingRank from 'hast-util-heading-rank'
+import shiftHeading from 'hast-util-shift-heading'
+import rehypeResolveUrls from '../plugin/rehype-resolve-urls.js'
+import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 
-var unified = require('unified')
-var merge = require('deepmerge')
-var markdown = require('remark-parse')
-var gemoji = require('remark-gemoji')
-var gfm = require('remark-gfm')
-var github = require('remark-github')
-var remark2rehype = require('remark-rehype')
-var raw = require('rehype-raw')
-var sanitize = require('rehype-sanitize')
-var highlight = require('rehype-highlight')
-var gh = require('hast-util-sanitize/lib/github')
-var visit = require('unist-util-visit')
-var headingRank = require('hast-util-heading-rank')
-var shiftHeading = require('hast-util-shift-heading')
-var pkg = require('../../package.json')
-var resolveUrls = require('../plugin/rehype-resolve-urls.js')
-var rewriteUrls = require('../plugin/rehype-rewrite-urls.js')
-
+const pkg = JSON.parse(fs.readFileSync('package.json'))
 var origin = pkg.homepage
 
-var schema = merge(gh, {attributes: {code: ['className']}})
+var schema = deepmerge(defaultSchema, {attributes: {code: ['className']}})
 
-module.exports = createReleasePipeline
-
-function createReleasePipeline(d) {
+export function release(d) {
   return unified()
-    .use(markdown)
-    .use(gfm)
-    .use(github, {repository: d.repo})
-    .use(gemoji)
-    .use(remark2rehype, {allowDangerousHtml: true})
-    .use(raw)
-    .use(sanitize, schema)
-    .use(highlight, {subset: false, ignoreMissing: true})
-    .use(resolveUrls, {repo: d.repo, object: d.tag})
-    .use(rewriteUrls, {origin})
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkGithub, {repository: d.repo})
+    .use(remarkGemoji)
+    .use(remarkRehype, {allowDangerousHtml: true})
+    .use(rehypeRaw)
+    .use(rehypeSanitize, schema)
+    .use(rehypeHighlight, {subset: false, ignoreMissing: true})
+    .use(rehypeResolveUrls, {repo: d.repo, object: d.tag})
+    .use(rehypeRewriteUrls, {origin})
     .use(headings)
     .freeze()
 

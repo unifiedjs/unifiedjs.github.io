@@ -1,20 +1,22 @@
-var fs = require('fs')
-var path = require('path')
-var {promisify} = require('util')
-var glob = require('glob')
-var sharp = require('sharp')
-var pAll = require('p-all')
-var mkdirp = require('vfile-mkdirp')
-var trough = require('trough')
-var vfile = require('to-vfile')
-var reporter = require('vfile-reporter')
-var esbuild = require('esbuild')
-var postcss = require('postcss')
-var postcssPresetEnv = require('postcss-preset-env')
-var cssnano = require('cssnano')
-var pack = require('../package.json')
+import fs from 'fs'
+import path from 'path'
+import {promisify} from 'util'
+import glob from 'glob'
+import sharp from 'sharp'
+import pAll from 'p-all'
+import mkdirp from 'vfile-mkdirp'
+import trough from 'trough'
+import vfile from 'to-vfile'
+import reporter from 'vfile-reporter'
+import esbuild from 'esbuild'
+import postcss from 'postcss'
+import postcssPresetEnv from 'postcss-preset-env'
+import cssnano from 'cssnano'
+import dotenv from 'dotenv'
 
-require('dotenv').config()
+const pack = JSON.parse(fs.readFileSync('package.json'))
+
+dotenv.config()
 
 var externals = {
   '.css': trough().use(transformCss),

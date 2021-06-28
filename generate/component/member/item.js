@@ -1,16 +1,12 @@
-'use strict'
-
-var h = require('hastscript')
-var ghBadge = require('../../atom/micro/gh.js')
-var npmBadge = require('../../atom/micro/npm.js')
-var urlLine = require('../../atom/micro/url.js')
-var card = require('../../atom/card/item.js')
-
-module.exports = item
+import h from 'hastscript'
+import {gh as ghBadge} from '../../atom/micro/gh.js'
+import {npm as npmBadge} from '../../atom/micro/npm.js'
+import {url as urlLine} from '../../atom/micro/url.js'
+import {item as card} from '../../atom/card/item.js'
 
 var base = 'https://github.com/'
 
-function item(data, d) {
+export function item(data, d) {
   var {name, github, npm, url} = d
   var footer = [ghBadge(github)]
   var memberships = []

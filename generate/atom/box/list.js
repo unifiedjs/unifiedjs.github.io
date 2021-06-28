@@ -1,10 +1,6 @@
-'use strict'
+import h from 'hastscript'
+import {list as baseList} from '../macro/list.js'
 
-var h = require('hastscript')
-var list = require('../macro/list.js')
-
-module.exports = boxes
-
-function boxes(names, map, options) {
-  return h('.block', h('ol.flow.boxes', list(names, map, options)))
+export function list(names, map, options) {
+  return h('.block', h('ol.flow.boxes', baseList(names, map, options)))
 }

@@ -1,14 +1,10 @@
-'use strict'
+import h from 'hastscript'
+import {list as macroList} from '../../atom/macro/list.js'
+import {item} from './item.js'
+import {more} from './more.js'
 
-var h = require('hastscript')
-var list = require('../../atom/macro/list.js')
-var item = require('./item.js')
-var more = require('./more.js')
-
-module.exports = releases
-
-function releases(data, releases, options) {
-  return h('ol.releases', list(releases, map, {more, ...options}))
+export function list(data, releases, options) {
+  return h('ol.releases', macroList(releases, map, {more, ...options}))
 
   function map(d) {
     return item(data, d)

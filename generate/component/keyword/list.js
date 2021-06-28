@@ -1,12 +1,8 @@
-'use strict'
+import {list as macroList} from '../../atom/macro/list.js'
+import {item} from './item.js'
 
-var list = require('../../atom/macro/list.js')
-var item = require('./item.js')
-
-module.exports = keywords
-
-function keywords(data, d, options) {
-  return list(d, map, options)
+export function list(data, d, options) {
+  return macroList(d, map, options)
 
   function map(d) {
     return item(data, d)

@@ -1,28 +1,24 @@
-'use strict'
+import h from 'hastscript'
+import {fmtCompact} from '../../util/fmt-compact.js'
+import {fmtPlural} from '../../util/fmt-plural.js'
+import {more as box} from '../../atom/box/more.js'
+import {list} from '../project/list.js'
+import {helperSort} from '../project/helper-sort.js'
 
-var h = require('hastscript')
-var compact = require('../../util/fmt-compact.js')
-var plural = require('../../util/fmt-plural.js')
-var box = require('../../atom/box/more.js')
-var list = require('../project/list.js')
-var sort = require('../project/helper-sort.js')
-
-module.exports = item
-
-function item(data, d) {
+export function item(data, d) {
   var {projectsByTopic} = data
 
   return [
     h('.content', h('h3', d)),
-    list(data, sort(data, projectsByTopic[d]), {max: 3, more})
+    list(data, helperSort(data, projectsByTopic[d]), {max: 3, more})
   ]
 
   function more(rest) {
     return box('/explore/topic/' + d + '/', [
       'Explore ',
-      compact(rest),
+      fmtCompact(rest),
       ' other ',
-      plural(rest, {one: 'project', other: 'projects'}),
+      fmtPlural(rest, {one: 'project', other: 'projects'}),
       ' matching ',
       h('span.tag', d)
     ])

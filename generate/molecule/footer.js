@@ -1,10 +1,6 @@
-'use strict'
+import h from 'hastscript'
 
-var h = require('hastscript')
-
-module.exports = footer
-
-function footer() {
+export function footer() {
   return h('footer.container', [
     h('nav.row-l.flex', [
       h('ol.row.flex.x-show-l', [

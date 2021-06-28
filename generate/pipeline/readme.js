@@ -1,42 +1,41 @@
-'use strict'
+import fs from 'fs'
+import unified from 'unified'
+import deepmerge from 'deepmerge'
+import remarkParse from 'remark-parse'
+import remarkGfm from 'remark-gfm'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkGemoji from 'remark-gemoji'
+import remarkRehype from 'remark-rehype'
+import rehypeRaw from 'rehype-raw'
+import rehypeSlug from 'rehype-slug'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeHighlight from 'rehype-highlight'
+import {defaultSchema} from 'hast-util-sanitize'
+import {link} from '../atom/icon/link.js'
+import rehypeResolveUrls from '../plugin/rehype-resolve-urls.js'
+import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 
-var unified = require('unified')
-var merge = require('deepmerge')
-var markdown = require('remark-parse')
-var gfm = require('remark-gfm')
-var frontmatter = require('remark-frontmatter')
-var gemoji = require('remark-gemoji')
-var remark2rehype = require('remark-rehype')
-var raw = require('rehype-raw')
-var slug = require('rehype-slug')
-var autolink = require('rehype-autolink-headings')
-var sanitize = require('rehype-sanitize')
-var highlight = require('rehype-highlight')
-var gh = require('hast-util-sanitize/lib/github')
-var pkg = require('../../package.json')
-var link = require('../atom/icon/link.js')
-var resolveUrls = require('../plugin/rehype-resolve-urls.js')
-var rewriteUrls = require('../plugin/rehype-rewrite-urls.js')
-
+const pkg = JSON.parse(fs.readFileSync('package.json'))
 var origin = pkg.homepage
 
-var schema = merge(gh, {attributes: {code: ['className']}})
+var schema = deepmerge(defaultSchema, {attributes: {code: ['className']}})
 
-module.exports = unified()
-  .use(markdown)
-  .use(gfm)
-  .use(frontmatter)
-  .use(gemoji)
-  .use(remark2rehype, {allowDangerousHtml: true})
-  .use(raw)
-  .use(sanitize, schema)
-  .use(highlight, {subset: false, ignoreMissing: true})
-  .use(slug)
-  .use(autolink, {
+export const readme = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkFrontmatter)
+  .use(remarkGemoji)
+  .use(remarkRehype, {allowDangerousHtml: true})
+  .use(rehypeRaw)
+  .use(rehypeSanitize, schema)
+  .use(rehypeHighlight, {subset: false, ignoreMissing: true})
+  .use(rehypeSlug)
+  .use(rehypeAutolinkHeadings, {
     behavior: 'prepend',
     properties: {ariaLabel: 'Link to self', className: ['anchor']},
     content: link()
   })
-  .use(resolveUrls)
-  .use(rewriteUrls, {origin})
+  .use(rehypeResolveUrls)
+  .use(rehypeRewriteUrls, {origin})
   .freeze()

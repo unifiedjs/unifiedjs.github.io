@@ -1,14 +1,10 @@
-'use strict'
-
-var visit = require('unist-util-visit')
-var data = require('../data.js')
-var map = require('../util/tag-to-url.js')
-
-module.exports = urls
+import visit from 'unist-util-visit'
+import {tagToUrl} from '../util/tag-to-url.js'
+import {data} from '../data.js'
 
 var own = {}.hasOwnProperty
 
-function urls(options) {
+export default function rehypeRewriteUrls(options) {
   var settings = options || {}
 
   return transform
@@ -27,8 +23,8 @@ function urls(options) {
     function visitor(node) {
       var head
 
-      if (own.call(map, node.tagName)) {
-        map[node.tagName].forEach((p) => rewrite(node, p))
+      if (own.call(tagToUrl, node.tagName)) {
+        tagToUrl[node.tagName].forEach((p) => rewrite(node, p))
       }
 
       if (node.tagName === 'a') {

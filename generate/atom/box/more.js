@@ -1,10 +1,6 @@
-'use strict'
+import h from 'hastscript'
+import {block} from '../macro/block.js'
 
-var h = require('hastscript')
-var block = require('../macro/block.js')
-
-module.exports = more
-
-function more(href, children) {
+export function more(href, children) {
   return block(h('a.box.more', {href}, h('.column', h('p', children))))
 }

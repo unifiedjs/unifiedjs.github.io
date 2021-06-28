@@ -1,10 +1,6 @@
-'use strict'
+import {unique} from '../../util/unique.js'
 
-var unique = require('../../util/unique.js')
-
-module.exports = reduce
-
-function reduce(data, repo) {
+export function helperReduceLicense(data, repo) {
   var {packagesByRepo, packageByName} = data
   var licenses = packagesByRepo[repo]
     .map((d) => packageByName[d].license)

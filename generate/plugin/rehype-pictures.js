@@ -1,16 +1,12 @@
-'use strict'
+import fs from 'fs'
+import path from 'path'
+import vfile from 'to-vfile'
+import sharp from 'sharp'
+import rename from 'vfile-rename'
+import visit from 'unist-util-visit'
+import h from 'hastscript'
 
-var path = require('path')
-var fs = require('fs')
-var vfile = require('to-vfile')
-var sharp = require('sharp')
-var rename = require('vfile-rename')
-var visit = require('unist-util-visit')
-var h = require('hastscript')
-
-module.exports = urls
-
-function urls(options) {
+export default function rehypePictures(options) {
   var sizes = [null, 200, 600, 1200, 2000]
   var formats = ['webp', 'png']
   var mimes = {webp: 'image/webp', png: 'image/png'}

@@ -1,9 +1,5 @@
-'use strict'
+import humanizeUrl from 'humanize-url'
 
-var fmt = require('humanize-url')
-
-module.exports = url
-
-function url(value) {
-  return fmt(value || '')
+export function fmtUrl(value) {
+  return humanizeUrl(value || '')
 }

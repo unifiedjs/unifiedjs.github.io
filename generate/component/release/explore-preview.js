@@ -1,15 +1,13 @@
-'use strict'
+import {more} from '../../atom/box/more.js'
+import {list} from './list.js'
+import {helperFilter} from './helper-filter.js'
+import {helperSort} from './helper-sort.js'
+import {releases} from '../../../data/releases.js'
 
-var releases = require('../../../data/releases.json')
-var more = require('../../atom/box/more.js')
-var list = require('./list.js')
-var filter = require('./helper-filter.js')
-var sort = require('./helper-sort.js')
-
-module.exports = preview
-
-function preview(data) {
-  return list(data, filter(data, sort(data, releases)).slice(0, 3), {
-    trail: more('/explore/release/', 'Explore recent releases')
-  })
+export function explorePreview(data) {
+  return list(
+    data,
+    helperFilter(data, helperSort(data, releases)).slice(0, 3),
+    {trail: more('/explore/release/', 'Explore recent releases')}
+  )
 }

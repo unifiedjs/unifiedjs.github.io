@@ -1,12 +1,8 @@
-'use strict'
+import spdx from 'spdx-license-list'
+import h from 'hastscript'
+import {license as icon} from '../icon/license.js'
 
-var spdx = require('spdx-license-list')
-var h = require('hastscript')
-var icon = require('../icon/license.js')
-
-module.exports = license
-
-function license(value) {
+export function license(value) {
   var url = value in spdx ? spdx[value].url : null
   var node = value ? [icon(), ' ', value] : ''
 

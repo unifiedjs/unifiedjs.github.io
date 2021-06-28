@@ -1,10 +1,6 @@
-'use strict'
+import h from 'hastscript'
 
-var h = require('hastscript')
-
-module.exports = empty
-
-function empty(data, query) {
+export function searchEmpty(data, query) {
   return h('p.content', [
     'We couldn’t find any packages matching “',
     query,

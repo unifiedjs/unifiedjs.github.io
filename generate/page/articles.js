@@ -1,18 +1,14 @@
-'use strict'
+import h from 'hastscript'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
+import {list} from '../component/article/list.js'
+import {helperSort} from '../component/article/helper-sort.js'
+import {page} from './page.js'
 
-var h = require('hastscript')
-var breadcrumbs = require('../molecule/breadcrumbs.js')
-var list = require('../component/article/list.js')
-var sort = require('../component/article/helper-sort.js')
-var page = require('./page.js')
-
-module.exports = articles
-
-function articles(section, articles) {
+export function articles(section, articles) {
   var {title, pathname, description} = section
 
   return page(h('.row-l.column-l', h('h2', breadcrumbs(pathname, title))), [
     h('.article.content', [h('h3', title), h('p', description)]),
-    list(section, sort(articles))
+    list(section, helperSort(articles))
   ])
 }

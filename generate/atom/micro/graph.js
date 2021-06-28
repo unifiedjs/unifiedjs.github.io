@@ -1,12 +1,8 @@
-'use strict'
+import h from 'hastscript'
+import {fmtCompact} from '../../util/fmt-compact.js'
 
-var h = require('hastscript')
-var fmt = require('../../util/fmt-compact.js')
-
-module.exports = graph
-
-function graph(dependents, name) {
-  var by = [h('span.label', 'Dependents: '), fmt(dependents || 0)]
+export function graph(dependents, name) {
+  var by = [h('span.label', 'Dependents: '), fmtCompact(dependents || 0)]
 
   if (name) {
     by = h(

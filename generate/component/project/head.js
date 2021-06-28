@@ -1,24 +1,20 @@
-'use strict'
+import h from 'hastscript'
+import {description} from '../../atom/micro/description.js'
+import {downloads} from '../../atom/micro/downloads.js'
+import {gh} from '../../atom/micro/gh.js'
+import {license} from '../../atom/micro/license.js'
+import {score} from '../../atom/micro/score.js'
+import {stars} from '../../atom/micro/stars.js'
+import {url} from '../../atom/micro/url.js'
+import {verified} from '../../atom/micro/verified.js'
+import {listSmall} from '../topic/list-small.js'
+import {helperFilter} from '../topic/helper-filter.js'
+import {helperSort} from '../topic/helper-sort.js'
+import {helperReduceDownloads} from './helper-reduce-downloads.js'
+import {helperReduceLicense} from './helper-reduce-license.js'
+import {helperReduceScore} from './helper-reduce-score.js'
 
-var h = require('hastscript')
-var description = require('../../atom/micro/description.js')
-var downloads = require('../../atom/micro/downloads.js')
-var github = require('../../atom/micro/gh.js')
-var license = require('../../atom/micro/license.js')
-var score = require('../../atom/micro/score.js')
-var stars = require('../../atom/micro/stars.js')
-var url = require('../../atom/micro/url.js')
-var verified = require('../../atom/micro/verified.js')
-var topics = require('../topic/list-small.js')
-var filter = require('../topic/helper-filter.js')
-var sort = require('../topic/helper-sort.js')
-var reduceDownloads = require('./helper-reduce-downloads.js')
-var reduceLicense = require('./helper-reduce-license.js')
-var reduceScore = require('./helper-reduce-score.js')
-
-module.exports = head
-
-function head(data, repo) {
+export function head(data, repo) {
   var d = data.projectByRepo[repo]
   var [owner, name] = repo.split('/')
 
@@ -39,15 +35,17 @@ function head(data, repo) {
       ]),
       h('.column', [
         h('ol.row.justify-end-l', [
-          score(reduceScore(data, repo)),
+          score(helperReduceScore(data, repo)),
           verified(repo),
-          license(reduceLicense(data, repo)),
+          license(helperReduceLicense(data, repo)),
           stars(d.stars, repo),
-          github(repo)
+          gh(repo)
         ]),
-        h('ol.row.justify-end-l', [downloads(reduceDownloads(data, repo))])
+        h('ol.row.justify-end-l', [
+          downloads(helperReduceDownloads(data, repo))
+        ])
       ])
     ]),
-    topics(data, filter(data, sort(data, d.topics)))
+    listSmall(data, helperFilter(data, helperSort(data, d.topics)))
   ]
 }

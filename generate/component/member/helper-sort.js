@@ -1,14 +1,10 @@
-'use strict'
-
-var sort = require('../../util/sort.js')
-
-module.exports = sorter
+import {sort} from '../../util/sort.js'
 
 var collective = {true: 4, false: 1}
 var roles = {releaser: 3, merger: 2, maintainer: 2}
 
 // Sort humans by “influence”.
-function sorter(data, d) {
+export function helperSort(data, d) {
   var scores = {}
 
   data.teams.forEach(team)

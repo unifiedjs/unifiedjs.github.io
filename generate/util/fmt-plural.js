@@ -1,11 +1,7 @@
-'use strict'
+import {constantLocale} from './constant-locale.js'
 
-var locale = require('./constant-locale.js')
+var plurals = new Intl.PluralRules(constantLocale)
 
-module.exports = plural
-
-var plurals = new Intl.PluralRules(locale)
-
-function plural(count, rules) {
+export function fmtPlural(count, rules) {
   return rules[plurals.select(count || 0)] || rules.other
 }

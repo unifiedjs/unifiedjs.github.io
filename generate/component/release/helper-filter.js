@@ -1,12 +1,8 @@
-'use strict'
-
-module.exports = filter
-
 // 60 days.
 var defaults = 60 * 24 * 60 * 60 * 1000
 
 // Filter releases for recently published.
-function filter(data, releases, ms) {
+export function helperFilter(data, releases, ms) {
   var {projectByRepo} = data
   var value = Date.now() - (ms || defaults)
 

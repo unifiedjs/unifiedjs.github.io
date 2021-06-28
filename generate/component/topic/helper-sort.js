@@ -1,11 +1,7 @@
-'use strict'
-
-var sort = require('../../util/sort.js')
-
-module.exports = sorter
+import {sort} from '../../util/sort.js'
 
 // Sort topics by occurrence.
-function sorter(data, names) {
+export function helperSort(data, names) {
   var {projectsByTopic} = data
 
   return sort(names, score)

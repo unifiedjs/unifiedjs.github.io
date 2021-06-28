@@ -1,10 +1,6 @@
-'use strict'
+import h from 'hastscript'
 
-var h = require('hastscript')
-
-module.exports = preview
-
-function preview() {
+export function searchPreview() {
   return h('p.content', [
     'Explore the projects in the ecosystem by ',
     h('a', {href: '/explore/topic/'}, 'topic'),

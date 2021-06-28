@@ -1,11 +1,7 @@
-'use strict'
+import h from 'hastscript'
+import {block} from '../macro/block.js'
 
-var h = require('hastscript')
-var block = require('../macro/block.js')
-
-module.exports = item
-
-function item(href, main, footer) {
+export function item(href, main, footer) {
   return block(
     h('a.card', {href}, main),
     footer ? h('ol.row', footer) : undefined

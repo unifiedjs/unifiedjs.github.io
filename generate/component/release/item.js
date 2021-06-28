@@ -1,21 +1,15 @@
-'use strict'
-
-var h = require('hastscript')
-var TimeAgo = require('javascript-time-ago')
-var locale = require('../../util/constant-locale.js')
-var en = require('javascript-time-ago/locale/en/index.js')
-
-module.exports = item
+import h from 'hastscript'
+import TimeAgo from 'javascript-time-ago'
+import en from 'javascript-time-ago/locale/en/index.js'
+import {constantLocale} from '../../util/constant-locale.js'
 
 var base = 'https://github.com/'
 
 TimeAgo.addDefaultLocale(en)
+var timeAgo = new TimeAgo(constantLocale)
+var dateTime = new Intl.DateTimeFormat(constantLocale, {dateStyle: 'medium'})
 
-var timeAgo = new TimeAgo(locale)
-
-var dateTime = new Intl.DateTimeFormat(locale, {dateStyle: 'medium'})
-
-function item(data, d) {
+export function item(data, d) {
   var {packagesByRepo} = data
   var {repo, published, tag} = d
   var [owner, project] = repo.split('/')

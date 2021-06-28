@@ -1,16 +1,12 @@
-'use strict'
+import h from 'hastscript'
+import {list} from '../package/list.js'
+import {helperSort} from '../package/helper-sort.js'
 
-var h = require('hastscript')
-var list = require('../package/list.js')
-var sort = require('../package/helper-sort.js')
-
-module.exports = detail
-
-function detail(data, d) {
+export function detail(data, d) {
   var {packagesByScope} = data
 
   return [
     h('.content', h('h3', ['Packages in scope ', d])),
-    list(data, sort(data, packagesByScope[d]))
+    list(data, helperSort(data, packagesByScope[d]))
   ]
 }

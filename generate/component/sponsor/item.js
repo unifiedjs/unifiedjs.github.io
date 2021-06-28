@@ -1,17 +1,13 @@
-'use strict'
-
-var h = require('hastscript')
-var ocBadge = require('../../atom/micro/oc.js')
-var ghBadge = require('../../atom/micro/gh.js')
-var twitterBadge = require('../../atom/micro/tw.js')
-var urlLine = require('../../atom/micro/url.js')
-var card = require('../../atom/card/item.js')
-
-module.exports = item
+import h from 'hastscript'
+import {oc as ocBadge} from '../../atom/micro/oc.js'
+import {gh as ghBadge} from '../../atom/micro/gh.js'
+import {tw as twitterBadge} from '../../atom/micro/tw.js'
+import {url as urlLine} from '../../atom/micro/url.js'
+import {item as card} from '../../atom/card/item.js'
 
 var base = 'http://opencollective.com/'
 
-function item(d) {
+export function item(d) {
   var {name, description, image, oc, github, twitter, url, gold} = d
   var className = gold ? ['gold'] : []
   var footer = [ocBadge(oc)]

@@ -1,9 +1,10 @@
-var fs = require('fs').promises
-var path = require('path')
-var yaml = require('js-yaml')
-var fetch = require('node-fetch')
+import {promises as fs} from 'fs'
+import path from 'path'
+import yaml from 'js-yaml'
+import fetch from 'node-fetch'
+import dotenv from 'dotenv'
 
-require('dotenv').config()
+dotenv.config()
 
 var ghToken = process.env.GH_TOKEN
 
@@ -23,6 +24,12 @@ for (const filename of files)
     .then((d) => d.text())
     .then((d) => {
       var stem = path.basename(filename, path.extname(filename))
-      var data = JSON.stringify(yaml.load(d), null, 2) + '\n'
-      return fs.writeFile(path.join('data', stem + '.json'), data)
+      return fs.writeFile(
+        path.join('data', stem + '.js'),
+        'export const ' +
+          stem +
+          ' = ' +
+          JSON.stringify(yaml.load(d), null, 2) +
+          '\n'
+      )
     })

@@ -1,15 +1,11 @@
-'use strict'
+import h from 'hastscript'
+import {fmtCompact} from '../../util/fmt-compact.js'
 
-var h = require('hastscript')
-var fmt = require('../../util/fmt-compact.js')
-
-module.exports = tag
-
-function tag(label, count, href) {
+export function tag(label, count, href) {
   var nodes = [label]
 
   if (count) {
-    nodes.push(' ', h('span.count', fmt(count)))
+    nodes.push(' ', h('span.count', fmtCompact(count)))
   }
 
   return h(

@@ -1,10 +1,6 @@
-'use strict'
+import {tag} from '../../atom/micro/tag.js'
 
-var tag = require('../../atom/micro/tag.js')
-
-module.exports = item
-
-function item(data, d) {
+export function itemSmall(data, d) {
   var {packagesByKeyword} = data
 
   return tag(

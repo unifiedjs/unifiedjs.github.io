@@ -1,12 +1,8 @@
-'use strict'
+import h from 'hastscript'
+import {tw} from '../atom/icon/tw.js'
+import {gh} from '../atom/icon/gh.js'
 
-var h = require('hastscript')
-var tw = require('../atom/icon/tw.js')
-var gh = require('../atom/icon/gh.js')
-
-module.exports = header
-
-function header() {
+export function header() {
   return [
     h('.blm', [
       h('.container', [

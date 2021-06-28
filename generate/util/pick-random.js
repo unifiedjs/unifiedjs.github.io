@@ -1,9 +1,5 @@
-'use strict'
+import pick from 'pick-random'
 
-var pick = require('pick-random')
-
-module.exports = pickRandom
-
-function pickRandom(list, max) {
+export function pickRandom(list, max) {
   return list.length > max ? pick(list, {count: max}) : list
 }

@@ -1,14 +1,8 @@
-'use strict'
+import h from 'hastscript'
+import {item as card} from '../../atom/card/item.js'
+import {tag} from '../../atom/micro/tag.js'
 
-var h = require('hastscript')
-var card = require('../../atom/card/item.js')
-var tag = require('../../atom/micro/tag.js')
-
-module.exports = item
-
-var base = 'https://github.com/'
-
-function item(d) {
+export function item(d) {
   var {matter, meta} = d.data
   var data = {...matter, ...meta}
   var {title, description, author, authorGithub, tags, pathname} = data
@@ -16,10 +10,13 @@ function item(d) {
   author = h('span.ellipsis', author)
 
   if (authorGithub) {
-    author = h('a.row', {href: base + authorGithub}, [
+    author = h('a.row', {href: 'https://github.com/' + authorGithub}, [
       h('.thumbnail', {
         role: 'presentation',
-        style: 'background-image:url(' + base + authorGithub + '.png?size=64)'
+        style:
+          'background-image:url(https://github.com/' +
+          authorGithub +
+          '.png?size=64)'
       }),
       author
     ])

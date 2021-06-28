@@ -1,10 +1,6 @@
-'use strict'
+import h from 'hastscript'
 
-var h = require('hastscript')
-
-module.exports = byline
-
-function byline() {
+export function byline() {
   return h('p', [
     'Thousands of interesting projects are made with unified, mixing and ',
     'matching building blocks together. ',

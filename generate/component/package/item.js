@@ -1,15 +1,11 @@
-'use strict'
+import h from 'hastscript'
+import {score} from '../../atom/micro/score.js'
+import {verified} from '../../atom/micro/verified.js'
+import {downloads} from '../../atom/micro/downloads.js'
+import {gzip} from '../../atom/micro/gzip.js'
+import {item as box} from '../../atom/box/item.js'
 
-var h = require('hastscript')
-var score = require('../../atom/micro/score.js')
-var verified = require('../../atom/micro/verified.js')
-var downloads = require('../../atom/micro/downloads.js')
-var gzip = require('../../atom/micro/gzip.js')
-var box = require('../../atom/box/item.js')
-
-module.exports = item
-
-function item(data, name) {
+export function item(data, name) {
   var {packageByName} = data
   var d = packageByName[name]
   var value = d.descriptionRich ? d.descriptionRich.children : d.description

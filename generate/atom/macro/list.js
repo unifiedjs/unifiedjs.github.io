@@ -1,8 +1,4 @@
-'use strict'
-
-module.exports = list
-
-function list(names, map, options) {
+export function list(names, map, options) {
   var {max, more, trail} = options || {}
   var values = names
   var total = values.length

@@ -1,13 +1,9 @@
-'use strict'
+import h from 'hastscript'
+import {fmtCompact} from '../../util/fmt-compact.js'
+import {stars as icon} from '../icon/stars.js'
 
-var h = require('hastscript')
-var fmt = require('../../util/fmt-compact.js')
-var icon = require('../icon/stars.js')
-
-module.exports = stars
-
-function stars(value, name) {
-  var node = [icon(), ' ', fmt(value)]
+export function stars(value, name) {
+  var node = [icon(), ' ', fmtCompact(value)]
 
   if (name) {
     node = h(

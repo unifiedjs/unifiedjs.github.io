@@ -1,11 +1,7 @@
-'use strict'
+import h from 'hastscript'
+import {tw as icon} from '../icon/tw.js'
 
-var h = require('hastscript')
-var icon = require('../icon/tw.js')
-
-module.exports = twitter
-
-function twitter(name) {
+export function tw(name) {
   var node = icon()
 
   if (name) {

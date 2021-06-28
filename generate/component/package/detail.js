@@ -1,9 +1,5 @@
-'use strict'
+import h from 'hastscript'
 
-var h = require('hastscript')
-
-module.exports = detail
-
-function detail(data, d, tree) {
+export function detail(data, d, tree) {
   return h('.content.readme', tree)
 }

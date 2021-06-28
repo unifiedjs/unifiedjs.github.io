@@ -1,15 +1,11 @@
-'use strict'
-
-var visit = require('unist-util-visit')
-var map = require('../util/tag-to-url.js')
-
-module.exports = resolveUrls
+import visit from 'unist-util-visit'
+import {tagToUrl} from '../util/tag-to-url.js'
 
 var own = {}.hasOwnProperty
 var gh = 'https://github.com'
 
 // Resolve relative URLs to a place in a repo on GH, making them absolute.
-function resolveUrls(options) {
+export default function rehypeResolveUrls(options) {
   var settings = options || {}
 
   return transform
@@ -36,8 +32,8 @@ function resolveUrls(options) {
 
     function visitor(node) {
       var {tagName} = node
-      if (own.call(map, tagName)) {
-        map[tagName].forEach((p) => resolve(node, p, tagName))
+      if (own.call(tagToUrl, tagName)) {
+        tagToUrl[tagName].forEach((p) => resolve(node, p, tagName))
       }
     }
 

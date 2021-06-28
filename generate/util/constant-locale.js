@@ -1,3 +1,1 @@
-'use strict'
-
-module.exports = 'en-US'
+export const constantLocale = 'en-US'
