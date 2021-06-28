@@ -3,7 +3,6 @@
 var h = require('hastscript')
 var description = require('../../atom/micro/description.js')
 var downloads = require('../../atom/micro/downloads.js')
-var esm = require('../../atom/micro/esm.js')
 var github = require('../../atom/micro/gh.js')
 var graph = require('../../atom/micro/graph.js')
 var gzip = require('../../atom/micro/gzip.js')
@@ -50,7 +49,7 @@ function head(data, id) {
         ])
       ]),
       h('ol.flex.column.ellipsis-l', [
-        graph(d.dependencies, d.dependents, id),
+        graph(d.dependents, id),
         description(d.description, d.descriptionRich)
       ]),
       h('.column', [
@@ -63,7 +62,6 @@ function head(data, id) {
         ]),
         h('ol.row.justify-end-l', [
           gzip(d.gzip, id),
-          esm(d.esm, id),
           downloads(d.downloads, id),
           npm(id)
         ])

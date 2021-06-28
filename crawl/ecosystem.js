@@ -7,6 +7,7 @@ var trough = require('trough')
 var chalk = require('chalk')
 var fetch = require('node-fetch')
 var pAll = require('p-all')
+var bytes = require('bytes')
 
 require('dotenv').config()
 
@@ -34,7 +35,6 @@ var concurrency = {concurrency: 1}
 var hawkgirl = 'application/vnd.github.hawkgirl-preview+json'
 var ghEndpoint = 'https://api.github.com/graphql'
 var npmsEndpoint = 'https://api.npms.io/v2/package'
-var bundlePhobiaEndpoint = 'https://bundlephobia.com/api/size'
 var npmDownloadsEndpoint = 'https://api.npmjs.org/downloads'
 
 var topicPipeline = promisify(trough().use(searchTopic).run)
@@ -717,26 +717,29 @@ async function getSize(ctx) {
     return
   }
 
-  var endpoint =
-    bundlePhobiaEndpoint +
-    '?package=' +
-    encodeURIComponent(packageDist.name + '@' + packageDist.latest)
+  const endpoint =
+    'https://img.shields.io/bundlephobia/minzip/' +
+    encodeURIComponent(packageDist.name) +
+    '.json'
 
   try {
     response = await fetch(endpoint, {
       headers: {'User-Agent': randomUseragent.getRandom()}
     }).then((x) => x.json())
   } catch (error) {
-    console.warn('%s#%s: could not contact bundlephobia', repo, manifest, error)
+    console.warn('%s#%s: could not contact shields.io', repo, manifest, error)
     // Still “proper”.
     return
   }
 
-  var gzip = response.gzip
-  var esm = Boolean(response.hasJSModule)
+  // I’m not 100% why exactly but this is how bundlephobia’s JSON converts to
+  // what it displays on the site:
+  // => https://bundlephobia.com/api/size?package=micromark@3.0.0 => 14273
+  // => https://bundlephobia.com/package/micromark@3.0.0 => 13.9kb
+  var gzip = (((bytes.parse(response.value) / 1024) * 1000) / 1024) * 1000
   var dependencies = response.dependencyCount
 
-  ctx.packageDist = {...ctx.packageDist, gzip, esm, dependencies}
+  ctx.packageDist = {...ctx.packageDist, gzip, dependencies}
 }
 
 function unique(d, i, data) {

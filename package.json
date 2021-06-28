@@ -17,6 +17,7 @@
   "devDependencies": {
     "browserify": "^17.0.0",
     "budo": "^11.0.0",
+    "bytes": "^3.0.0",
     "chalk": "^4.0.0",
     "compute-mean": "^3.0.0",
     "cssnano": "^5.0.0",

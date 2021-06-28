@@ -5,16 +5,10 @@ var fmt = require('../../util/fmt-compact.js')
 
 module.exports = graph
 
-function graph(dependencies, dependents, name) {
-  var uses = [h('span.label', 'Dependencies: '), fmt(dependencies || 0)]
+function graph(dependents, name) {
   var by = [h('span.label', 'Dependents: '), fmt(dependents || 0)]
 
   if (name) {
-    uses = h(
-      'a.tap-target',
-      {href: 'https://www.npmjs.com/package/' + name},
-      uses
-    )
     by = h(
       'a.tap-target',
       {href: 'https://www.npmjs.com/browse/depended/' + name},
@@ -22,5 +16,5 @@ function graph(dependencies, dependents, name) {
     )
   }
 
-  return h('li', [].concat(uses, h('span.lowlight.separator', '·'), by))
+  return h('li', by)
 }

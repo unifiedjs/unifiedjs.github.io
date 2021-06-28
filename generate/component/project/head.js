@@ -3,7 +3,6 @@
 var h = require('hastscript')
 var description = require('../../atom/micro/description.js')
 var downloads = require('../../atom/micro/downloads.js')
-var esm = require('../../atom/micro/esm.js')
 var github = require('../../atom/micro/gh.js')
 var license = require('../../atom/micro/license.js')
 var score = require('../../atom/micro/score.js')
@@ -14,7 +13,6 @@ var topics = require('../topic/list-small.js')
 var filter = require('../topic/helper-filter.js')
 var sort = require('../topic/helper-sort.js')
 var reduceDownloads = require('./helper-reduce-downloads.js')
-var reduceEsm = require('./helper-reduce-esm.js')
 var reduceLicense = require('./helper-reduce-license.js')
 var reduceScore = require('./helper-reduce-score.js')
 
@@ -47,10 +45,7 @@ function head(data, repo) {
           stars(d.stars, repo),
           github(repo)
         ]),
-        h('ol.row.justify-end-l', [
-          esm(reduceEsm(data, repo)),
-          downloads(reduceDownloads(data, repo))
-        ])
+        h('ol.row.justify-end-l', [downloads(reduceDownloads(data, repo))])
       ])
     ]),
     topics(data, filter(data, sort(data, d.topics)))
