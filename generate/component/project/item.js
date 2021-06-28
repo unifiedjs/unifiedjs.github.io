@@ -8,16 +8,16 @@ import {helperReduceDownloads} from './helper-reduce-downloads.js'
 import {helperReduceScore} from './helper-reduce-score.js'
 
 export function item(data, name) {
-  var {projectByRepo, packagesByRepo} = data
-  var d = projectByRepo[name]
-  var names = packagesByRepo[name]
+  const {projectByRepo, packagesByRepo} = data
+  const d = projectByRepo[name]
+  const names = packagesByRepo[name]
 
-  var href =
+  const href =
     '/explore/' +
     (names.length > 1 ? 'project/' + name : 'package/' + names[0]) +
     '/'
 
-  var value = d.descriptionRich ? d.descriptionRich.children : d.description
+  const value = d.descriptionRich ? d.descriptionRich.children : d.description
 
   return box(
     href,

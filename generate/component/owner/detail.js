@@ -4,9 +4,9 @@ import {list} from '../project/list.js'
 import {helperSort} from '../project/helper-sort.js'
 
 export function detail(data, d) {
-  var {projectsByOwner} = data
+  const {projectsByOwner} = data
 
-  var trail = more(
+  const trail = more(
     'https://github.com/search?o=desc&s=stars&type=Repositories&q=user:' + d,
     ['Find other projects by owner @', d, ' on GitHub']
   )

@@ -17,9 +17,9 @@ import rehypeResolveUrls from '../plugin/rehype-resolve-urls.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 
 const pkg = JSON.parse(fs.readFileSync('package.json'))
-var origin = pkg.homepage
+const origin = pkg.homepage
 
-var schema = deepmerge(defaultSchema, {attributes: {code: ['className']}})
+const schema = deepmerge(defaultSchema, {attributes: {code: ['className']}})
 
 export const readme = unified()
   .use(remarkParse)

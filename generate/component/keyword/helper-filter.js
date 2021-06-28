@@ -1,9 +1,9 @@
-var defaults = 1
+const defaults = 1
 
 // Filter keywords for enough use.
 export function helperFilter(data, names, min) {
-  var {packagesByKeyword} = data
-  var value = min || defaults
+  const {packagesByKeyword} = data
+  const value = min || defaults
 
   return names.filter(filter)
 

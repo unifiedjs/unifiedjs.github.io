@@ -517,7 +517,7 @@ If you haven’t already, check out the other articles in the
 
 [xo]: https://github.com/sindresorhus/xo
 
-[browserify]: https://github.com/substack/node-browserify
+[browserify]: https://github.com/browserify/browserify
 
 [english]: https://github.com/retextjs/retext/tree/HEAD/packages/retext-english
 

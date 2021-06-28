@@ -3,7 +3,7 @@ import {fmtCompact} from '../../util/fmt-compact.js'
 import {stars as icon} from '../icon/stars.js'
 
 export function stars(value, name) {
-  var node = [icon(), ' ', fmtCompact(value)]
+  let node = [icon(), ' ', fmtCompact(value)]
 
   if (name) {
     node = h(

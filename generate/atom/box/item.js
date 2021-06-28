@@ -3,7 +3,7 @@ import {visit, SKIP} from 'unist-util-visit'
 import {block} from '../macro/block.js'
 
 export function item(href, main, footer) {
-  var box = h('a.box', {href}, JSON.parse(JSON.stringify(main)))
+  const box = h('a.box', {href}, JSON.parse(JSON.stringify(main)))
 
   visit(box, 'element', cleanNestedLinks)
 

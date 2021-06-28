@@ -1,10 +1,10 @@
 // 60 days.
-var defaults = 60 * 24 * 60 * 60 * 1000
+const defaults = 60 * 24 * 60 * 60 * 1000
 
 // Filter releases for recently published.
 export function helperFilter(data, releases, ms) {
-  var {projectByRepo} = data
-  var value = Date.now() - (ms || defaults)
+  const {projectByRepo} = data
+  const value = Date.now() - (ms || defaults)
 
   return releases.filter(filter)
 

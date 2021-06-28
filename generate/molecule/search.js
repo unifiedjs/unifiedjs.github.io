@@ -3,8 +3,8 @@ import pickRandom from 'pick-random'
 import {helperSort} from '../component/package/helper-sort.js'
 
 export function search(data, name) {
-  var names = Object.keys(data.packageByName)
-  var random = pickRandom(helperSort(data, names).slice(0, 75))[0]
+  const names = Object.keys(data.packageByName)
+  const random = pickRandom(helperSort(data, names).slice(0, 75))[0]
 
   return h('form.search', {action: '/explore/'}, [
     h('label', {for: name}, 'Search ecosystem:'),

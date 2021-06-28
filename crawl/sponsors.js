@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-var token = process.env.OC_TOKEN
+const token = process.env.OC_TOKEN
 
 if (!token) {
   console.log('Cannot crawl sponsors without OC token')
@@ -14,17 +14,17 @@ if (!token) {
   process.exit()
 }
 
-var outpath = path.join('data', 'sponsors.js')
-var min = 5
+const outpath = path.join('data', 'sponsors.js')
+const min = 5
 
-var endpoint = 'https://api.opencollective.com/graphql/v2'
+const endpoint = 'https://api.opencollective.com/graphql/v2'
 
-var variables = {slug: 'unified'}
+const variables = {slug: 'unified'}
 
-var ghBase = 'https://github.com/'
-var twBase = 'https://twitter.com/'
+const ghBase = 'https://github.com/'
+const twBase = 'https://twitter.com/'
 
-var query = `query($slug: String) {
+const query = `query($slug: String) {
   collective(slug: $slug) {
     members(limit: 100, role: BACKER) {
       nodes {
@@ -51,28 +51,28 @@ Promise.all([
     return String(d)
       .split('\n')
       .map((d) => {
-        var spam = d.charAt(0) === '-'
-        return {oc: spam ? d.slice(1) : d, spam: spam}
+        const spam = d.charAt(0) === '-'
+        return {oc: spam ? d.slice(1) : d, spam}
       })
   }),
   fetch(endpoint, {
     method: 'POST',
-    body: JSON.stringify({query: query, variables: variables}),
+    body: JSON.stringify({query, variables}),
     headers: {
       'Content-Type': 'application/json',
       'Api-Key': token
     }
   }).then((response) => response.json())
 ])
-  .then(function ([control, response]) {
-    var seen = []
-    var members = response.data.collective.members.nodes
+  .then(([control, response]) => {
+    const seen = []
+    const members = response.data.collective.members.nodes
       .map((d) => {
-        var oc = d.account.slug
-        var github = d.account.githubHandle || undefined
-        var twitter = d.account.twitterHandle || undefined
-        var url = d.account.website || undefined
-        var info = control.find((d) => d.oc === oc)
+        const oc = d.account.slug
+        const github = d.account.githubHandle || undefined
+        const twitter = d.account.twitterHandle || undefined
+        let url = d.account.website || undefined
+        const info = control.find((d) => d.oc === oc)
 
         if (url === ghBase + github || url === twBase + twitter) {
           url = undefined
@@ -91,7 +91,7 @@ Promise.all([
           name: d.account.name,
           description: d.account.description || undefined,
           image: d.account.imageUrl,
-          oc: oc,
+          oc,
           github,
           twitter,
           url,
@@ -101,7 +101,7 @@ Promise.all([
         }
       })
       .filter((d) => {
-        var ignore = d.spam || seen.includes(d.oc) // Ignore dupes in data.
+        const ignore = d.spam || seen.includes(d.oc) // Ignore dupes in data.
         seen.push(d.oc)
         return d.amount > min && !ignore
       })

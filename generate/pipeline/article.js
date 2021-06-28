@@ -14,7 +14,7 @@ import rehypeAbbreviate from '../plugin/rehype-abbreviate.js'
 import {link} from '../atom/icon/link.js'
 
 const pkg = JSON.parse(fs.readFileSync('package.json'))
-var origin = pkg.homepage
+const origin = pkg.homepage
 
 export const article = unified()
   .use(remarkParse)

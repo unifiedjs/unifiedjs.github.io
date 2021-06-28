@@ -1,7 +1,7 @@
 import {tag} from '../../atom/micro/tag.js'
 
 export function itemSmall(data, d) {
-  var {packagesByKeyword} = data
+  const {packagesByKeyword} = data
 
   return tag(
     d,

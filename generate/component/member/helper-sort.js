@@ -1,11 +1,11 @@
 import {sort} from '../../util/sort.js'
 
-var collective = {true: 4, false: 1}
-var roles = {releaser: 3, merger: 2, maintainer: 2}
+const collective = {true: 4, false: 1}
+const roles = {releaser: 3, merger: 2, maintainer: 2}
 
 // Sort humans by “influence”.
 export function helperSort(data, d) {
-  var scores = {}
+  const scores = {}
 
   data.teams.forEach(team)
 
@@ -16,11 +16,11 @@ export function helperSort(data, d) {
   }
 
   function team(team) {
-    var members = team.humans
+    const members = team.humans
 
     Object.keys(members).forEach((d) => {
-      var role = members[d]
-      var active = Boolean(team.collective && role === 'maintainer')
+      const role = members[d]
+      const active = Boolean(team.collective && role === 'maintainer')
 
       scores[d] = (scores[d] || 0) + (roles[role] || 1) * collective[active]
     })

@@ -9,13 +9,13 @@ import {list as cases} from '../component/case/list.js'
 import {byline as casesByline} from '../component/case/byline.js'
 import {page} from './page.js'
 
-var twitter = 'https://twitter.com/unifiedjs'
-var org = 'https://github.com/unifiedjs'
-var base = org + '/.github/blob/HEAD/'
-var coc = base + 'code-of-conduct.md'
-var support = base + 'support.md'
-var contributing = base + 'contributing.md'
-var security = base + 'security.md'
+const twitter = 'https://twitter.com/unifiedjs'
+const org = 'https://github.com/unifiedjs'
+const base = org + '/.github/blob/HEAD/'
+const coc = base + 'code-of-conduct.md'
+const support = base + 'support.md'
+const contributing = base + 'contributing.md'
+const security = base + 'security.md'
 
 export function community(data) {
   return page(h('.row-l.column-l', h('h2', breadcrumbs('/community/'))), [

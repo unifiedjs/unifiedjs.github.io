@@ -14,8 +14,8 @@ import {constantCollective} from '../generate/util/constant-collective.js'
 
 dotenv.config()
 
-var ghToken = process.env.GH_TOKEN
-var npmToken = process.env.NPM_TOKEN
+const ghToken = process.env.GH_TOKEN
+const npmToken = process.env.NPM_TOKEN
 
 if (!ghToken || !npmToken) {
   console.warn('Cannot crawl ecosystem without GH or npm tokens')
@@ -23,24 +23,24 @@ if (!ghToken || !npmToken) {
   process.exit()
 }
 
-var outpath = path.join('data')
-var readmePath = path.join(outpath, 'readme')
-var metaPath = path.join(outpath, 'meta.js')
-var projectsPath = path.join(outpath, 'projects.js')
-var packagesPath = path.join(outpath, 'packages.js')
-var releasesPath = path.join(outpath, 'releases.js')
+const outpath = path.join('data')
+const readmePath = path.join(outpath, 'readme')
+const metaPath = path.join(outpath, 'meta.js')
+const projectsPath = path.join(outpath, 'projects.js')
+const packagesPath = path.join(outpath, 'packages.js')
+const releasesPath = path.join(outpath, 'releases.js')
 
-var concurrency = {concurrency: 1}
+const concurrency = {concurrency: 1}
 
-var hawkgirl = 'application/vnd.github.hawkgirl-preview+json'
-var ghEndpoint = 'https://api.github.com/graphql'
-var npmsEndpoint = 'https://api.npms.io/v2/package'
-var npmDownloadsEndpoint = 'https://api.npmjs.org/downloads'
+const hawkgirl = 'application/vnd.github.hawkgirl-preview+json'
+const ghEndpoint = 'https://api.github.com/graphql'
+const npmsEndpoint = 'https://api.npms.io/v2/package'
+const npmDownloadsEndpoint = 'https://api.npmjs.org/downloads'
 
-var topicPipeline = promisify(trough().use(searchTopic).run)
-var orgPipeline = promisify(trough().use(searchOrg).run)
-var repoPipeline = promisify(trough().use(crawlRepo).use(getReleases).run)
-var pkgPipeline = promisify(
+const topicPipeline = promisify(trough().use(searchTopic).run)
+const orgPipeline = promisify(trough().use(searchOrg).run)
+const repoPipeline = promisify(trough().use(crawlRepo).use(getReleases).run)
+const pkgPipeline = promisify(
   trough()
     .use(getManifest)
     .use(getPackage)
@@ -49,7 +49,7 @@ var pkgPipeline = promisify(
     .use(getSize).run
 )
 
-var main = promisify(
+const main = promisify(
   trough()
     .use(findProjectsByTopic)
     .use(findProjectsInOrganizations)
@@ -81,9 +81,9 @@ main({
 )
 
 async function findProjectsByTopic(ctx) {
-  var {topics, repos} = ctx
+  const {topics, repos} = ctx
 
-  var results = await pAll(
+  const results = await pAll(
     topics.map((topic) => () => topicPipeline({...ctx, topic})),
     concurrency
   )
@@ -92,9 +92,9 @@ async function findProjectsByTopic(ctx) {
 }
 
 async function findProjectsInOrganizations(ctx) {
-  var {orgs, repos} = ctx
+  const {orgs, repos} = ctx
 
-  var results = await pAll(
+  const results = await pAll(
     orgs.map((org) => () => orgPipeline({...ctx, org})),
     concurrency
   )
@@ -103,11 +103,11 @@ async function findProjectsInOrganizations(ctx) {
 }
 
 async function findRepositories(ctx) {
-  var {repos} = ctx
+  let {repos} = ctx
 
   repos = repos.filter((d, i, data) => data.indexOf(d) === i)
 
-  var results = await pAll(
+  const results = await pAll(
     repos.map((repo) => () => repoPipeline({...ctx, repo})),
     concurrency
   )
@@ -121,13 +121,13 @@ async function findRepositories(ctx) {
 }
 
 async function findPackages(ctx) {
-  var {projects} = ctx
+  let {projects} = ctx
 
-  var packages = projects.flatMap((d) =>
+  let packages = projects.flatMap((d) =>
     d.manifests.map((m) => ({manifest: m, project: d}))
   )
 
-  var results = await pAll(
+  const results = await pAll(
     packages.map(
       ({manifest, project}) =>
         () =>
@@ -136,17 +136,17 @@ async function findPackages(ctx) {
     {concurrency: 1}
   )
 
-  var readmes = []
-  var projectsWithPackages = {}
-  var projectsWithPackagesIssues = {}
+  const readmes = []
+  const projectsWithPackages = {}
+  const projectsWithPackagesIssues = {}
 
   packages = results
     .filter((d) => d.proper)
     .map((d) => {
-      var {packageDist, readme, project, issues} = d
-      var {name} = packageDist
-      var {repo} = project
-      var readmeName = name.replace(/^@/g, '').replace(/\//g, '-') + '.md'
+      const {packageDist, readme, project, issues} = d
+      const {name} = packageDist
+      const {repo} = project
+      const readmeName = name.replace(/^@/g, '').replace(/\//g, '-') + '.md'
 
       projectsWithPackages[repo] = project
       projectsWithPackagesIssues[repo] = issues
@@ -156,10 +156,10 @@ async function findPackages(ctx) {
       return {...packageDist, repo, readmeName}
     })
 
-  var meta = {size: 0, issueOpen: 0, issueClosed: 0, prOpen: 0, prClosed: 0}
+  const meta = {size: 0, issueOpen: 0, issueClosed: 0, prOpen: 0, prClosed: 0}
 
   projects.forEach((d) => {
-    var [owner] = d.repo.split('/')
+    const [owner] = d.repo.split('/')
 
     if (constantCollective.includes(owner)) {
       Object.keys(meta).forEach((key) => {
@@ -187,7 +187,7 @@ async function findPackages(ctx) {
 }
 
 async function writeResults(ctx) {
-  var {projects, packages, releases, meta} = ctx
+  const {projects, packages, releases, meta} = ctx
 
   await fs.writeFile(
     metaPath,
@@ -208,7 +208,7 @@ async function writeResults(ctx) {
 }
 
 async function writeReadmes(ctx) {
-  var {readmes} = ctx
+  const {readmes} = ctx
 
   await pAll(
     readmes.map(
@@ -221,14 +221,14 @@ async function writeReadmes(ctx) {
 }
 
 async function searchTopic(ctx) {
-  var {topic, ghToken} = ctx
-  var matches = []
-  var done = false
-  var after
-  var response
-  var data
+  const {topic, ghToken} = ctx
+  let matches = []
+  let done = false
+  let after
+  let response
+  let data
 
-  var query = `
+  const query = `
     query($query: String!, $after: String) {
       search(query: $query, type: REPOSITORY, first: 100, after: $after) {
         repositoryCount
@@ -269,14 +269,14 @@ async function searchTopic(ctx) {
 }
 
 async function searchOrg(ctx) {
-  var {org, ghToken} = ctx
-  var matches = []
-  var done = false
-  var after
-  var response
-  var data
+  const {org, ghToken} = ctx
+  let matches = []
+  let done = false
+  let after
+  let response
+  let data
 
-  var query = `
+  const query = `
     query($org: String!, $after: String) {
       organization(login: $org) {
         repositories(
@@ -335,10 +335,10 @@ async function searchOrg(ctx) {
 }
 
 async function crawlRepo(ctx) {
-  var {repo, ghToken} = ctx
-  var [owner, name] = repo.split('/')
+  const {repo, ghToken} = ctx
+  const [owner, name] = repo.split('/')
 
-  var response = await fetch(ghEndpoint, {
+  const response = await fetch(ghEndpoint, {
     method: 'POST',
     body: JSON.stringify({
       query: `
@@ -381,10 +381,10 @@ async function crawlRepo(ctx) {
     )
   }
 
-  var data = (response.data || {}).repository || {}
-  var defaultBranch = (data.defaultBranchRef || {}).name || null
+  const data = (response.data || {}).repository || {}
+  const defaultBranch = (data.defaultBranchRef || {}).name || null
 
-  var project = {
+  const project = {
     repo,
     description: data.description || '',
     stars: (data.stargazers || {}).totalCount || 0,
@@ -421,12 +421,12 @@ async function crawlRepo(ctx) {
 }
 
 async function getReleases(ctx) {
-  var {repo, ghToken, lastReleaseAt} = ctx
-  var [owner, name] = repo.split('/')
-  var releases = []
+  const {repo, ghToken, lastReleaseAt} = ctx
+  const [owner, name] = repo.split('/')
+  let releases = []
 
   if (recent(lastReleaseAt)) {
-    var response = await fetch(ghEndpoint, {
+    const response = await fetch(ghEndpoint, {
       method: 'POST',
       body: JSON.stringify({
         query: `
@@ -446,7 +446,7 @@ async function getReleases(ctx) {
       }
     }).then((x) => x.json())
 
-    var data = (response.data || {}).repository || {}
+    const data = (response.data || {}).repository || {}
     releases = ((data.releases || {}).nodes || [])
       .filter((d) => recent(new Date(d.publishedAt)))
       .map((d) => ({
@@ -466,12 +466,12 @@ async function getReleases(ctx) {
 }
 
 async function getManifest(ctx) {
-  var {project, manifest, ghToken} = ctx
-  var {repo} = project
-  var [owner, name] = repo.split('/')
-  var target = [project.default || 'master', manifest].join(':')
-  var manifestBase = path.dirname(manifest)
-  var response
+  const {project, manifest, ghToken} = ctx
+  const {repo} = project
+  const [owner, name] = repo.split('/')
+  const target = [project.default || 'master', manifest].join(':')
+  let manifestBase = path.dirname(manifest)
+  let response
 
   if (manifestBase === '.') {
     manifestBase = undefined
@@ -501,12 +501,12 @@ async function getManifest(ctx) {
     console.warn('Could not fetch manifest:', error)
   }
 
-  var proper = true
-  var pkg
+  let proper = true
+  let pkg
 
   try {
     pkg = JSON.parse((response.data.repository.object || {}).text)
-  } catch (_) {
+  } catch {
     console.warn('%s#%s: could not parse manifest', repo, manifest)
     proper = false
   }
@@ -526,10 +526,10 @@ async function getManifest(ctx) {
 }
 
 async function getPackage(ctx) {
-  var {proper, manifest, manifestBase, project, packageSource} = ctx
-  var {repo} = project
-  var response
-  var body
+  const {proper, manifest, manifestBase, project, packageSource} = ctx
+  const {repo} = project
+  let response
+  let body
 
   if (!proper) {
     return
@@ -540,7 +540,7 @@ async function getPackage(ctx) {
       [npmsEndpoint, encodeURIComponent(packageSource.name)].join('/')
     )
     body = await response.json()
-  } catch (_) {}
+  } catch {}
 
   if (!body) {
     console.warn('%s#%s: could not connect to npms', repo, manifest)
@@ -554,16 +554,16 @@ async function getPackage(ctx) {
     return
   }
 
-  var name = body.collected.metadata.name || ''
-  var description = body.collected.metadata.description || ''
-  var keywords = body.collected.metadata.keywords || []
-  var license = body.collected.metadata.license || null
-  var deprecated = body.collected.metadata.deprecated
-  var latest = body.collected.metadata.version || null
-  var repos = body.collected.metadata.repository
-  var url = (repos && repos.url) || ''
-  var dependents = body.collected.npm.dependentsCount || 0
-  var score = body.score.final || 0
+  const name = body.collected.metadata.name || ''
+  const description = body.collected.metadata.description || ''
+  let keywords = body.collected.metadata.keywords || []
+  const license = body.collected.metadata.license || null
+  const deprecated = body.collected.metadata.deprecated
+  const latest = body.collected.metadata.version || null
+  const repos = body.collected.metadata.repository
+  const url = (repos && repos.url) || ''
+  const dependents = body.collected.npm.dependentsCount || 0
+  const score = body.score.final || 0
 
   if (deprecated) {
     console.warn(
@@ -582,7 +582,7 @@ async function getPackage(ctx) {
     return
   }
 
-  var info = hostedGitInfo.fromUrl(url)
+  const info = hostedGitInfo.fromUrl(url)
 
   if (!info) {
     console.warn('%s#%s: ignoring non-parsable repo: %s', repo, manifest, url)
@@ -596,7 +596,7 @@ async function getPackage(ctx) {
     return
   }
 
-  var slug = [info.user, info.project].join('/')
+  const slug = [info.user, info.project].join('/')
 
   if (slug !== repo) {
     console.warn('%s#%s: ignoring mismatched repos: %s', repo, manifest, url)
@@ -622,11 +622,11 @@ async function getPackage(ctx) {
 }
 
 async function getReadme(ctx) {
-  var {proper, manifestBase, project} = ctx
-  var {repo} = project
-  var [owner, name] = repo.split('/')
-  var base = (project.default || 'master') + ':'
-  var response
+  const {proper, manifestBase, project} = ctx
+  const {repo} = project
+  const [owner, name] = repo.split('/')
+  let base = (project.default || 'master') + ':'
+  let response
 
   if (!proper) {
     return
@@ -672,15 +672,15 @@ async function getReadme(ctx) {
     console.warn('Could not fetch `readme.md`:', error)
   }
 
-  var repository = ((response || {}).data || {}).repository || {}
-  var object =
+  const repository = ((response || {}).data || {}).repository || {}
+  const object =
     repository.umd ||
     repository.u ||
     repository.cmd ||
     repository.c ||
     repository.lmd ||
     repository.l
-  var readme = (object || {}).text || ''
+  const readme = (object || {}).text || ''
 
   if (!object) {
     console.warn('%s#%s: could not find readme', repo, base)
@@ -698,21 +698,21 @@ async function getReadme(ctx) {
 }
 
 async function getDownloads(ctx) {
-  var {proper, packageDist} = ctx
+  const {proper, packageDist} = ctx
   // See below: `npmToken = ctx.npmToken`.
 
   if (!proper) {
     return
   }
 
-  var endpoint = [
+  const endpoint = [
     npmDownloadsEndpoint,
     'point',
     'last-month',
     packageDist.name
   ].join('/')
 
-  var response = await fetch(endpoint, {
+  const response = await fetch(endpoint, {
     // Passing an npm token recently seems to crash npm.
     // headers: {Authorization: 'Bearer ' + npmToken}
   }).then((x) => x.json())
@@ -721,9 +721,9 @@ async function getDownloads(ctx) {
 }
 
 async function getSize(ctx) {
-  var {proper, manifest, project, packageDist} = ctx
-  var {repo} = project
-  var response
+  const {proper, manifest, project, packageDist} = ctx
+  const {repo} = project
+  let response
 
   if (!proper) {
     return
@@ -748,8 +748,8 @@ async function getSize(ctx) {
   // what it displays on the site:
   // => https://bundlephobia.com/api/size?package=micromark@3.0.0 => 14273
   // => https://bundlephobia.com/package/micromark@3.0.0 => 13.9kb
-  var gzip = (((bytes.parse(response.value) / 1024) * 1000) / 1024) * 1000
-  var dependencies = response.dependencyCount
+  const gzip = (((bytes.parse(response.value) / 1024) * 1000) / 1024) * 1000
+  const dependencies = response.dependencyCount
 
   ctx.packageDist = {...ctx.packageDist, gzip, dependencies}
 }

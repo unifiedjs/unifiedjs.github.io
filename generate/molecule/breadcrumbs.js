@@ -1,8 +1,8 @@
 import {h} from 'hastscript'
 
-var slash = '/'
+const slash = '/'
 
-var overwrites = {
+const overwrites = {
   learn: 'Learn',
   guide: ['Guides', 'Guide'],
   recipe: ['Recipes', 'Recipe'],
@@ -22,10 +22,10 @@ export function breadcrumbs(filepath, title) {
   return filepath.split(slash).filter(Boolean).flatMap(map)
 
   function map(d, i, data) {
-    var last = data.length - 1 === i
-    var components = data.slice(0, i + 1)
-    var href = slash + components.join(slash) + slash
-    var node = h('a', {href}, word(last && title ? title : d, last))
+    const last = data.length - 1 === i
+    const components = data.slice(0, i + 1)
+    const href = slash + components.join(slash) + slash
+    let node = h('a', {href}, word(last && title ? title : d, last))
 
     if (last) {
       node.properties.rel = ['canonical']
@@ -37,6 +37,6 @@ export function breadcrumbs(filepath, title) {
 }
 
 function word(d, last) {
-  var value = d in overwrites ? overwrites[d] : d
+  const value = d in overwrites ? overwrites[d] : d
   return typeof value === 'string' ? value : value[last ? 0 : 1]
 }

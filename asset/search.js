@@ -23,10 +23,10 @@ import {searchResults as projectResults} from '../generate/component/project/sea
 import {unique} from '../generate/util/unique.js'
 import {asc, desc} from '../generate/util/sort.js'
 
-var loc = window.location
-var home = '/explore/'
-var parameter = 'q'
-var id = 'search-root'
+const loc = window.location
+const home = '/explore/'
+const parameter = 'q'
+const id = 'search-root'
 
 // For some reason this can be fired multiple times.
 if (loc.pathname === home && !document.querySelector('#' + id + ' form')) {
@@ -34,17 +34,17 @@ if (loc.pathname === home && !document.querySelector('#' + id + ' form')) {
 }
 
 function init() {
-  var names = Object.keys(data.packageByName)
-  var repos = Object.keys(data.projectByRepo)
-  var keywords = Object.keys(data.packagesByKeyword)
-  var topics = Object.keys(data.projectsByTopic)
-  var $root = document.querySelector('#' + id)
-  var $form = toDom(searchForm(data, parameter))
-  var $input = $form.querySelector('[name=' + parameter + ']')
+  const names = Object.keys(data.packageByName)
+  const repos = Object.keys(data.projectByRepo)
+  const keywords = Object.keys(data.packagesByKeyword)
+  const topics = Object.keys(data.projectsByTopic)
+  const $root = document.querySelector('#' + id)
+  const $form = toDom(searchForm(data, parameter))
+  const $input = $form.querySelector('[name=' + parameter + ']')
 
   $root.prepend($form)
 
-  var promises = [
+  const promises = [
     {
       selector: '#root-keyword',
       create: (search) =>
@@ -79,13 +79,13 @@ function init() {
       selector: '#root-package',
       create: (search) =>
         new Promise((resolve) => {
-          var size = 100
+          const size = 100
 
           window.requestAnimationFrame(() => next(0))
 
           function next(start) {
-            var end = start + size
-            var slice = names.slice(start, end)
+            const end = start + size
+            const slice = names.slice(start, end)
 
             slice.forEach((d) =>
               search.index.add(
@@ -110,13 +110,13 @@ function init() {
       selector: '#root-project',
       create: (search) =>
         new Promise((resolve) => {
-          var size = 100
+          const size = 100
 
           window.requestAnimationFrame(() => next(0))
 
           function next(start) {
-            var end = start + size
-            var slice = repos.slice(start, end)
+            const end = start + size
+            const slice = repos.slice(start, end)
 
             slice.forEach((d) => {
               search.index.add(
@@ -138,9 +138,9 @@ function init() {
       results: projectResults
     }
   ].map((d) => {
-    var $scope = document.querySelector(d.selector)
-    var index = new Index({preset: 'score', tokenize: 'full'})
-    var view = {...d, index, $scope}
+    const $scope = document.querySelector(d.selector)
+    const index = new Index({preset: 'score', tokenize: 'full'})
+    const view = {...d, index, $scope}
 
     return view.create(view).then(() => view)
   })
@@ -152,7 +152,7 @@ function init() {
     window.addEventListener('popstate', onpopstate)
 
     function start() {
-      var query = clean(new URL(loc).searchParams.get(parameter))
+      const query = clean(new URL(loc).searchParams.get(parameter))
 
       if (query) {
         onpopstate()
@@ -164,9 +164,9 @@ function init() {
     }
 
     function onsubmit(ev) {
-      var url = new URL(loc)
-      var current = clean(url.searchParams.get(parameter))
-      var value = clean($input.value)
+      const url = new URL(loc)
+      const current = clean(url.searchParams.get(parameter))
+      const value = clean($input.value)
 
       ev.preventDefault()
 
@@ -201,9 +201,9 @@ function init() {
       document.querySelector('#root-release').style = 'display:none'
 
       searches.forEach((search) => {
-        search.index.searchAsync(query, {suggest: true}, function (result) {
-          var clean = result.filter(unique)
-          var weighted = desc(clean, weight)
+        search.index.searchAsync(query, {suggest: true}, (result) => {
+          const clean = result.filter(unique)
+          const weighted = desc(clean, weight)
 
           replace(search, asc(clean, combined), query)
 
@@ -221,13 +221,13 @@ function init() {
 }
 
 function replace(search, result, query) {
-  var {$scope, filter, preview, empty, results} = search
+  const {$scope, filter, preview, empty, results} = search
 
   if (filter) {
     result = filter(data, result)
   }
 
-  var $next = toDom(
+  const $next = toDom(
     result.length === 0
       ? query
         ? empty(data, query)

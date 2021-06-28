@@ -2,17 +2,17 @@ import {visit} from 'unist-util-visit'
 import {tagToUrl} from '../util/tag-to-url.js'
 import {data} from '../data.js'
 
-var own = {}.hasOwnProperty
+const own = {}.hasOwnProperty
 
 export default function rehypeRewriteUrls(options) {
-  var settings = options || {}
+  const settings = options || {}
 
   return transform
 
   function transform(tree, file) {
-    var meta = file.data.meta || {}
-    var origin = meta.origin || settings.origin
-    var pathname = meta.pathname || settings.pathname || '/'
+    const meta = file.data.meta || {}
+    const origin = meta.origin || settings.origin
+    const pathname = meta.pathname || settings.pathname || '/'
 
     if (!origin) {
       file.fail('Missing `origin` in `options` or `file.data.meta`', tree)
@@ -21,7 +21,7 @@ export default function rehypeRewriteUrls(options) {
     visit(tree, 'element', visitor)
 
     function visitor(node) {
-      var head
+      let head
 
       if (own.call(tagToUrl, node.tagName)) {
         tagToUrl[node.tagName].forEach((p) => rewrite(node, p))
@@ -37,8 +37,8 @@ export default function rehypeRewriteUrls(options) {
     }
 
     function rewrite(node, prop) {
-      var value = node.properties[prop]
-      var url
+      let value = node.properties[prop]
+      let url
 
       if (value === undefined || value === null) {
         return
@@ -48,7 +48,7 @@ export default function rehypeRewriteUrls(options) {
 
       try {
         url = new URL(value, origin + pathname)
-      } catch (_) {
+      } catch {
         return
       }
 
@@ -67,9 +67,9 @@ export default function rehypeRewriteUrls(options) {
   }
 
   function rewriteNpm(url, origin) {
-    var host = url.host
-    var rest
-    var name
+    let host = url.host
+    let rest
+    let name
 
     if (host.startsWith('www.')) {
       host = host.slice(4)
@@ -95,13 +95,13 @@ export default function rehypeRewriteUrls(options) {
   }
 
   function rewriteGithub(url, origin) {
-    var host = url.host
-    var rest
-    var repo
-    var length
-    var packages
-    var slug
-    var match
+    const host = url.host
+    let rest
+    let repo
+    let length
+    let packages
+    let slug
+    let match
 
     if (host === 'github.com') {
       rest = url.pathname.slice(1).split('/')

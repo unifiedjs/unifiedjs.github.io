@@ -4,13 +4,12 @@ export default function rehypeDefer() {
   return transform
 
   function transform(tree) {
-    var scripts = []
-    var scope
-    var head = null
+    const scripts = []
+    let head = null
 
     visit(tree, 'element', visitor)
 
-    scope = head || tree
+    const scope = head || tree
     scope.children = scope.children.concat(scripts)
 
     function visitor(node, index, parent) {

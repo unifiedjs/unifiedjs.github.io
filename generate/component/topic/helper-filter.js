@@ -1,9 +1,9 @@
-var defaults = 1
+const defaults = 1
 
 // Filter topics for enough use.
 export function helperFilter(data, names, min) {
-  var {projectsByTopic} = data
-  var value = min || defaults
+  const {projectsByTopic} = data
+  const value = min || defaults
 
   return names.filter(filter)
 

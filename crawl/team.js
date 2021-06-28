@@ -6,7 +6,7 @@ import dotenv from 'dotenv'
 
 dotenv.config()
 
-var ghToken = process.env.GH_TOKEN
+const ghToken = process.env.GH_TOKEN
 
 if (!ghToken) {
   console.log('Cannot crawl team without GH token')
@@ -14,16 +14,16 @@ if (!ghToken) {
   process.exit()
 }
 
-var headers = {Authorization: 'bearer ' + ghToken}
+const headers = {Authorization: 'bearer ' + ghToken}
 
-var base = 'https://raw.githubusercontent.com/unifiedjs/collective/HEAD/data/'
-var files = ['humans.yml', 'teams.yml']
+const base = 'https://raw.githubusercontent.com/unifiedjs/collective/HEAD/data/'
+const files = ['humans.yml', 'teams.yml']
 
 for (const filename of files)
   fetch(base + filename, {headers})
     .then((d) => d.text())
     .then((d) => {
-      var stem = path.basename(filename, path.extname(filename))
+      const stem = path.basename(filename, path.extname(filename))
       return fs.writeFile(
         path.join('data', stem + '.js'),
         'export const ' +

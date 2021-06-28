@@ -3,7 +3,7 @@ import {fmtCompact} from '../../util/fmt-compact.js'
 import {downloads as icon} from '../icon/downloads.js'
 
 export function downloads(value, name) {
-  var node
+  let node
 
   if (!value) {
     return []

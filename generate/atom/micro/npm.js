@@ -2,8 +2,8 @@ import {h} from 'hastscript'
 import {npm as icon} from '../icon/npm.js'
 
 export function npm(name) {
-  var node = icon()
-  var href
+  let node = icon()
+  let href
 
   if (name) {
     href =

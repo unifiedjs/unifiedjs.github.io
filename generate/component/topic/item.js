@@ -6,7 +6,7 @@ import {list} from '../project/list.js'
 import {helperSort} from '../project/helper-sort.js'
 
 export function item(data, d) {
-  var {projectsByTopic} = data
+  const {projectsByTopic} = data
 
   return [
     h('.content', h('h3', d)),

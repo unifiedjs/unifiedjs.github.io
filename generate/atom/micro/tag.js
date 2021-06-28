@@ -2,7 +2,7 @@ import {h} from 'hastscript'
 import {fmtCompact} from '../../util/fmt-compact.js'
 
 export function tag(label, count, href) {
-  var nodes = [label]
+  const nodes = [label]
 
   if (count) {
     nodes.push(' ', h('span.count', fmtCompact(count)))

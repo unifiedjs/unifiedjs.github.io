@@ -2,7 +2,7 @@ import {sort} from '../../util/sort.js'
 
 // Sort keywords by occurrence.
 export function helperSort(data, names) {
-  var {packagesByKeyword} = data
+  const {packagesByKeyword} = data
 
   return sort(names, score)
 

@@ -97,7 +97,7 @@
     "vfile-mkdirp": "^3.0.0",
     "vfile-rename": "^2.0.0",
     "vfile-reporter": "^7.0.0",
-    "xo": "^0.38.0"
+    "xo": "^0.39.0"
   },
   "scripts": {
     "start": "budo --dir build",
@@ -122,17 +122,11 @@
   },
   "xo": {
     "prettier": true,
-    "esnext": false,
     "rules": {
       "complexity": "off",
-      "unicorn/explicit-length-check": "off",
       "unicorn/no-array-callback-reference": "off",
       "unicorn/no-array-for-each": "off",
-      "unicorn/no-array-reduce": "off",
-      "unicorn/no-reduce": "off",
-      "unicorn/prefer-node-remove": "off",
-      "unicorn/prefer-optional-catch-binding": "off",
-      "unicorn/prefer-set-has": "off"
+      "unicorn/no-array-reduce": "off"
     }
   },
   "stylelint": {

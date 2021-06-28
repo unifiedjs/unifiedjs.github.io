@@ -1,6 +1,6 @@
 import {h} from 'hastscript'
 
-var slug = 'unifiedjs/collective'
+const slug = 'unifiedjs/collective'
 
 export function byline() {
   return h('p', [

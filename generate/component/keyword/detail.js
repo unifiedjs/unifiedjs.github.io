@@ -4,9 +4,9 @@ import {helperSort} from '../package/helper-sort.js'
 import {list} from '../package/list.js'
 
 export function detail(data, d) {
-  var {packagesByKeyword} = data
+  const {packagesByKeyword} = data
 
-  var trail = more('https://www.npmjs.com/search?q=keywords:' + d, [
+  const trail = more('https://www.npmjs.com/search?q=keywords:' + d, [
     'Find other packages matching ',
     h('span.tag', d),
     ' on npm'

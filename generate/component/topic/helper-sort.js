@@ -2,7 +2,7 @@ import {sort} from '../../util/sort.js'
 
 // Sort topics by occurrence.
 export function helperSort(data, names) {
-  var {projectsByTopic} = data
+  const {projectsByTopic} = data
 
   return sort(names, score)
 

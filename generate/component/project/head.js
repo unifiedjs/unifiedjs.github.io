@@ -15,8 +15,8 @@ import {helperReduceLicense} from './helper-reduce-license.js'
 import {helperReduceScore} from './helper-reduce-score.js'
 
 export function head(data, repo) {
-  var d = data.projectByRepo[repo]
-  var [owner, name] = repo.split('/')
+  const d = data.projectByRepo[repo]
+  const [owner, name] = repo.split('/')
 
   return [
     h('.row-l.column-nl', [

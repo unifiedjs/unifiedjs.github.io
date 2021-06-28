@@ -16,22 +16,22 @@ import {page} from './page.js'
 import {meta} from '../../data/meta.js'
 import {releases as dataReleases} from '../../data/releases.js'
 
-var linux = 3166218 // Checked from the `diskUsage` result for `torvalds/linux`
+const linux = 3166218 // Checked from the `diskUsage` result for `torvalds/linux`
 // on GHs GraphQL API.
-var mobyDick = 1.2 * 1024 * 1024
+const mobyDick = 1.2 * 1024 * 1024
 // Apparently Gutenberg’s version is 1.2mb.
 
 export function home(data) {
-  var {packageByName, projectByRepo} = data
-  var names = sortPkg(data, Object.keys(packageByName))
-  var repos = Object.keys(projectByRepo)
-  var downloads = names
+  const {packageByName, projectByRepo} = data
+  const names = sortPkg(data, Object.keys(packageByName))
+  const repos = Object.keys(projectByRepo)
+  const downloads = names
     .map((d) => packageByName[d].downloads || 0)
     .reduce(sum, 0)
-  var stars = repos.map((d) => projectByRepo[d].stars || 0).reduce(sum, 0)
-  var d = pickRandom(names.slice(0, 75), 5)
-  var closed = meta.issueClosed + meta.prClosed
-  var open = meta.issueOpen + meta.prOpen
+  const stars = repos.map((d) => projectByRepo[d].stars || 0).reduce(sum, 0)
+  const d = pickRandom(names.slice(0, 75), 5)
+  const closed = meta.issueClosed + meta.prClosed
+  const open = meta.issueOpen + meta.prOpen
 
   return page(
     [

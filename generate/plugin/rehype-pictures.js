@@ -7,12 +7,12 @@ import {visit} from 'unist-util-visit'
 import {h} from 'hastscript'
 
 export default function rehypePictures(options) {
-  var sizes = [null, 200, 600, 1200, 2000]
-  var formats = ['webp', 'png']
-  var mimes = {webp: 'image/webp', png: 'image/png'}
-  var modes = ['', '-dark']
-  var base = options.base
-  var sources = formats
+  const sizes = [null, 200, 600, 1200, 2000]
+  const formats = ['webp', 'png']
+  const mimes = {webp: 'image/webp', png: 'image/png'}
+  const modes = ['', '-dark']
+  const base = options.base
+  const sources = formats
     .flatMap((format) =>
       modes.flatMap((mode) =>
         sizes.flatMap((size) => ({
@@ -28,7 +28,7 @@ export default function rehypePictures(options) {
   return transform
 
   function transform(tree) {
-    var promises = []
+    const promises = []
 
     visit(tree, 'element', visitor)
 
@@ -37,7 +37,7 @@ export default function rehypePictures(options) {
     }
 
     function visitor(node, _, parent) {
-      var src = (node.tagName === 'img' && node.properties.src) || ''
+      const src = (node.tagName === 'img' && node.properties.src) || ''
 
       if (!src || src.charAt(0) !== '/') {
         return
@@ -46,11 +46,11 @@ export default function rehypePictures(options) {
       promises.push(rewrite(src, node, parent))
 
       function rewrite(src, node, parent) {
-        var resolved = path.join(base, src.split('/').join(path.sep))
-        var promises = [].concat(
+        const resolved = path.join(base, src.split('/').join(path.sep))
+        const promises = [].concat(
           // See which images exist.
           sources.map((d) => {
-            var fp = rename(toVFile({path: resolved}), d).path
+            const fp = rename(toVFile({path: resolved}), d).path
 
             return fs.promises.access(fp, fs.constants.R_OK).then(
               () => fp,
@@ -62,22 +62,22 @@ export default function rehypePictures(options) {
         )
 
         return Promise.all(promises).then((result) => {
-          var info = result.pop()
-          var available = result.filter(Boolean)
+          const info = result.pop()
+          const available = new Set(result.filter(Boolean))
 
           // Generate the sources, but only if they exist.
-          var srcs = formats.flatMap((format) =>
+          const srcs = formats.flatMap((format) =>
             modes.flatMap((mode) => {
-              var applicable = sizes
+              const applicable = sizes
                 .map((size) => {
-                  var fp = rename(toVFile({path: resolved}), {
+                  const fp = rename(toVFile({path: resolved}), {
                     stem: {suffix: mode + (size ? '-' + size : '')},
                     extname: '.' + format
                   }).path
 
-                  return available.includes(fp) ? [fp, size] : []
+                  return available.has(fp) ? [fp, size] : []
                 })
-                .filter((d) => d.length !== 0)
+                .filter((d) => d.length > 0)
 
               return applicable.length === 0
                 ? []
@@ -96,7 +96,7 @@ export default function rehypePictures(options) {
             })
           )
 
-          var siblings = parent.children
+          const siblings = parent.children
 
           node.properties.loading = 'lazy'
           node.properties.width = info.width

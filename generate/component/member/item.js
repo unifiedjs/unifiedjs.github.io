@@ -4,12 +4,12 @@ import {npm as npmBadge} from '../../atom/micro/npm.js'
 import {url as urlLine} from '../../atom/micro/url.js'
 import {item as card} from '../../atom/card/item.js'
 
-var base = 'https://github.com/'
+const base = 'https://github.com/'
 
 export function item(data, d) {
-  var {name, github, npm, url} = d
-  var footer = [ghBadge(github)]
-  var memberships = []
+  const {name, github, npm, url} = d
+  const footer = [ghBadge(github)]
+  const memberships = []
 
   if (npm) {
     footer.push(npmBadge('~' + npm))
@@ -20,13 +20,13 @@ export function item(data, d) {
   }
 
   data.teams.forEach((team) => {
-    var role = team.humans[github]
+    const role = team.humans[github]
     if (role && role !== 'contributor') {
       memberships.push(h(team.collective ? 'b' : 'span', team.name))
     }
   })
 
-  var roles = memberships.flatMap((d, i, all) => {
+  const roles = memberships.flatMap((d, i, all) => {
     return [d, i === all.length - 1 ? '' : ', ']
   })
 

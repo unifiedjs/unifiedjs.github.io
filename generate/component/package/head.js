@@ -14,11 +14,11 @@ import {helperFilter} from '../keyword/helper-filter.js'
 import {helperSort} from '../keyword/helper-sort.js'
 
 export function head(data, id) {
-  var {projectByRepo, packageByName} = data
-  var d = packageByName[id]
-  var project = projectByRepo[d.repo]
-  var [owner, projectName] = d.repo.split('/')
-  var [scope, pkgName] = id.split('/')
+  const {projectByRepo, packageByName} = data
+  const d = packageByName[id]
+  const project = projectByRepo[d.repo]
+  const [owner, projectName] = d.repo.split('/')
+  let [scope, pkgName] = id.split('/')
 
   if (!pkgName) {
     pkgName = scope

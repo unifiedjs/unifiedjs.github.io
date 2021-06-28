@@ -6,9 +6,9 @@ import {gzip} from '../../atom/micro/gzip.js'
 import {item as box} from '../../atom/box/item.js'
 
 export function item(data, name) {
-  var {packageByName} = data
-  var d = packageByName[name]
-  var value = d.descriptionRich ? d.descriptionRich.children : d.description
+  const {packageByName} = data
+  const d = packageByName[name]
+  const value = d.descriptionRich ? d.descriptionRich.children : d.description
 
   return box(
     '/explore/package/' + name + '/',

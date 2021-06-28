@@ -4,8 +4,8 @@ import {url as urlLine} from '../../atom/micro/url.js'
 import {item as card} from '../../atom/card/item.js'
 
 export function item(d) {
-  var {title, short, url, gh, src} = d
-  var footer = []
+  const {title, short, url, gh, src} = d
+  const footer = []
 
   if (gh) {
     footer.push(ghBadge(gh))

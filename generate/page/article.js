@@ -4,9 +4,9 @@ import {detail} from '../component/article/detail.js'
 import {page} from './page.js'
 
 export function article(tree, file) {
-  var {matter, meta} = file.data
-  var {title} = matter
-  var {pathname} = meta
+  const {matter, meta} = file.data
+  const {title} = matter
+  const {pathname} = meta
 
   return page(h('.row-l.column-l', h('h2', breadcrumbs(pathname, title))), [
     detail(tree, file)

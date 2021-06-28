@@ -2,23 +2,22 @@ import {h} from 'hastscript'
 import {findAndReplace, defaultIgnore} from 'hast-util-find-and-replace'
 import pluralize from 'pluralize'
 
-var re = /\b([A-Z]\.?[A-Z][\w.]*)\b/g
+const re = /\b([A-Z]\.?[A-Z][\w.]*)\b/g
 
-var ignore = defaultIgnore.concat(['pre', 'code'])
+const ignore = defaultIgnore.concat(['pre', 'code'])
 
 export default function rehypeAbbreviate(titles) {
   return transform
 
   function transform(tree, file) {
-    var cache = []
+    const cache = []
 
-    findAndReplace(tree, re, replace, {ignore: ignore})
+    findAndReplace(tree, re, replace, {ignore})
 
     function replace($0) {
-      var id = pluralize.singular($0)
-      var first = !cache.includes(id)
-      var title = titles[id]
-      var props
+      const id = pluralize.singular($0)
+      const first = !cache.includes(id)
+      const title = titles[id]
 
       if (title === null) {
         return $0
@@ -33,7 +32,7 @@ export default function rehypeAbbreviate(titles) {
         cache.push(id)
       }
 
-      props = {title: title}
+      const props = {title}
 
       if (first) {
         props.className = ['first']

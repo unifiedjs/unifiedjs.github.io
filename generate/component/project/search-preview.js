@@ -5,11 +5,11 @@ import {list} from './list.js'
 import {helperSort} from './helper-sort.js'
 
 export function searchPreview(data) {
-  var {projectByRepo} = data
-  var names = helperSort(data, Object.keys(projectByRepo))
-  var d = pickRandom(names.slice(0, 75), 5)
+  const {projectByRepo} = data
+  const names = helperSort(data, Object.keys(projectByRepo))
+  const d = pickRandom(names.slice(0, 75), 5)
 
-  var trail = more('/explore/project/', [
+  const trail = more('/explore/project/', [
     'Explore the ',
     fmtCompact(names.length),
     ' projects in the ecosystem'

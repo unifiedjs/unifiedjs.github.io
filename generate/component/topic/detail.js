@@ -4,9 +4,9 @@ import {list} from '../project/list.js'
 import {helperSort} from '../project/helper-sort.js'
 
 export function detail(data, d) {
-  var {projectsByTopic} = data
+  const {projectsByTopic} = data
 
-  var trail = more('https://github.com/topics/' + d, [
+  const trail = more('https://github.com/topics/' + d, [
     'Find other projects matching ',
     h('span.tag', d),
     ' on GitHub'

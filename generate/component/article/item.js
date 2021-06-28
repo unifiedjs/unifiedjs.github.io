@@ -3,9 +3,9 @@ import {item as card} from '../../atom/card/item.js'
 import {tag} from '../../atom/micro/tag.js'
 
 export function item(d) {
-  var {matter, meta} = d.data
-  var data = {...matter, ...meta}
-  var {title, description, author, authorGithub, tags, pathname} = data
+  const {matter, meta} = d.data
+  const data = {...matter, ...meta}
+  let {title, description, author, authorGithub, tags, pathname} = data
 
   author = h('span.ellipsis', author)
 

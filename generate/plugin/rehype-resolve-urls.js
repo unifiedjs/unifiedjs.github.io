@@ -1,22 +1,21 @@
 import {visit} from 'unist-util-visit'
 import {tagToUrl} from '../util/tag-to-url.js'
 
-var own = {}.hasOwnProperty
-var gh = 'https://github.com'
+const own = {}.hasOwnProperty
+const gh = 'https://github.com'
 
 // Resolve relative URLs to a place in a repo on GH, making them absolute.
 export default function rehypeResolveUrls(options) {
-  var settings = options || {}
+  const settings = options || {}
 
   return transform
 
   function transform(tree, file) {
-    var data = file.data
-    var repo = data.repo || settings.repo
-    var dirname = data.dirname || settings.dirname || '/'
-    var object = settings.object || 'HEAD'
-    var prefix = [repo, 'blob', object]
-    var base
+    const data = file.data
+    const repo = data.repo || settings.repo
+    const dirname = data.dirname || settings.dirname || '/'
+    const object = settings.object || 'HEAD'
+    let prefix = [repo, 'blob', object]
 
     if (!repo) {
       file.fail('Missing `repo` in `options` or `file.data`', tree)
@@ -26,22 +25,22 @@ export default function rehypeResolveUrls(options) {
       prefix = prefix.concat(dirname.split('/'))
     }
 
-    base = [gh, ...prefix, ''].join('/')
+    const base = [gh, ...prefix, ''].join('/')
 
     visit(tree, 'element', visitor)
 
     function visitor(node) {
-      var {tagName} = node
+      const {tagName} = node
       if (own.call(tagToUrl, tagName)) {
         tagToUrl[tagName].forEach((p) => resolve(node, p, tagName))
       }
     }
 
     function resolve(node, prop, name) {
-      var value = node.properties[prop]
-      var result
-      var length
-      var index
+      const value = node.properties[prop]
+      let result
+      let length
+      let index
 
       if (value && typeof value === 'object' && 'length' in value) {
         result = []

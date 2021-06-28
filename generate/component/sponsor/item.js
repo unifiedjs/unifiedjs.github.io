@@ -5,12 +5,12 @@ import {tw as twitterBadge} from '../../atom/micro/tw.js'
 import {url as urlLine} from '../../atom/micro/url.js'
 import {item as card} from '../../atom/card/item.js'
 
-var base = 'http://opencollective.com/'
+const base = 'http://opencollective.com/'
 
 export function item(d) {
-  var {name, description, image, oc, github, twitter, url, gold} = d
-  var className = gold ? ['gold'] : []
-  var footer = [ocBadge(oc)]
+  const {name, description, image, oc, github, twitter, url, gold} = d
+  const className = gold ? ['gold'] : []
+  const footer = [ocBadge(oc)]
 
   if (github) {
     footer.push(ghBadge(github))

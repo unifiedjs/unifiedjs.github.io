@@ -12,7 +12,7 @@ export const data = {
 }
 
 projects.forEach((d) => {
-  var {repo, topics} = d
+  const {repo, topics} = d
 
   data.projectByRepo[repo] = d
 
@@ -24,9 +24,9 @@ projects.forEach((d) => {
 })
 
 packages.forEach((p) => {
-  var {name, repo, keywords} = p
-  var pos = name.indexOf('/')
-  var scope = pos === -1 ? null : p.name.slice(0, pos)
+  const {name, repo, keywords} = p
+  const pos = name.indexOf('/')
+  const scope = pos === -1 ? null : p.name.slice(0, pos)
 
   data.packageByName[name] = p
 

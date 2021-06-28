@@ -1,5 +1,5 @@
 export function helperReduceDownloads(data, repo) {
-  var {packagesByRepo, packageByName} = data
+  const {packagesByRepo, packageByName} = data
 
   return packagesByRepo[repo].reduce(sum, 0)
 

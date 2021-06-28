@@ -2,7 +2,7 @@ import {sort} from '../../util/sort.js'
 
 // Sort packages by score.
 export function helperSort(data, names) {
-  var {packageByName} = data
+  const {packageByName} = data
 
   return sort(names, score)
 

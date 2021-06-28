@@ -1,9 +1,9 @@
 import {h} from 'hastscript'
 import {findAndReplace, defaultIgnore} from 'hast-util-find-and-replace'
 
-var replacements = initialise()
+const replacements = initialise()
 
-var ignore = defaultIgnore.concat([
+const ignore = defaultIgnore.concat([
   'a',
   'pre',
   'code',
@@ -19,13 +19,13 @@ export default function rehypeLink() {
   return transform
 
   function transform(tree) {
-    findAndReplace(tree, replacements, {ignore: ignore})
+    findAndReplace(tree, replacements, {ignore})
   }
 }
 
 function initialise() {
-  var result = {}
-  var dictionary = {
+  const result = {}
+  const dictionary = {
     'v|file': 'vfile/vfile',
     'uni|fied': 'unifiedjs/unified',
     're|mark': 'remarkjs/remark',
@@ -48,9 +48,9 @@ function initialise() {
   return result
 
   function add(find) {
-    var parts = find.split('|')
-    var name = parts.join('')
-    var slug = dictionary[find]
+    const parts = find.split('|')
+    const name = parts.join('')
+    const slug = dictionary[find]
 
     result[name] = replacer
 

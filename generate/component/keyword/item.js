@@ -6,7 +6,7 @@ import {helperSort} from '../package/helper-sort.js'
 import {list} from '../package/list.js'
 
 export function item(data, d) {
-  var {packagesByKeyword} = data
+  const {packagesByKeyword} = data
 
   return [
     h('.content', h('h3', d)),

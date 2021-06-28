@@ -69,9 +69,9 @@ export const main = unified()
 function move() {
   return transform
   function transform(_, file) {
-    var {pathname} = file.data.meta
-    var parts = pathname.slice(1).split(path.posix.sep)
-    var last = parts.pop()
+    const {pathname} = file.data.meta
+    const parts = pathname.slice(1).split(path.posix.sep)
+    const last = parts.pop()
 
     parts.unshift('build')
     parts.push(last || 'index')

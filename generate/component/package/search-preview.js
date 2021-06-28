@@ -5,11 +5,11 @@ import {list} from './list.js'
 import {helperSort} from './helper-sort.js'
 
 export function searchPreview(data) {
-  var {packageByName} = data
-  var names = helperSort(data, Object.keys(packageByName))
-  var d = pickRandom(names.slice(0, 75), 5)
+  const {packageByName} = data
+  const names = helperSort(data, Object.keys(packageByName))
+  const d = pickRandom(names.slice(0, 75), 5)
 
-  var trail = more('/explore/package/', [
+  const trail = more('/explore/package/', [
     'Explore the ',
     fmtCompact(names.length),
     ' packages in the ecosystem'

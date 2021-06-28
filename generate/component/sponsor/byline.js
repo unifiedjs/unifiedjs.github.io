@@ -1,6 +1,6 @@
 import {h} from 'hastscript'
 
-var oc = 'http://opencollective.com/unified'
+const oc = 'http://opencollective.com/unified'
 
 export function byline() {
   return h('p', [

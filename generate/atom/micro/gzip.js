@@ -2,7 +2,7 @@ import {h} from 'hastscript'
 import {fmtBytes} from '../../util/fmt-bytes.js'
 
 export function gzip(value, name) {
-  var node = fmtBytes(value)
+  let node = fmtBytes(value)
 
   if (name) {
     node = h(

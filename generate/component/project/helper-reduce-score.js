@@ -1,5 +1,5 @@
 export function helperReduceScore(data, repo) {
-  var {packagesByRepo, packageByName} = data
+  const {packagesByRepo, packageByName} = data
 
   return packagesByRepo[repo]
     .map((d) => packageByName[d].score)

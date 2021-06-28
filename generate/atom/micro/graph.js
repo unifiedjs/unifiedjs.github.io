@@ -2,7 +2,7 @@ import {h} from 'hastscript'
 import {fmtCompact} from '../../util/fmt-compact.js'
 
 export function graph(dependents, name) {
-  var by = [h('span.label', 'Dependents: '), fmtCompact(dependents || 0)]
+  let by = [h('span.label', 'Dependents: '), fmtCompact(dependents || 0)]
 
   if (name) {
     by = h(

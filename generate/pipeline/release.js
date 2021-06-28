@@ -17,9 +17,9 @@ import rehypeResolveUrls from '../plugin/rehype-resolve-urls.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 
 const pkg = JSON.parse(fs.readFileSync('package.json'))
-var origin = pkg.homepage
+const origin = pkg.homepage
 
-var schema = deepmerge(defaultSchema, {attributes: {code: ['className']}})
+const schema = deepmerge(defaultSchema, {attributes: {code: ['className']}})
 
 export function release(d) {
   return unified()
@@ -40,19 +40,19 @@ export function release(d) {
     return transform
 
     function transform(tree) {
-      var depth = 6
-      var goal = 4
+      let depth = 6
+      const goal = 4
 
       visit(tree, 'element', pre)
 
-      var shift = goal - depth
+      const shift = goal - depth
 
       if (shift !== 0) {
         shiftHeading(tree, shift)
       }
 
       function pre(node) {
-        var rank = headingRank(node)
+        const rank = headingRank(node)
 
         if (rank && rank < depth) {
           depth = rank

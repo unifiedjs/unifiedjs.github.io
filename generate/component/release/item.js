@@ -3,17 +3,17 @@ import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en/index.js'
 import {constantLocale} from '../../util/constant-locale.js'
 
-var base = 'https://github.com/'
+const base = 'https://github.com/'
 
 TimeAgo.addDefaultLocale(en)
-var timeAgo = new TimeAgo(constantLocale)
-var dateTime = new Intl.DateTimeFormat(constantLocale, {dateStyle: 'medium'})
+const timeAgo = new TimeAgo(constantLocale)
+const dateTime = new Intl.DateTimeFormat(constantLocale, {dateStyle: 'medium'})
 
 export function item(data, d) {
-  var {packagesByRepo} = data
-  var {repo, published, tag} = d
-  var [owner, project] = repo.split('/')
-  var url = base + repo + '/releases/tag/' + encodeURIComponent(tag)
+  const {packagesByRepo} = data
+  const {repo, published, tag} = d
+  const [owner, project] = repo.split('/')
+  const url = base + repo + '/releases/tag/' + encodeURIComponent(tag)
 
   return h('li.block.release', [
     h('h3', [

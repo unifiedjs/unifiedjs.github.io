@@ -37,19 +37,19 @@ import {releases as dataReleases} from '../data/releases.js'
 import {sponsors} from '../data/sponsors.js'
 import {teams} from '../data/teams.js'
 
-var users = yaml.load(fs.readFileSync(path.join('doc', 'showcase.yml')))
+const users = yaml.load(fs.readFileSync(path.join('doc', 'showcase.yml')))
 
-var tasks = []
+const tasks = []
 
 // Render descriptions
 expandDescription(data.projectByRepo)
 expandDescription(data.packageByName)
 expandReleases(dataReleases)
 
-var entries = glob.sync('doc/learn/**/*.md').map((input) => {
-  var file = matter(toVFile.readSync(input))
-  var slug = path.basename(input, path.extname(input))
-  var {group, tags} = file.data.matter
+const entries = glob.sync('doc/learn/**/*.md').map((input) => {
+  const file = matter(toVFile.readSync(input))
+  const slug = path.basename(input, path.extname(input))
+  const {group, tags} = file.data.matter
 
   file.data.meta = {
     type: 'article',
@@ -60,7 +60,7 @@ var entries = glob.sync('doc/learn/**/*.md').map((input) => {
   return file
 })
 
-var sections = [
+const sections = [
   {
     slug: 'guide',
     title: 'Guides',
@@ -74,7 +74,7 @@ var sections = [
       'Learn unified through byte-sized articles, that stand on their own, explaining how to complete a small, specific, focussed task'
   }
 ].map((d) => {
-  var {slug} = d
+  const {slug} = d
   return {
     ...d,
     tags: [slug, 'learn'],
@@ -98,8 +98,8 @@ entries.forEach((file) => {
 })
 
 sections.forEach((section) => {
-  var {title, description, tags, pathname, entries} = section
-  var meta = {title, description, tags, pathname}
+  const {title, description, tags, pathname, entries} = section
+  const meta = {title, description, tags, pathname}
   page(() => articles(meta, entries), meta)
 })
 
@@ -182,7 +182,7 @@ page(() => releases(data), {
 })
 
 Object.keys(data.projectByRepo).forEach((d) => {
-  var {description, topics} = data.projectByRepo[d]
+  const {description, topics} = data.projectByRepo[d]
 
   page(() => project(data, d), {
     title: d,
@@ -193,14 +193,14 @@ Object.keys(data.projectByRepo).forEach((d) => {
 })
 
 Object.keys(data.packageByName).forEach((d) => {
-  var pack = data.packageByName[d]
-  var {description, readmeName, repo, manifestBase, keywords} = pack
-  var input = path.join('data', 'readme', readmeName)
-  var pathname = '/explore/package/' + d + '/'
+  const pack = data.packageByName[d]
+  const {description, readmeName, repo, manifestBase, keywords} = pack
+  const input = path.join('data', 'readme', readmeName)
+  const pathname = '/explore/package/' + d + '/'
 
   tasks.push(() =>
     toVFile.read(input).then((file) => {
-      var meta = {title: d, description, pathname, tags: keywords}
+      const meta = {title: d, description, pathname, tags: keywords}
 
       file.data = {meta, repo, dirname: manifestBase}
 
@@ -235,7 +235,7 @@ page(() => cases(users), {
   pathname: '/community/case/'
 })
 
-var promises = tasks.map((fn) => () => {
+const promises = tasks.map((fn) => () => {
   return Promise.resolve(fn())
     .then(({tree, file}) =>
       pipeline.run(tree, file).then((tree) => ({tree, file}))
@@ -262,16 +262,16 @@ function page(fn, meta) {
 
 function expandDescription(map) {
   Object.keys(map).forEach((id) => {
-    var d = map[id]
-    var tree = descriptionPipeline.parse(d.description)
+    const d = map[id]
+    const tree = descriptionPipeline.parse(d.description)
     d.descriptionRich = descriptionPipeline.runSync(tree)
   })
 }
 
 function expandReleases(releases) {
   releases.forEach((d) => {
-    var pipeline = createReleasePipeline(d)
-    var tree = pipeline.parse(d.description)
+    const pipeline = createReleasePipeline(d)
+    const tree = pipeline.parse(d.description)
     d.descriptionRich = pipeline.runSync(tree)
   })
 }

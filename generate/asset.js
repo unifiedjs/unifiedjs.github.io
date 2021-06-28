@@ -18,7 +18,7 @@ const pack = JSON.parse(fs.readFileSync('package.json'))
 
 dotenv.config()
 
-var externals = {
+const externals = {
   '.css': trough().use(transformCss),
   '.js': trough().use(bundleJs)
 }
@@ -31,41 +31,45 @@ if (process.env.UNIFIED_OPTIMIZE_IMAGES) {
   )
 }
 
-var processPipeline = trough()
+const processPipeline = trough()
   .use(toVFile.read)
   .use(processFile)
   .use(move)
   .use(mkdir)
   .use(toVFile.write)
 
-var copyPipeline = trough().use(move).use(mkdir).use(copy)
+const copyPipeline = trough().use(move).use(mkdir).use(copy)
 
-var imagePipeline = trough().use(move).use(mkdir).use(toVFile.write).use(print)
+const imagePipeline = trough()
+  .use(move)
+  .use(mkdir)
+  .use(toVFile.write)
+  .use(print)
 
-var filePipeline = trough()
-  .use(function (fp, next) {
-    var file = toVFile(fp)
-    var ext = file.extname
-    var pipeline = ext in externals ? processPipeline : copyPipeline
+const filePipeline = trough()
+  .use((fp, next) => {
+    const file = toVFile(fp)
+    const ext = file.extname
+    const pipeline = ext in externals ? processPipeline : copyPipeline
     pipeline.run(file, next)
   })
   .use(print)
 
 trough()
   .use(glob)
-  .use(function (paths, done) {
-    var run = promisify(filePipeline.run)
+  .use((paths, done) => {
+    const run = promisify(filePipeline.run)
 
     pAll(
       paths.map((path) => () => run(path)),
       {concurrency: 3}
     ).then((files) => done(null, files), done)
   })
-  .use(function (files, next) {
-    var value = new URL(pack.homepage).host + '\n'
+  .use((files, next) => {
+    const value = new URL(pack.homepage).host + '\n'
     toVFile.write({dirname: 'build', basename: 'CNAME', value}, next)
   })
-  .run('asset/**/*.*', function (error) {
+  .run('asset/**/*.*', (error) => {
     if (error) {
       console.error(reporter(error))
       process.exitCode = 1
@@ -73,14 +77,14 @@ trough()
   })
 
 function processFile(file, next) {
-  externals[file.extname].run(file, function (error) {
+  externals[file.extname].run(file, (error) => {
     file.processed = true
     next(error)
   })
 }
 
 function move(file) {
-  var sep = path.sep
+  const sep = path.sep
   file.dirname = ['build'].concat(file.dirname.split(sep).slice(1)).join(sep)
 }
 
@@ -108,7 +112,7 @@ function print(file) {
 function transformCss(file) {
   return postcss(postcssPresetEnv({stage: 0}), cssnano({preset: 'advanced'}))
     .process(file.toString('utf8'), {from: file.path})
-    .then(function (result) {
+    .then((result) => {
       file.value = result.css
     })
 }
@@ -121,7 +125,7 @@ function bundleJs(file, next) {
       minify: true,
       write: false
     })
-    .then(function (result) {
+    .then((result) => {
       if (result.errors.length > 0) throw new Error('esbuild errors')
       if (result.warnings.length > 0) throw new Error('esbuild warnings')
       const output = result.outputFiles[0]
@@ -131,15 +135,15 @@ function bundleJs(file, next) {
 }
 
 function transformPng(file, next) {
-  var sizes = [200, 600, 1200, 2000]
-  var formats = ['webp', 'png']
-  var options = {
+  const sizes = [200, 600, 1200, 2000]
+  const formats = ['webp', 'png']
+  const options = {
     webp: {quality: 50, alphaQuality: 50},
     png: {quality: 50, compressionLevel: 9}
   }
 
-  var run = promisify(imagePipeline.run)
-  var pipeline = sharp(file.value)
+  const run = promisify(imagePipeline.run)
+  const pipeline = sharp(file.value)
 
   pipeline
     .metadata()
@@ -161,7 +165,7 @@ function transformPng(file, next) {
       [media.format](options[media.format])
       .toBuffer()
       .then((buf) => {
-        var copy = toVFile(file.path)
+        const copy = toVFile(file.path)
 
         copy.value = buf
         copy.stem += '-' + media.size

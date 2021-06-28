@@ -3,8 +3,8 @@ import {list} from '../package/list.js'
 import {helperSort} from '../package/helper-sort.js'
 
 export function detail(data, d) {
-  var {packagesByRepo} = data
-  var packages = packagesByRepo[d]
+  const {packagesByRepo} = data
+  const packages = packagesByRepo[d]
 
   return [
     h(
