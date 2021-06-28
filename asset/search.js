@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-var FlexSearch = require('flexsearch')
+var {Index} = require('flexsearch')
 var mean = require('compute-mean')
 var toDom = require('hast-util-to-dom')
 var data = require('../generate/data.js')
@@ -139,11 +139,7 @@ function init() {
     }
   ].map((d) => {
     var $scope = document.querySelector(d.selector)
-    var index = new FlexSearch({
-      profile: 'score',
-      encode: 'advanced',
-      tokenize: 'full'
-    })
+    var index = new Index({preset: 'score', tokenize: 'full'})
     var view = {...d, index, $scope}
 
     return view.create(view).then(() => view)
@@ -205,7 +201,7 @@ function init() {
       document.querySelector('#root-release').style = 'display:none'
 
       searches.forEach((search) => {
-        search.index.search(query, {suggest: true}, function (result) {
+        search.index.searchAsync(query, {suggest: true}, function (result) {
           var clean = result.filter(unique)
           var weighted = desc(clean, weight)
 
