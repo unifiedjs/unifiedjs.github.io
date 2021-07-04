@@ -27,6 +27,7 @@ kvnsmth
 lars-trieloff
 mgan
 mitchellhamilton
+motif
 netlify
 opencollective
 radwebhosting
