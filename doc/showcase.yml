@@ -137,3 +137,8 @@
   url: https://phenomic.io
   gh: phenomic/phenomic
   src: /image/phenomic.png
+- title: NextJS Blog Boilerplate
+  short: Uses unified to generate static sites
+  url: https://creativedesignsguru.com/demo/Nextjs-Blog-Boilerplate/
+  gh: ixartz/Next-js-Blog-Boilerplate
+  src: /image/next-blog-boilerplate.png
