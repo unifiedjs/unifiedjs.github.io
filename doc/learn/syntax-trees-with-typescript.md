@@ -33,19 +33,19 @@ build on: `Node`, `Literal`, and `Parent`.
 #### `Node`
 
 Every unified extends `Node`, the syntactic unit of syntax trees.
-Every `Node` must have a `type`, the `type` tells us what kind of syntax the `Node` is.
-For example in Markdown (mdast) `Node` will be extended to make different
-kinds of content such a `heading` or a `link`, a `paragraph` or a `blockquote`
+Every `Node` must have a `type`, the type tells us what kind of syntax the node
+is. For example in Markdown (mdast) `Node` will be extended to make different
+kinds of content such a `Heading` or a `Link`, a `Paragraph` or a `Blockquote`
 (among others). Each of these different types extend `Node` (sometimes
 indirectly through `Literal` or `Parent`) and set `type` to a [string literal](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types)
 which uniquely identifies a kind of content (in TypeScript parlance a [discriminated union](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions)).
 
-A `Node` also can optionally include `Data`.
-`Data` is a dictionary/object which can store extra information and metadata
-which is not standard to a given node `type`.
+A node also can optionally include `Data`.
+Data is a dictionary/object which can store extra information and metadata
+which is not standard to a given node type.
 
 When a syntax tree is parsed from a file, it may include `Position`, which is
-information about the `Node`’s location in source file.
+information about the Node’s location in source file.
 
 ```ts
 /**
@@ -104,7 +104,7 @@ export interface Position {
 #### `Literal`
 
 `Literal` extends `Node` and adds a `value` property.
-For example a markdown `text` `Node` extends `Literal` and sets `value` to be a `string`.
+For example a markdown `text` node extends `Literal` and sets `value` to be a `string`.
 
 ```ts
 /**
@@ -116,6 +116,9 @@ export interface Literal extends Node {
 ```
 
 #### `Parent`
+
+`Parent` extends `Node` and adds `children`.
+Children represent other content which is inside or a part of this node.
 
 ```ts
 /**
@@ -147,9 +150,9 @@ or into a [JSDoc TypeScript](https://www.typescriptlang.org/docs/handbook/intro-
 
 ```js
 /**
- * @typedef {import("unist").Node} Node
- * @typedef {import("unist").Literal} Literal
- * @typedef {import("unist").Parent} Parent
+ * @typedef {import('unist').Node} Node
+ * @typedef {import('unist').Literal} Literal
+ * @typedef {import('unist').Parent} Parent
  */
 ```
 
@@ -186,9 +189,9 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
 
 ```js
 /**
- * @typedef {import("mdast").Heading} Heading
- * @typedef {import("mdast").Code} Code
- * @typedef {import("mdast").Link} Link
+ * @typedef {import('mdast').Heading} Heading
+ * @typedef {import('mdast').Code} Code
+ * @typedef {import('mdast').Link} Link
  */
 ```
 
@@ -214,9 +217,9 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
 
 ```js
 /**
- * @typedef {import("hast").Element} Element
- * @typedef {import("hast").Comment} Comment
- * @typedef {import("hast").DocType} DocType
+ * @typedef {import('hast').Element} Element
+ * @typedef {import('hast').Comment} Comment
+ * @typedef {import('hast').DocType} DocType
  */
 ```
 
@@ -226,7 +229,8 @@ The [E**x**tensible **A**bstract **S**yntax **T**ree (XAST)](https://github.com/
 extends `unist` with types specific for XML such as [`Element`](https://github.com/syntax-tree/xast#element),
 [`CData`](https://github.com/syntax-tree/xast#cdata), [`Instruction`](https://github.com/syntax-tree/xast#instruction),
 and many more. A full list of node types can be found in the [XAST documentation](https://github.com/syntax-tree/xast#readme).
-[Typings for XAST are available on npm](https://www.npmjs.com/package/@types/xast) can be installed with a package manager.
+[Typings for XAST are available on npm](https://www.npmjs.com/package/@types/xast)
+can be installed with a package manager.
 
 Install:
 
@@ -244,9 +248,9 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
 
 ```js
 /**
- * @typedef {import("xast").Element} Element
- * @typedef {import("xast").CData} CData
- * @typedef {import("xast").Instruction} Instruction
+ * @typedef {import('xast').Element} Element
+ * @typedef {import('xast').CData} CData
+ * @typedef {import('xast').Instruction} Instruction
  */
 ```
 
@@ -266,7 +270,7 @@ Unified provides several type-safe utilities which can help with this.
 
 [`unist-util-visit`](https://github.com/syntax-tree/unist-util-visit#readme)
 takes a syntax tree, a [`Test`](https://github.com/syntax-tree/unist-util-is#use),
-and a callback. The callback will be called for each `Node` in the tree that
+and a callback. The callback will be called for each node in the tree that
 passes the `Test`.
 
 For example if we want to increasing the heading level of all headings in a
@@ -344,9 +348,9 @@ remark()
 
 #### `unist-util-visit-parents`
 
-Sometimes in addition to wanting to find a `Node` you also need to know the
-`Node`s higher in the tree, its parents. [`unist-util-visit-parents`](https://github.com/syntax-tree/unist-util-visit-parents)
-is similar to `unist-util-visit`, but also includes a list of parent nodes.
+Sometimes besides to wanting to find a node you also need to know the
+Node’s higher in the tree, its parents. [`unist-util-visit-parents`](https://github.com/syntax-tree/unist-util-visit-parents)
+is like `unist-util-visit`, but also includes a list of parent nodes.
 
 For example if we want to check if all markdown `ListItem` are inside a `List`
 we could:
@@ -392,12 +396,12 @@ remark()
 ### How to narrow generic `Node` to specific syntax types
 
 Unified works with many languages, and can pull content from strings, from
-files, and from virtual files. To work with a specific `Node` `type` or a small
-set of `Node` `types` we need to [narrow](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
+files, and from virtual files. To work with a specific node type or a small
+set of node types we need to [narrow](https://www.typescriptlang.org/docs/handbook/2/narrowing.html)
 the type, taking the more general `Node` and doing type safe checks to get to a
 more specific type like a `Link`. Unified provides several utilities to help
 with this, and there are some TypeScript language features which can also help.
-Let's take a look at `unist-util-is`.
+Let’s take a look at `unist-util-is`.
 
 [`unist-util-is`](https://github.com/syntax-tree/unist-util-is#readme) takes a
 `Node` and a [`Test`](https://github.com/syntax-tree/unist-util-is#isnode-test-index-parent-context)
@@ -451,8 +455,8 @@ if (isBlockquote(node)) {
 
 When content needs to be created or added, it’s often useful to build new
 syntax trees, or fragments of syntax trees. This can be easy to do with plain
-JSON, unified also offers some utilities for building trees with `hyperscript`
-or `JSX`.
+JSON, unified also offers some utilities for building trees with hyperscript
+or JSX.
 
 #### JSON
 
@@ -475,7 +479,8 @@ const mdast = {
 }
 ```
 
-for some extra type safety this can be checked with the types for the given syntax tree language, in this case `mdast`:
+for some extra type safety this can be checked with the types for the given
+syntax tree language, in this case MDAST:
 
 ```ts
 import type {Root} from 'mdast'
