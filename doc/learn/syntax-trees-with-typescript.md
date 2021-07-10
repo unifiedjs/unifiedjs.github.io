@@ -52,21 +52,21 @@ information about the `Node`’s location in source file.
  * Syntactic units in unist syntax trees are called nodes.
  */
 interface Node {
-    /**
-     * The variant of a node.
-     */
-    type: string;
+  /**
+   * The variant of a node.
+   */
+  type: string
 
-    /**
-     * Information from the ecosystem.
-     */
-    data?: Data | undefined;
+  /**
+   * Information from the ecosystem.
+   */
+  data?: Data | undefined
 
-    /**
-     * Location of a node in a source document.
-     * Must not be present if a node is generated.
-     */
-    position?: Position | undefined;
+  /**
+   * Location of a node in a source document.
+   * Must not be present if a node is generated.
+   */
+  position?: Position | undefined
 }
 
 /**
@@ -75,29 +75,30 @@ interface Node {
  * implementing unist.
  */
 export interface Data {
-    [key: string]: unknown;
+  [key: string]: unknown
 }
 
 /**
  * Location of a node in a source file.
  */
 export interface Position {
-    /**
-     * Place of the first character of the parsed source region.
-     */
-    start: Point;
+  /**
+   * Place of the first character of the parsed source region.
+   */
+  start: Point
 
-    /**
-     * Place of the first character after the parsed source region.
-     */
-    end: Point;
+  /**
+   * Place of the first character after the parsed source region.
+   */
+  end: Point
 
-    /**
-     * Start column at each index (plus start line) in the source region,
-     * for elements that span multiple lines.
-     */
-    indent?: number[] | undefined;
+  /**
+   * Start column at each index (plus start line) in the source region,
+   * for elements that span multiple lines.
+   */
+  indent?: number[] | undefined
 }
+
 ```
 
 #### `Literal`
@@ -110,7 +111,7 @@ For example a markdown `text` `Node` extends `Literal` and sets `value` to be a 
  * Nodes containing a value.
  */
 export interface Literal extends Node {
-    value: unknown;
+  value: unknown
 }
 ```
 
@@ -121,10 +122,10 @@ export interface Literal extends Node {
  * Nodes containing other nodes.
  */
 export interface Parent extends Node {
-    /**
-     * List representing the children of a node.
-     */
-    children: Node[];
+  /**
+   * List representing the children of a node.
+   */
+  children: Node[];
 }
 ```
 
