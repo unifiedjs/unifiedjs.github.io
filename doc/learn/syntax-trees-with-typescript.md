@@ -1,13 +1,17 @@
 ---
 group: guide
-title: Working with syntax trees in TypeScript
-description: Guide that shows how to traverse, update, and create syntax trees in TypeScript
+title: Typing syntax trees with TypeScript
+description: Guide shows how to use types packages to work with syntax trees
 author: Christian Murphy
 authorGithub: ChristianMurphy
 tags:
   - typescript
+  - unist
+  - mdast
+  - hast
+  - xast
 published: 2020-06-09
-modified: 2020-06-09
+modified: 2020-06-11
 ---
 
 ## Working with syntax trees in TypeScript
@@ -16,20 +20,31 @@ This guide will introduce you to using unist and unified with TypeScript.
 
 ### Contents
 
-*   [The basic syntax tree types](#the-basic-syntax-tree-types)
-*   [The Languages](#the-languages)
-*   [How to traverse a syntax tree](#how-to-traverse-a-syntax-tree)
-*   [How to narrow generic `Node` to specific syntax types](#how-to-narrow-generic-node-to-specific-syntax-types)
-*   [How to build syntax tree](#how-to-build-syntax-tree)
+*   [The Basics](#the-basics)
+*   [UNIST](#unist)
+*   [MDAST (Markdown)](#mdast-markdown)
+*   [HAST (HTML)](#hast-html)
+*   [XAST (XML)](#xast-xml)
 *   [Summary](#summary)
+*   [Next steps](#next-steps)
 
-### The basic syntax tree types
+### The Basics
 
 All unified syntax trees are based off [unist (**uni**versal **s**yntax **t**ree)](https://github.com/syntax-tree/unist).
 The core types are available in a types only package: [`@types/unist`](https://www.npmjs.com/package/@types/unist).
 The main type is `Node`.
 Everything else extends it.
 `Literal` and `Parent` are more practical types which also extend `Node`.
+
+The types provided by unist are abstract interfaces.
+In many cases, you will instead use more specific interfaces depending on what
+language you’re working with.
+Each language supported by unified, like markdown, HTML, and XML, has its own
+syntax tree standard which extends `unist`.
+
+Let’s take a look at these.
+
+### UNIST
 
 #### `Node`
 
@@ -160,16 +175,7 @@ or into a [JSDoc TypeScript](https://www.typescriptlang.org/docs/handbook/intro-
  */
 ```
 
-### The Languages
-
-The types provided by unist are abstract interfaces.
-In many cases, you will instead use more specific interfaces depending on what
-language you’re working with.
-Each language supported by unified, like markdown, HTML, and XML, has its own
-syntax tree standard which extends `unist`.
-Let’s take a look at a few of them.
-
-#### MDAST (Markdown)
+### MDAST (Markdown)
 
 [mdast (**m**arkdown **a**bstract **s**yntax **t**ree)](https://github.com/syntax-tree/mdast#readme)
 extends unist with types specific for markdown such as `Heading`, `Code`,
@@ -199,7 +205,7 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
  */
 ```
 
-#### HAST (HTML)
+### HAST (HTML)
 
 [hast (**h**ypertext **a**bstract **s**yntax **t**ree)](https://github.com/syntax-tree/hast#readme)
 extends unist with types specific for HTML such as `Element`, `Comment`,
@@ -229,7 +235,7 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
  */
 ```
 
-#### XAST (XML)
+### XAST (XML)
 
 [xast (e**x**tensible **a**bstract **s**yntax **t**ree)](https://github.com/syntax-tree/xast#readme)
 extends unist with types specific for HTML such as `Element`, `CData`,
@@ -259,312 +265,13 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
  */
 ```
 
-### How to traverse a syntax tree
-
-:notebook: please read the [introduction to tree traversal in JavaScript](./tree-traversal/)
-before reading this section.
-
-A frequent task when working with unified is to traverse trees to find certain
-nodes and then doing something with them (often validating or transforming
-them).
-There are several type-safe utilities provided by unified to help with this.
-
-#### `unist-util-visit`
-
-[`unist-util-visit`](https://github.com/syntax-tree/unist-util-visit#readme)
-takes a syntax tree, a `Test`, and a callback.
-The callback is called for each node in the tree that passes `Test`.
-
-For example if we want to increasing the heading level of all headings in a
-markdown document:
-
-```ts
-import remark from 'remark'
-import type {Node} from 'unist'
-import type {Heading} from 'mdast'
-import {visit} from 'unist-util-visit'
-
-const markdownFile = await remark()
-  .use(() => (mdast: Node) => {
-    visit(
-      mdast,
-      // Check that the Node is a heading:
-      'heading',
-      (node: Heading) => {
-        node.depth += 1
-      }
-    )
-  })
-  .process('## Hello, *World*!')
-
-console.log(markdownFile.toString())
-```
-
-Or if we want to make all ordered lists in a markdown document unordered:
-
-```ts
-import remark from 'remark'
-import type {Node} from 'unist'
-import type {List} from 'mdast'
-import {visit} from 'unist-util-visit'
-
-const markdownFile = await remark()
-  .use(() => (mdast: Node) => {
-    visit(
-      mdast,
-      // Check that the Node is a list and that it is ordered:
-      {type: 'list', ordered: true},
-      (node: List) => {
-        node.ordered = false
-      }
-    )
-  })
-  .process('1. list item')
-
-console.log(markdownFile.toString())
-```
-
-#### `unist-util-visit-parents`
-
-Sometimes it’s needed to know the ancestors of a node (all its parents).
-[`unist-util-visit-parents`](https://github.com/syntax-tree/unist-util-visit-parents)
-is like `unist-util-visit` but includes a list of all parent nodes.
-
-For example if we want to check if all markdown `ListItem` are inside a `List`
-we could:
-
-```ts
-import remark from 'remark'
-import type {Node, Parent} from 'unist'
-import type {ListItem} from 'mdast'
-import {visitParents} from 'unist-util-visit-parents'
-
-remark()
-  .use(() => (mdast: Node) => {
-    visitParents(mdast, 'listItem', (listItem: ListItem, parents: Parent[]) => {
-      if (!parents.some((parent) => parent.type === 'list')) {
-        console.warn('listItem is outside a list')
-      }
-    })
-  })
-  .process('1. list item')
-```
-
-#### `unist-util-select`
-
-Sometimes CSS selectors are easier to read than several (nested) if/else
-statements.
-[`unist-util-select`](https://github.com/syntax-tree/unist-util-select) lets
-you do just that.
-For example if we want to find all `Paragraph`s that are somewhere in a
-`Blockquote`, we could:
-
-```ts
-import remark from 'remark'
-import type {Node} from 'unist'
-import {selectAll} from 'unist-util-select'
-
-remark()
-  .use(() => (mdast: Node) => {
-    const matches = selectAll('blockquote paragraph', mdast)
-    console.log(matches)
-  })
-  .process('1. list item')
-```
-
-### How to narrow generic `Node` to specific syntax types
-
-To work with a specific node type or a set of node types we need to
-[narrow](https://www.typescriptlang.org/docs/handbook/2/narrowing.html) their
-type.
-For example, we can take a `Node` and perform a type safe check to get a more
-specific type like a `Link`.
-Unified provides a utility to help with this and there are some TypeScript
-language features which can also help.
-Let’s first take a look at `unist-util-is`.
-
-[`unist-util-is`](https://github.com/syntax-tree/unist-util-is#readme) takes a
-`Node` and a [`Test`](https://github.com/syntax-tree/unist-util-is#isnode-test-index-parent-context)
-and returns `true` if the test passes, and `false` if it does not. It also is
-a [TypeScript predicate](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
-meaning if used as the condition for an `if` statement, TypeScript knows more
-about the type inside the `if`.
-
-For example:
-
-```ts
-import type {Node, Literal} from 'unist'
-import type {List, Blockquote, Strong, Emphasis, Heading} from 'mdast'
-import {is, convert} from 'unist-util-is'
-
-// `Node` could come from a plugin, a utility, or be passed into a function
-// here we hard code a Node for testing purposes
-const node: Node = {type: 'example'}
-
-if (is<List>(node, 'list')) {
-  // If we get here, node is List
-}
-
-if (is<Strong | Emphasis>(node, ['strong', 'emphasis'])) {
-  // If we get here, node is Strong or Emphasis
-
-  // If we want even more specific type, we can use a discriminated union
-  // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions
-  if (node.type === 'emphasis') {
-    // If we get here, node is Emphasis
-  }
-}
-
-if (is<Heading>(node, {type: 'heading', depth: 1})) {
-  // If we get here, node is Heading
-}
-
-// For advanced use cases, another predicate can be passed to `is`
-if (is<Literal>(node, (node: Node): node is Literal => 'value' in node)) {
-  // If we get here, node is one of the Literal types
-}
-
-// Reusable predicates can also be created using any `Test`
-const isBlockquote = convert<Blockquote>('blockquote')
-if (isBlockquote(node)) {
-  // If we get here, node is Blockquote
-}
-```
-
-### How to build syntax tree
-
-It’s often useful to build new (fragments of) syntax trees when adding or
-replacing content.
-It’s possible to create trees with plain object and array literals (JSON) or
-programmatically with a small utility.
-Finally it’s even possible to use JSX to build trees.
-
-#### JSON
-
-The most basic way to create a tree is with plain object and arrays, such as:
-
-```ts
-const mdast = {
-  type: 'root',
-  children: [
-    {
-      type: 'paragraph',
-      children: [
-        {
-          type: 'text',
-          value: 'example'
-        }
-      ]
-    }
-  ]
-}
-```
-
-for some extra type safety this can be checked with the types for the given
-syntax tree language, in this case MDAST:
-
-```ts
-import type {Root} from 'mdast'
-
-const mdast: Root = {
-  type: 'root',
-  children: [
-    {
-      type: 'paragraph',
-      children: [
-        {
-          type: 'text',
-          value: 'example'
-        }
-      ]
-    }
-  ]
-}
-```
-
-#### `unist-builder`
-
-It’s also possible to build trees with [`unist-builder`](https://github.com/syntax-tree/unist-builder#readme).
-It allows a more concise, hyperscript (similar to `React.createElement`) like
-syntax:
-
-```ts
-import {u} from 'unist-builder'
-
-const mdast = u('root', [
-  u('paragraph', [
-    u('text', 'example')
-  ])
-])
-```
-
-#### `hastscript`
-
-When working with hast (HTML), [`hastscript`](https://github.com/syntax-tree/hastscript#readme)
-can be used.
-
-```ts
-import {h} from 'hastscript'
-
-console.log(
-  h('div#some-id.foo', [
-    h('span', 'some text'),
-    h('input', {type: 'text', value: 'foo'}),
-    h('a.alpha.bravo.charlie', {download: true}, 'delta')
-  ])
-)
-```
-
-hastscript can also be used as a JSX pragma:
-
-```tsx
-/** @jsx h @jsxFrag null */
-import {h} from 'hastscript'
-
-console.log(
-  <form method="POST">
-    <input type="text" name="foo" />
-    <input type="text" name="bar" />
-    <input type="submit" name="send" />
-  </form>
-)
-```
-
-#### `xastscript`
-
-When working with xast (XML), [`xastscript`](https://github.com/syntax-tree/xastscript#readme)
-can be used.
-
-```ts
-import {x} from 'xastscript'
-
-console.log(
-  x('album', {id: 123}, [
-    x('name', 'Exile in Guyville'),
-    x('artist', 'Liz Phair'),
-    x('releasedate', '1993-06-22')
-  ])
-)
-```
-
-xastscript can also be used as a JSX pragma:
-
-```tsx
-/** @jsx x @jsxFrag null */
-import {x} from 'xastscript'
-
-console.log(
-  <album id={123}>
-    <name>Born in the U.S.A.</name>
-    <artist>Bruce Springsteen</artist>
-    <releasedate>1984-04-06</releasedate>
-  </album>
-)
-```
-
 ### Summary
 
-*   Unified provides types for each language’s syntax tree and utilities to
-    work with these types
-*   Types are available for most plugins and utilities (and if types haven’t
-    been added a pull request is welcome!)
+*   Unified provides types for each language’s syntax tree
+*   These types can be import into TypeScript projects and into JSDoc projects
+
+### Next steps
+
+*   [Learn to traverse syntax trees with TypeScript](/learn/recipe/tree-traversal-typescript)
+*   [Learn to narrow `Node` to a more specific type with TypeScript](/learn/recipe/node-type-narrowing-in-typescript)
+*   [Learn to build content with syntax trees in TypeScript](/learn/recipe/build-a-syntax-tree-typescript)
