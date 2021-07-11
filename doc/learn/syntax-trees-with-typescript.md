@@ -423,11 +423,22 @@ if (is<Strong | Emphasis>(node, ['strong', 'emphasis'])) {
 
 if (is<Heading>(node, {type: 'heading', depth: 1})) {
   // If we get here, node is Heading
+  //
+  // Typescript checks that the properties used in the Test
+  // are valid attributes of <Heading>
+  //
+  // It does not narrow node.depth only be 1,
+  // which can be done with <Heading & {depth: 1}>
 }
 
 // For advanced use cases, another predicate can be passed to `is`
 if (is<Literal>(node, (node: Node): node is Literal => 'value' in node)) {
   // If we get here, node is one of the Literal types
+  //
+  // Here any comparison function can be used, as long as it is a predicate
+  // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
+  // and as long as the predicate and generic match.
+  // For example here, <Literal> and `is Literal` match.
 }
 
 // Reusable predicates can also be created using any `Test`
