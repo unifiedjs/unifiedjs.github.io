@@ -25,11 +25,10 @@ language features which can also help.
 Let’s first take a look at `unist-util-is`.
 
 [`unist-util-is`](https://github.com/syntax-tree/unist-util-is#readme) takes a
-`Node` and a [`Test`](https://github.com/syntax-tree/unist-util-is#isnode-test-index-parent-context)
-and returns `true` if the test passes, and `false` if it does not. It also is
-a [TypeScript predicate](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
-meaning if used as the condition for an `if` statement, TypeScript knows more
-about the type inside the `if`.
+`Node` and a `Test` and returns whether the test passes.
+It can be used as a [TypeScript type predicate](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates)
+which when used as a condition (such as in an if-statement) tells TypeScript
+to narrow a node.
 
 For example:
 
@@ -43,7 +42,14 @@ import {is, convert} from 'unist-util-is'
 const node: Node = {type: 'example'}
 
 if (is<List>(node, 'list')) {
-  // If we get here, node is List
+  // If we're here, node is List.
+  //
+  // 'list' is compared to node.type to make sure they match
+  // true means a match, false means no match
+  //
+  // <List> tells TypeScript to ensure 'list' matches List.type
+  // and that if 'list' matches both node.type and List.type
+  // we know that node is List within this if condition.
 }
 
 if (is<Strong | Emphasis>(node, ['strong', 'emphasis'])) {
@@ -58,11 +64,22 @@ if (is<Strong | Emphasis>(node, ['strong', 'emphasis'])) {
 
 if (is<Heading>(node, {type: 'heading', depth: 1})) {
   // If we get here, node is Heading
+  //
+  // Typescript checks that the properties used in the Test
+  // are valid attributes of <Heading>
+  //
+  // It does not narrow node.depth only be 1,
+  // which can be done with <Heading & {depth: 1}>
 }
 
 // For advanced use cases, another predicate can be passed to `is`
 if (is<Literal>(node, (node: Node): node is Literal => 'value' in node)) {
   // If we get here, node is one of the Literal types
+  //
+  // Here any comparison function can be used, as long as it is a predicate
+  // https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
+  // and as long as the predicate and generic match.
+  // For example here, <Literal> and `is Literal` match.
 }
 
 // Reusable predicates can also be created using any `Test`
