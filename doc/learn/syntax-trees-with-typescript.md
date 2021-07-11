@@ -324,30 +324,6 @@ const markdownFile = await remark()
 console.log(markdownFile.toString())
 ```
 
-Or we could warn each time we find a link which has a URL that does not use
-HTTPS:
-
-```ts
-import remark from 'remark'
-import type {Node} from 'unist'
-import type {Link} from 'mdast'
-import {is} from 'unist-util-is'
-import {visit} from 'unist-util-visit'
-
-remark()
-  .use(() => (mdast: Node) => {
-    visit(
-      mdast,
-      // this both checks the node is a link and checks the content of url
-      (node: Node): node is Link => is<Link>(node, 'link') && !node.url.includes('https'),
-      (node: Link) => {
-        console.warn('link is not https', node.url)
-      }
-    )
-  })
-  .process('[link](http://example.com)')
-```
-
 #### `unist-util-visit-parents`
 
 Sometimes it’s needed to know the ancestors of a node (all its parents).
@@ -588,7 +564,6 @@ console.log(
 
 ### Summary
 
-*   Using TypeScript can make finding typos and bugs easier
 *   Unified provides types for each language’s syntax tree and utilities to
     work with these types
 *   Types are available for most plugins and utilities (and if types haven’t
