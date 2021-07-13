@@ -28,7 +28,7 @@ This guide will introduce you to using unist and unified with TypeScript.
 *   [Summary](#summary)
 *   [Next steps](#next-steps)
 
-### The Basics
+### The basics
 
 All unified syntax trees are based off [unist (**uni**versal **s**yntax **t**ree)](https://github.com/syntax-tree/unist).
 The core types are available in a types only package: [`@types/unist`](https://www.npmjs.com/package/@types/unist).
@@ -44,21 +44,21 @@ syntax tree standard which extends `unist`.
 
 Let’s take a look at these.
 
-### UNIST
+### unist
 
 #### `Node`
 
 `Node` is the syntactic unit of syntax trees.
 Each node extends `Node` (sometimes indirectly through `Literal` or `Parent`)
-and set `type` to a [string literal](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types)
-The type field tells us what kind of syntax the node is.
+and sets `type` to a [string literal](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types).
+The type field tells us what kind of content the node is.
 This field uniquely identifies a kind of content (in TypeScript parlance a
 [discriminated union](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions)).
-For example in Markdown (mdast) `Node` will be extended to make different kinds
-of content such as a `Heading` or `Link`, which respectively use a `type` field
+For example in markdown (mdast) `Node` will be extended to make different things
+such as a `Heading` or `Link`, which respectively use a `type` field
 of `'heading'` and `'link'`.
 
-A node also can optionally include a `Data` interface at the `data` field.
+A node can optionally include a `Data` interface at the `data` field.
 This is an object (dictionary) that stores extra metadata which is not standard
 to the node but defined by the ecosystem (utilities and plugins).
 
@@ -175,7 +175,7 @@ or into a [JSDoc TypeScript](https://www.typescriptlang.org/docs/handbook/intro-
  */
 ```
 
-### MDAST (Markdown)
+### mdast (markdown)
 
 [mdast (**m**arkdown **a**bstract **s**yntax **t**ree)](https://github.com/syntax-tree/mdast#readme)
 extends unist with types specific for markdown such as `Heading`, `Code`,
@@ -205,7 +205,7 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
  */
 ```
 
-### HAST (HTML)
+### hast (HTML)
 
 [hast (**h**ypertext **a**bstract **s**yntax **t**ree)](https://github.com/syntax-tree/hast#readme)
 extends unist with types specific for HTML such as `Element`, `Comment`,
@@ -235,7 +235,7 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
  */
 ```
 
-### XAST (XML)
+### xast (XML)
 
 [xast (e**x**tensible **a**bstract **s**yntax **t**ree)](https://github.com/syntax-tree/xast#readme)
 extends unist with types specific for HTML such as `Element`, `CData`,
