@@ -1,6 +1,6 @@
 ---
 group: recipe
-index: 3
+index: 10
 title: Tree traversal
 description: How to do tree traversal (also known as walking or visiting a tree)
 tags:
@@ -10,7 +10,7 @@ tags:
 author: Christian Murphy
 authorGithub: ChristianMurphy
 published: 2020-06-09
-modified: 2020-06-11
+modified: 2020-06-15
 ---
 
 ## How to narrow generic `Node` to specific syntax types

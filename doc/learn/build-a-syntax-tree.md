@@ -1,6 +1,6 @@
 ---
 group: recipe
-index: 3
+index: 8
 title: Building a content syntax tree
 description: How to build content with syntax trees
 tags:

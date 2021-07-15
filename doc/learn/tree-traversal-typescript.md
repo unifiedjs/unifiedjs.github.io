@@ -1,6 +1,6 @@
 ---
 group: recipe
-index: 3
+index: 9
 title: Tree traversal with TypeScript
 description: How to do tree traversal (also known as walking or visiting a tree)
 tags:
