@@ -10,10 +10,11 @@ tags:
   - builder
   - hyperscript
   - jsx
+  - typescript
 author: Christian Murphy
 authorGithub: ChristianMurphy
 published: 2020-06-09
-modified: 2020-06-11
+modified: 2020-06-15
 ---
 
 ## How to build syntax tree

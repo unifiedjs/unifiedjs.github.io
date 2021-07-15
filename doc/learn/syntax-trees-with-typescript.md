@@ -1,7 +1,7 @@
 ---
 group: guide
 title: Typing syntax trees with TypeScript
-description: Guide shows how to use types packages to work with syntax trees
+description: Guide that shows how to use types packages to work with syntax trees
 author: Christian Murphy
 authorGithub: ChristianMurphy
 tags:
@@ -11,7 +11,7 @@ tags:
   - hast
   - xast
 published: 2020-06-09
-modified: 2020-06-11
+modified: 2020-06-15
 ---
 
 ## Working with syntax trees in TypeScript
@@ -20,11 +20,11 @@ This guide will introduce you to using unist and unified with TypeScript.
 
 ### Contents
 
-*   [The Basics](#the-basics)
-*   [UNIST](#unist)
-*   [MDAST (Markdown)](#mdast-markdown)
-*   [HAST (HTML)](#hast-html)
-*   [XAST (XML)](#xast-xml)
+*   [The basics](#the-basics)
+*   [unist](#unist)
+*   [mdast (markdown)](#mdast-markdown)
+*   [hast (HTML)](#hast-html)
+*   [xast (XML)](#xast-xml)
 *   [Summary](#summary)
 *   [Next steps](#next-steps)
 
@@ -123,7 +123,7 @@ export interface Position {
 #### `Literal`
 
 `Literal` extends `Node` and adds a `value` property.
-For example a markdown `code` node extends `Literal` and sets `value` to be a `string`.
+For example a markdown `Code` node extends `Literal` and sets `value` to be a `string`.
 
 ```ts
 /**
@@ -272,6 +272,6 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
 
 ### Next steps
 
-*   [Learn to traverse syntax trees with TypeScript](/learn/recipe/tree-traversal-typescript)
-*   [Learn to narrow `Node` to a more specific type with TypeScript](/learn/recipe/node-type-narrowing-in-typescript)
-*   [Learn to build content with syntax trees in TypeScript](/learn/recipe/build-a-syntax-tree-typescript)
+*   [Learn to traverse syntax trees with TypeScript](/learn/recipe/tree-traversal-typescript/)
+*   [Learn to narrow `Node` to a more specific type with TypeScript](/learn/recipe/node-type-narrowing-in-typescript/)
+*   [Learn to build content with syntax trees in TypeScript](/learn/recipe/build-a-syntax-tree-typescript/)
