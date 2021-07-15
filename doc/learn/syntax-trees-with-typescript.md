@@ -274,4 +274,4 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
 
 *   [Learn to traverse syntax trees with TypeScript](/learn/recipe/tree-traversal-typescript/)
 *   [Learn to narrow `Node` to a more specific type with TypeScript](/learn/recipe/node-type-narrowing-in-typescript/)
-*   [Learn to build content with syntax trees in TypeScript](/learn/recipe/build-a-syntax-tree-typescript/)
+*   [Learn to build content with syntax trees in TypeScript](/learn/recipe/build-a-syntax-tree/)
