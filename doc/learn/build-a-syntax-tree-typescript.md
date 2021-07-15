@@ -34,6 +34,7 @@ language, in this case MDAST:
 ```ts
 import type {Root} from 'mdast'
 
+// Note the `: Root` is a TypeScript annotation. Remove it (and the import) for plain JavaScript.
 const mdast: Root = {
   type: 'root',
   children: [
@@ -72,13 +73,21 @@ When working with hast (HTML), [`hastscript`](https://github.com/syntax-tree/has
 can be used.
 
 ```ts
-import {h} from 'hastscript'
+import {h, s} from 'hastscript'
 
 console.log(
   h('div#some-id.foo', [
     h('span', 'some text'),
     h('input', {type: 'text', value: 'foo'}),
     h('a.alpha.bravo.charlie', {download: true}, 'delta')
+  ])
+)
+
+// SVG:
+console.log(
+  s('svg', {xmlns: 'http://www.w3.org/2000/svg', viewbox: '0 0 500 500'}, [
+    s('title', 'SVG `<circle>` element'),
+    s('circle', {cx: 120, cy: 120, r: 100})
   ])
 )
 ```
