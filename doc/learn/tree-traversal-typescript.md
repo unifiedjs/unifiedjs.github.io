@@ -17,7 +17,7 @@ modified: 2020-06-11
 ## Traversing trees with TypeScript
 
 📓 Please read the
-[introduction to tree traversal in JavaScript](./tree-traversal/)
+[introduction to tree traversal in JavaScript](/learn/recipe/tree-traversal/)
 before reading this section.
 
 A frequent task when working with unified is to traverse trees to find certain
