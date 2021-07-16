@@ -1,23 +1,20 @@
 ---
 group: recipe
 index: 8
-title: Building a content syntax tree
+title: Build a syntax tree
 description: How to build content with syntax trees
 tags:
+  - unist
   - mdast
   - hast
   - xast
-  - builder
-  - hyperscript
-  - jsx
-  - typescript
 author: Christian Murphy
 authorGithub: ChristianMurphy
 published: 2020-06-09
 modified: 2020-06-15
 ---
 
-## How to build syntax tree
+## How to build a syntax tree
 
 It’s often useful to build new (fragments of) syntax trees when adding or
 replacing content.
@@ -27,9 +24,9 @@ Finally it’s even possible to use JSX to build trees.
 
 ### JSON
 
-The most basic way to create a tree is with plain object and arrays, for some
-extra type safety this can be checked with the types for the given syntax tree
-language, in this case MDAST:
+The most basic way to create a tree is with plain object and arrays.
+To prevent type errors, this can be checked with the types for the given syntax
+tree language, in this case mdast:
 
 ```ts
 import type {Root} from 'mdast'
@@ -53,11 +50,11 @@ const mdast: Root = {
 
 #### `unist-builder`
 
-It’s also possible to build trees with [`unist-builder`](https://github.com/syntax-tree/unist-builder#readme).
-It allows a more concise, hyperscript (similar to `React.createElement`) like
-syntax:
+It’s also possible to build trees with [`unist-builder`][u].
+It allows a more concise, “hyperscript” like syntax (which is also like
+`React.createElement`):
 
-```ts
+```js
 import {u} from 'unist-builder'
 
 const mdast = u('root', [
@@ -69,10 +66,9 @@ const mdast = u('root', [
 
 #### `hastscript`
 
-When working with hast (HTML), [`hastscript`](https://github.com/syntax-tree/hastscript#readme)
-can be used.
+When working with hast (HTML), [`hastscript`][h] can be used.
 
-```ts
+```js
 import {h, s} from 'hastscript'
 
 console.log(
@@ -92,9 +88,9 @@ console.log(
 )
 ```
 
-hastscript can also be used as a JSX pragma:
+`hastscript` can also be used as a JSX configuration comment:
 
-```tsx
+```jsx
 /** @jsx h @jsxFrag null */
 import {h} from 'hastscript'
 
@@ -109,10 +105,10 @@ console.log(
 
 #### `xastscript`
 
-When working with xast (XML), [`xastscript`](https://github.com/syntax-tree/xastscript#readme)
+When working with xast (XML), [`xastscript`][x]
 can be used.
 
-```ts
+```js
 import {x} from 'xastscript'
 
 console.log(
@@ -124,9 +120,9 @@ console.log(
 )
 ```
 
-xastscript can also be used as a JSX pragma:
+`xastscript` can also be used as a JSX configuration comment:
 
-```tsx
+```jsx
 /** @jsx x @jsxFrag null */
 import {x} from 'xastscript'
 
@@ -138,3 +134,11 @@ console.log(
   </album>
 )
 ```
+
+<!-- Definitions -->
+
+[u]: https://github.com/syntax-tree/unist-builder
+
+[h]: https://github.com/syntax-tree/hastscript
+
+[x]: https://github.com/syntax-tree/xastscript

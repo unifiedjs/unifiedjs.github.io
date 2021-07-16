@@ -2,28 +2,28 @@
 group: recipe
 index: 9
 title: Tree traversal with TypeScript
-description: How to do tree traversal (also known as walking or visiting a tree)
+description: How to do tree traversal in TypeScript
 tags:
+  - typescript
   - unist
   - tree
   - traverse
-  - walk
-  - visit
 author: Christian Murphy
 authorGithub: ChristianMurphy
 published: 2020-06-09
 modified: 2020-06-11
 ---
 
-## How to traverse a syntax tree
+## Traversing trees with TypeScript
 
-:notebook: please read the [introduction to tree traversal in JavaScript](./tree-traversal/)
+📓 Please read the
+[introduction to tree traversal in JavaScript](./tree-traversal/)
 before reading this section.
 
 A frequent task when working with unified is to traverse trees to find certain
 nodes and then doing something with them (often validating or transforming
 them).
-There are several type-safe utilities provided by unified to help with this.
+Several type safe unified utilities can be used to help with this.
 
 ### `unist-util-visit`
 

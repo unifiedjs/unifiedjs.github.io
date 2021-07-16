@@ -1,12 +1,13 @@
 ---
 group: guide
-title: Typing syntax trees with TypeScript
-description: Guide that shows how to use types packages to work with syntax trees
+title: Syntax trees in TypeScript
+description: Guide that shows how to use types to work with syntax trees
 author: Christian Murphy
 authorGithub: ChristianMurphy
 tags:
   - typescript
   - unist
+  - node
   - mdast
   - hast
   - xast
@@ -14,13 +15,13 @@ published: 2020-06-09
 modified: 2020-06-15
 ---
 
-## Working with syntax trees in TypeScript
+## How to work with syntax trees in TypeScript
 
 This guide will introduce you to using unist and unified with TypeScript.
 
 ### Contents
 
-*   [The basics](#the-basics)
+*   [Basics](#basics)
 *   [unist](#unist)
 *   [mdast (markdown)](#mdast-markdown)
 *   [hast (HTML)](#hast-html)
@@ -28,17 +29,19 @@ This guide will introduce you to using unist and unified with TypeScript.
 *   [Summary](#summary)
 *   [Next steps](#next-steps)
 
-### The basics
+### Basics
 
-All unified syntax trees are based off [unist (**uni**versal **s**yntax **t**ree)](https://github.com/syntax-tree/unist).
-The core types are available in a types only package: [`@types/unist`](https://www.npmjs.com/package/@types/unist).
+All unified syntax trees are based off
+[unist (**uni**versal **s**yntax **t**ree)][unist].
+The core types are available in a types only package:
+[`@types/unist`][ts-unist].
 The main type is `Node`.
 Everything else extends it.
-`Literal` and `Parent` are more practical types which also extend `Node`.
+`Literal` and `Parent` are more specific types which also extend `Node`.
 
 The types provided by unist are abstract interfaces.
-In many cases, you will instead use more specific interfaces depending on what
-language you’re working with.
+Often, you will instead use more practical interfaces depending on what language
+you’re working with.
 Each language supported by unified, like markdown, HTML, and XML, has its own
 syntax tree standard which extends `unist`.
 
@@ -49,14 +52,15 @@ Let’s take a look at these.
 #### `Node`
 
 `Node` is the syntactic unit of syntax trees.
-Each node extends `Node` (sometimes indirectly through `Literal` or `Parent`)
-and sets `type` to a [string literal](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types).
+Each node extends `Node` (sometimes through `Literal` or `Parent`) and sets
+`type` to a [string literal][ts-literal].
 The type field tells us what kind of content the node is.
-This field uniquely identifies a kind of content (in TypeScript parlance a
-[discriminated union](https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions)).
-For example in markdown (mdast) `Node` will be extended to make different things
-such as a `Heading` or `Link`, which respectively use a `type` field
-of `'heading'` and `'link'`.
+This field uniquely identifies a kind of content.
+in TypeScript that’s called a
+[discriminated union][ts-discriminated-union].
+For example in markdown (mdast) `Node` will be extended to make things such as a
+`Heading` or `Link`, which respectively use a `type` field of `'heading'` and
+`'link'`.
 
 A node can optionally include a `Data` interface at the `data` field.
 This is an object (dictionary) that stores extra metadata which is not standard
@@ -123,7 +127,8 @@ export interface Position {
 #### `Literal`
 
 `Literal` extends `Node` and adds a `value` property.
-For example a markdown `Code` node extends `Literal` and sets `value` to be a `string`.
+For example a markdown `Code` node extends `Literal` and sets `value` to be a
+`string`.
 
 ```ts
 /**
@@ -165,7 +170,7 @@ To import the types into a TypeScript file, use:
 import type {Node, Literal, Parent} from 'unist'
 ```
 
-or into a [JSDoc TypeScript](https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html) project with:
+To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ```js
 /**
@@ -177,11 +182,11 @@ or into a [JSDoc TypeScript](https://www.typescriptlang.org/docs/handbook/intro-
 
 ### mdast (markdown)
 
-[mdast (**m**arkdown **a**bstract **s**yntax **t**ree)](https://github.com/syntax-tree/mdast#readme)
+[mdast (**m**arkdown **a**bstract **s**yntax **t**ree)][mdast]
 extends unist with types specific for markdown such as `Heading`, `Code`,
 `Link`, and many more.
-A full list of nodes can be found in the [specification](https://github.com/syntax-tree/mdast#readme).
-The types are available in a types only package: [`@types/mdast`](https://www.npmjs.com/package/@types/mdast).
+The specification includes a full list of nodes.
+The types are available in a types only package: [`@types/mdast`][ts-mdast].
 
 Install:
 
@@ -195,7 +200,7 @@ To import the types into a TypeScript file, use:
 import type {Heading, Code, Link} from 'mdast'
 ```
 
-To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html), use:
+To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ```js
 /**
@@ -207,11 +212,11 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
 
 ### hast (HTML)
 
-[hast (**h**ypertext **a**bstract **s**yntax **t**ree)](https://github.com/syntax-tree/hast#readme)
+[hast (**h**ypertext **a**bstract **s**yntax **t**ree)][hast]
 extends unist with types specific for HTML such as `Element`, `Comment`,
 `DocType`, and many more.
-A full list of nodes can be found in the [specification](https://github.com/syntax-tree/hast#readme).
-The types are available in a types only package: [`@types/hast`](https://www.npmjs.com/package/@types/hast).
+The specification includes a full list of nodes.
+The types are available in a types only package: [`@types/hast`][ts-hast].
 
 Install:
 
@@ -225,7 +230,7 @@ To import the types into a TypeScript file, use:
 import type {Element, Comment, DocType} from 'hast'
 ```
 
-To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html), use:
+To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ```js
 /**
@@ -237,11 +242,11 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
 
 ### xast (XML)
 
-[xast (e**x**tensible **a**bstract **s**yntax **t**ree)](https://github.com/syntax-tree/xast#readme)
+[xast (e**x**tensible **a**bstract **s**yntax **t**ree)][xast]
 extends unist with types specific for HTML such as `Element`, `CData`,
 `Instruction`, and many more.
-A full list of nodes can be found in the [specification](https://github.com/syntax-tree/xast#readme).
-The types are available in a types only package: [`@types/xast`](https://www.npmjs.com/package/@types/xast).
+The specification includes a full list of nodes.
+The types are available in a types only package: [`@types/xast`][ts-xast].
 
 Install:
 
@@ -255,7 +260,7 @@ To import the types into a TypeScript file, use:
 import type {Element, CData, Instruction} from 'xast'
 ```
 
-To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html), use:
+To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ```js
 /**
@@ -267,11 +272,35 @@ To import the types in [JSDoc TypeScript](https://www.typescriptlang.org/docs/ha
 
 ### Summary
 
-*   Unified provides types for each language’s syntax tree
+*   unified provides types for each language’s syntax tree
 *   These types can be import into TypeScript projects and into JSDoc projects
 
 ### Next steps
 
 *   [Learn to traverse syntax trees with TypeScript](/learn/recipe/tree-traversal-typescript/)
-*   [Learn to narrow `Node` to a more specific type with TypeScript](/learn/recipe/node-type-narrowing-in-typescript/)
-*   [Learn to build content with syntax trees in TypeScript](/learn/recipe/build-a-syntax-tree/)
+*   [Learn to narrow `Node`s](/learn/recipe/narrow-node-typescript/)
+*   [Learn to build syntax trees](/learn/recipe/build-a-syntax-tree/)
+
+<!-- Definitions -->
+
+[unist]: https://github.com/syntax-tree/unist
+
+[mdast]: https://github.com/syntax-tree/mdast
+
+[hast]: https://github.com/syntax-tree/hast
+
+[xast]: https://github.com/syntax-tree/xast#readme
+
+[ts-unist]: https://www.npmjs.com/package/@types/unist
+
+[ts-mdast]: https://www.npmjs.com/package/@types/mdast
+
+[ts-hast]: https://www.npmjs.com/package/@types/hast
+
+[ts-xast]: https://www.npmjs.com/package/@types/xast
+
+[ts-jsdoc]: https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html
+
+[ts-discriminated-union]: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions
+
+[ts-literal]: https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types

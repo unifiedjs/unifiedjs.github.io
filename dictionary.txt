@@ -30,6 +30,8 @@ DOM
 GFM
 HSL
 hast
+JSDoc
+JSON
 JSX
 MacBook
 MDX

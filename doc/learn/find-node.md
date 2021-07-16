@@ -34,7 +34,7 @@ In unified, nodes follow the [unist][] specification.
 The concept of finding a node involves
 [tree traversal][tree-traversal] of a [syntax tree][syntax-tree].
 
-Unified compatible utilities should be used for finding a node.
+unified compatible utilities should be used for finding a node.
 Utilities are functions that work with nodes.  All specifications
 that extend [unist][] can use the [unist utilities][unist-utils],
 but they can also have their own utilities for more specific nodes.

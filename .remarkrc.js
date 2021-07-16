@@ -30,7 +30,7 @@ var naturalLanguage = unified().use([
   retextPassive,
   [retextProfanities, {sureness: 1}],
   [retextReadability, {age: 18, minWords: 8}],
-  [retextSimplify, {ignore: ['function', 'interface', 'maintain']}],
+  [retextSimplify, {ignore: ['function', 'interface', 'maintain', 'type']}],
   retextEmoji,
   retextSyntaxMentions,
   retextSyntaxUrls,
