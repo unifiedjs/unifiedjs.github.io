@@ -65,25 +65,59 @@ In the next step we’ll write the code to use our plugin.
 
 ### Setting up
 
+Let’s set up a project.
+Create a folder, `example`, enter it, and initialize a new project:
+
+```sh
+mkdir example
+cd example
+npm init -y
+```
+
+Then make sure the project is a module, so that `import` and `export` work,
+by changing `package.json`:
+
+```diff
+--- a/package.json
++++ b/package.json
+@@ -2,6 +2,7 @@
+   "name": "example",
+   "version": "1.0.0",
+   "description": "",
++  "type": "module",
+   "main": "index.js",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1"
+```
+
+Make sure `example.md` exists with:
+
+```markdown
+One sentence. Two sentences.
+
+One sentence.  Two sentences.
+```
+
 Now, let’s create an `example.js` file that will process our text file and
 report any found problems.
 
 ```javascript
-var fs = require('fs')
-var retext = require('retext')
-var report = require('vfile-reporter')
-var spacing = require('.')
+import fs from 'fs'
+import {retext} from 'retext'
+import {reporter} from 'vfile-reporter'
+import retextSentenceSpacing from './index.js'
 
-var doc = fs.readFileSync('example.md')
+const buffer = fs.readFileSync('example.md')
 
 retext()
-  .use(spacing)
-  .process(doc, function(err, file) {
-    console.error(report(err || file))
+  .use(retextSentenceSpacing)
+  .process(buffer)
+  .then((file) => {
+    console.error(reporter(file))
   })
 ```
 
-> Don’t forget to `npm install` dependencies!
+> Don’t forget to `npm install` dependencies (`retext`, `vfile-reporter`)!
 
 If you read the guide on [using unified][use], you’ll see some familiar
 statements.
@@ -104,17 +138,13 @@ We’ll do that in the next section.
 
 ### Plugin
 
-As we read in Plugin Basics, we’ll need an attacher, and for our case also a
+As we read in Plugin Basics, we’ll need a plugin, and for our case also a
 transformer.
 Let’s create them in our plugin file `index.js`:
 
 ```javascript
-module.exports = attacher
-
-function attacher() {
-  return transformer
-
-  function transformer(tree, file) {
+export default function retextSentenceSpacing() {
+  return (tree, file) => {
   }
 }
 ```
@@ -125,21 +155,18 @@ We can use a utility to help us to recursively walk our tree, namely
 Let’s add that.
 
 ```diff
-+var visit = require('unist-util-visit')
+--- a/index.js
++++ b/index.js
+@@ -1,4 +1,9 @@
++import {visit} from 'unist-util-visit'
 +
-module.exports = attacher
-
-function attacher() {
-  return transformer
-
-  function transformer(tree, file) {
-+    visit(tree, 'ParagraphNode', visitor)
-+
-+    function visitor(node) {
+ export default function retextSentenceSpacing() {
+   return (tree, file) => {
++    visit(tree, 'ParagraphNode', (node) => {
 +      console.log(node)
-+    }
-  }
-}
++    })
+   }
+ }
 ```
 
 > Don’t forget to `npm install` the utility!
@@ -148,17 +175,34 @@ If we now run our example with Node.js, as follows, we’ll see that visitor is
 invoked with both paragraphs in our example:
 
 ```sh
-$ node example.js
-{ type: 'ParagraphNode',
-  children:
-  [ { type: 'SentenceNode', children: [Object] },
-   { type: 'WhiteSpaceNode', value: ' ' },
-   { type: 'SentenceNode', children: [Object] } ] }
-{ type: 'ParagraphNode',
-  children:
-  [ { type: 'SentenceNode', children: [Object] },
-   { type: 'WhiteSpaceNode', value: '  ' },
-   { type: 'SentenceNode', children: [Object] } ] }
+node example.js
+```
+
+```txt
+{
+  type: 'ParagraphNode',
+  children: [
+    { type: 'SentenceNode', children: [Array], position: [Object] },
+    { type: 'WhiteSpaceNode', value: ' ', position: [Position] },
+    { type: 'SentenceNode', children: [Array], position: [Object] }
+  ],
+  position: {
+    start: { line: 1, column: 1, offset: 0 },
+    end: { line: 1, column: 29, offset: 28 }
+  }
+}
+{
+  type: 'ParagraphNode',
+  children: [
+    { type: 'SentenceNode', children: [Array], position: [Object] },
+    { type: 'WhiteSpaceNode', value: '  ', position: [Position] },
+    { type: 'SentenceNode', children: [Array], position: [Object] }
+  ],
+  position: {
+    start: { line: 3, column: 1, offset: 30 },
+    end: { line: 3, column: 30, offset: 59 }
+  }
+}
 no issues found
 ```
 
@@ -173,22 +217,19 @@ Only checking white-space between sentences.
 We use a small utility for checking node types: [`unist-util-is`][is].
 
 ```diff
-var visit = require('unist-util-visit')
-+var is = require('unist-util-is')
+--- a/index.js
++++ b/index.js
+@@ -1,9 +1,20 @@
+ import {visit} from 'unist-util-visit'
++import {is} from 'unist-util-is'
 
-module.exports = attacher
-
-function attacher() {
-  return transformer
-
-  function transformer(tree, file) {
-    visit(tree, 'ParagraphNode', visitor)
-
-    function visitor(node) {
+ export default function retextSentenceSpacing() {
+   return (tree, file) => {
+     visit(tree, 'ParagraphNode', (node) => {
 -      console.log(node)
-+      var children = node.children
++      const children = node.children
 +
-+      children.forEach(function(child, index) {
++      children.forEach((child, index) => {
 +        if (
 +          is(children[index - 1], 'SentenceNode') &&
 +          is(child, 'WhiteSpaceNode') &&
@@ -197,9 +238,9 @@ function attacher() {
 +          console.log(child)
 +        }
 +      })
-    }
-  }
-}
+     })
+   }
+ }
 ```
 
 > Don’t forget to `npm install` the utility!
@@ -208,9 +249,26 @@ If we now run our example with Node, as follows, we’ll see that only white-spa
 between sentences is logged.
 
 ```sh
-$ node example.js
-{ type: 'WhiteSpaceNode', value: ' ' }
-{ type: 'WhiteSpaceNode', value: '  ' }
+node example.js
+```
+
+```txt
+{
+  type: 'WhiteSpaceNode',
+  value: ' ',
+  position: Position {
+    start: { line: 1, column: 14, offset: 13 },
+    end: { line: 1, column: 15, offset: 14 }
+  }
+}
+{
+  type: 'WhiteSpaceNode',
+  value: '  ',
+  position: Position {
+    start: { line: 3, column: 14, offset: 43 },
+    end: { line: 3, column: 16, offset: 45 }
+  }
+}
 no issues found
 ```
 
@@ -219,26 +277,12 @@ characters than needed.
 We can use [`file.message()`][message] to associate a message with the file.
 
 ```diff
-var visit = require('unist-util-visit')
-var is = require('unist-util-is')
-
-module.exports = attacher
-
-function attacher() {
-  return transformer
-
-  function transformer(tree, file) {
-    visit(tree, 'ParagraphNode', visitor)
-
-    function visitor(node) {
-      var children = node.children
-
-      children.forEach(function(child, index) {
-        if (
-          is(children[index - 1], 'SentenceNode') &&
-          is(child, 'WhiteSpaceNode') &&
-          is(children[index + 1], 'SentenceNode')
-        ) {
+--- a/index.js
++++ b/index.js
+@@ -12,7 +12,12 @@ export default function retextSentenceSpacing() {
+           is(child, 'WhiteSpaceNode') &&
+           is(children[index + 1], 'SentenceNode')
+         ) {
 -          console.log(child)
 +          if (child.value.length !== 1) {
 +            file.message(
@@ -246,11 +290,9 @@ function attacher() {
 +              child
 +            )
 +          }
-        }
-      })
-    }
-  }
-}
+         }
+       })
+     })
 ```
 
 If we now run our example one final time, we’ll see a message for our problem!

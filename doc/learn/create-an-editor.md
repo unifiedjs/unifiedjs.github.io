@@ -76,22 +76,30 @@ Keep `index.js`, `index.html`, and `index.css` empty for now, and fill
 {
   "name": "demo",
   "private": true,
-  "dependencies": {},
+  "type": "module",
   "devDependencies": {
-    "browserify": "^16.0.0",
-    "xo": "^0.32.0"
+    "esbuild": "^0.13.0",
+    "prettier": "^2.0.0",
+    "xo": "^0.44.0"
   },
   "scripts": {
-    "build": "browserify index.js -o build.js",
-    "lint": "xo",
+    "build": "esbuild index.js --bundle --minify --target=es2020 --format=esm --outfile=build.js",
+    "lint": "prettier . -w && xo",
     "test": "npm run build && npm run lint"
   },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "singleQuote": true,
+    "bracketSpacing": false,
+    "semi": false,
+    "trailingComma": "none"
+  },
   "xo": {
-    "space": true,
-    "esnext": false,
     "envs": [
       "browser"
     ],
+    "prettier": true,
     "ignore": [
       "build.js"
     ]
@@ -110,12 +118,12 @@ bundler.
 Now, fill `index.html` with the following:
 
 ```html
-<!doctype html>
-<meta charset="utf8">
+<!DOCTYPE html>
+<meta charset="utf8" />
 <title>demo</title>
-<link rel="stylesheet" href="index.css">
+<link rel="stylesheet" href="index.css" />
 <div id="root"></div>
-<script src="build.js"></script>
+<script type="module" src="build.js"></script>
 ```
 
 This links `index.css` and `build.js`, and adds an element (`#root`) which we’ll
@@ -124,6 +132,12 @@ Oh, did you know that `<html>`, `<head>`, and `<body>` are optional?
 For this example we’ll keep the HTML minimal, but feel free to add them if you
 prefer them.
 
+Also add `.prettierignore` file to not format our build:
+
+```ignore
+build.js
+```
+
 ### Setting up JavaScript
 
 Alright!
@@ -131,23 +145,23 @@ Now, let’s set up our JavaScript.
 Start by adding the following to `index.js`:
 
 ```js
-var h = require('virtual-dom/h')
-var createElement = require('virtual-dom/create-element')
-var diff = require('virtual-dom/diff')
-var patch = require('virtual-dom/patch')
+import h from 'virtual-dom/h.js'
+import createElement from 'virtual-dom/create-element.js'
+import diff from 'virtual-dom/diff.js'
+import patch from 'virtual-dom/patch.js'
 
-var root = document.querySelector('#root')
-var tree = render('The initial text.')
-var dom = root.appendChild(createElement(tree))
+const root = document.querySelector('#root')
+let tree = render('The initial text.')
+let dom = root.append(createElement(tree))
 
 function onchange(ev) {
-  var next = render(ev.target.value)
+  const next = render(ev.target.value)
   dom = patch(dom, diff(tree, next))
   tree = next
 }
 
 function render(text) {
-  var node = parse(text)
+  const node = parse(text)
 
   return h('div', {className: 'editor'}, [
     h('div', {key: 'draw', className: 'draw'}, highlight(node)),
@@ -164,7 +178,7 @@ function render(text) {
 }
 ```
 
-> Don’t forget to `npm install --save virtual-dom`.
+> Don’t forget to `npm install virtual-dom`.
 
 That’s going a bit fast, I can imagine, if you’ve never seen
 [`virtual-dom`][vdom] in use before.
@@ -248,17 +262,19 @@ natural language.
 Change `index.js` like so:
 
 ```diff
-@@ -2,7 +2,10 @@ var h = require('virtual-dom/h')
- var createElement = require('virtual-dom/create-element')
- var diff = require('virtual-dom/diff')
- var patch = require('virtual-dom/patch')
-+var unified = require('unified')
-+var english = require('retext-english')
+--- a/index.js
++++ b/index.js
+@@ -2,7 +2,10 @@ import h from 'virtual-dom/h.js'
+ import createElement from 'virtual-dom/create-element.js'
+ import diff from 'virtual-dom/diff.js'
+ import patch from 'virtual-dom/patch.js'
++import {unified} from 'unified'
++import retextEnglish from 'retext-english'
 
-+var processor = unified().use(english)
- var root = document.querySelector('#root')
- var tree = render('The initial text.')
- var dom = root.appendChild(createElement(tree))
++const processor = unified().use(retextEnglish)
+ const root = document.querySelector('#root')
+ let tree = render('The initial text.')
+ let dom = root.append(createElement(tree))
 @@ -25,7 +28,9 @@ function render(text) {
      })
    ])
@@ -272,7 +288,7 @@ Change `index.js` like so:
  }
 ```
 
-> Don’t forget to `npm install --save unified retext-english`.
+> Don’t forget to `npm install unified retext-english`.
 
 Sweet, now we have access to a lot of info on the text.
 It still doesn’t do anything yet though.
@@ -285,26 +301,26 @@ We already have `highlight` for that, but it’s empty, so let’s add code to f
 it:
 
 ```diff
-@@ -32,5 +32,21 @@ function render(text) {
+--- a/index.js
++++ b/index.js
+@@ -32,5 +32,19 @@ function render(text) {
      return processor.runSync(processor.parse(value))
    }
 
 -  function highlight() {}
 +  function highlight(node) {
-+    var children = node.children
-+    var length = children.length
-+    var index = -1
-+    var results = []
++    const results = []
++    let index = -1
 +
-+    while (++index < length) {
-+      results = results.concat(one(children[index]))
++    while (++index < node.children.length) {
++      results.push(...one(node.children[index]))
 +    }
 +
 +    return results
 +  }
 +
 +  function one(node) {
-+    var result = 'value' in node ? node.value : highlight(node)
++    const result = 'value' in node ? [node.value] : highlight(node)
 +    return result
 +  }
  }
@@ -323,26 +339,30 @@ sentences, and apply styles to them.
 Change `index.js` like so:
 
 ```diff
+--- a/index.js
++++ b/index.js
 @@ -18,6 +18,7 @@ function onchange(ev) {
 
  function render(text) {
-   var node = parse(text)
-+  var key = 0
+   const node = parse(text)
++  let key = 0
 
    return h('div', {className: 'editor'}, [
      h('div', {key: 'draw', className: 'draw'}, highlight(node)),
-@@ -47,6 +48,19 @@ function render(text) {
+@@ -45,6 +46,22 @@ function render(text) {
 
    function one(node) {
-     var result = 'value' in node ? node.value : highlight(node)
+     const result = 'value' in node ? [node.value] : highlight(node)
 +
 +    if (node.type === 'SentenceNode') {
 +      key++
-+      result = h(
-+        'span',
-+        {key: 's-' + key, style: {backgroundColor: color(count(node))}},
-+        result
-+      )
++      return [
++        h(
++          'span',
++          {key: 's-' + key, style: {backgroundColor: color(count(node))}},
++          result
++        )
++      ]
 +    }
 +
      return result
@@ -370,42 +390,42 @@ Now, let’s add colors.
 Update `index.js` like so:
 
 ```diff
-@@ -4,6 +4,11 @@ var diff = require('virtual-dom/diff')
- var patch = require('virtual-dom/patch')
- var unified = require('unified')
- var english = require('retext-english')
-+var visit = require('unist-util-visit')
+--- a/index.js
++++ b/index.js
+@@ -4,6 +4,9 @@ import diff from 'virtual-dom/diff.js'
+ import patch from 'virtual-dom/patch.js'
+ import {unified} from 'unified'
+ import retextEnglish from 'retext-english'
++import {visit} from 'unist-util-visit'
 +
-+var hues = [0]
++const hues = [0]
 
- var processor = unified().use(english)
- var root = document.querySelector('#root')
-@@ -60,7 +65,20 @@ function render(text) {
+ const processor = unified().use(retextEnglish)
+ const root = document.querySelector('#root')
+@@ -61,7 +64,18 @@ function render(text) {
      return result
    }
 
 -  function count() {}
 +  function count(node) {
-+    var value = 0
++    let value = 0
 +
-+    visit(node, 'WordNode', add)
++    visit(node, 'WordNode', () => {
++      value++
++    })
 +
 +    return value
-+
-+    function add() {
-+      value++
-+    }
 +  }
-+
+
 -  function color() {}
 +  function color(count) {
-+    var value = count < hues.length ? hues[count] : hues[hues.length - 1]
++    const value = count < hues.length ? hues[count] : hues[hues.length - 1]
 +    return 'hsl(' + [value, '93%', '85%'].join(', ') + ')'
 +  }
  }
 ```
 
-> Don’t forget to `npm install --save unist-util-visit`.
+> Don’t forget to `npm install unist-util-visit`.
 
 The `count` function searches `node` for all occurrences of words, through
 [`unist-util-visit`][visit], and returns that count.
@@ -431,13 +451,17 @@ But you could use any hues you like!
 To match that image, change `hues` like so:
 
 ```diff
-@@ -7,7 +7,20 @@ var english = require('retext-english')
- var visit = require('unist-util-visit')
+--- a/index.js
++++ b/index.js
+@@ -6,7 +6,7 @@ import {unified} from 'unified'
+ import retextEnglish from 'retext-english'
+ import {visit} from 'unist-util-visit'
 
--var hues = [0]
-+var hues = [60, 60, 60, 300, 300, 0, 0, 120, 120, 120, 120, 120, 120, 180]
+-const hues = [0]
++const hues = [60, 60, 60, 300, 300, 0, 0, 120, 120, 120, 120, 120, 120, 180]
 
- var processor = unified().use(english)
+ const processor = unified().use(retextEnglish)
+ const root = document.querySelector('#root')
 ```
 
 ### Squashing bugs
@@ -455,30 +479,33 @@ The easiest way to get both areas the same height, is with the following
 slightly hacky code:
 
 ```diff
-@@ -28,10 +28,13 @@ var root = document.getElementById('root')
- var tree = render('The initial text.')
- var dom = root.appendChild(createElement(tree))
+--- a/index.js
++++ b/index.js
+@@ -13,10 +13,13 @@ const root = document.querySelector('#root')
+ let tree = render('The initial text.')
+ let dom = root.append(createElement(tree))
 
 +setTimeout(resize, 4)
 +
  function onchange(ev) {
-   var next = render(ev.target.value)
+   const next = render(ev.target.value)
    dom = patch(dom, diff(tree, next))
    tree = next
 +  setTimeout(resize, 4)
  }
 
  function render(text) {
-@@ -95,3 +98,10 @@ function render(text) {
-     return 'hsl(' + [val, '93%', '85%'].join(', ') + ')'
+@@ -79,3 +82,11 @@ function render(text) {
+     return 'hsl(' + [value, '93%', '85%'].join(', ') + ')'
    }
  }
 +
 +function resize() {
-+  dom.lastChild.rows = Math.ceil(
-+    dom.firstChild.getBoundingClientRect().height /
-+    parseInt(window.getComputedStyle(dom.firstChild).lineHeight, 10)
-+  ) + 1
++  dom.lastChild.rows =
++    Math.ceil(
++      dom.firstChild.getBoundingClientRect().height /
++        Number.parseInt(window.getComputedStyle(dom.firstChild).lineHeight, 10)
++    ) + 1
 +}
 ```
 

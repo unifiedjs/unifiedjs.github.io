@@ -58,13 +58,13 @@ You could parse that with the following code (using [`unified`][unified] and
 [`rehype-parse`][rehype-parse]):
 
 ```js
-var fs = require('fs')
-var unified = require('unified')
-var parse = require('rehype-parse')
+import fs from 'node:fs'
+import {unified} from 'unified'
+import rehypeParse from 'rehype-parse'
 
-var doc = fs.readFileSync('example.html')
+const doc = fs.readFileSync('example.html')
 
-var tree = unified().use(parse, {fragment: true}).parse(doc)
+const tree = unified().use(rehypeParse, {fragment: true}).parse(doc)
 
 console.log(tree)
 ```
@@ -80,35 +80,35 @@ Which would yield (ignoring positional info for brevity):
       tagName: 'p',
       properties: {},
       children: [
-        {type: 'text', value: '\n  '},
-        {type: 'comment', value: ' A comment. '},
-        {type: 'text', value: '\n  Some '},
+        { type: 'text', value: '\n  ' },
+        { type: 'comment', value: ' A comment. ' },
+        { type: 'text', value: '\n  Some ' },
         {
           type: 'element',
           tagName: 'strong',
           properties: {},
-          children: [{type: 'text', value: 'strong importance'}]
+          children: [ { type: 'text', value: 'strong importance' } ]
         },
-        {type: 'text', value: ', '},
+        { type: 'text', value: ', ' },
         {
           type: 'element',
           tagName: 'em',
           properties: {},
-          children: [{type: 'text', value: 'emphasis'}]
+          children: [ { type: 'text', value: 'emphasis' } ]
         },
-        {type: 'text', value: ', and a dash of\n  '},
+        { type: 'text', value: ', and a dash of\n  ' },
         {
           type: 'element',
           tagName: 'code',
           properties: {},
-          children: [{type: 'text', value: 'code'}]
+          children: [ { type: 'text', value: 'code' } ]
         },
-        {type: 'text', value: '.\n'}
+        { type: 'text', value: '.\n' }
       ]
     },
-    {type: 'text', value: '\n'}
+    { type: 'text', value: '\n' }
   ],
-  data: {quirksMode: false}
+  data: { quirksMode: false }
 }
 ```
 
@@ -119,11 +119,11 @@ As we are all set up, we can traverse the tree.
 A useful utility for that is [`unist-util-visit`][visit], and it works like so:
 
 ```js
-var visit = require('unist-util-visit')
+import {visit} from 'unist-util-visit'
 
 // …
 
-visit(tree, function (node) {
+visit(tree, (node) => {
   console.log(node.type)
 })
 ```
@@ -154,11 +154,11 @@ To “visit” only a certain `type` of node, pass a test to
 [`unist-util-visit`][visit] like so:
 
 ```js
-var visit = require('unist-util-visit')
+import {visit} from 'unist-util-visit'
 
 // …
 
-visit(tree, 'element', function (node) {
+visit(tree, 'element', (node) => {
   console.log(node.tagName)
 })
 ```
@@ -174,7 +174,7 @@ You can do this yourself as well.
 The above works the same as:
 
 ```js
-visit(tree, function (node) {
+visit(tree, (node) => {
   if (node.type === 'element') {
     console.log(node.tagName)
   }
@@ -185,7 +185,7 @@ But the test passed to `visit` can be more advanced, such as the following to
 visit different kinds of nodes.
 
 ```js
-visit(tree, ['comment', 'text'], function (node) {
+visit(tree, ['comment', 'text'], (node) => {
   console.log([node.value])
 })
 ```

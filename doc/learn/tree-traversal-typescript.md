@@ -35,18 +35,18 @@ For example if we want to increasing the heading level of all headings in a
 markdown document:
 
 ```ts
-import remark from 'remark'
-import type {Node} from 'unist'
-import type {Heading} from 'mdast'
+import {remark} from 'remark'
+import type {Root} from 'mdast'
 import {visit} from 'unist-util-visit'
 
 const markdownFile = await remark()
-  .use(() => (mdast: Node) => {
+  .use(() => (mdast: Root) => {
     visit(
       mdast,
       // Check that the Node is a heading:
       'heading',
-      (node: Heading) => {
+      (node) => {
+        // The types know `node` is a heading.
         node.depth += 1
       }
     )
@@ -59,19 +59,21 @@ console.log(markdownFile.toString())
 Or if we want to make all ordered lists in a markdown document unordered:
 
 ```ts
-import remark from 'remark'
-import type {Node} from 'unist'
-import type {List} from 'mdast'
+import {remark} from 'remark'
+import type {Root} from 'mdast'
 import {visit} from 'unist-util-visit'
 
 const markdownFile = await remark()
-  .use(() => (mdast: Node) => {
+  .use(() => (mdast: Root) => {
     visit(
       mdast,
-      // Check that the Node is a list and that it is ordered:
-      {type: 'list', ordered: true},
-      (node: List) => {
-        node.ordered = false
+      // Check that the Node is a list:
+      'list',
+      (node) => {
+        if (node.ordered) {
+          // The types know `node` is an ordered list.
+          node.ordered = false
+        }
       }
     )
   })
@@ -91,13 +93,14 @@ we could:
 
 ```ts
 import remark from 'remark'
-import type {Node, Parent} from 'unist'
-import type {ListItem} from 'mdast'
+import type {Root, ListItem} from 'mdast'
 import {visitParents} from 'unist-util-visit-parents'
 
 remark()
-  .use(() => (mdast: Node) => {
-    visitParents(mdast, 'listItem', (listItem: ListItem, parents: Parent[]) => {
+  .use(() => (mdast: Root) => {
+    visitParents(mdast, 'listItem', (listItem, parents) => {
+      // The types know `listItem` is a list item, and that `parents` are mdast
+      // parents.
       if (!parents.some((parent) => parent.type === 'list')) {
         console.warn('listItem is outside a list')
       }
@@ -117,11 +120,11 @@ For example if we want to find all `Paragraph`s that are somewhere in a
 
 ```ts
 import remark from 'remark'
-import type {Node} from 'unist'
+import type {Root} from 'mdast'
 import {selectAll} from 'unist-util-select'
 
 remark()
-  .use(() => (mdast: Node) => {
+  .use(() => (mdast: Root) => {
     const matches = selectAll('blockquote paragraph', mdast)
     console.log(matches)
   })

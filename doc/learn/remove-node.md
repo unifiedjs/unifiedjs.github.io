@@ -50,14 +50,14 @@ Another paragraph with **importance** (and *more emphasis*).
 And a script, `example.js`:
 
 ```js
-var fs = require('fs')
-var unified = require('unified')
-var parse = require('remark-parse')
-var visit = require('unist-util-visit')
+import fs from 'node:fs'
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import {visit} from 'unist-util-visit'
 
-var doc = fs.readFileSync('example.md')
+const doc = fs.readFileSync('example.md')
 
-var tree = unified().use(parse).parse(doc)
+const tree = unified().use(remarkParse).parse(doc)
 
 visit(tree, 'emphasis', function (node) {
   console.log(node)
@@ -67,10 +67,13 @@ visit(tree, 'emphasis', function (node) {
 Now, running `node example` yields (ignoring positions for brevity):
 
 ```js
-{type: 'emphasis', children: [{type: 'text', value: 'emphasis'}]},
 {
   type: 'emphasis',
-  children: [{type: 'text', value: 'more emphasis'}]
+  children: [ { type: 'text', value: 'emphasis', position: [Object] } ]
+}
+{
+  type: 'emphasis',
+  children: [ { type: 'text', value: 'more emphasis', position: [Object] } ]
 }
 ```
 
@@ -88,12 +91,17 @@ the parent’s `children` field they are in.
 Luckily, the function given to `visit` gets not only `node`, but also that
 `index` and `parent`:
 
-```js
-// …
+```diff
++++ b/example.js
+@@ -7,6 +7,6 @@ const doc = fs.readFileSync('example.md')
 
-visit(tree, 'emphasis', function (node, index, parent) {
-  console.log(node.type, index, parent.type)
-})
+ const tree = unified().use(remarkParse).parse(doc)
+
+-visit(tree, 'emphasis', function (node) {
+-  console.log(node)
++visit(tree, 'emphasis', function (node, index, parent) {
++  console.log(node.type, index, parent.type)
+ })
 ```
 
 Yields:
@@ -107,15 +115,19 @@ emphasis 3 paragraph
 at which `node` is in `parent`’s `children`.
 With this information, and `splice`, we can now remove emphasis nodes:
 
-```js
-// …
+```diff
+--- a/example.js
++++ b/example.js
+@@ -8,5 +8,8 @@ const doc = fs.readFileSync('example.md')
+ const tree = unified().use(remarkParse).parse(doc)
 
-visit(tree, 'emphasis', function (node, index, parent) {
-  parent.children.splice(index, 1)
-  // (Note: this is buggy, see next section)
-})
-
-console.log(tree)
+ visit(tree, 'emphasis', function (node, index, parent) {
+-  console.log(node.type, index, parent.type)
++  parent.children.splice(index, 1)
++  // (Note: this is buggy, see next section)
+ })
++
++console.log(tree)
 ```
 
 Yields:
@@ -135,10 +147,7 @@ Yields:
       type: 'paragraph',
       children: [
         {type: 'text', value: 'Another paragraph with '},
-        {
-          type: 'strong',
-          children: [{type: 'text', value: 'importance'}]
-        },
+        {type: 'strong', children: [Array]},
         {type: 'text', value: ' (and '},
         {type: 'text', value: ').'}
       ]
@@ -162,47 +171,31 @@ And we want to continue with the node that is now at the position where our
 removed node was.
 To do that: return that information from `visitor`:
 
-```js
-// …
+```diff
+--- a/example.js
++++ b/example.js
+@@ -1,15 +1,15 @@
+ import fs from 'node:fs'
+ import {unified} from 'unified'
+ import remarkParse from 'remark-parse'
+-import {visit} from 'unist-util-visit'
++import {visit, SKIP} from 'unist-util-visit'
 
-visit(tree, 'emphasis', function (node, index, parent) {
-  parent.children.splice(index, 1)
-  // Do not traverse `node`, continue at the node *now* at `index`.
-  return [visit.SKIP, index]
-})
+ const doc = fs.readFileSync('example.md')
 
-console.log(tree)
+ const tree = unified().use(remarkParse).parse(doc)
+
+ visit(tree, 'emphasis', function (node, index, parent) {
+   parent.children.splice(index, 1)
+-  // (Note: this is buggy, see next section)
++  // Do not traverse `node`, continue at the node *now* at `index`.
++  return [SKIP, index]
+ })
+
+ console.log(tree)
 ```
 
-Yields:
-
-```js
-{
-  type: 'root',
-  children: [
-    {
-      type: 'paragraph',
-      children: [
-        {type: 'text', value: 'Some text with '},
-        {type: 'text', value: '.'}
-      ]
-    },
-    {
-      type: 'paragraph',
-      children: [
-        {type: 'text', value: 'Another paragraph with '},
-        {
-          type: 'strong',
-          children: [{type: 'text', value: 'importance'}]
-        },
-        {type: 'text', value: ' (and '},
-        {type: 'text', value: ').'}
-      ]
-    }
-  ]
-}
-```
-
+This yields the same output as before, but there’s no bug anymore.
 Nice, we can now remove nodes!
 
 ### Replacing a node with its children
@@ -213,15 +206,18 @@ children.
 
 To do that, we can do the following:
 
-```js
-// …
+```diff
+--- a/example.js
++++ b/example.js
+@@ -8,7 +8,7 @@ const doc = fs.readFileSync('example.md')
+ const tree = unified().use(remarkParse).parse(doc)
 
-visit(tree, 'emphasis', function (node, index, parent) {
-  parent.children.splice(index, 1, ...node.children)
-  return [visit.SKIP, index]
-})
-
-console.log(tree)
+ visit(tree, 'emphasis', function (node, index, parent) {
+-  parent.children.splice(index, 1)
++  parent.children.splice(index, 1, ...node.children)
+   // Do not traverse `node`, continue at the node *now* at `index`.
+   return [SKIP, index]
+ })
 ```
 
 Yields:
@@ -242,10 +238,7 @@ Yields:
       type: 'paragraph',
       children: [
         {type: 'text', value: 'Another paragraph with '},
-        {
-          type: 'strong',
-          children: [{type: 'text', value: 'importance'}]
-        },
+        {type: 'strong', children: [Array]},
         {type: 'text', value: ' (and '},
         {type: 'text', value: 'more emphasis'},
         {type: 'text', value: ').'}

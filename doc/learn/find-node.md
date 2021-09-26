@@ -49,17 +49,13 @@ and [`unist-util-find`][unist-util-find].  We want to find
 the first occurrence of emphasis in our markdown.
 
 ```js
-var remark = require('remark')
-var find = require('unist-util-find')
+import {remark} from 'remark'
+import find from 'unist-util-find'
 
 remark()
-  .use(function () {
-    return transformer
-
-    function transformer(tree) {
-      const node = find(tree, {type: 'emphasis'})
-      console.log(node)
-    }
+  .use(() => (tree) => {
+    const node = find(tree, {type: 'emphasis'})
+    console.log(node)
   })
   .processSync('Some _emphasis_, **strongness**, _more emphasis_, and `code`.')
 ```
@@ -69,11 +65,10 @@ yields
 ```js
 {
   type: 'emphasis',
-  children: [{type: 'text', value: 'emphasis', position: [Position]}],
+  children: [ { type: 'text', value: 'emphasis', position: [Object] } ],
   position: {
-    start: {line: 1, column: 6, offset: 5},
-    end: {line: 1, column: 16, offset: 15},
-    indent: []
+    start: { line: 1, column: 6, offset: 5 },
+    end: { line: 1, column: 16, offset: 15 }
   }
 }
 ```

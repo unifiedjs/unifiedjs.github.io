@@ -45,19 +45,39 @@ To transform between the two syntaxes, we’ll use
 Finally, we’ll use unified itself to glue these together, and
 [`unified-stream`][unified-stream] for streaming.
 
-Let’s install those with [npm][], which comes bundled with [Node][].
+First set up a project.
+Create a folder, `example`, enter it, and initialize a new project:
 
 ```sh
-$ npm install unified unified-stream remark-parse remark-rehype rehype-stringify
-/Users/tilde/example
-├── rehype-stringify@8.0.0
-├── remark-parse@8.0.2
-├── remark-rehype@7.0.0
-├── unified-stream@1.0.6
-└── unified@9.0.0
+mkdir example
+cd example
+npm init -y
 ```
 
-Let’s first create a Markdown file that we’re going to transform.
+Then make sure the project is a module, so that `import` and `export` work,
+by changing `package.json`:
+
+```diff
+--- a/package.json
++++ b/package.json
+@@ -2,6 +2,7 @@
+   "name": "example",
+   "version": "1.0.0",
+   "description": "",
++  "type": "module",
+   "main": "index.js",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" && exit 1"
+```
+
+Now let’s install the needed dependencies with [npm][], which comes bundled with
+[Node][].
+
+```sh
+npm install unified unified-stream remark-parse remark-rehype rehype-stringify
+```
+
+Now create a Markdown file, `example.md`, that we’re going to transform.
 
 ```markdown
 # Hello World
@@ -77,18 +97,21 @@ More `text`.
 MIT
 ```
 
-Then, create an `index.js` script as well.
+Then create `index.js` as well.
 It’ll transform Markdown to HTML.
 It’s hooked up to read from stdin and write to stdout.
 
 ```javascript
-var unified = require('unified')
-var stream = require('unified-stream')
-var markdown = require('remark-parse')
-var remark2rehype = require('remark-rehype')
-var html = require('rehype-stringify')
+import {stream} from 'unified-stream'
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
 
-var processor = unified().use(markdown).use(remark2rehype).use(html)
+const processor = unified()
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypeStringify)
 
 process.stdin.pipe(stream(processor)).pipe(process.stdout)
 ```
@@ -131,33 +154,31 @@ We can use [`remark-slug`][slug] and [`remark-toc`][toc] for the former, and
 [`rehype-document`][document] to do the latter tasks.
 
 ```sh
-$ npm install remark-slug remark-toc rehype-document
-/Users/tilde/example
-├── remark-slug@6.0.0
-├── remark-toc@7.0.0
-└── rehype-document@5.0.0
+npm install remark-slug remark-toc rehype-document
 ```
 
 Let’s now use those two as well, by modifying our `index.js` file:
 
 ```diff
- var unified = require('unified')
- var stream = require('unified-stream')
- var markdown = require('remark-parse')
-+var slug = require('remark-slug')
-+var toc = require('remark-toc')
- var remark2rehype = require('remark-rehype')
-+var doc = require('rehype-document')
- var html = require('rehype-stringify')
+--- a/index.js
++++ b/index.js
+@@ -1,12 +1,18 @@
+ import {stream} from 'unified-stream'
+ import {unified} from 'unified'
+ import remarkParse from 'remark-parse'
++import remarkSlug from 'remark-slug'
++import remarkToc from 'remark-toc'
+ import remarkRehype from 'remark-rehype'
++import rehypeDocument from 'rehype-document'
+ import rehypeStringify from 'rehype-stringify'
 
--var processor = unified().use(markdown).use(remark2rehype).use(html)
-+var processor = unified()
-+  .use(markdown)
-+  .use(slug)
-+  .use(toc)
-+  .use(remark2rehype)
-+  .use(doc, {title: 'Contents'})
-+  .use(html)
+ const processor = unified()
+   .use(remarkParse)
++  .use(remarkSlug)
++  .use(remarkToc)
+   .use(remarkRehype)
++  .use(rehypeDocument, {title: 'Contents'})
+   .use(rehypeStringify)
 
  process.stdin.pipe(stream(processor)).pipe(process.stdout)
 ```
@@ -225,42 +246,39 @@ to those files.
 Let’s install those.
 
 ```sh
-$ npm install to-vfile vfile-reporter
-/Users/tilde/example
-├── to-vfile@6.1.0
-└── vfile-reporter@6.0.1
+npm install to-vfile vfile-reporter
 ```
 
 …and now unhook stdin/stdout from our example and use the file-system instead,
 like so:
 
 ```diff
- var unified = require('unified')
--var stream = require('unified-stream')
-+var vfile = require('to-vfile')
-+var report = require('vfile-reporter')
- var markdown = require('remark-parse')
- var slug = require('remark-slug')
- var toc = require('remark-toc')
- var remark2rehype = require('remark-rehype')
- var doc = require('rehype-document')
- var html = require('rehype-stringify')
-
- var processor = unified()
-   .use(markdown)
-   .use(slug)
-   .use(toc)
-   .use(remark2rehype)
-   .use(doc, {title: 'Contents'})
-   .use(html)
+--- a/index.js
++++ b/index.js
+@@ -1,4 +1,5 @@
+-import {stream} from 'unified-stream'
++import {readSync, writeSync} from 'to-vfile'
++import {reporter} from 'vfile-reporter'
+ import {unified} from 'unified'
+ import remarkParse from 'remark-parse'
+ import remarkSlug from 'remark-slug'
+@@ -15,4 +16,15 @@ const processor = unified()
+   .use(rehypeDocument, {title: 'Contents'})
+   .use(rehypeStringify)
 
 -process.stdin.pipe(stream(processor)).pipe(process.stdout)
-+processor.process(vfile.readSync('example.md'), function (error, file) {
-+  if (error) throw error
-+  console.error(report(file))
-+  file.extname = '.html'
-+  vfile.writeSync(file)
-+})
++processor
++  .process(readSync('example.md'))
++  .then(
++    (file) => {
++      console.error(reporter(file))
++      file.extname = '.html'
++      writeSync(file)
++    },
++    (error) => {
++      throw error
++    }
++  )
 ```
 
 If we now run our script on its own, without shell redirects, we get a report
@@ -288,44 +306,31 @@ To bridge from markup to prose, we’ll use [`remark-retext`][remark-retext].
 First, let’s install these dependencies as well.
 
 ```sh
-$ npm install remark-retext retext-english retext-indefinite-article
-/Users/tilde/example
-├── remark-retext@4.0.0
-├── retext-english@3.0.4
-└── retext-indefinite-article@2.0.1
+npm install remark-retext retext-english retext-indefinite-article
 ```
 
 …and change our `index.js` like so:
 
 ```diff
- var unified = require('unified')
- var vfile = require('to-vfile')
- var report = require('vfile-reporter')
- var markdown = require('remark-parse')
- var slug = require('remark-slug')
- var toc = require('remark-toc')
-+var remark2retext = require('remark-retext')
-+var english = require('retext-english')
-+var indefiniteArticle = require('retext-indefinite-article')
- var remark2rehype = require('remark-rehype')
- var doc = require('rehype-document')
- var html = require('rehype-stringify')
+--- a/index.js
++++ b/index.js
+@@ -4,12 +4,16 @@ import {unified} from 'unified'
+ import remarkParse from 'remark-parse'
+ import remarkSlug from 'remark-slug'
+ import remarkToc from 'remark-toc'
++import remarkRetext from 'remark-retext'
++import retextEnglish from 'retext-english'
++import retextIndefiniteArticle from 'retext-indefinite-article'
+ import remarkRehype from 'remark-rehype'
+ import rehypeDocument from 'rehype-document'
+ import rehypeStringify from 'rehype-stringify'
 
- var processor = unified()
-   .use(markdown)
-+  .use(remark2retext, unified().use(english).use(indefiniteArticle))
-   .use(slug)
-   .use(toc)
-   .use(remark2rehype)
-   .use(doc, {title: 'Contents'})
-   .use(html)
-
- processor.process(vfile.readSync('example.md'), function(err, file) {
-   if (err) throw err
-   console.error(report(file))
-   file.extname = '.html'
-   vfile.writeSync(file)
- })
+ const processor = unified()
+   .use(remarkParse)
++  .use(remarkRetext, unified().use(retextEnglish).use(retextIndefiniteArticle))
+   .use(remarkSlug)
+   .use(remarkToc)
+   .use(remarkRehype)
 ```
 
 As the code shows, `remark-retext` receives another `unified` middleware

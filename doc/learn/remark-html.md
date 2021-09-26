@@ -45,10 +45,10 @@ To turn markdown into HTML, we need [`remark-parse`][remark-parse],
 [`remark-rehype`][remark-rehype], and [`rehype-stringify`][rehype-stringify]:
 
 ```javascript
-var unified = require('unified')
-var remarkParse = require('remark-parse')
-var remarkRehype = require('remark-rehype')
-var rehypeStringify = require('rehype-stringify')
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
 
 unified()
   .use(remarkParse) // Parse markdown content to a syntax tree
@@ -75,10 +75,10 @@ To turn HTML into markdown, we need [`rehype-parse`][rehype-parse],
 [`rehype-remark`][rehype-remark], and [`remark-stringify`][remark-stringify]:
 
 ```javascript
-var unified = require('unified')
-var rehypeParse = require('rehype-parse')
-var rehypeRemark = require('rehype-remark')
-var remarkStringify = require('remark-stringify')
+import {unified} from 'unified'
+import rehypeParse from 'rehype-parse'
+import rehypeRemark from 'rehype-remark'
+import remarkStringify from 'remark-stringify'
 
 unified()
   .use(rehypeParse) // Parse HTML to a syntax tree
@@ -107,10 +107,10 @@ by configuring [`remark-rehype`][remark-rehype] and
 [`rehype-stringify`][rehype-stringify]:
 
 ```javascript
-var unified = require('unified')
-var remarkParse = require('remark-parse')
-var remarkRehype = require('remark-rehype')
-var rehypeStringify = require('rehype-stringify')
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
 
 unified()
   .use(remarkParse)
@@ -134,11 +134,11 @@ This plugin will take the strings of HTML embedded in markdown and parse them
 with an actual HTML parser.
 
 ```javascript
-var unified = require('unified')
-var remarkParse = require('remark-parse')
-var remarkRehype = require('remark-rehype')
-var rehypeRaw = require('rehype-raw')
-var rehypeStringify = require('rehype-stringify')
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeRaw from 'rehype-raw'
+import rehypeStringify from 'rehype-stringify'
 
 unified()
   .use(remarkParse)

@@ -93,16 +93,16 @@ Let’s say we have some markdown with a GFM table, in an `example.md` file:
 And a script set up to transform markdown with tables to HTML, `example.js`:
 
 ```javascript
-var fs = require('fs')
-var unified = require('unified')
-var remarkParse = require('remark-parse')
-var remarkGfm = require('remark-gfm')
-var remarkRehype = require('remark-rehype')
-var rehypeStringify = require('rehype-stringify')
+import fs from 'node:fs'
+import {unified} from 'unified'
+import remarkParse from 'remark-parse'
+import remarkGfm from 'remark-gfm'
+import remarkRehype from 'remark-rehype'
+import rehypeStringify from 'rehype-stringify'
 
-var doc = fs.readFileSync('example.md')
+const doc = fs.readFileSync('example.md')
 
-var file = unified()
+const file = unified()
   .use(remarkParse) // Parse markdown.
   .use(remarkGfm) // Support GFM (tables, autolinks, tasklists, strikethrough).
   .use(remarkRehype) // Turn it into HTML.
@@ -141,12 +141,12 @@ Now, running `node example` yields:
 As tables are non-standard, `react-markdown` does not support them by default.
 But it can support them with a plugin: [`remark-gfm`][remark-gfm].
 
-```js
 Let’s say we have some markdown with a GFM table, in an `example.md` file:
 
-const React = require('react')
-const ReactMarkdown = require('react-markdown')
-const gfm = require('remark-gfm')
+```js
+import React from 'react'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 const markdown = `# Table
 
@@ -155,7 +155,7 @@ const markdown = `# Table
 | main    | 0123456789abcdef |
 | staging | fedcba9876543210 |`
 
-console.log(<ReactMarkdown plugins={[gfm]} children={markdown} />)
+console.log(<ReactMarkdown plugins={[remarkGfm]} children={markdown} />)
 ```
 
 Yields in JSX:
