@@ -1,5 +1,5 @@
-import fs from 'fs'
-import unified from 'unified'
+import fs from 'node:fs'
+import {unified} from 'unified'
 import deepmerge from 'deepmerge'
 import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'

@@ -26,9 +26,10 @@ export function item(data, d) {
     }
   })
 
-  const roles = memberships.flatMap((d, i, all) => {
-    return [d, i === all.length - 1 ? '' : ', ']
-  })
+  const roles = memberships.flatMap((d, i, all) => [
+    d,
+    i === all.length - 1 ? '' : ', '
+  ])
 
   return card(
     base + github,

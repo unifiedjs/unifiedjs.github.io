@@ -12,11 +12,11 @@ import {fmtCompact} from '../util/fmt-compact.js'
 import {fmtPercent} from '../util/fmt-percent.js'
 import {constantCollective} from '../util/constant-collective.js'
 import {pickRandom} from '../util/pick-random.js'
-import {page} from './page.js'
 import {meta} from '../../data/meta.js'
 import {releases as dataReleases} from '../../data/releases.js'
+import {page} from './page.js'
 
-const linux = 3166218 // Checked from the `diskUsage` result for `torvalds/linux`
+const linux = 3_166_218 // Checked from the `diskUsage` result for `torvalds/linux`
 // on GHs GraphQL API.
 const mobyDick = 1.2 * 1024 * 1024
 // Apparently Gutenberg’s version is 1.2mb.

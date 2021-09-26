@@ -1,4 +1,4 @@
-import unified from 'unified'
+import {unified} from 'unified'
 import markdown from 'remark-parse'
 import gemoji from 'remark-gemoji'
 import remark2rehype from 'remark-rehype'

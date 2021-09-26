@@ -1,5 +1,6 @@
-import {promises as fs} from 'fs'
-import path from 'path'
+import {promises as fs} from 'node:fs'
+import path from 'node:path'
+import process from 'node:process'
 import fetch from 'node-fetch'
 import chalk from 'chalk'
 import dotenv from 'dotenv'
@@ -47,14 +48,14 @@ const query = `query($slug: String) {
 `
 
 Promise.all([
-  fs.readFile(path.join('crawl', 'sponsors.txt')).then((d) => {
-    return String(d)
+  fs.readFile(path.join('crawl', 'sponsors.txt')).then((d) =>
+    String(d)
       .split('\n')
       .map((d) => {
         const spam = d.charAt(0) === '-'
         return {oc: spam ? d.slice(1) : d, spam}
       })
-  }),
+  ),
   fetch(endpoint, {
     method: 'POST',
     body: JSON.stringify({query, variables}),

@@ -1,11 +1,15 @@
-import fs from 'fs'
-import path from 'path'
+import fs from 'node:fs'
+import path from 'node:path'
 import yaml from 'js-yaml'
 import glob from 'glob'
 import {matter} from 'vfile-matter'
 import all from 'p-all'
 import {toVFile} from 'to-vfile'
 import {reporter} from 'vfile-reporter'
+import {humans} from '../data/humans.js'
+import {releases as dataReleases} from '../data/releases.js'
+import {sponsors} from '../data/sponsors.js'
+import {teams} from '../data/teams.js'
 import {data} from './data.js'
 import {main as pipeline} from './pipeline/main.js'
 import {article as articlePipeline} from './pipeline/article.js'
@@ -32,10 +36,6 @@ import {scope} from './page/scope.js'
 import {sponsor} from './page/sponsors.js'
 import {topic} from './page/topic.js'
 import {topics} from './page/topics.js'
-import {humans} from '../data/humans.js'
-import {releases as dataReleases} from '../data/releases.js'
-import {sponsors} from '../data/sponsors.js'
-import {teams} from '../data/teams.js'
 
 const users = yaml.load(fs.readFileSync(path.join('doc', 'showcase.yml')))
 
@@ -255,9 +255,7 @@ const promises = tasks.map((fn) => () => {
 all(promises, {concurrency: 50})
 
 function page(fn, meta) {
-  tasks.push(() => {
-    return {tree: fn(), file: toVFile({data: {meta}})}
-  })
+  tasks.push(() => ({tree: fn(), file: toVFile({data: {meta}})}))
 }
 
 function expandDescription(map) {
