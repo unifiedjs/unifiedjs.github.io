@@ -543,7 +543,7 @@ async function getPackage(ctx) {
     body = await response.json()
   } catch {}
 
-  if (!body) {
+  if (!body || !body.collected || !body.score) {
     console.warn('%s#%s: could not connect to npms', repo, manifest)
     ctx.proper = false
     return
