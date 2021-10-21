@@ -18,6 +18,7 @@ expo1
 fred-edwards
 frontendmasters
 gatsbyjs
+hashicorp
 holloway
 indeed
 jin-zhao
