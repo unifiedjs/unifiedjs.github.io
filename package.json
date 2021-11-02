@@ -97,7 +97,7 @@
     "vfile-mkdirp": "^3.0.0",
     "vfile-rename": "^2.0.0",
     "vfile-reporter": "^7.0.0",
-    "xo": "^0.45.0"
+    "xo": "^0.46.0"
   },
   "scripts": {
     "start": "budo --dir build",
