@@ -15,7 +15,7 @@ export const main = unified()
   .use(rehypePictures, {base: path.join('build')})
   .use(rehypeDocument, {
     title: 'unified',
-    js: ['/search.js'],
+    js: ['/houdini.js', '/search.js'],
     link: [
       // We take images from these two, so preconnect asap.
       {rel: 'preconnect', href: 'https://github.com'},

@@ -420,6 +420,10 @@ abbr {
   background-color: rgb(0 0 0 / 4%);
   border-radius: 8px;
   overflow: hidden;
+  mask-image: paint(squircle);
+
+  --squircle-radius: 8px;
+  --squircle-smooth: 1;
 }
 
 .release {
@@ -512,6 +516,10 @@ abbr {
   background-color: var(--hl);
   color: var(--blue-1);
   transition: color 200ms, background-color 200ms;
+  mask-image: paint(squircle);
+
+  --squircle-radius: 3px;
+  --squircle-smooth: 1;
 }
 
 a.tag:hover,
@@ -569,6 +577,10 @@ a.tag:focus .count {
 .landing {
   color: var(--gray-0);
   background-image: linear-gradient(150deg, #0366d6 15%, #24292e 85%);
+  mask-image: paint(squircle);
+
+  --squircle-radius: 16px;
+  --squircle-smooth: 1;
 }
 
 .landing .article {
@@ -684,6 +696,10 @@ a.tag:focus .count {
   border: 0;
   border-radius: 3px;
   height: calc(0.25 * (1em + 1ex));
+  mask-image: paint(squircle);
+
+  --squircle-radius: 3px;
+  --squircle-smooth: 1;
 }
 
 .content table {
@@ -725,6 +741,10 @@ a.tag:focus .count {
   border-radius: 3px;
   position: absolute;
   left: 0;
+  mask-image: paint(squircle);
+
+  --squircle-radius: 3px;
+  --squircle-smooth: 1;
 }
 
 .content ul ul,
