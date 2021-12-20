@@ -86,7 +86,7 @@ export default function rehypePictures(options) {
                       (d) =>
                         ['/' + path.relative(base, d[0])] +
                         (d[1] ? ' ' + d[1] + 'w' : '')
-                    ),
+                    ).join(','),
                     media:
                       '(prefers-color-scheme: ' +
                       (mode ? 'dark' : 'light') +
