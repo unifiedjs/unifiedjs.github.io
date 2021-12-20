@@ -82,11 +82,13 @@ export default function rehypePictures(options) {
               return applicable.length === 0
                 ? []
                 : h('source', {
-                    srcSet: applicable.map(
-                      (d) =>
-                        ['/' + path.relative(base, d[0])] +
-                        (d[1] ? ' ' + d[1] + 'w' : '')
-                    ).join(','),
+                    srcSet: applicable
+                      .map(
+                        (d) =>
+                          ['/' + path.relative(base, d[0])] +
+                          (d[1] ? ' ' + d[1] + 'w' : '')
+                      )
+                      .join(','),
                     media:
                       '(prefers-color-scheme: ' +
                       (mode ? 'dark' : 'light') +
