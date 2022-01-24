@@ -1,5 +1,6 @@
 -baocasino
 -guest-c78d32a1
+-guest-408805a9
 -github-1
 -github-sponsors
 -incognito-08f32cbb
@@ -18,6 +19,7 @@ expo1
 fred-edwards
 frontendmasters
 gatsbyjs
+gitbook
 hashicorp
 holloway
 indeed
@@ -30,6 +32,7 @@ mgan
 mitchellhamilton
 motif
 netlify
+odiak
 opencollective
 radwebhosting
 ricky
