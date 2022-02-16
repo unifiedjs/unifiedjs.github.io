@@ -14,7 +14,7 @@ jobs:
           persist-credentials: false
       - uses: dcodeIO/setup-node-nvm@master
         with:
-          node-version: node
+          node-version: lts/*
       - run: npm install
       - run: npm test
         env:
