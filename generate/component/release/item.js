@@ -1,6 +1,7 @@
 import {h} from 'hastscript'
 import TimeAgo from 'javascript-time-ago'
-import en from 'javascript-time-ago/locale/en/index.js'
+/* eslint-disable-next-line n/file-extension-in-import */
+import en from 'javascript-time-ago/locale/en'
 import {constantLocale} from '../../util/constant-locale.js'
 
 const base = 'https://github.com/'
