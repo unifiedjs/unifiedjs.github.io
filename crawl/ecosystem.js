@@ -563,7 +563,7 @@ async function getPackage(ctx) {
   const latest = body.collected.metadata.version || null
   const repos = body.collected.metadata.repository
   const url = (repos && repos.url) || ''
-  const dependents = body.collected.npm.dependentsCount || 0
+  const dependents = (body.collected.npm || {}).dependentsCount || 0
   const score = body.score.final || 0
 
   if (deprecated) {
