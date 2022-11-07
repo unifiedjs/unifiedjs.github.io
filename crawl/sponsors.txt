@@ -9,6 +9,7 @@
 -user-134c19fe
 1337lawyers
 alex2
+asset-web
 balsa
 bnb
 boosthub
@@ -16,6 +17,7 @@ compositor
 daanvanderzwaag
 danburzo
 danoc
+dopplerteam
 expo1
 fred-edwards
 frontendmasters
@@ -26,6 +28,7 @@ holloway
 indeed
 jin-zhao
 jonathan-haines
+jpoehnelt
 knksmith57
 kvnsmth
 lars-trieloff
@@ -41,6 +44,7 @@ ricky
 see-yishu
 shawnbot
 sindresorhus-unicorn
+stackaid
 themeisle
 theodorechu
 thinkmill
