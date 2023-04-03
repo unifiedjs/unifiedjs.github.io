@@ -20,17 +20,16 @@ const headers = {Authorization: 'bearer ' + ghToken}
 const base = 'https://raw.githubusercontent.com/unifiedjs/collective/HEAD/data/'
 const files = ['humans.yml', 'teams.yml']
 
-for (const filename of files)
-  fetch(base + filename, {headers})
-    .then((d) => d.text())
-    .then((d) => {
-      const stem = path.basename(filename, path.extname(filename))
-      return fs.writeFile(
-        path.join('data', stem + '.js'),
-        'export const ' +
-          stem +
-          ' = ' +
-          JSON.stringify(yaml.load(d), null, 2) +
-          '\n'
-      )
-    })
+for (const filename of files) {
+  const response = await fetch(base + filename, {headers})
+  const d = await response.text()
+  const stem = path.basename(filename, path.extname(filename))
+  await fs.writeFile(
+    path.join('data', stem + '.js'),
+    'export const ' +
+      stem +
+      ' = ' +
+      JSON.stringify(yaml.load(d), null, 2) +
+      '\n'
+  )
+}

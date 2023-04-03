@@ -60,26 +60,25 @@ const main = promisify(
     .use(writeReadmes).run
 )
 
-main({
-  ghToken,
-  npmToken,
-  repos: [],
-  topics: constantTopic,
-  orgs: constantCollective
-}).then(
-  (result) => {
-    console.log(
-      chalk.green('✓') + ' done (%d packages, %d projects, %d readmes)',
-      result.packages.length,
-      result.projects.length,
-      result.readmes.length
-    )
-  },
-  (error) => {
-    console.log(chalk.red('✖') + ' error')
-    throw error
-  }
-)
+try {
+  // @ts-expect-error: fine.
+  const result = await main({
+    ghToken,
+    npmToken,
+    repos: [],
+    topics: constantTopic,
+    orgs: constantCollective
+  })
+  console.log(
+    chalk.green('✓') + ' done (%d packages, %d projects, %d readmes)',
+    result.packages.length,
+    result.projects.length,
+    result.readmes.length
+  )
+} catch (error) {
+  console.log(chalk.red('✖') + ' error')
+  throw error
+}
 
 async function findProjectsByTopic(ctx) {
   const {topics, repos} = ctx
@@ -242,7 +241,6 @@ async function searchTopic(ctx) {
   `
 
   while (!done) {
-    // eslint-disable-next-line no-await-in-loop
     response = await fetch(ghEndpoint, {
       method: 'POST',
       body: JSON.stringify({
@@ -301,7 +299,6 @@ async function searchOrg(ctx) {
   `
 
   while (!done) {
-    // eslint-disable-next-line no-await-in-loop
     response = await fetch(ghEndpoint, {
       method: 'POST',
       body: JSON.stringify({query, variables: {org, after}}),

@@ -12,7 +12,7 @@
   width: calc(12.333 * (1em + 1ex));
 }
 
-@media (min-width: 48.01em) {
+@media (width > 48em) {
   .readme {
     padding-left: calc(1em + 1ex);
     padding-right: calc(1em + 1ex);
@@ -102,7 +102,7 @@
   }
 }
 
-@media (min-width: 62.01em) {
+@media (width > 62em) {
   .readme {
     padding-left: 0;
     padding-right: 0;

@@ -47,15 +47,8 @@ const query = `query($slug: String) {
 }
 `
 
-Promise.all([
-  fs.readFile(path.join('crawl', 'sponsors.txt')).then((d) =>
-    String(d)
-      .split('\n')
-      .map((d) => {
-        const spam = d.charAt(0) === '-'
-        return {oc: spam ? d.slice(1) : d, spam}
-      })
-  ),
+const [buf, response] = await Promise.all([
+  fs.readFile(path.join('crawl', 'sponsors.txt')),
   fetch(endpoint, {
     method: 'POST',
     body: JSON.stringify({query, variables}),
@@ -63,58 +56,64 @@ Promise.all([
       'Content-Type': 'application/json',
       'Api-Key': token
     }
-  }).then((response) => response.json())
-])
-  .then(([control, response]) => {
-    const seen = []
-    const members = response.data.collective.members.nodes
-      .map((d) => {
-        const oc = d.account.slug
-        const github = d.account.githubHandle || undefined
-        const twitter = d.account.twitterHandle || undefined
-        let url = d.account.website || undefined
-        const info = control.find((d) => d.oc === oc)
-
-        if (url === ghBase + github || url === twBase + twitter) {
-          url = undefined
-        }
-
-        if (!info) {
-          console.log(
-            chalk.red('✖') +
-              ' @%s is an unknown sponsor, please define whether it’s spam or not in `sponsors.txt`',
-            oc
-          )
-        }
-
-        return {
-          spam: !info || info.spam,
-          name: d.account.name,
-          description: d.account.description || undefined,
-          image: d.account.imageUrl,
-          oc,
-          github,
-          twitter,
-          url,
-          gold:
-            (d.tier && d.tier.name && /gold/i.test(d.tier.name)) || undefined,
-          amount: d.totalDonations.value
-        }
-      })
-      .filter((d) => {
-        const ignore = d.spam || seen.includes(d.oc) // Ignore dupes in data.
-        seen.push(d.oc)
-        return d.amount > min && !ignore
-      })
-      .sort(sort)
-      .map((d) => Object.assign(d, {amount: undefined}))
-
-    return fs.writeFile(
-      outpath,
-      'export const sponsors = ' + JSON.stringify(members, null, 2) + '\n'
-    )
   })
-  .catch(console.error)
+])
+
+const control = String(buf)
+  .split('\n')
+  .map((d) => {
+    const spam = d.charAt(0) === '-'
+    return {oc: spam ? d.slice(1) : d, spam}
+  })
+/** @type {any} */
+const json = await response.json()
+
+const seen = []
+const members = json.data.collective.members.nodes
+  .map((d) => {
+    const oc = d.account.slug
+    const github = d.account.githubHandle || undefined
+    const twitter = d.account.twitterHandle || undefined
+    let url = d.account.website || undefined
+    const info = control.find((d) => d.oc === oc)
+
+    if (url === ghBase + github || url === twBase + twitter) {
+      url = undefined
+    }
+
+    if (!info) {
+      console.log(
+        chalk.red('✖') +
+          ' @%s is an unknown sponsor, please define whether it’s spam or not in `sponsors.txt`',
+        oc
+      )
+    }
+
+    return {
+      spam: !info || info.spam,
+      name: d.account.name,
+      description: d.account.description || undefined,
+      image: d.account.imageUrl,
+      oc,
+      github,
+      twitter,
+      url,
+      gold: (d.tier && d.tier.name && /gold/i.test(d.tier.name)) || undefined,
+      amount: d.totalDonations.value
+    }
+  })
+  .filter((d) => {
+    const ignore = d.spam || seen.includes(d.oc) // Ignore dupes in data.
+    seen.push(d.oc)
+    return d.amount > min && !ignore
+  })
+  .sort(sort)
+  .map((d) => Object.assign(d, {amount: undefined}))
+
+await fs.writeFile(
+  outpath,
+  'export const sponsors = ' + JSON.stringify(members, null, 2) + '\n'
+)
 
 function sort(a, b) {
   return b.amount - a.amount

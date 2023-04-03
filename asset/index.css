@@ -828,7 +828,7 @@ a.tag:focus .count {
   border-bottom-color: var(--gray-3);
 }
 
-@media (max-width: 48em) {
+@media (width <= 48em) {
   .x-show-l {
     display: none;
   }
