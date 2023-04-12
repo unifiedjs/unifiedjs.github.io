@@ -109,7 +109,7 @@
   src: /image/documentation.png
 - title: react-markdown
   short: Uses unified for parse Markdown
-  url: https://rexxars.github.io/react-markdown/
+  url: https://remarkjs.github.io/react-markdown/
   gh: rexxars/react-markdown
   src: /image/react-markdown.png
 - title: Readability
