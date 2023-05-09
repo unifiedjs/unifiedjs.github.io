@@ -33,11 +33,11 @@
   url: https://mdx-deck.jxnblk.com
   gh: jxnblk/mdx-deck
   src: /image/mdx-deck.png
-- title: Netlify
+- title: Decap
   short: Uses unified for their CMS
-  url: https://www.netlifycms.org
-  gh: netlify/netlify-cms
-  src: /image/netlify-cms.png
+  url: https://decapcms.org/
+  gh: decaporg/decap-cms
+  src: /image/decap-cms.png
 - title: freeCodeCamp
   short: Uses unifed to parse challenges
   url: https://www.freecodecamp.org
