@@ -243,7 +243,7 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 ### xast (XML)
 
 [xast (e**x**tensible **a**bstract **s**yntax **t**ree)][xast]
-extends unist with types specific for HTML such as `Element`, `CData`,
+extends unist with types specific for XML such as `Element`, `CData`,
 `Instruction`, and many more.
 The specification includes a full list of nodes.
 The types are available in a types only package: [`@types/xast`][ts-xast].
