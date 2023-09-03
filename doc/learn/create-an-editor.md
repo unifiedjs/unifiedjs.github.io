@@ -269,7 +269,7 @@ Change `index.js` like so:
  import diff from 'virtual-dom/diff.js'
  import patch from 'virtual-dom/patch.js'
 +import {unified} from 'unified'
-+import retextEnglish from 'retext-english'
++import retextEnglish, {Parser} from 'retext-english'
 
 +const processor = unified().use(retextEnglish)
  const root = document.querySelector('#root')
@@ -281,7 +281,7 @@ Change `index.js` like so:
 
 -  function parse() {}
 +  function parse(value) {
-+    return processor.runSync(processor.parse(value))
++    return processor.runSync(new Parser().parse(value))
 +  }
 
    function highlight() {}
@@ -304,7 +304,7 @@ it:
 --- a/index.js
 +++ b/index.js
 @@ -32,5 +32,19 @@ function render(text) {
-     return processor.runSync(processor.parse(value))
+     return processor.runSync(new Parser().parse(value))
    }
 
 -  function highlight() {}
