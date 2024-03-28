@@ -271,7 +271,7 @@ like so:
 +  .process(readSync('example.md'))
 +  .then(
 +    (file) => {
-+      console.error(reporter(file))
++      console.log(reporter(file))
 +      file.extname = '.html'
 +      writeSync(file)
 +    },
