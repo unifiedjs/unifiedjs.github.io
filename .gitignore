@@ -1,4 +1,6 @@
 .DS_Store
+*.d.ts.map
+*.d.ts
 *.log
 build/
 data/

@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "checkJs": true,
+    "customConditions": ["development"],
+    "declaration": true,
+    "declarationMap": true,
+    "emitDeclarationOnly": true,
+    // To do: uncomment.
+    // "exactOptionalPropertyTypes": true,
+    // To do: no `dom`.
+    "lib": ["dom", "es2022"],
+    "module": "node16",
+    // To do: remove.
+    "skipLibCheck": true,
+    // To do: uncomment.
+    // "strict": true,
+    "target": "es2022"
+  },
+  "exclude": ["coverage/", "node_modules/"],
+  "include": ["**/*.js"]
+}
