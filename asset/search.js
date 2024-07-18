@@ -1,6 +1,6 @@
 /* eslint-env browser */
 
-import {Index} from 'flexsearch'
+import flexsearch from 'flexsearch'
 import mean from 'compute-mean'
 import {toDom} from 'hast-util-to-dom'
 import {data} from '../generate/data.js'
@@ -22,6 +22,8 @@ import {searchEmpty as projectEmpty} from '../generate/component/project/search-
 import {searchResults as projectResults} from '../generate/component/project/search-results.js'
 import {unique} from '../generate/util/unique.js'
 import {asc, desc} from '../generate/util/sort.js'
+
+const Index = flexsearch.Index
 
 const loc = window.location
 const home = '/explore/'
