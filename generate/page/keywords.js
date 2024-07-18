@@ -7,7 +7,7 @@ import {page} from './page.js'
 
 export function keywords(data) {
   return page(
-    h('.row-l.column-l', h('h2', breadcrumbs('/explore/keyword/'))),
+    h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/explore/keyword/'))),
     list(
       data,
       helperFilter(

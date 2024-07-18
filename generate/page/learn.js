@@ -5,7 +5,7 @@ import {helperSort} from '../component/article/helper-sort.js'
 import {page} from './page.js'
 
 export function learn(sections) {
-  return page(h('.row-l.column-l', h('h2', breadcrumbs('/learn/'))), [
+  return page(h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/learn/'))), [
     h('.article.content', [
       h('h3', 'Intro'),
       h('p', [
@@ -21,7 +21,7 @@ export function learn(sections) {
       ])
     ]),
     sections.flatMap((d) => [
-      h('.article.content', [h('h3', d.title), h('p', d.description)]),
+      h('.article.content', [h('h3', {}, d.title), h('p', {}, d.description)]),
       list(d, helperSort(d.entries))
     ]),
     h('.article.content', [

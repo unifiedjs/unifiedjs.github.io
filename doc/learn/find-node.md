@@ -20,8 +20,8 @@ modified: 2020-06-14
 
 ### Contents
 
-*   [What is a node](#what-is-a-node)
-*   [Finding a node](#finding-a-node)
+* [What is a node](#what-is-a-node)
+* [Finding a node](#finding-a-node)
 
 ### What is a node
 
@@ -35,18 +35,19 @@ The concept of finding a node involves
 [tree traversal][tree-traversal] of a [syntax tree][syntax-tree].
 
 unified compatible utilities should be used for finding a node.
-Utilities are functions that work with nodes.  All specifications
-that extend [unist][] can use the [unist utilities][unist-utils],
+Utilities are functions that work with nodes.
+All specifications that extend [unist][] can use the
+[unist utilities][unist-utils],
 but they can also have their own utilities for more specific nodes.
 
 To start finding nodes for your input you’ll need:
 
-*   A processor (such as [`remark`][remark]).
-*   A utility of choice.
+* A processor (such as [`remark`][remark]).
+* A utility of choice.
 
 For this example we use [`remark`][remark]
-and [`unist-util-find`][unist-util-find].  We want to find
-the first occurrence of emphasis in our markdown.
+and [`unist-util-find`][unist-util-find].
+We want to find the first occurrence of emphasis in our markdown.
 
 ```js
 import {remark} from 'remark'

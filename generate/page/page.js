@@ -5,10 +5,10 @@ export function page(heading, main) {
     type: 'root',
     children: [
       heading && (!Array.isArray(heading) || heading.length > 0)
-        ? h('section.container', heading)
+        ? h('section.container', {}, heading)
         : '',
       main && (!Array.isArray(main) || main.length > 0)
-        ? h('main.container', main)
+        ? h('main.container', {}, main)
         : ''
     ]
   }

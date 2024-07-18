@@ -9,7 +9,7 @@ export function item(data, d) {
   const {projectsByTopic} = data
 
   return [
-    h('.content', h('h3', d)),
+    h('.content', {}, h('h3', {}, d)),
     list(data, helperSort(data, projectsByTopic[d]), {max: 3, more})
   ]
 
@@ -20,7 +20,7 @@ export function item(data, d) {
       ' other ',
       fmtPlural(rest, {one: 'project', other: 'projects'}),
       ' matching ',
-      h('span.tag', d)
+      h('span.tag', {}, d)
     ])
   }
 }

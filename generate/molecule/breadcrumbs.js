@@ -29,7 +29,7 @@ export function breadcrumbs(filepath, title) {
 
     if (last) {
       node.properties.rel = ['canonical']
-      node = h('span.content', node)
+      node = h('span.content', {}, node)
     }
 
     return [node, last ? '' : h('span.lowlight.separator', '/')]

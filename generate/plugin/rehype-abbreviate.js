@@ -12,7 +12,7 @@ export default function rehypeAbbreviate(titles) {
   function transform(tree, file) {
     const cache = []
 
-    findAndReplace(tree, re, replace, {ignore})
+    findAndReplace(tree, [re, replace], {ignore})
 
     function replace($0) {
       const id = pluralize.singular($0)

@@ -29,7 +29,7 @@ export const readme = unified()
   .use(remarkRehype, {allowDangerousHtml: true})
   .use(rehypeRaw)
   .use(rehypeSanitize, schema)
-  .use(rehypeHighlight, {subset: false, ignoreMissing: true})
+  .use(rehypeHighlight, {detect: false, plainText: ['ignore']})
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, {
     behavior: 'prepend',

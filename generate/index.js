@@ -1,10 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import yaml from 'js-yaml'
-import glob from 'glob'
+import {glob} from 'glob'
 import {matter} from 'vfile-matter'
 import all from 'p-all'
-import {toVFile} from 'to-vfile'
+import {toVFile, read, readSync, write} from 'to-vfile'
 import {reporter} from 'vfile-reporter'
 import {humans} from '../data/humans.js'
 import {releases as dataReleases} from '../data/releases.js'
@@ -47,7 +47,8 @@ expandDescription(data.packageByName)
 expandReleases(dataReleases)
 
 const entries = glob.sync('doc/learn/**/*.md').map((input) => {
-  const file = matter(toVFile.readSync(input))
+  const file = readSync(input)
+  matter(file)
   const slug = path.basename(input, path.extname(input))
   const {group, tags} = file.data.matter
 
@@ -199,7 +200,7 @@ Object.keys(data.packageByName).forEach((d) => {
   const pathname = '/explore/package/' + d + '/'
 
   tasks.push(() =>
-    toVFile.read(input).then((file) => {
+    read(input).then((file) => {
       const meta = {title: d, description, pathname, tags: keywords}
 
       file.data = {meta, repo, dirname: manifestBase}
@@ -244,12 +245,15 @@ const promises = tasks.map((fn) => () => {
       file.value = pipeline.stringify(tree, file)
       return file
     })
-    .then((file) => toVFile.write(file).then(() => file))
-    .then(done, done)
-
-  function done(x) {
-    console.log(reporter(x))
-  }
+    .then((file) => write(file).then(() => file))
+    .then(
+      function (x) {
+        console.log(reporter(x))
+      },
+      function (error) {
+        console.error(error)
+      }
+    )
 })
 
 all(promises, {concurrency: 50})

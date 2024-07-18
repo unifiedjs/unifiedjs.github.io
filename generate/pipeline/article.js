@@ -22,7 +22,7 @@ export const article = unified()
   .use(remarkFrontmatter)
   .use(remarkRehype, {allowDangerousHtml: true})
   .use(rehypeRaw)
-  .use(rehypeHighlight, {subset: false, ignoreMissing: true})
+  .use(rehypeHighlight, {detect: false, plainText: ['ignore']})
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, {
     behavior: 'prepend',

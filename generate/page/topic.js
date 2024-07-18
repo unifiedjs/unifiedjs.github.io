@@ -5,7 +5,7 @@ import {page} from './page.js'
 
 export function topic(data, d) {
   return page(
-    h('.row-l.column-l', h('h2', breadcrumbs('/explore/topic/' + d))),
+    h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/explore/topic/' + d))),
     detail(data, d)
   )
 }

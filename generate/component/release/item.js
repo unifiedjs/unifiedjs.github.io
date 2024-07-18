@@ -1,6 +1,5 @@
 import {h} from 'hastscript'
 import TimeAgo from 'javascript-time-ago'
-/* eslint-disable-next-line n/file-extension-in-import */
 import en from 'javascript-time-ago/locale/en'
 import {constantLocale} from '../../util/constant-locale.js'
 
@@ -43,7 +42,7 @@ export function item(data, d) {
     ]),
     h(
       '.content',
-      d.descriptionRich ? d.descriptionRich.children : h('p', d.description)
+      d.descriptionRich ? d.descriptionRich.children : h('p', {}, d.description)
     )
   ])
 }

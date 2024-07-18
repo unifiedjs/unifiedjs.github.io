@@ -4,6 +4,6 @@ export function block(main, footer) {
   return h(
     'li',
     {className: footer ? ['nl-root'] : []},
-    [].concat(main, footer ? h('.nl-foot', footer) : [])
+    [].concat(main, footer ? h('.nl-foot', {}, footer) : [])
   )
 }

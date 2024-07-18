@@ -15,5 +15,5 @@ export function downloads(value, name) {
     node = h('a.tap-target', {href: 'https://www.npmtrends.com/' + name}, node)
   }
 
-  return h('li', node)
+  return h('li', {}, node)
 }

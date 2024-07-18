@@ -7,7 +7,7 @@ import {page} from './page.js'
 
 export function topics(data) {
   return page(
-    h('.row-l.column-l', h('h2', breadcrumbs('/explore/topic/'))),
+    h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/explore/topic/'))),
     list(
       data,
       helperFilter(data, helperSort(data, Object.keys(data.projectsByTopic)), 2)

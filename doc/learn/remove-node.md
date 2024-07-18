@@ -24,14 +24,14 @@ traversal][tree-traversal]), you can remove them.
 
 ### Contents
 
-*   [Prerequisites](#prerequisites)
-*   [Removing a node](#removing-a-node)
-*   [Replacing a node with its children](#replacing-a-node-with-its-children)
+* [Prerequisites](#prerequisites)
+* [Removing a node](#removing-a-node)
+* [Replacing a node with its children](#replacing-a-node-with-its-children)
 
 ### Prerequisites
 
-*   [Tree traversal][tree-traversal]
-    — Intro on how to walk trees and find specific nodes with `unist-util-visit`
+* [Tree traversal][tree-traversal]
+  — Intro on how to walk trees and find specific nodes with `unist-util-visit`
 
 ### Removing a node
 

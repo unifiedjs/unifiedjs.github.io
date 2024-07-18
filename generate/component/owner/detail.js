@@ -12,7 +12,7 @@ export function detail(data, d) {
   )
 
   return [
-    h('.content', h('h3', ['Projects by owner @', d])),
+    h('.content', {}, h('h3', ['Projects by owner @', d])),
     list(data, helperSort(data, projectsByOwner[d]), {trail})
   ]
 }

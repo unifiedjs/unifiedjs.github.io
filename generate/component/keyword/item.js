@@ -9,7 +9,7 @@ export function item(data, d) {
   const {packagesByKeyword} = data
 
   return [
-    h('.content', h('h3', d)),
+    h('.content', {}, h('h3', {}, d)),
     list(data, helperSort(data, packagesByKeyword[d]), {max: 3, more})
   ]
 
@@ -20,7 +20,7 @@ export function item(data, d) {
       ' other ',
       fmtPlural(rest, {one: 'package', other: 'packages'}),
       ' matching ',
-      h('span.tag', d)
+      h('span.tag', {}, d)
     ])
   }
 }

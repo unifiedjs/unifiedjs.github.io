@@ -50,7 +50,9 @@ export default function rehypePictures(options) {
         const promises = [].concat(
           // See which images exist.
           sources.map((d) => {
-            const fp = rename(toVFile({path: resolved}), d).path
+            const file = toVFile({path: resolved})
+            rename(file, d)
+            const fp = file.path
 
             return fs.promises.access(fp, fs.constants.R_OK).then(
               () => fp,
@@ -70,10 +72,12 @@ export default function rehypePictures(options) {
             modes.flatMap((mode) => {
               const applicable = sizes
                 .map((size) => {
-                  const fp = rename(toVFile({path: resolved}), {
+                  const file = toVFile({path: resolved})
+                  rename(file, {
                     stem: {suffix: mode + (size ? '-' + size : '')},
                     extname: '.' + format
-                  }).path
+                  })
+                  const fp = file.path
 
                   return available.has(fp) ? [fp, size] : []
                 })
@@ -104,7 +108,7 @@ export default function rehypePictures(options) {
           node.properties.width = info.width
           node.properties.height = info.height
 
-          siblings[siblings.indexOf(node)] = h('picture', srcs.concat(node))
+          siblings[siblings.indexOf(node)] = h('picture', {}, srcs.concat(node))
         })
       }
     }

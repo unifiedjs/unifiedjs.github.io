@@ -13,5 +13,5 @@ export function stars(value, name) {
     )
   }
 
-  return h('li', node)
+  return h('li', {}, node)
 }

@@ -13,5 +13,5 @@ export function npm(name) {
     node = h('a.tap-target', {href}, node)
   }
 
-  return h('li', node)
+  return h('li', {}, node)
 }

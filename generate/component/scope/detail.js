@@ -6,7 +6,7 @@ export function detail(data, d) {
   const {packagesByScope} = data
 
   return [
-    h('.content', h('h3', ['Packages in scope ', d])),
+    h('.content', {}, h('h3', ['Packages in scope ', d])),
     list(data, helperSort(data, packagesByScope[d]))
   ]
 }

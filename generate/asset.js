@@ -2,12 +2,12 @@ import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import {promisify} from 'node:util'
-import glob from 'glob'
+import {glob} from 'glob'
 import sharp from 'sharp'
 import pAll from 'p-all'
 import {mkdirp} from 'vfile-mkdirp'
 import {trough} from 'trough'
-import {toVFile} from 'to-vfile'
+import {toVFile, read, write} from 'to-vfile'
 import {reporter} from 'vfile-reporter'
 import esbuild from 'esbuild'
 import postcss from 'postcss'
@@ -33,19 +33,15 @@ if (process.env.UNIFIED_OPTIMIZE_IMAGES) {
 }
 
 const processPipeline = trough()
-  .use(toVFile.read)
+  .use(read)
   .use(processFile)
   .use(move)
   .use(mkdir)
-  .use(toVFile.write)
+  .use(write)
 
 const copyPipeline = trough().use(move).use(mkdir).use(copy)
 
-const imagePipeline = trough()
-  .use(move)
-  .use(mkdir)
-  .use(toVFile.write)
-  .use(print)
+const imagePipeline = trough().use(move).use(mkdir).use(write).use(print)
 
 const filePipeline = trough()
   .use((fp, next) => {
@@ -68,7 +64,7 @@ trough()
   })
   .use((files, next) => {
     const value = new URL(pack.homepage).host + '\n'
-    toVFile.write({dirname: 'build', basename: 'CNAME', value}, next)
+    write({dirname: 'build', basename: 'CNAME', value}, next)
   })
   .run('asset/**/*.*', (error) => {
     if (error) {

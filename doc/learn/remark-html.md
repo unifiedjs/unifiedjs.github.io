@@ -22,18 +22,18 @@ modified: 2021-03-09
 remark is a markdown compiler.
 It’s concerned with HTML in two ways:
 
-1.  markdown is often turned into HTML
-2.  markdown sometimes has embedded HTML
+1. markdown is often turned into HTML
+2. markdown sometimes has embedded HTML
 
 When dealing with HTML and markdown, we will use both remark and rehype.
 This article shows some examples of how to do that.
 
 ### Contents
 
-*   [How to turn markdown into HTML](#how-to-turn-markdown-into-html)
-*   [How to turn HTML into markdown](#how-to-turn-html-into-markdown)
-*   [How to allow HTML embedded in markdown](#how-to-allow-html-embedded-in-markdown)
-*   [How to properly support HTML inside markdown](#how-to-properly-support-html-inside-markdown)
+* [How to turn markdown into HTML](#how-to-turn-markdown-into-html)
+* [How to turn HTML into markdown](#how-to-turn-html-into-markdown)
+* [How to allow HTML embedded in markdown](#how-to-allow-html-embedded-in-markdown)
+* [How to properly support HTML inside markdown](#how-to-properly-support-html-inside-markdown)
 
 ### How to turn markdown into HTML
 

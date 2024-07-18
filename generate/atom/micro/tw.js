@@ -8,5 +8,5 @@ export function tw(name) {
     node = h('a.tap-target', {href: 'https://twitter.com/' + name}, node)
   }
 
-  return h('li', node)
+  return h('li', {}, node)
 }

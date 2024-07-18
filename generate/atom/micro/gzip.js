@@ -12,5 +12,5 @@ export function gzip(value, name) {
     )
   }
 
-  return value ? h('li', node) : ''
+  return value ? h('li', {}, node) : ''
 }

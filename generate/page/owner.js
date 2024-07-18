@@ -5,7 +5,7 @@ import {page} from './page.js'
 
 export function owner(data, d) {
   return page(
-    h('.row-l.column-l', h('h2', breadcrumbs('/explore/project/' + d))),
+    h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/explore/project/' + d))),
     detail(data, d)
   )
 }

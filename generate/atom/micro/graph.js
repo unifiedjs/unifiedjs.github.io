@@ -12,5 +12,5 @@ export function graph(dependents, name) {
     )
   }
 
-  return h('li', by)
+  return h('li', {}, by)
 }

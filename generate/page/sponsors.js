@@ -6,7 +6,7 @@ import {page} from './page.js'
 
 export function sponsor(sponsors) {
   return page(
-    h('.row-l.column-l', h('h2', breadcrumbs('/community/sponsor/'))),
+    h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/community/sponsor/'))),
     [h('.article.content', [h('h3', 'Sponsors'), byline()]), list(sponsors)]
   )
 }

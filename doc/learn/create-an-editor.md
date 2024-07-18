@@ -33,15 +33,15 @@ You can also [view this project][write-music] with some more features online.
 
 ### Contents
 
-*   [Case](#case)
-*   [Project structure](#project-structure)
-*   [Setting up JavaScript](#setting-up-javascript)
-*   [Natural language syntax tree](#natural-language-syntax-tree)
-*   [Virtual DOM](#virtual-dom)
-*   [Highlight](#highlight)
-*   [Color](#color)
-*   [Squashing bugs](#squashing-bugs)
-*   [Further exercises](#further-exercises)
+* [Case](#case)
+* [Project structure](#project-structure)
+* [Setting up JavaScript](#setting-up-javascript)
+* [Natural language syntax tree](#natural-language-syntax-tree)
+* [Virtual DOM](#virtual-dom)
+* [Highlight](#highlight)
+* [Color](#color)
+* [Squashing bugs](#squashing-bugs)
+* [Further exercises](#further-exercises)
 
 ### Case
 
@@ -188,17 +188,17 @@ This guide will wait!
 
 To summarize what all these things in the code mean:
 
-*   `h` creates “virtual” nodes
-*   `createElement` turns them into DOM nodes
-*   `diff` finds the difference between two virtual nodes
-*   `patch` applies `diff` to a DOM node
-*   `root` is our anchor into the document
-*   `tree` is the current virtual tree
-*   `dom` is the current DOM tree
-*   `onchange` handles any state change (the text in our case)
-*   `render` creates a new virtual tree based on that state
-*   `parse` transforms the state into a natural language syntax tree
-*   `highlight` transforms that syntax tree into a virtual tree
+* `h` creates “virtual” nodes
+* `createElement` turns them into DOM nodes
+* `diff` finds the difference between two virtual nodes
+* `patch` applies `diff` to a DOM node
+* `root` is our anchor into the document
+* `tree` is the current virtual tree
+* `dom` is the current DOM tree
+* `onchange` handles any state change (the text in our case)
+* `render` creates a new virtual tree based on that state
+* `parse` transforms the state into a natural language syntax tree
+* `highlight` transforms that syntax tree into a virtual tree
 
 In `render`, we’re creating two elements: a `<div>` that we’ll draw our syntax
 highlighting in, and a `<textarea>` that the user can edit.
@@ -516,11 +516,11 @@ size of the drawing area.
 
 The above code has a few issues:
 
-*   [ ] `onchange` is not [debounced][debounce], which leads to performance
-    issues
-*   [ ] `input` events are not supported in some older browsers
-*   [ ] The styles aren’t perfect
-*   [ ] and probably some other things!
+* [ ] `onchange` is not [debounced][debounce], which leads to performance
+  issues
+* [ ] `input` events are not supported in some older browsers
+* [ ] The styles aren’t perfect
+* [ ] and probably some other things!
 
 …maybe you could solve some?
 Other than those issues, it’s a pretty cool little demo.

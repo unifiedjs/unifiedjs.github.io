@@ -9,8 +9,8 @@
 Do `npm i` and then `npm t`, which checks and builds the site.
 This basic build uses two shortcuts over the full build:
 
-*   Images are not optimized
-*   Data is not crawled
+* Images are not optimized
+* Data is not crawled
 
 The full build is a slow site to properly build!
 Takes about 20 minutes (🤯) on my tiny trusted 12 inch MacBook.

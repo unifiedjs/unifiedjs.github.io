@@ -39,7 +39,7 @@ export function item(data, d) {
           role: 'presentation',
           style: 'background-image:url(' + base + github + '.png?size=64)'
         }),
-        h('span.ellipsis', name)
+        h('span.ellipsis', {}, name)
       ]),
       h(
         'p.double-ellipsis',

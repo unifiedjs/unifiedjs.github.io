@@ -33,9 +33,9 @@ export function item(d) {
           role: 'presentation',
           style: 'background-image:url(' + image + ')'
         }),
-        h('span.ellipsis', name)
+        h('span.ellipsis', {}, name)
       ]),
-      description ? h('p.double-ellipsis', description) : []
+      description ? h('p.double-ellipsis', {}, description) : []
     ]),
     footer
   )

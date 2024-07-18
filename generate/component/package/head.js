@@ -40,7 +40,10 @@ export function head(data, id) {
           scope ? h('span.lowlight.separator', '/') : '',
           h('a', {href: '/explore/package/' + id}, pkgName),
           d.latest
-            ? [h('span.lowlight.separator', '@'), h('span.medlight', d.latest)]
+            ? [
+                h('span.lowlight.separator', '@'),
+                h('span.medlight', {}, d.latest)
+              ]
             : ''
         ])
       ]),

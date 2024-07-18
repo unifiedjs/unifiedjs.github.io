@@ -10,5 +10,5 @@ export function license(value) {
     node = h('a.tap-target', {href: url}, node)
   }
 
-  return node ? h('li', node) : ''
+  return node ? h('li', {}, node) : ''
 }

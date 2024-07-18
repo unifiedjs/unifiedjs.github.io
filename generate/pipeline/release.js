@@ -30,7 +30,7 @@ export function release(d) {
     .use(remarkRehype, {allowDangerousHtml: true})
     .use(rehypeRaw)
     .use(rehypeSanitize, schema)
-    .use(rehypeHighlight, {subset: false, ignoreMissing: true})
+    .use(rehypeHighlight, {detect: false, plainText: ['ignore']})
     .use(rehypeResolveUrls, {repo: d.repo, object: d.tag})
     .use(rehypeRewriteUrls, {origin})
     .use(headings)

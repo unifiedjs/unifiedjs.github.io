@@ -8,7 +8,7 @@ import {page} from './page.js'
 
 export function releases(data) {
   return page(
-    h('.row-l.column-l', h('h2', breadcrumbs('/explore/release/'))),
+    h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/explore/release/'))),
     list(data, helperFilter(data, helperSort(data, dataReleases)))
   )
 }

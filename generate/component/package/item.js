@@ -13,8 +13,8 @@ export function item(data, name) {
   return box(
     '/explore/package/' + name + '/',
     h('.column', [
-      h('h4', name),
-      h('.content.double-ellipsis', value),
+      h('h4', {}, name),
+      h('.content.double-ellipsis', {}, value),
       h('ol.row', [
         score(d.score),
         verified(d.repo),

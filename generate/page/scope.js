@@ -5,7 +5,7 @@ import {page} from './page.js'
 
 export function scope(data, d) {
   return page(
-    h('.row-l.column-l', h('h2', breadcrumbs('/explore/package/' + d))),
+    h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/explore/package/' + d))),
     detail(data, d)
   )
 }

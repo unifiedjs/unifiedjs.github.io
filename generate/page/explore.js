@@ -8,16 +8,16 @@ import {explorePreview as release} from '../component/release/explore-preview.js
 import {page} from './page.js'
 
 export function explore(data) {
-  return page(h('.row-l.column-l', h('h2', breadcrumbs('/explore/'))), [
+  return page(h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/explore/'))), [
     h('#search-root', [
-      h('.content', h('h3', 'Packages')),
-      h('#root-keyword', keyword(data)),
-      h('#root-package', pkg(data)),
-      h('.content', h('h3', 'Projects')),
-      h('#root-topic', topic(data)),
-      h('#root-project', project(data)),
+      h('.content', {}, h('h3', 'Packages')),
+      h('#root-keyword', {}, keyword(data)),
+      h('#root-package', {}, pkg(data)),
+      h('.content', {}, h('h3', 'Projects')),
+      h('#root-topic', {}, topic(data)),
+      h('#root-project', {}, project(data)),
       h('#root-release', [
-        h('.content', h('h3', 'Recent releases')),
+        h('.content', {}, h('h3', 'Recent releases')),
         release(data)
       ])
     ])

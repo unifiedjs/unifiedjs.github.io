@@ -20,10 +20,10 @@ modified: 2020-06-14
 
 ### Contents
 
-*   [Tree traversal](#tree-traversal)
-*   [Set up](#set-up)
-*   [Traverse the tree](#traverse-the-tree)
-*   [Visiting a certain kind of node](#visiting-a-certain-kind-of-node)
+* [Tree traversal](#tree-traversal)
+* [Set up](#set-up)
+* [Traverse the tree](#traverse-the-tree)
+* [Visiting a certain kind of node](#visiting-a-certain-kind-of-node)
 
 ### Tree traversal
 
@@ -38,8 +38,8 @@ Tree traversal is often also called “walking a tree”, or “visiting a tree�
 To learn more, continue reading, but when working with unist (unified’s trees)
 you probably need either:
 
-*   [`unist-util-visit`][visit]
-*   [`unist-util-visit-parents`][visit-parents]
+* [`unist-util-visit`][visit]
+* [`unist-util-visit-parents`][visit-parents]
 
 ### Set up
 

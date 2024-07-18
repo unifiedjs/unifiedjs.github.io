@@ -8,7 +8,8 @@ export function article(tree, file) {
   const {title} = matter
   const {pathname} = meta
 
-  return page(h('.row-l.column-l', h('h2', breadcrumbs(pathname, title))), [
-    detail(tree, file)
-  ])
+  return page(
+    h('.row-l.column-l', {}, h('h2', {}, breadcrumbs(pathname, title))),
+    [detail(tree, file)]
+  )
 }

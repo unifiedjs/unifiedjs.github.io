@@ -1,3 +1,7 @@
+/**
+ * @import {FindAndReplaceTuple} from 'hast-util-find-and-replace'
+ */
+
 import {h} from 'hastscript'
 import {findAndReplace, defaultIgnore} from 'hast-util-find-and-replace'
 
@@ -23,8 +27,12 @@ export default function rehypeLink() {
   }
 }
 
+/**
+ * @returns {Array<FindAndReplaceTuple>}
+ */
 function initialise() {
-  const result = {}
+  /** @type {Array<FindAndReplaceTuple>} */
+  const result = []
   const dictionary = {
     'v|file': 'vfile/vfile',
     'uni|fied': 'unifiedjs/unified',
@@ -52,14 +60,15 @@ function initialise() {
     const name = parts.join('')
     const slug = dictionary[find]
 
-    result[name] = replacer
-
-    function replacer() {
-      return h(
-        'a.' + name.toLowerCase(),
-        {href: 'https://github.com/' + slug},
-        [h('span.hl', parts[0]), parts[1]]
-      )
-    }
+    result.push([
+      name,
+      function () {
+        return h(
+          'a.' + name.toLowerCase(),
+          {href: 'https://github.com/' + slug},
+          [h('span.hl', {}, parts[0]), parts[1]]
+        )
+      }
+    ])
   }
 }

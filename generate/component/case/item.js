@@ -18,10 +18,10 @@ export function item(d) {
   return card(
     url,
     [
-      h('.screen', h('img', {src, alt: ''})),
+      h('.screen', {}, h('img', {src, alt: ''})),
       h('.column', [
-        h('h3.row', [h('span.ellipsis', title)]),
-        h('p.double-ellipsis', short)
+        h('h3.row', [h('span.ellipsis', {}, title)]),
+        h('p.double-ellipsis', {}, short)
       ])
     ],
     footer

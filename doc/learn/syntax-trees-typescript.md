@@ -21,18 +21,17 @@ This guide will introduce you to using unist and unified with TypeScript.
 
 ### Contents
 
-*   [Basics](#basics)
-*   [unist](#unist)
-*   [mdast (markdown)](#mdast-markdown)
-*   [hast (HTML)](#hast-html)
-*   [xast (XML)](#xast-xml)
-*   [Summary](#summary)
-*   [Next steps](#next-steps)
+* [Basics](#basics)
+* [unist](#unist)
+* [mdast (markdown)](#mdast-markdown)
+* [hast (HTML)](#hast-html)
+* [xast (XML)](#xast-xml)
+* [Summary](#summary)
+* [Next steps](#next-steps)
 
 ### Basics
 
-All unified syntax trees are based off
-[unist (**uni**versal **s**yntax **t**ree)][unist].
+All unified syntax trees are based off [unist][].
 The core types are available in a types only package:
 [`@types/unist`][ts-unist].
 The main type is `Node`.
@@ -182,9 +181,8 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ### mdast (markdown)
 
-[mdast (**m**arkdown **a**bstract **s**yntax **t**ree)][mdast]
-extends unist with types specific for markdown such as `Heading`, `Code`,
-`Link`, and many more.
+[mdast][] extends unist with types specific for markdown such as `Heading`,
+`Code`, `Link`, and many more.
 The specification includes a full list of nodes.
 The types are available in a types only package: [`@types/mdast`][ts-mdast].
 
@@ -212,9 +210,8 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ### hast (HTML)
 
-[hast (**h**ypertext **a**bstract **s**yntax **t**ree)][hast]
-extends unist with types specific for HTML such as `Element`, `Comment`,
-`DocType`, and many more.
+[hast][] extends unist with types specific for HTML such as
+`Element`, `Comment`, `Doctype`, and many more.
 The specification includes a full list of nodes.
 The types are available in a types only package: [`@types/hast`][ts-hast].
 
@@ -242,9 +239,8 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ### xast (XML)
 
-[xast (e**x**tensible **a**bstract **s**yntax **t**ree)][xast]
-extends unist with types specific for XML such as `Element`, `CData`,
-`Instruction`, and many more.
+[xast][] extends unist with types specific for XML such as
+`Element`, `CData`, `Instruction`, and many more.
 The specification includes a full list of nodes.
 The types are available in a types only package: [`@types/xast`][ts-xast].
 
@@ -272,14 +268,14 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ### Summary
 
-*   unified provides types for each language’s syntax tree
-*   These types can be import into TypeScript projects and into JSDoc projects
+* unified provides types for each language’s syntax tree
+* These types can be import into TypeScript projects and into JSDoc projects
 
 ### Next steps
 
-*   [Learn to traverse syntax trees with TypeScript](/learn/recipe/tree-traversal-typescript/)
-*   [Learn to narrow `Node`s](/learn/recipe/narrow-node-typescript/)
-*   [Learn to build syntax trees](/learn/recipe/build-a-syntax-tree/)
+* [Learn to traverse syntax trees with TypeScript](/learn/recipe/tree-traversal-typescript/)
+* [Learn to narrow `Node`s](/learn/recipe/narrow-node-typescript/)
+* [Learn to build syntax trees](/learn/recipe/build-a-syntax-tree/)
 
 <!-- Definitions -->
 

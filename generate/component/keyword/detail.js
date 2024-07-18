@@ -8,12 +8,12 @@ export function detail(data, d) {
 
   const trail = more('https://www.npmjs.com/search?q=keywords:' + d, [
     'Find other packages matching ',
-    h('span.tag', d),
+    h('span.tag', {}, d),
     ' on npm'
   ])
 
   return [
-    h('.content', h('h3', ['Packages matching ', d])),
+    h('.content', {}, h('h3', ['Packages matching ', d])),
     list(data, helperSort(data, packagesByKeyword[d]), {trail})
   ]
 }

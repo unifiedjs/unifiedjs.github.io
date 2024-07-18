@@ -17,22 +17,22 @@ modified: 2020-06-14
 
 After reading this guide you will:
 
-*   Understand what unified does
-*   Get a taste of the ecosystem
-*   Know how it can be used
-*   Know what parts (processors) you need for your (future) use case
-*   Have a list of resources to continue learning or get started
+* Understand what unified does
+* Get a taste of the ecosystem
+* Know how it can be used
+* Know what parts (processors) you need for your (future) use case
+* Have a list of resources to continue learning or get started
 
 ![][unified-overview]
 
 ### Contents
 
-*   [Intro](#intro)
-*   [Collective](#collective)
-*   [How it comes together](#how-it-comes-together)
-*   [Use cases](#use-cases)
-*   [Summary](#summary)
-*   [Next steps](#next-steps)
+* [Intro](#intro)
+* [Collective](#collective)
+* [How it comes together](#how-it-comes-together)
+* [Use cases](#use-cases)
+* [Summary](#summary)
+* [Next steps](#next-steps)
 
 ### Intro
 
@@ -63,25 +63,25 @@ So let’s start off with an introduction round.
 
 The ecosystems:
 
-*   remark — Markdown
-*   rehype — HTML
-*   retext — Natural language
-*   redot — Graphviz
+* remark — Markdown
+* rehype — HTML
+* retext — Natural language
+* redot — Graphviz
 
 The specifications for syntax trees:
 
-*   unist — Universal Syntax Tree
-*   mdast — Markdown Abstract Syntax Tree format
-*   hast — HTML Abstract Syntax Tree format
-*   xast — XML Abstract Syntax Tree format
-*   esast — ECMAScript Abstract Syntax Tree format
-*   nlcst — Natural Language Concrete Syntax Tree format
+* unist — Universal Syntax Tree
+* mdast — Markdown Abstract Syntax Tree format
+* hast — HTML Abstract Syntax Tree format
+* xast — XML Abstract Syntax Tree format
+* esast — ECMAScript Abstract Syntax Tree format
+* nlcst — Natural Language Concrete Syntax Tree format
 
 Other building blocks:
 
-*   syntax-tree — Low-level utilities for building plugins
-*   vfile — Virtual file format for text processing
-*   MDX — Markdown and JSX
+* syntax-tree — Low-level utilities for building plugins
+* vfile — Virtual file format for text processing
+* MDX — Markdown and JSX
 
 We’ll get to how these come together in the next section.
 If you are already feeling adventurous, you can go directly to
@@ -93,19 +93,19 @@ If you are already feeling adventurous, you can go directly to
 These processors, specifications, and tools come together in a three part act.
 The process of a processor:
 
-1.  **Parse**:
-    Whether your input is Markdown, HTML, or prose — it needs to be parsed to a
-    workable format.
-    Such a format is called a syntax tree.
-    The specifications (for example mdast) define how such a syntax tree looks.
-    The processors (such as remark for mdast) are responsible for creating them.
-2.  **Transform**:
-    This is where the magic happens.
-    Users compose plugins and the order they run in.
-    Plugins plug into this phase and transform and inspect the format they get.
-3.  **Stringify**:
-    The final step is to take the (adjusted) format and stringify it to
-    Markdown, HTML, or prose (which could be different from the input format!)
+1. **Parse**:
+   Whether your input is Markdown, HTML, or prose — it needs to be parsed to a
+   workable format.
+   Such a format is called a syntax tree.
+   The specifications (for example mdast) define how such a syntax tree looks.
+   The processors (such as remark for mdast) are responsible for creating them.
+2. **Transform**:
+   This is where the magic happens.
+   Users compose plugins and the order they run in.
+   Plugins plug into this phase and transform and inspect the format they get.
+3. **Stringify**:
+   The final step is to take the (adjusted) format and stringify it to
+   Markdown, HTML, or prose (which could be different from the input format!)
 
 unified can be used programmatically in Node.js.
 With a build step, it can be used in browsers as well.
@@ -117,10 +117,10 @@ This allows for even more powerful compositions.
 
 The following plugins bridge formats:
 
-*   [`remark-rehype`][remark-rehype] — Markdown to HTML
-*   [`rehype-remark`][rehype-remark] — HTML to Markdown
-*   [`remark-retext`][remark-retext] — Markdown to prose
-*   [`rehype-retext`][rehype-retext] — HTML to prose
+* [`remark-rehype`][remark-rehype] — Markdown to HTML
+* [`rehype-remark`][rehype-remark] — HTML to Markdown
+* [`remark-retext`][remark-retext] — Markdown to prose
+* [`rehype-retext`][rehype-retext] — HTML to prose
 
 ### Use cases
 
@@ -142,36 +142,36 @@ table of contents, and (potentially) much more: that’s when to opt for unified
 To further speak to one’s imagination, here are the more common plugins used in
 unified pipelines to do interesting things:
 
-*   [`remark-toc`][remark-toc] — Generate a table of contents
-*   [`rehype-prism`][rehype-prism] — Highlight code in HTML with Prism
-*   [`retext-spell`][retext-spell] — Check spelling
-*   [`remark-lint`][remark-lint] — Check Markdown code style
-*   [`retext-equality`][retext-equality] — Check possibly insensitive language
-*   [`remark-math`][remark-math] — Support math in Markdown / HTML
-*   [`retext-repeated-words`][retext-repeated-words]
-    — Check `for for` repeated words
-*   [`rehype-minify`][rehype-minify] — Minify HTML
-*   …explore all [remark][all-remark-plugins], [rehype][all-rehype-plugins]
-    or [retext][all-retext-plugins] plugins
+* [`remark-toc`][remark-toc] — Generate a table of contents
+* [`rehype-prism`][rehype-prism] — Highlight code in HTML with Prism
+* [`retext-spell`][retext-spell] — Check spelling
+* [`remark-lint`][remark-lint] — Check Markdown code style
+* [`retext-equality`][retext-equality] — Check possibly insensitive language
+* [`remark-math`][remark-math] — Support math in Markdown / HTML
+* [`retext-repeated-words`][retext-repeated-words]
+  — Check `for for` repeated words
+* [`rehype-minify`][rehype-minify] — Minify HTML
+* …explore all [remark][all-remark-plugins], [rehype][all-rehype-plugins]
+  or [retext][all-retext-plugins] plugins
 
 ### Summary
 
-*   unified is a friendly interface backed by an ecosystem of plugins built for
-    creating and manipulating content.
-    You don’t have to worry about parsing as you have the primitives to build
-    on
-*   Hundreds of plugins are available
-*   remark is used for Markdown, rehype for HTML, and retext for natural
-    language
-*   unified’s plugin pipeline lets you typically write one line of code to chain
-    a feature into the process, such as bridging formats
-    (such as Markdown to HTML)
+* unified is a friendly interface backed by an ecosystem of plugins built for
+  creating and manipulating content.
+  You don’t have to worry about parsing as you have the primitives to build
+  on
+* Hundreds of plugins are available
+* remark is used for Markdown, rehype for HTML, and retext for natural
+  language
+* unified’s plugin pipeline lets you typically write one line of code to chain
+  a feature into the process, such as bridging formats
+  (such as Markdown to HTML)
 
 ### Next steps
 
-*   [Use unified][using-unified]
-*   [Get started with plugins][using-plugins]
-*   [Intro to syntax trees][intro-to-syntax-trees]
+* [Use unified][using-unified]
+* [Get started with plugins][using-plugins]
+* [Intro to syntax trees][intro-to-syntax-trees]
 
 <!--Definitions-->
 

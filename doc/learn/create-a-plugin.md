@@ -24,11 +24,11 @@ The concepts here apply to the other syntaxes of unified as well.
 
 ### Contents
 
-*   [Plugin basics](#plugin-basics)
-*   [Case](#case)
-*   [Setting up](#setting-up)
-*   [Plugin](#plugin)
-*   [Further exercises](#further-exercises)
+* [Plugin basics](#plugin-basics)
+* [Case](#case)
+* [Setting up](#setting-up)
+* [Plugin](#plugin)
+* [Further exercises](#further-exercises)
 
 ### Plugin basics
 

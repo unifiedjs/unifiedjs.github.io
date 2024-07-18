@@ -28,11 +28,11 @@ prose.
 
 ### Contents
 
-*   [Tree transformations](#tree-transformations)
-*   [Plugins](#plugins)
-*   [Reporting](#reporting)
-*   [Checking prose](#checking-prose)
-*   [Further exercises](#further-exercises)
+* [Tree transformations](#tree-transformations)
+* [Plugins](#plugins)
+* [Reporting](#reporting)
+* [Checking prose](#checking-prose)
+* [Further exercises](#further-exercises)
 
 ### Tree transformations
 

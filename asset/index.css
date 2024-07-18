@@ -404,14 +404,18 @@ abbr {
 .card {
   transition: 200ms;
   transition-property: color, box-shadow;
-  box-shadow: 0 0 0 0.2em rgb(3 102 214 / 0%),
-    0 13px 27px -5px rgb(50 50 93 / 25%), 0 8px 16px -8px rgb(0 0 0 / 30%),
+  box-shadow:
+    0 0 0 0.2em rgb(3 102 214 / 0%),
+    0 13px 27px -5px rgb(50 50 93 / 25%),
+    0 8px 16px -8px rgb(0 0 0 / 30%),
     0 -6px 16px -6px rgb(0 0 0 / 2.5%);
 }
 
 .card:hover {
-  box-shadow: 0 0 0 0.2em rgb(3 102 214 / 0%),
-    0 30px 60px -12px rgb(50 50 93 / 25%), 0 18px 36px -18px rgb(0 0 0 / 30%),
+  box-shadow:
+    0 0 0 0.2em rgb(3 102 214 / 0%),
+    0 30px 60px -12px rgb(50 50 93 / 25%),
+    0 18px 36px -18px rgb(0 0 0 / 30%),
     0 -12px 36px -8px rgb(0 0 0 / 2.5%);
 }
 
@@ -515,7 +519,9 @@ abbr {
   padding-right: calc(0.125 * (1em + 1ex));
   background-color: var(--hl);
   color: var(--blue-1);
-  transition: color 200ms, background-color 200ms;
+  transition:
+    color 200ms,
+    background-color 200ms;
   mask-image: paint(squircle);
 
   --squircle-radius: 3px;
@@ -570,8 +576,11 @@ a.tag:focus .count {
 }
 
 .card:focus {
-  box-shadow: 0 0 0 0.2em rgb(3 102 214), 0 30px 60px -12px rgb(50 50 93 / 25%),
-    0 18px 36px -18px rgb(0 0 0 / 30%), 0 -12px 36px -8px rgb(0 0 0 / 2.5%);
+  box-shadow:
+    0 0 0 0.2em rgb(3 102 214),
+    0 30px 60px -12px rgb(50 50 93 / 25%),
+    0 18px 36px -18px rgb(0 0 0 / 30%),
+    0 -12px 36px -8px rgb(0 0 0 / 2.5%);
 }
 
 .landing {

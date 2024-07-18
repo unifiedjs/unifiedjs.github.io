@@ -30,10 +30,10 @@ remark and unified can support them through a plugin:
 
 ### Contents
 
-*   [What are tables?](#what-are-tables)
-*   [How to write tables](#how-to-write-tables)
-*   [How to support tables](#how-to-support-tables)
-*   [How to support tables in `react-markdown`](#how-to-support-tables-in-react-markdown)
+* [What are tables?](#what-are-tables)
+* [How to write tables](#how-to-write-tables)
+* [How to support tables](#how-to-support-tables)
+* [How to support tables in `react-markdown`](#how-to-support-tables-in-react-markdown)
 
 ### What are tables?
 

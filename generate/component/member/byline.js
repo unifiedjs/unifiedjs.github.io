@@ -9,7 +9,7 @@ export function byline() {
     'steering them. ',
     'The members govern the collective through a consensus seeking ',
     'decision making model, described in detail at ',
-    h('a', {href: 'https://github.com/' + slug + '/'}, h('code', slug)),
+    h('a', {href: 'https://github.com/' + slug + '/'}, h('code', {}, slug)),
     '. '
   ])
 }

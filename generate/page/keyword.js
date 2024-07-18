@@ -5,7 +5,7 @@ import {page} from './page.js'
 
 export function keyword(data, d) {
   return page(
-    h('.row-l.column-l', h('h2', breadcrumbs('/explore/keyword/' + d))),
+    h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/explore/keyword/' + d))),
     detail(data, d)
   )
 }

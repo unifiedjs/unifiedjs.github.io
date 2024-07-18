@@ -7,7 +7,7 @@ export function item(href, main, footer) {
 
   visit(box, 'element', cleanNestedLinks)
 
-  return block(box, footer ? h('ol.row', footer) : undefined)
+  return block(box, footer ? h('ol.row', {}, footer) : undefined)
 
   function cleanNestedLinks(node, index, parent) {
     if (parent && node.tagName === 'a') {

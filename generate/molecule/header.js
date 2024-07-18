@@ -26,12 +26,12 @@ export function header() {
     ]),
     h('header.container', [
       h('.row-l', [
-        h('h1', h('a.unified', {href: '/'}, [h('span.hl', 'uni'), 'fied'])),
+        h('h1', {}, h('a.unified', {href: '/'}, [h('span.hl', 'uni'), 'fied'])),
         h('nav.row-l.flex', {ariaLabel: 'Main navigation'}, [
           h('ol.row.flex', [
-            h('li', h('a', {href: '/explore/'}, 'Explore')),
-            h('li', h('a', {href: '/learn/'}, 'Learn')),
-            h('li', h('a', {href: '/community/'}, 'Community'))
+            h('li', {}, h('a', {href: '/explore/'}, 'Explore')),
+            h('li', {}, h('a', {href: '/learn/'}, 'Learn')),
+            h('li', {}, h('a', {href: '/community/'}, 'Community'))
           ]),
           h('ol.row.x-show-l.justify-end-l', [
             h('li', [

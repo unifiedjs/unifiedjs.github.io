@@ -8,12 +8,12 @@ export function detail(data, d) {
 
   const trail = more('https://github.com/topics/' + d, [
     'Find other projects matching ',
-    h('span.tag', d),
+    h('span.tag', {}, d),
     ' on GitHub'
   ])
 
   return [
-    h('.content', h('h3', ['Projects matching ', d])),
+    h('.content', {}, h('h3', ['Projects matching ', d])),
     list(data, helperSort(data, projectsByTopic[d]), {trail})
   ]
 }

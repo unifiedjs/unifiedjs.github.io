@@ -22,8 +22,8 @@ export function item(data, name) {
   return box(
     href,
     h('.column', [
-      h('h4', name),
-      h('.content.double-ellipsis', value),
+      h('h4', {}, name),
+      h('.content.double-ellipsis', {}, value),
       h('ol.row', [
         score(helperReduceScore(data, name)),
         verified(name),
