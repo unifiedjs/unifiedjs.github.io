@@ -1,7 +1,17 @@
+/**
+ * @import {ElementContent, Element} from 'hast'
+ */
+
 import {h} from 'hastscript'
 import {fmtBytes} from '../../util/fmt-bytes.js'
 
+/**
+ * @param {number | undefined} value
+ * @param {string | undefined} [name]
+ * @returns {Array<ElementContent> | ElementContent}
+ */
 export function gzip(value, name) {
+  /** @type {Element | string} */
   let node = fmtBytes(value)
 
   if (name) {
@@ -12,5 +22,5 @@ export function gzip(value, name) {
     )
   }
 
-  return value ? h('li', {}, node) : ''
+  return value ? h('li', {}, node) : []
 }

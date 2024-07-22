@@ -1,7 +1,28 @@
+/// <reference lib="dom" />
+
 /* eslint-env browser */
 
+/**
+ * @import {ElementContent} from 'hast'
+ * @import {Data} from '../generate/data.js'
+ * @import {Index as FlexSearch} from 'flexsearch'
+ */
+
+/**
+ * @typedef Search
+ * @property {HTMLElement} $scope
+ * @property {(search: Search) => Promise<undefined>} create
+ * @property {(data: Data, query: string) => ElementContent} empty
+ * @property {((data: Data, result: ReadonlyArray<string>) => Array<string>) | undefined} [filter]
+ * @property {FlexSearch} index
+ * @property {(data: Data, result: ReadonlyArray<string>) => ElementContent} results
+ * @property {(data: Data) => ElementContent} preview
+ * @property {string} selector
+ * @property {(item: string) => number} weight
+ */
+
+import {ok as assert} from 'devlop'
 import flexsearch from 'flexsearch'
-import mean from 'compute-mean'
 import {toDom} from 'hast-util-to-dom'
 import {data} from '../generate/data.js'
 import {search as searchForm} from '../generate/molecule/search.js'
@@ -41,22 +62,36 @@ function init() {
   const keywords = Object.keys(data.packagesByKeyword)
   const topics = Object.keys(data.projectsByTopic)
   const $root = document.querySelector('#' + id)
+  assert($root)
   const $form = toDom(searchForm(data, parameter))
+  assert($form instanceof HTMLElement)
   const $input = $form.querySelector('[name=' + parameter + ']')
+  assert($input)
 
   $root.prepend($form)
 
   const promises = [
     {
       selector: '#root-keyword',
-      create: (search) =>
-        new Promise((resolve) => {
+      /**
+       * @param {Search} search
+       * @returns {Promise<undefined>}
+       */
+      create(search) {
+        return new Promise((resolve) => {
           window.requestAnimationFrame(() => {
             keywords.forEach((d) => search.index.add(d, d))
-            resolve()
+            resolve(undefined)
           })
-        }),
-      weight: (d) => data.packagesByKeyword[d].length,
+        })
+      },
+      /**
+       * @param {string} d
+       * @returns {number}
+       */
+      weight(d) {
+        return data.packagesByKeyword[d].length
+      },
       filter: keywordFilter,
       preview: keywordPreview,
       empty: keywordEmpty,
@@ -64,14 +99,25 @@ function init() {
     },
     {
       selector: '#root-topic',
-      create: (search) =>
-        new Promise((resolve) => {
+      /**
+       * @param {Search} search
+       * @returns {Promise<undefined>}
+       */
+      create(search) {
+        return new Promise((resolve) => {
           window.requestAnimationFrame(() => {
             topics.forEach((d) => search.index.add(d, d))
-            resolve()
+            resolve(undefined)
           })
-        }),
-      weight: (d) => data.projectsByTopic[d].length,
+        })
+      },
+      /**
+       * @param {string} d
+       * @returns {number}
+       */
+      weight(d) {
+        return data.projectsByTopic[d].length
+      },
       filter: topicFilter,
       preview: topicPreview,
       empty: topicEmpty,
@@ -79,12 +125,20 @@ function init() {
     },
     {
       selector: '#root-package',
-      create: (search) =>
-        new Promise((resolve) => {
+      /**
+       * @param {Search} search
+       * @returns {Promise<undefined>}
+       */
+      create(search) {
+        return new Promise((resolve) => {
           const size = 100
 
           window.requestAnimationFrame(() => next(0))
 
+          /**
+           * @param {number} start
+           * @returns {undefined}
+           */
           function next(start) {
             const end = start + size
             const slice = names.slice(start, end)
@@ -97,25 +151,40 @@ function init() {
             )
 
             if (slice.length === 0) {
-              resolve()
+              resolve(undefined)
             } else {
               window.requestAnimationFrame(() => next(end))
             }
           }
-        }),
-      weight: (d) => data.packageByName[d].score,
+        })
+      },
+      /**
+       * @param {string} d
+       * @returns {number}
+       */
+      weight(d) {
+        return data.packageByName[d].score
+      },
       preview: packagePreview,
       empty: packageEmpty,
       results: packageResults
     },
     {
       selector: '#root-project',
-      create: (search) =>
-        new Promise((resolve) => {
+      /**
+       * @param {Search} search
+       * @returns {Promise<undefined>}
+       */
+      create(search) {
+        return new Promise((resolve) => {
           const size = 100
 
           window.requestAnimationFrame(() => next(0))
 
+          /**
+           * @param {number} start
+           * @returns {undefined}
+           */
           function next(start) {
             const end = start + size
             const slice = repos.slice(start, end)
@@ -128,24 +197,40 @@ function init() {
             })
 
             if (slice.length === 0) {
-              resolve()
+              resolve(undefined)
             } else {
               window.requestAnimationFrame(() => next(end))
             }
           }
-        }),
-      weight: (d) => helperReduceScore(data, d),
+        })
+      },
+      /**
+       * @param {string} d
+       * @returns {number}
+       */
+      weight(d) {
+        return helperReduceScore(data, d)
+      },
       preview: projectPreview,
       empty: projectEmpty,
       results: projectResults
     }
-  ].map((d) => {
-    const $scope = document.querySelector(d.selector)
-    const index = new Index({preset: 'score', tokenize: 'full'})
-    const view = {...d, index, $scope}
+  ].map(
+    /**
+     *
+     * @param {Omit<Search, '$scope' | 'index'>} d
+     * @returns
+     */
+    function (d) {
+      const $scope = document.querySelector(d.selector)
+      assert($scope instanceof HTMLElement)
+      const index = new Index({preset: 'score', tokenize: 'full'})
+      /** @type {Search} */
+      const view = {...d, index, $scope}
 
-    return view.create(view).then(() => view)
-  })
+      return view.create(view).then(() => view)
+    }
+  )
 
   Promise.all(promises).then((searches) => {
     start()
@@ -153,21 +238,32 @@ function init() {
     $form.addEventListener('submit', onsubmit)
     window.addEventListener('popstate', onpopstate)
 
+    /**
+     * @returns {undefined}
+     */
     function start() {
-      const query = clean(new URL(loc).searchParams.get(parameter))
+      const query = clean(new URL(loc.href).searchParams.get(parameter))
 
       if (query) {
         onpopstate()
       }
     }
 
+    /**
+     * @returns {undefined}
+     */
     function onpopstate() {
-      search(clean(new URL(loc).searchParams.get(parameter)))
+      search(clean(new URL(loc.href).searchParams.get(parameter)))
     }
 
+    /**
+     * @param {HTMLElementEventMap['submit']} ev
+     * @returns {undefined}
+     */
     function onsubmit(ev) {
-      const url = new URL(loc)
+      const url = new URL(loc.href)
       const current = clean(url.searchParams.get(parameter))
+      assert($input instanceof HTMLInputElement)
       const value = clean($input.value)
 
       ev.preventDefault()
@@ -182,38 +278,49 @@ function init() {
         url.searchParams.delete(parameter)
       }
 
-      history.pushState(
-        {},
-        null,
-        url.pathname + url.search.replace(/%20/g, '+')
-      )
+      history.pushState({}, '', url.pathname + url.search.replace(/%20/g, '+'))
 
       search(value)
     }
 
+    /**
+     * @param {string} query
+     * @returns {undefined}
+     */
     function search(query) {
+      const $release = document.querySelector('#root-release')
+      assert($release instanceof HTMLElement)
+      assert($input instanceof HTMLInputElement)
       $input.value = query
 
       if (!query) {
-        document.querySelector('#root-release').style = ''
+        $release.style.removeProperty('display')
         searches.forEach((search) => replace(search, [], query))
         return
       }
 
-      document.querySelector('#root-release').style = 'display:none'
+      $release.style.display = 'block'
 
       searches.forEach((search) => {
         search.index.searchAsync(query, {suggest: true}, (result) => {
-          const clean = result.filter(unique)
+          const clean = /** @type {Array<string>} */ (result.filter(unique))
           const weighted = desc(clean, weight)
 
           replace(search, asc(clean, combined), query)
 
+          /**
+           * @param {string} d
+           * @returns {number}
+           */
           function combined(d) {
-            return mean([clean.indexOf(d), weighted.indexOf(d)])
+            return (clean.indexOf(d) + weighted.indexOf(d)) / 2
           }
         })
 
+        /**
+         * @param {string} d
+         * @returns {number}
+         */
         function weight(d) {
           return search.weight(d)
         }
@@ -222,6 +329,11 @@ function init() {
   })
 }
 
+/**
+ * @param {Search} search
+ * @param {ReadonlyArray<string>} result
+ * @param {string} query
+ */
 function replace(search, result, query) {
   const {$scope, filter, preview, empty, results} = search
 
@@ -244,6 +356,10 @@ function replace(search, result, query) {
   $scope.append($next)
 }
 
+/**
+ * @param {string | null} value
+ * @returns {string}
+ */
 function clean(value) {
   return (value || '').trim().toLowerCase()
 }

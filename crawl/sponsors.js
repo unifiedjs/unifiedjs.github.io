@@ -1,73 +1,112 @@
-import {promises as fs} from 'node:fs'
+/**
+ * @typedef Account
+ * @property {string | null} description
+ * @property {string | null} githubHandle
+ * @property {string} id
+ * @property {string} imageUrl
+ * @property {string} name
+ * @property {string} slug
+ * @property {string | null} twitterHandle
+ * @property {string | null} website
+ *
+ * @typedef Donation
+ * @property {number} value
+ *
+ * @typedef Member
+ * @property {Account} account
+ * @property {Tier | null} tier
+ * @property {Donation} totalDonations
+ *
+ * @typedef Person
+ * @property {number} amount
+ * @property {string | undefined} description
+ * @property {string | undefined} github
+ * @property {true | undefined} gold
+ * @property {string} image
+ * @property {string} name
+ * @property {string} oc
+ * @property {boolean} spam
+ * @property {string | undefined} twitter
+ * @property {string | undefined} url
+ *
+ * @typedef Sponsor
+ * @property {string} oc
+ * @property {boolean} spam
+ *
+ * @typedef Tier
+ * @property {string} name
+ */
+
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
-import fetch from 'node-fetch'
 import chalk from 'chalk'
 import dotenv from 'dotenv'
+import fetch from 'node-fetch'
 
 dotenv.config()
 
 const token = process.env.OC_TOKEN
 
 if (!token) {
-  console.log('Cannot crawl sponsors without OC token')
+  console.error('Cannot crawl sponsors without OC token')
   /* eslint-disable-next-line unicorn/no-process-exit */
   process.exit()
 }
 
-const outpath = path.join('data', 'sponsors.js')
 const min = 5
-
-const endpoint = 'https://api.opencollective.com/graphql/v2'
-
-const variables = {slug: 'unified'}
 
 const ghBase = 'https://github.com/'
 const twBase = 'https://twitter.com/'
 
+// To do: paginate.
 const query = `query($slug: String) {
   collective(slug: $slug) {
     members(limit: 100, role: BACKER) {
       nodes {
-        totalDonations { value }
-        tier { name }
         account {
-          id
-          slug
-          name
           description
-          website
-          twitterHandle
           githubHandle
+          id
           imageUrl
+          name
+          slug
+          twitterHandle
+          website
         }
+        tier { name }
+        totalDonations { value }
       }
     }
   }
 }
 `
 
-const [buf, response] = await Promise.all([
-  fs.readFile(path.join('crawl', 'sponsors.txt')),
-  fetch(endpoint, {
-    method: 'POST',
-    body: JSON.stringify({query, variables}),
+const [sponsorsTxt, response] = await Promise.all([
+  fs.readFile(path.join('crawl', 'sponsors.txt'), 'utf8'),
+  fetch('https://api.opencollective.com/graphql/v2', {
+    body: JSON.stringify({variables: {slug: 'unified'}, query}),
     headers: {
-      'Content-Type': 'application/json',
-      'Api-Key': token
-    }
+      'Api-Key': token,
+      'Content-Type': 'application/json'
+    },
+    method: 'POST'
   })
 ])
 
-const control = String(buf)
-  .split('\n')
-  .map((d) => {
-    const spam = d.charAt(0) === '-'
-    return {oc: spam ? d.slice(1) : d, spam}
-  })
-/** @type {any} */
-const json = await response.json()
+const control = sponsorsTxt.split('\n').map(function (d) {
+  const spam = d.charAt(0) === '-'
+  /** @type {Sponsor} */
+  const sponsor = {oc: spam ? d.slice(1) : d, spam}
+  return sponsor
+})
 
+const json =
+  /** @type {{data: {collective: {members: {nodes: Array<Member>}}}}} */ (
+    await response.json()
+  )
+
+/** @type {Array<string>} */
 const seen = []
 const members = json.data.collective.members.nodes
   .map((d) => {
@@ -82,25 +121,28 @@ const members = json.data.collective.members.nodes
     }
 
     if (!info) {
-      console.log(
+      console.error(
         chalk.red('✖') +
           ' @%s is an unknown sponsor, please define whether it’s spam or not in `sponsors.txt`',
         oc
       )
     }
 
-    return {
-      spam: !info || info.spam,
-      name: d.account.name,
+    /** @type {Person} */
+    const person = {
+      amount: d.totalDonations.value,
       description: d.account.description || undefined,
-      image: d.account.imageUrl,
-      oc,
       github,
-      twitter,
-      url,
       gold: (d.tier && d.tier.name && /gold/i.test(d.tier.name)) || undefined,
-      amount: d.totalDonations.value
+      image: d.account.imageUrl,
+      name: d.account.name,
+      oc,
+      spam: !info || info.spam,
+      twitter,
+      url
     }
+
+    return person
   })
   .filter((d) => {
     const ignore = d.spam || seen.includes(d.oc) // Ignore dupes in data.
@@ -111,10 +153,34 @@ const members = json.data.collective.members.nodes
   .map((d) => Object.assign(d, {amount: undefined}))
 
 await fs.writeFile(
-  outpath,
-  'export const sponsors = ' + JSON.stringify(members, null, 2) + '\n'
+  new URL('../data/sponsors.js', import.meta.url),
+  [
+    '',
+    '/**',
+    ' * @typedef Person',
+    ' * @property {string} [description]',
+    ' * @property {string} [github]',
+    ' * @property {true} [gold]',
+    ' * @property {string} image',
+    ' * @property {string} name',
+    ' * @property {string} oc',
+    ' * @property {string} oc',
+    ' * @property {boolean} spam',
+    ' * @property {string} [twitter]',
+    ' * @property {string} [url]',
+    ' */',
+    '',
+    '/** @type {Array<Person>} */',
+    'export const sponsors = ' + JSON.stringify(members, undefined, 2),
+    ''
+  ].join('\n')
 )
 
+/**
+ * @param {Person} a
+ * @param {Person} b
+ * @returns {number}
+ */
 function sort(a, b) {
   return b.amount - a.amount
 }

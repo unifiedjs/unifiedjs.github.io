@@ -1,8 +1,18 @@
+/**
+ * @import {Element} from 'hast'
+ * @import {Data} from '../../data.js'
+ */
+
 import {h} from 'hastscript'
 import {more} from '../../atom/box/more.js'
 import {helperSort} from '../package/helper-sort.js'
 import {list} from '../package/list.js'
 
+/**
+ * @param {Data} data
+ * @param {string} d
+ * @returns {Array<Element>}
+ */
 export function detail(data, d) {
   const {packagesByKeyword} = data
 

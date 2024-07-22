@@ -1,13 +1,29 @@
-import {projects} from '../data/projects.js'
+/**
+ * @import {Package} from '../data/packages.js'
+ * @import {Project} from '../data/projects.js'
+ */
+
+/**
+ * @typedef {typeof data} Data
+ */
+
 import {packages} from '../data/packages.js'
+import {projects} from '../data/projects.js'
 
 export const data = {
-  projectByRepo: {},
+  /** @type {Record<string, Package>} */
   packageByName: {},
-  projectsByOwner: {},
-  packagesByRepo: {},
-  packagesByScope: {},
+  /** @type {Record<string, Array<string>>} */
   packagesByKeyword: {},
+  /** @type {Record<string, Array<string>>} */
+  packagesByRepo: {},
+  /** @type {Record<string, Array<string>>} */
+  packagesByScope: {},
+  /** @type {Record<string, Project>} */
+  projectByRepo: {},
+  /** @type {Record<string, Array<string>>} */
+  projectsByOwner: {},
+  /** @type {Record<string, Array<string>>} */
   projectsByTopic: {}
 }
 
@@ -43,6 +59,13 @@ packages.forEach((p) => {
   }
 })
 
+/**
+ * @template T
+ * @param {Record<string, Array<T>>} object
+ * @param {string} key
+ * @param {T} value
+ * @returns {undefined}
+ */
 function index(object, key, value) {
   ;(object[key] || (object[key] = [])).push(value)
 }

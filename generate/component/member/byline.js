@@ -1,7 +1,14 @@
+/**
+ * @import {Element} from 'hast'
+ */
+
 import {h} from 'hastscript'
 
 const slug = 'unifiedjs/collective'
 
+/**
+ * @returns {Element}
+ */
 export function byline() {
   return h('p', [
     'The unified collective is a federated system of organizations, ',

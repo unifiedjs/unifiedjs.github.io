@@ -1,259 +1,415 @@
-import {promises as fs} from 'node:fs'
+/**
+ * @import {PackageJson} from 'type-fest'
+ */
+
+/**
+ * @typedef GHError
+ * @property {string} documentation_url
+ * @property {string} message
+ *
+ * @typedef NpmsPackageCollectedBucket
+ * @property {number} count
+ * @property {string} from
+ * @property {string} to
+ *
+ * @typedef NpmsPackageCollectedContributor
+ * @property {number} commitsCount
+ * @property {string} username
+ *
+ * @typedef NpmsPackageCollectedGithub
+ * @property {Array<NpmsPackageCollectedBucket>} commits
+ * @property {Array<NpmsPackageCollectedContributor>} contributors
+ * @property {number} forksCount
+ * @property {string} homepage
+ * @property {{count: number, distribution: Record<string, number>, isDisabled: boolean, openCount: number}} issues
+ * @property {number} starsCount
+ * @property {number} subscribersCount
+ *
+ * @typedef NpmsPackageCollectedLinks
+ * @property {string | undefined} [bugs]
+ * @property {string} [homepage]
+ * @property {string} npm
+ * @property {string | undefined} [repository]
+ *
+ * @typedef NpmsPackageCollectedMetadata
+ * @property {NpmsPackageCollectedPerson} author
+ * @property {Array<NpmsPackageCollectedPerson>} contributors
+ * @property {string} date
+ * @property {Record<string, string>} dependencies
+ * @property {string | undefined} [deprecated]
+ * @property {string} description
+ * @property {Record<string, string>} devDependencies
+ * @property {boolean | undefined} [hasSelectiveFiles]
+ * @property {boolean} hasTestScript
+ * @property {Array<string>} keywords
+ * @property {string} license
+ * @property {NpmsPackageCollectedLinks} links
+ * @property {Array<NpmsPackageCollectedPerson>} maintainers
+ * @property {string} name
+ * @property {NpmsPackageCollectedPerson} publisher
+ * @property {string} readme
+ * @property {Array<NpmsPackageCollectedBucket>} releases
+ * @property {NpmsPackageCollectedRepository} repository
+ * @property {string} scope
+ * @property {string} version
+ *
+ * @typedef NpmsPackageCollectedNpm
+ * @property {Array<NpmsPackageCollectedBucket>} downloads
+ * @property {number} starsCount
+ *
+ * @typedef NpmsPackageCollectedPerson
+ * @property {string} email
+ * @property {string | undefined} [name]
+ * @property {string | undefined} [url]
+ * @property {string} username
+ *
+ * @typedef NpmsPackageCollectedRepository
+ * @property {'git'} type
+ * @property {string} url
+ *
+ * @typedef NpmsPackageCollectedSource
+ * @property {Array<{urls: unknown, info: unknown}>} badges
+ * @property {number} coverage
+ * @property {{hasChangelog: boolean, readmeSize: number, testsSize: number}} files
+ * @property {Array<string>} linters
+ *
+ * @typedef NpmsPackageCollected
+ * @property {NpmsPackageCollectedGithub} github
+ * @property {NpmsPackageCollectedMetadata} metadata
+ * @property {NpmsPackageCollectedNpm} npm
+ * @property {NpmsPackageCollectedSource} source
+ *
+ * @typedef NpmsPackageEvaluation
+ * @property {{commitsFrequency: number, issuesDistribution: number, openIssues: number, releasesFrequency: number}} maintenance
+ * @property {{communityInterest: number, dependentsCount: number, downloadsAcceleration: number, downloadsCount: number}} popularity
+ * @property {{branding: number, carefulness: number, health: number, tests: number}} quality
+ *
+ * @typedef NpmsPackageResult
+ * @property {string} analyzedAt
+ * @property {NpmsPackageCollected | undefined} [collected]
+ * @property {NpmsPackageEvaluation} evaluation
+ * @property {NpmsPackageScore | undefined} [score]
+ *
+ * @typedef NpmsPackageScoreDetail
+ * @property {number} maintenance
+ * @property {number} popularity
+ * @property {number} quality
+ *
+ * @typedef NpmsPackageScore
+ * @property {number} final
+ * @property {NpmsPackageScoreDetail} detail
+ *
+ *
+ * @typedef PackageInfo
+ * @property {string} description
+ * @property {Array<string>} keywords
+ * @property {string | undefined} latest
+ * @property {string | undefined} license
+ * @property {string} name
+ * @property {number} score
+ *
+ * @typedef RawPackage
+ * @property {string} description
+ * @property {number} downloads
+ * @property {number | undefined} [gzip]
+ * @property {Array<string>} keywords
+ * @property {string | undefined} [latest]
+ * @property {string | undefined} [license]
+ * @property {string | undefined} [manifestBase]
+ * @property {string} name
+ * @property {string} readmeName
+ * @property {string} repo
+ * @property {number} score
+ *
+ * @typedef RawProject
+ * @property {string | undefined} default
+ * @property {string} description
+ * @property {number} issueClosed
+ * @property {number} issueOpen
+ * @property {Array<string>} manifests
+ * @property {number} prClosed
+ * @property {number} prOpen
+ * @property {string} repo
+ * @property {number} size
+ * @property {number} stars
+ * @property {Array<string>} topics
+ * @property {string | undefined} url
+ *
+ * @typedef RawRelease
+ * @property {string} description
+ * @property {string} published
+ * @property {string} repo
+ * @property {string} tag
+ */
+
+import assert from 'node:assert/strict'
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
-import {promisify} from 'node:util'
 import hostedGitInfo from 'hosted-git-info'
 import randomUseragent from 'random-useragent'
-import {trough} from 'trough'
-import chalk from 'chalk'
 import fetch from 'node-fetch'
 import pAll from 'p-all'
 import bytes from 'bytes'
 import dotenv from 'dotenv'
+import {unique} from '../generate/util/unique.js'
 import {constantTopic} from '../generate/util/constant-topic.js'
 import {constantCollective} from '../generate/util/constant-collective.js'
 
 dotenv.config()
 
 const ghToken = process.env.GH_TOKEN
+assert(ghToken)
 const npmToken = process.env.NPM_TOKEN
-
-if (!ghToken || !npmToken) {
-  console.warn('Cannot crawl ecosystem without GH or npm tokens')
-  /* eslint-disable-next-line unicorn/no-process-exit */
-  process.exit()
-}
-
-const outpath = path.join('data')
-const readmePath = path.join(outpath, 'readme')
-const metaPath = path.join(outpath, 'meta.js')
-const projectsPath = path.join(outpath, 'projects.js')
-const packagesPath = path.join(outpath, 'packages.js')
-const releasesPath = path.join(outpath, 'releases.js')
-
-const concurrency = {concurrency: 1}
+assert(npmToken)
 
 const hawkgirl = 'application/vnd.github.hawkgirl-preview+json'
 const ghEndpoint = 'https://api.github.com/graphql'
 const npmsEndpoint = 'https://api.npms.io/v2/package'
 const npmDownloadsEndpoint = 'https://api.npmjs.org/downloads'
 
-const topicPipeline = promisify(trough().use(searchTopic).run)
-const orgPipeline = promisify(trough().use(searchOrg).run)
-const repoPipeline = promisify(trough().use(crawlRepo).use(getReleases).run)
-const pkgPipeline = promisify(
-  trough()
-    .use(getManifest)
-    .use(getPackage)
-    .use(getReadme)
-    .use(getDownloads)
-    .use(getSize).run
+const topicRepos = await pAll(
+  constantTopic.map(function (topic) {
+    return function () {
+      return searchTopic(topic)
+    }
+  }),
+  {concurrency: 1}
 )
 
-const main = promisify(
-  trough()
-    .use(findProjectsByTopic)
-    .use(findProjectsInOrganizations)
-    .use(findRepositories)
-    .use(findPackages)
-    .use(writeResults)
-    .use(writeReadmes).run
+const orgRepos = await pAll(
+  constantCollective.map(function (org) {
+    return function () {
+      return searchOrg(org)
+    }
+  }),
+  {concurrency: 1}
 )
 
-try {
-  // @ts-expect-error: fine.
-  const result = await main({
-    ghToken,
-    npmToken,
-    repos: [],
-    topics: constantTopic,
-    orgs: constantCollective
-  })
-  console.log(
-    chalk.green('✓') + ' done (%d packages, %d projects, %d readmes)',
-    result.packages.length,
-    result.projects.length,
-    result.readmes.length
-  )
-} catch (error) {
-  console.log(chalk.red('✖') + ' error')
-  throw error
-}
+const repos = [...topicRepos.flat(), ...orgRepos.flat()].filter(unique)
 
-async function findProjectsByTopic(ctx) {
-  const {topics, repos} = ctx
+const results = await pAll(
+  repos.map(function (repo) {
+    return function () {
+      return crawlRepo(repo)
+    }
+  }),
+  {concurrency: 1}
+)
 
-  const results = await pAll(
-    topics.map((topic) => () => topicPipeline({...ctx, topic})),
-    concurrency
-  )
+await fs.writeFile(
+  new URL('../data/releases.js', import.meta.url),
+  [
+    '/**',
+    " * @import {Root} from 'hast'",
+    ' */',
+    '',
+    '/**',
+    ' * @typedef Release',
+    ' * @property {string} description',
+    ' * @property {Root} [descriptionRich]',
+    ' * @property {string} published',
+    ' * @property {string} repo',
+    ' * @property {string} tag',
+    ' */',
+    '',
+    '/** @type {ReadonlyArray<Release>} */',
+    'export const releases = ' +
+      JSON.stringify(
+        results.flatMap((d) => d.releases),
+        undefined,
+        2
+      ),
+    ''
+  ].join('\n')
+)
 
-  return {...ctx, repos: repos.concat(results.flatMap((d) => d.matches))}
-}
+const projects = results.map((d) => d.project)
 
-async function findProjectsInOrganizations(ctx) {
-  const {orgs, repos} = ctx
+await fs.writeFile(
+  new URL('../data/projects.js', import.meta.url),
+  [
+    '/**',
+    " * @import {Root} from 'hast'",
+    ' */',
+    '',
+    '/**',
+    ' * @typedef Project',
+    ' * @property {string} description',
+    ' * @property {Root} [descriptionRich]',
+    ' * @property {string} repo',
+    ' * @property {number} stars',
+    ' * @property {ReadonlyArray<string>} topics',
+    ' * @property {string} [url]',
+    ' */',
+    '',
+    '/** @type {ReadonlyArray<Project>} */',
+    'export const projects = ' +
+      JSON.stringify(
+        projects.map(function (d) {
+          return {
+            description: d.description,
+            repo: d.repo,
+            stars: d.stars,
+            topics: d.topics,
+            url: d.url
+          }
+        }),
+        undefined,
+        2
+      ),
+    ''
+  ].join('\n')
+)
 
-  const results = await pAll(
-    orgs.map((org) => () => orgPipeline({...ctx, org})),
-    concurrency
-  )
+console.info('✓ done (%d projects)', projects.length)
 
-  return {...ctx, repos: repos.concat(results.flatMap((d) => d.matches))}
-}
+const meta = {size: 0, issueOpen: 0, issueClosed: 0, prOpen: 0, prClosed: 0}
+const metaKeys = /** @type {Array<keyof typeof meta>} */ (Object.keys(meta))
 
-async function findRepositories(ctx) {
-  let {repos} = ctx
+for (const d of projects) {
+  const [owner] = d.repo.split('/')
 
-  repos = repos.filter((d, i, data) => data.indexOf(d) === i)
-
-  const results = await pAll(
-    repos.map((repo) => () => repoPipeline({...ctx, repo})),
-    concurrency
-  )
-
-  return {
-    ...ctx,
-    repos,
-    projects: results.map((d) => d.project),
-    releases: results.flatMap((d) => d.releases)
+  if (constantCollective.includes(owner)) {
+    for (const key of metaKeys) {
+      meta[key] += d[key]
+    }
   }
 }
 
-async function findPackages(ctx) {
-  let {projects} = ctx
+await fs.writeFile(
+  new URL('../data/meta.js', import.meta.url),
+  // Types are inferred correctly.
+  'export const meta = ' + JSON.stringify(meta, undefined, 2) + '\n'
+)
 
-  let packages = projects.flatMap((d) =>
-    d.manifests.map((m) => ({manifest: m, project: d}))
-  )
+const packages = await findPackages(projects)
 
-  const results = await pAll(
-    packages.map(
-      ({manifest, project}) =>
-        () =>
-          pkgPipeline({...ctx, manifest, project})
-    ),
-    {concurrency: 1}
-  )
+await fs.writeFile(
+  new URL('../data/packages.js', import.meta.url),
+  [
+    '/**',
+    " * @import {Root} from 'hast'",
+    ' */',
+    '',
+    '/**',
+    ' * @typedef Package',
+    ' * @property {string} description',
+    ' * @property {Root} [descriptionRich]',
+    ' * @property {number} downloads',
+    ' * @property {number} [gzip]',
+    ' * @property {Array<string>} keywords',
+    ' * @property {string} [latest]',
+    ' * @property {string} [license]',
+    ' * @property {string} [manifestBase]',
+    ' * @property {string} name',
+    ' * @property {string} readmeName',
+    ' * @property {string} repo',
+    ' * @property {number} score',
+    ' */',
+    '',
+    '/** @type {ReadonlyArray<Package>} */',
+    'export const packages = ' + JSON.stringify(packages, undefined, 2),
+    ''
+  ].join('\n')
+)
 
-  const readmes = []
-  const projectsWithPackages = {}
-  const projectsWithPackagesIssues = {}
+console.info('✓ done (%d packages)', packages.length)
 
-  packages = results
-    .filter((d) => d.proper)
-    .map((d) => {
-      const {packageDist, readme, project, issues} = d
-      const {name} = packageDist
-      const {repo} = project
-      const readmeName = name.replace(/^@/g, '').replace(/\//g, '-') + '.md'
+/**
+ *
+ * @param {ReadonlyArray<RawProject>} projects
+ * @returns {Promise<Array<RawPackage>>}
+ */
+async function findPackages(projects) {
+  /** @type {Array<RawPackage>} */
+  const packages = []
+  /** @type {Array<() => Promise<undefined>>} */
+  const tasks = []
 
-      projectsWithPackages[repo] = project
-      projectsWithPackagesIssues[repo] = issues
+  for (const project of projects) {
+    for (const manifest of project.manifests) {
+      tasks.push(async function () {
+        const {manifestBase, packageJson} = await getManifest(project, manifest)
+        if (!packageJson) return
+        const packageInfo = await getPackage(project, manifest, packageJson)
+        if (!packageInfo) return
+        const [readme, downloads, size] = await Promise.all([
+          getReadme(project, manifestBase),
+          getDownloads(packageInfo.name),
+          getSize(packageInfo.name)
+        ])
+        if (!readme) return
 
-      readmes.push({name: readmeName, value: readme})
+        const readmeName =
+          packageInfo.name.replace(/^@/g, '').replace(/\//g, '-') + '.md'
 
-      return {...packageDist, repo, readmeName}
-    })
+        await fs.writeFile(
+          new URL('../data/readme/' + readmeName, import.meta.url),
+          readme
+        )
 
-  const meta = {size: 0, issueOpen: 0, issueClosed: 0, prOpen: 0, prClosed: 0}
-
-  projects.forEach((d) => {
-    const [owner] = d.repo.split('/')
-
-    if (constantCollective.includes(owner)) {
-      Object.keys(meta).forEach((key) => {
-        meta[key] += d[key]
+        packages.push({
+          description: packageInfo.description,
+          downloads,
+          gzip: size,
+          keywords: packageInfo.keywords,
+          latest: packageInfo.latest,
+          license: packageInfo.license,
+          manifestBase,
+          name: packageInfo.name,
+          readmeName,
+          repo: project.repo,
+          score: packageInfo.score
+        })
       })
     }
-  })
+  }
 
-  Object.keys(projectsWithPackagesIssues).forEach((d) => {
-    projectsWithPackages[d].issues = projectsWithPackagesIssues[d]
-  })
+  await pAll(tasks, {concurrency: 1})
 
-  projects = Object.values(projectsWithPackages).map((p) => ({
-    ...p,
-    default: undefined,
-    manifests: undefined,
-    size: undefined,
-    issueOpen: undefined,
-    issueClosed: undefined,
-    prOpen: undefined,
-    prClosed: undefined
-  }))
-
-  return {...ctx, readmes, projects, packages, meta}
+  return packages
 }
 
-async function writeResults(ctx) {
-  const {projects, packages, releases, meta} = ctx
-
-  await fs.writeFile(
-    metaPath,
-    'export const meta = ' + JSON.stringify(meta, null, 2) + '\n'
-  )
-  await fs.writeFile(
-    projectsPath,
-    'export const projects = ' + JSON.stringify(projects, null, 2) + '\n'
-  )
-  await fs.writeFile(
-    packagesPath,
-    'export const packages = ' + JSON.stringify(packages, null, 2) + '\n'
-  )
-  await fs.writeFile(
-    releasesPath,
-    'export const releases = ' + JSON.stringify(releases, null, 2) + '\n'
-  )
-}
-
-async function writeReadmes(ctx) {
-  const {readmes} = ctx
-
-  await pAll(
-    readmes.map(
-      ({name, value}) =>
-        () =>
-          fs.writeFile(path.join(readmePath, name), value)
-    ),
-    {concurrency: 10}
-  )
-}
-
-async function searchTopic(ctx) {
-  const {topic, ghToken} = ctx
-  let matches = []
+/**
+ * @param {string} topic
+ * @returns {Promise<Array<string>>}
+ */
+async function searchTopic(topic) {
+  /** @type {Array<string>} */
+  const matches = []
   let done = false
+  /** @type {string | undefined} */
   let after
-  let response
-  let data
 
   const query = `
-    query($query: String!, $after: String) {
-      search(query: $query, type: REPOSITORY, first: 100, after: $after) {
-        repositoryCount
+    query($after: String, $query: String!) {
+      search(after: $after, first: 100, type: REPOSITORY, query: $query) {
+        nodes { ... on Repository { nameWithOwner } }
         pageInfo { hasNextPage endCursor }
-        nodes {
-          ... on Repository { nameWithOwner }
-        }
+        repositoryCount
       }
     }
   `
 
   while (!done) {
-    response = await fetch(ghEndpoint, {
-      method: 'POST',
+    const response = await fetch(ghEndpoint, {
       body: JSON.stringify({
-        query,
-        variables: {query: 'sort:stars-desc topic:' + topic, after}
+        variables: {after, query: 'sort:stars-desc topic:' + topic},
+        query
       }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'bearer ' + ghToken
-      }
-    }).then((x) => x.json())
+        Authorization: 'bearer ' + ghToken,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
+    const json =
+      /** @type {{data: {search: {nodes: Array<{nameWithOwner: string}>, pageInfo: {hasNextPage: boolean, endCursor: string}, repositoryCount: number}}}} */ (
+        await response.json()
+      )
 
-    data = response.data.search
+    const data = json.data.search
 
     if (data.pageInfo.hasNextPage) {
       after = data.pageInfo.endCursor
@@ -261,26 +417,29 @@ async function searchTopic(ctx) {
       done = true
     }
 
-    matches = matches.concat(data.nodes.map((d) => d.nameWithOwner))
+    matches.push(...data.nodes.map((d) => d.nameWithOwner))
   }
 
-  return {matches, ...ctx}
+  return matches
 }
 
-async function searchOrg(ctx) {
-  const {org, ghToken} = ctx
-  let matches = []
+/**
+ * @param {string} org
+ * @returns {Promise<Array<string>>}
+ */
+async function searchOrg(org) {
+  /** @type {Array<string>} */
+  const matches = []
   let done = false
+  /** @type {string | undefined} */
   let after
-  let response
-  let data
 
   const query = `
     query($org: String!, $after: String) {
       organization(login: $org) {
         repositories(
-          first: 100
           after: $after
+          first: 100
           isFork: false
           isLocked: false
           privacy: PUBLIC
@@ -299,16 +458,20 @@ async function searchOrg(ctx) {
   `
 
   while (!done) {
-    response = await fetch(ghEndpoint, {
+    const response = await fetch(ghEndpoint, {
       method: 'POST',
       body: JSON.stringify({query, variables: {org, after}}),
       headers: {
         'Content-Type': 'application/json',
         Authorization: 'bearer ' + ghToken
       }
-    }).then((x) => x.json())
+    })
+    const json =
+      /** @type {{data: {organization: {repositories: {nodes: Array<{hasIssuesEnabled: boolean, isArchived: boolean, isDisabled: boolean, isTemplate: boolean, nameWithOwner: string}>, pageInfo: {hasNextPage: boolean, endCursor: string}}}}}} */ (
+        await response.json()
+      )
 
-    data = response.data.organization.repositories
+    const data = json.data.organization.repositories
 
     if (data.pageInfo.hasNextPage) {
       after = data.pageInfo.endCursor
@@ -316,8 +479,8 @@ async function searchOrg(ctx) {
       done = true
     }
 
-    matches = matches.concat(
-      data.nodes
+    matches.push(
+      ...data.nodes
         .filter(
           (d) =>
             d.hasIssuesEnabled &&
@@ -329,254 +492,292 @@ async function searchOrg(ctx) {
     )
   }
 
-  return {matches, ...ctx}
+  return matches
 }
 
-async function crawlRepo(ctx) {
-  const {repo, ghToken} = ctx
+/**
+ * @param {string} repo
+ * @returns {Promise<{project: RawProject, releases: Array<RawRelease>}>}
+ */
+async function crawlRepo(repo) {
   const [owner, name] = repo.split('/')
 
   const response = await fetch(ghEndpoint, {
-    method: 'POST',
     body: JSON.stringify({
       query: `
         query($owner: String!, $name: String!) {
           repository(owner: $owner, name: $name) {
-            description
-            homepageUrl
-            stargazers { totalCount }
             defaultBranchRef { name }
+            dependencyGraphManifests(withDependencies: true, first: 100) {
+              nodes { exceedsMaxSize filename parseable }
+            }
+            diskUsage
+            description
+            issueClosed: issues(states: CLOSED) { totalCount }
+            issueOpen: issues(states: OPEN) { totalCount }
+            latestRelease { publishedAt }
+            homepageUrl
+            prClosed: pullRequests(states: CLOSED) { totalCount }
+            prOpen: pullRequests(states: OPEN) { totalCount }
             repositoryTopics(first: 100) {
               nodes { topic { name } }
             }
-            dependencyGraphManifests(withDependencies: true, first: 100) {
-              nodes { filename exceedsMaxSize parseable }
-            }
-            diskUsage
-            issueOpen: issues(states: OPEN) { totalCount }
-            issueClosed: issues(states: CLOSED) { totalCount }
-            prOpen: pullRequests(states: OPEN) { totalCount }
-            prClosed: pullRequests(states: CLOSED) { totalCount }
-            latestRelease { publishedAt }
+            stargazers { totalCount }
           }
         }
       `,
-      variables: {owner, name}
+      variables: {name, owner}
     }),
     headers: {
-      'Content-Type': 'application/json',
+      Accept: hawkgirl,
       Authorization: 'bearer ' + ghToken,
-      Accept: hawkgirl
-    }
-  }).then((x) => x.json())
+      'Content-Type': 'application/json'
+    },
+    method: 'POST'
+  })
+  const json = /**
+   * @type {({
+   *   errors?: Array<string>,
+   *   data: {
+   *     repository: {
+   *       defaultBranchRef?: {name: string},
+   *       dependencyGraphManifests?: {nodes?: Array<{exceedsMaxSize: boolean, filename: string, parseable: boolean}>},
+   *       diskUsage: number
+   *       description?: string,
+   *       issueClosed?: {totalCount: number},
+   *       issueOpen?: {totalCount: number},
+   *       latestRelease?: {publishedAt: string},
+   *       homepageUrl: string,
+   *       prClosed?: {totalCount: number},
+   *       prOpen?: {totalCount: number},
+   *       repositoryTopics: {nodes: Array<{topic: {name: string}}>}
+   *       stargazers: {totalCount: number}
+   *     }
+   *   }
+   * })}
+   */ (await response.json())
 
   // Manifests aren’t always loaded, giving errors here: print them.
-  if (response.errors) {
+  if (json.errors) {
     console.warn(
       '%s: non-exceptional errors (probably loading manifests):',
       repo,
-      response.errors
+      json.errors
     )
   }
 
-  const data = (response.data || {}).repository || {}
-  const defaultBranch = (data.defaultBranchRef || {}).name || null
+  const repository = json?.data?.repository
+  const defaultBranch = repository?.defaultBranchRef?.name || undefined
 
-  const project = {
-    repo,
-    description: data.description || '',
-    stars: (data.stargazers || {}).totalCount || 0,
-    default: defaultBranch,
-    url: data.homepageUrl || null,
-    topics: ((data.repositoryTopics || {}).nodes || [])
-      .map((d) => d.topic.name)
-      .filter(validTag)
-      .filter(unique),
-    manifests: ((data.dependencyGraphManifests || {}).nodes || [])
-      .filter(
-        (d) =>
-          defaultBranch &&
-          path.posix.basename(d.filename) === 'package.json' &&
-          d.parseable &&
-          !d.exceedsMaxSize
-      )
-      .map((d) => d.filename),
-    // Size of repo in bytes.
-    size: data.diskUsage * 1024,
-    issueOpen: (data.issueOpen || {}).totalCount || 0,
-    issueClosed: (data.issueClosed || {}).totalCount || 0,
-    prOpen: (data.prOpen || {}).totalCount || 0,
-    prClosed: (data.prClosed || {}).totalCount || 0
-  }
+  const lastReleaseAt = repository?.latestRelease
+    ? new Date(repository.latestRelease.publishedAt)
+    : undefined
 
-  return {
-    ...ctx,
-    project,
-    lastReleaseAt: new Date(
-      data.latestRelease && data.latestRelease.publishedAt
-    )
-  }
-}
+  /** @type {Array<RawRelease>} */
+  const releases = []
 
-async function getReleases(ctx) {
-  const {repo, ghToken, lastReleaseAt} = ctx
-  const [owner, name] = repo.split('/')
-  let releases = []
-
-  if (recent(lastReleaseAt)) {
-    const response = await fetch(ghEndpoint, {
-      method: 'POST',
+  if (lastReleaseAt && recentRelease(lastReleaseAt)) {
+    const releaseResponse = await fetch(ghEndpoint, {
       body: JSON.stringify({
         query: `
           query($owner: String!, $name: String!) {
             repository(owner: $owner, name: $name) {
               releases(first: 20, orderBy: {direction: DESC, field: CREATED_AT}) {
-                nodes { publishedAt tagName url description }
+                nodes { description publishedAt tagName url }
               }
             }
           }
         `,
-        variables: {owner, name}
+        variables: {name, owner}
       }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'bearer ' + ghToken
-      }
-    }).then((x) => x.json())
+        Authorization: 'bearer ' + ghToken,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
 
-    const data = (response.data || {}).repository || {}
-    releases = ((data.releases || {}).nodes || [])
-      .filter((d) => recent(new Date(d.publishedAt)))
-      .map((d) => ({
-        repo,
+    const releaseJson =
+      /** @type {{data?: {repository?: {releases?: {nodes?: Array<{description: string, publishedAt: string, tagName: string, url: string }>}}}}} */ (
+        await releaseResponse.json()
+      )
+
+    const data = releaseJson?.data?.repository
+    const nodes = data?.releases?.nodes || []
+
+    for (const d of nodes) {
+      if (!recentRelease(new Date(d.publishedAt))) continue
+
+      releases.push({
+        description: d.description,
         published: d.publishedAt,
-        tag: d.tagName,
-        description: d.description
-      }))
+        repo,
+        tag: d.tagName
+      })
+    }
   }
 
-  return {...ctx, releases}
-
-  // Whether this release was in the last 60 days.
-  function recent(date) {
-    return date > Date.now() - 60 * 24 * 60 * 60 * 1000
+  return {
+    project: {
+      default: defaultBranch,
+      description: repository.description || '',
+      issueClosed: repository.issueClosed?.totalCount || 0,
+      issueOpen: repository.issueOpen?.totalCount || 0,
+      manifests: (repository.dependencyGraphManifests?.nodes || [])
+        .filter(
+          (d) =>
+            defaultBranch &&
+            d.filename.endsWith('package.json') &&
+            d.parseable &&
+            !d.exceedsMaxSize
+        )
+        .map((d) => d.filename),
+      prClosed: repository.prClosed?.totalCount || 0,
+      prOpen: repository.prOpen?.totalCount || 0,
+      repo,
+      // Size of repo in bytes.
+      size: repository.diskUsage * 1024,
+      stars: repository.stargazers?.totalCount || 0,
+      topics: (repository.repositoryTopics?.nodes || [])
+        .map((d) => d.topic.name)
+        .filter(validTag)
+        .filter(unique),
+      url: repository.homepageUrl || undefined
+    },
+    releases
   }
 }
 
-async function getManifest(ctx) {
-  const {project, manifest, ghToken} = ctx
+/**
+ * @param {RawProject} project
+ * @param {string} manifest
+ * @returns {Promise<{manifestBase: string | undefined, packageJson: PackageJson | undefined}>}
+ */
+async function getManifest(project, manifest) {
   const {repo} = project
   const [owner, name] = repo.split('/')
   const target = [project.default || 'master', manifest].join(':')
+  /** @type {string | undefined} */
   let manifestBase = path.dirname(manifest)
-  let response
+  /** @type {string | undefined} */
+  let packageJsonText
+  /** @type {PackageJson | undefined} */
+  let packageJson
 
   if (manifestBase === '.') {
     manifestBase = undefined
   }
 
   try {
-    response = await fetch(ghEndpoint, {
-      method: 'POST',
+    const response = await fetch(ghEndpoint, {
       body: JSON.stringify({
         query: `
-          query($owner: String!, $name: String!, $target: String!) {
-            repository(owner: $owner, name: $name) {
+          query($name: String!, $owner: String!, $target: String!) {
+            repository(name: $name, owner: $owner) {
               object(expression: $target) {
                 ... on Blob { text }
               }
             }
           }
         `,
-        variables: {owner, name, target}
+        variables: {name, owner, target}
       }),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'bearer ' + ghToken
-      }
-    }).then((x) => x.json())
+        Authorization: 'bearer ' + ghToken,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
+    })
+    const result =
+      /** @type {{data: {repository: {object?: {text: string}}}} | GHError} */ (
+        await response.json()
+      )
+
+    if ('data' in result && result.data) {
+      packageJsonText = result.data.repository.object?.text
+    } else {
+      console.warn('%s#%s: no data:', repo, manifest, result)
+    }
   } catch (error) {
-    console.warn('Could not fetch manifest:', error)
+    console.warn('%s#%s: could not fetch manifest:', repo, manifest, error)
   }
 
-  let proper = true
-  let pkg
-
   try {
-    pkg = JSON.parse((response.data.repository.object || {}).text)
+    packageJson = packageJsonText ? JSON.parse(packageJsonText) : undefined
   } catch {
     console.warn('%s#%s: could not parse manifest', repo, manifest)
-    proper = false
   }
 
-  if (pkg && !pkg.name) {
-    console.warn('%s#%s: ignoring manifest without name', repo, manifest)
-    proper = false
-  } else if (pkg && pkg.private) {
-    console.warn('%s#%s: ignoring private manifest', repo, manifest)
-    proper = false
-  } else if (pkg && /gatsby/i.test(pkg.name)) {
-    console.warn('%s#%s: ignoring gatsby-related package', repo, manifest)
-    proper = false
+  if (packageJson) {
+    if (!packageJson.name) {
+      console.warn('%s#%s: ignoring manifest without name', repo, manifest)
+      packageJson = undefined
+    } else if (packageJson.private) {
+      console.warn('%s#%s: ignoring private manifest', repo, manifest)
+      packageJson = undefined
+    } else if (/gatsby/i.test(packageJson.name)) {
+      console.warn('%s#%s: ignoring gatsby-related package', repo, manifest)
+      packageJson = undefined
+    }
   }
 
-  return {...ctx, proper, manifestBase, packageSource: pkg}
+  return {manifestBase, packageJson}
 }
 
-async function getPackage(ctx) {
-  const {proper, manifest, manifestBase, project, packageSource} = ctx
+/**
+ * @param {RawProject} project
+ * @param {string} manifest
+ * @param {PackageJson} packageJson
+ * @returns {Promise<PackageInfo | undefined>}
+ */
+async function getPackage(project, manifest, packageJson) {
+  assert(packageJson.name) // Checked earlier.
+  // const {manifestBase, project} = ctx
   const {repo} = project
-  let response
+  /** @type {NpmsPackageResult | undefined} */
   let body
 
-  if (!proper) {
-    return
-  }
-
   try {
-    response = await fetch(
-      [npmsEndpoint, encodeURIComponent(packageSource.name)].join('/')
+    const response = await fetch(
+      [npmsEndpoint, encodeURIComponent(packageJson.name)].join('/')
     )
-    body = await response.json()
+    body = /** @type {NpmsPackageResult} */ (await response.json())
   } catch {}
 
   if (!body || !body.collected || !body.score) {
     console.warn('%s#%s: could not connect to npms', repo, manifest)
-    ctx.proper = false
     return
   }
 
-  if (body.code === 'NOT_FOUND') {
-    console.warn('%s#%s: could not find package (on npms)', repo, manifest)
-    ctx.proper = false
-    return
-  }
+  // To do: this would probabl go higher? If there’s an error returned?
+  // if (body.code === 'NOT_FOUND') {
+  //   console.warn('%s#%s: could not find package (on npms)', repo, manifest)
+  //   return
+  // }
 
+  // To do: remove fallbacks and allow `undefined`?
   const name = body.collected.metadata.name || ''
   const description = body.collected.metadata.description || ''
-  let keywords = body.collected.metadata.keywords || []
-  const license = body.collected.metadata.license || null
-  const deprecated = body.collected.metadata.deprecated
-  const latest = body.collected.metadata.version || null
-  const repos = body.collected.metadata.repository
-  const url = (repos && repos.url) || ''
-  const dependents = (body.collected.npm || {}).dependentsCount || 0
+  const keywords = body.collected.metadata.keywords || []
+  const license = body.collected.metadata.license || undefined
+  const latest = body.collected.metadata.version || undefined
+  const repository = body.collected.metadata.repository
+  const url = (repository && repository.url) || ''
   const score = body.score.final || 0
+  // Note: we used to look at `dependents`, but that’s always on `0` apparently now?
 
-  if (deprecated) {
+  if (body.collected.metadata.deprecated) {
     console.warn(
       '%s#%s: ignoring deprecated package: %s',
       repo,
       manifest,
-      deprecated
+      body.collected.metadata.deprecated
     )
-    ctx.proper = false
     return
   }
 
   if (!url) {
     console.warn('%s#%s: ignoring unknown repo', repo, manifest)
-    ctx.proper = false
     return
   }
 
@@ -584,13 +785,11 @@ async function getPackage(ctx) {
 
   if (!info) {
     console.warn('%s#%s: ignoring non-parsable repo: %s', repo, manifest, url)
-    ctx.proper = false
     return
   }
 
   if (info.type !== 'github') {
     console.warn('%s#%s: ignoring non-github repo: %s', repo, manifest, url)
-    ctx.proper = false
     return
   }
 
@@ -598,147 +797,141 @@ async function getPackage(ctx) {
 
   if (slug !== repo) {
     console.warn('%s#%s: ignoring mismatched repos: %s', repo, manifest, url)
-    ctx.proper = false
     return
   }
 
-  keywords = keywords.filter(validTag).filter(unique)
-
   return {
-    ...ctx,
-    packageDist: {
-      name,
-      manifestBase,
-      latest,
-      description,
-      keywords,
-      license,
-      dependents,
-      score
-    }
+    description,
+    keywords: keywords.filter(validTag).filter(unique),
+    latest,
+    license,
+    name,
+    score
   }
 }
 
-async function getReadme(ctx) {
-  const {proper, manifestBase, project} = ctx
+/**
+ * @param {RawProject} project
+ * @param {string | undefined} manifestBase
+ * @returns {Promise<string | undefined>}
+ */
+async function getReadme(project, manifestBase) {
   const {repo} = project
   const [owner, name] = repo.split('/')
   let base = (project.default || 'master') + ':'
-  let response
-
-  if (!proper) {
-    return
-  }
 
   if (manifestBase) base += manifestBase + '/'
 
   // Instead of going through the folder and looking for the first that matches
   // `/^readme(?=\.|$)/i`, we throw the frequently used ones at GH.
-  try {
-    response = await fetch(ghEndpoint, {
-      method: 'POST',
-      body: JSON.stringify({
-        query: `
-          query($owner: String!, $name: String!, $umd: String!, $u: String!, $cmd: String!, $c: String!, $lmd: String!, $l: String!) {
+  const response = await fetch(ghEndpoint, {
+    body: JSON.stringify({
+      query: `
+          query($cmd: String!, $c: String!, $lmd: String!, $l: String!, $name: String!, $owner: String!, $umd: String!, $u: String!) {
             repository(owner: $owner, name: $name) {
-              umd: object(expression: $umd) { ... on Blob { text } }
-              u: object(expression: $u) { ... on Blob { text } }
               cmd: object(expression: $cmd) { ... on Blob { text } }
               c: object(expression: $c) { ... on Blob { text } }
               lmd: object(expression: $lmd) { ... on Blob { text } }
               l: object(expression: $l) { ... on Blob { text } }
+              umd: object(expression: $umd) { ... on Blob { text } }
+              u: object(expression: $u) { ... on Blob { text } }
             }
           }
         `,
-        variables: {
-          owner,
-          name,
-          umd: base + 'README.md',
-          u: base + 'README',
-          cmd: base + 'Readme.md',
-          c: base + 'Readme',
-          lmd: base + 'readme.md',
-          l: base + 'readme'
-        }
-      }),
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'bearer ' + ghToken
+      variables: {
+        cmd: base + 'Readme.md',
+        c: base + 'Readme',
+        lmd: base + 'readme.md',
+        l: base + 'readme',
+        name,
+        owner,
+        umd: base + 'README.md',
+        u: base + 'README'
       }
-    }).then((x) => x.json())
-  } catch (error) {
-    console.warn('Could not fetch `readme.md`:', error)
-  }
+    }),
+    headers: {
+      Authorization: 'bearer ' + ghToken,
+      'Content-Type': 'application/json'
+    },
+    method: 'POST'
+  })
+  const result =
+    /** @type {{data: {repository: {umd?: {text: string}, u?: {text: string}, cmd?: {text: string}, c?: {text: string}, lmd?: {text: string}, l?: {text: string}}}}} */ (
+      await response.json()
+    )
 
-  const repository = ((response || {}).data || {}).repository || {}
+  const repository = result?.data?.repository
   const object =
-    repository.umd ||
-    repository.u ||
-    repository.cmd ||
-    repository.c ||
-    repository.lmd ||
-    repository.l
-  const readme = (object || {}).text || ''
+    repository?.umd ||
+    repository?.u ||
+    repository?.cmd ||
+    repository?.c ||
+    repository?.lmd ||
+    repository?.l
 
   if (!object) {
     console.warn('%s#%s: could not find readme', repo, base)
-    ctx.proper = false
     return
   }
 
-  if (readme.length < 20) {
+  const readme = object?.text
+
+  if (!readme || readme.length < 20) {
     console.warn('%s#%s: ignoring package without readme', repo, base)
-    ctx.proper = false
     return
   }
 
-  ctx.readme = readme
+  return readme
 }
 
-async function getDownloads(ctx) {
-  const {proper, packageDist} = ctx
-  // See below: `npmToken = ctx.npmToken`.
-
-  if (!proper) {
-    return
-  }
-
+/**
+ * @param {string} name
+ * @returns {Promise<number>}
+ */
+async function getDownloads(name) {
   const endpoint = [
     npmDownloadsEndpoint,
     'point',
     'last-month',
-    packageDist.name
+    encodeURIComponent(name)
   ].join('/')
 
   const response = await fetch(endpoint, {
     // Passing an npm token recently seems to crash npm.
     // headers: {Authorization: 'Bearer ' + npmToken}
-  }).then((x) => x.json())
+  })
+  const result =
+    /** @type {{downloads: number, end: string, start: string}} */ (
+      await response.json()
+    )
 
-  ctx.packageDist = {...ctx.packageDist, downloads: response.downloads}
+  return result.downloads
 }
 
-async function getSize(ctx) {
-  const {proper, manifest, project, packageDist} = ctx
-  const {repo} = project
-  let response
-
-  if (!proper) {
-    return
-  }
-
-  const endpoint =
-    'https://img.shields.io/bundlephobia/minzip/' +
-    encodeURIComponent(packageDist.name) +
-    '.json'
+/**
+ * @param {string} name
+ * @returns {Promise<number | undefined>}
+ */
+async function getSize(name) {
+  /** @type {string | undefined} */
+  let value
 
   try {
-    response = await fetch(endpoint, {
-      headers: {'User-Agent': randomUseragent.getRandom()}
-    }).then((x) => x.json())
+    const response = await fetch(
+      'https://img.shields.io/bundlephobia/minzip/' +
+        encodeURIComponent(name) +
+        '.json',
+      {
+        headers: {'User-Agent': randomUseragent.getRandom()}
+      }
+    )
+    const result =
+      /** @type {{color: string, label: string, link: unknown, message: string, name: string, value: string}} */ (
+        await response.json()
+      )
+    value = result.value
   } catch (error) {
-    console.warn('%s#%s: could not contact shields.io', repo, manifest, error)
-    // Still “proper”.
+    console.warn('%s: could not contact `shields.io`:', name, error)
     return
   }
 
@@ -746,16 +939,23 @@ async function getSize(ctx) {
   // what it displays on the site:
   // => https://bundlephobia.com/api/size?package=micromark@3.0.0 => 14273
   // => https://bundlephobia.com/package/micromark@3.0.0 => 13.9kb
-  const gzip = (((bytes.parse(response.value) / 1024) * 1000) / 1024) * 1000
-  const dependencies = response.dependencyCount
-
-  ctx.packageDist = {...ctx.packageDist, gzip, dependencies}
+  return (((bytes.parse(value) / 1024) * 1000) / 1024) * 1000
 }
 
-function unique(d, i, data) {
-  return data.indexOf(d) === i
-}
-
+/**
+ * @param {string} d
+ * @returns {boolean}
+ */
 function validTag(d) {
   return /^[a-zA-Z\d-]+$/.test(d)
+}
+
+/**
+ * Whether this release was in the last 60 days.
+ *
+ * @param {Date} date
+ * @returns {boolean}
+ */
+function recentRelease(date) {
+  return date.valueOf() > Date.now() - 60 * 24 * 60 * 60 * 1000
 }

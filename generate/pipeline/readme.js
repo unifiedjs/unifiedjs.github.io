@@ -1,4 +1,9 @@
-import fs from 'node:fs'
+/**
+ * @import {PackageJson} from 'type-fest'
+ */
+
+import assert from 'node:assert/strict'
+import fs from 'node:fs/promises'
 import {unified} from 'unified'
 import deepmerge from 'deepmerge'
 import remarkParse from 'remark-parse'
@@ -16,8 +21,11 @@ import {link} from '../atom/icon/link.js'
 import rehypeResolveUrls from '../plugin/rehype-resolve-urls.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 
-const pkg = JSON.parse(fs.readFileSync('package.json'))
-const origin = pkg.homepage
+const packageValue = await fs.readFile('package.json', 'utf8')
+/** @type {PackageJson} */
+const packageJson = JSON.parse(packageValue)
+const origin = packageJson.homepage
+assert(typeof origin === 'string')
 
 const schema = deepmerge(defaultSchema, {attributes: {code: ['className']}})
 

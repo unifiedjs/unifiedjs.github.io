@@ -1,17 +1,41 @@
+/**
+ * @import {Element, Root} from 'hast'
+ * @import {BuildVisitor} from 'unist-util-visit'
+ * @import {VFile} from 'vfile'
+ */
+
+/**
+ * @typedef Options
+ * @property {string | null | undefined} [origin]
+ * @property {string | null | undefined} [pathname]
+ */
+
+import assert from 'node:assert/strict'
 import {visit} from 'unist-util-visit'
 import {tagToUrl} from '../util/tag-to-url.js'
 import {data} from '../data.js'
 
 const own = {}.hasOwnProperty
 
+/**
+ * @param {Options | null | undefined} [options]
+ *   Configuration.
+ * @returns
+ *   Transform.
+ */
 export default function rehypeRewriteUrls(options) {
   const settings = options || {}
 
   return transform
 
+  /**
+   * @param {Root} tree
+   * @param {VFile} file
+   * @returns {undefined}
+   */
   function transform(tree, file) {
     const meta = file.data.meta || {}
-    const origin = meta.origin || settings.origin
+    const origin = meta.origin || settings.origin || undefined
     const pathname = meta.pathname || settings.pathname || '/'
 
     if (!origin) {
@@ -20,6 +44,7 @@ export default function rehypeRewriteUrls(options) {
 
     visit(tree, 'element', visitor)
 
+    /** @type {BuildVisitor<Root, 'element'>} */
     function visitor(node) {
       let head
 
@@ -28,7 +53,7 @@ export default function rehypeRewriteUrls(options) {
       }
 
       if (node.tagName === 'a') {
-        head = (node.properties.href || '').charAt(0)
+        head = String(node.properties.href || '').charAt(0)
 
         if (head && head !== '/' && head !== '#') {
           node.properties.rel = ['nofollow', 'noopener', 'noreferrer']
@@ -36,8 +61,14 @@ export default function rehypeRewriteUrls(options) {
       }
     }
 
+    /**
+     * @param {Element} node
+     * @param {string} prop
+     * @returns {undefined}
+     */
     function rewrite(node, prop) {
       let value = node.properties[prop]
+      /** @type {URL | undefined} */
       let url
 
       if (value === undefined || value === null) {
@@ -53,9 +84,10 @@ export default function rehypeRewriteUrls(options) {
       }
 
       url = rewriteNpm(url, origin) || rewriteGithub(url, origin) || url
+      assert(url)
 
       // Minify / make relative.
-      if (url.origin === origin) {
+      if (url && url.origin === origin) {
         value =
           url.pathname === pathname ? url.hash || '#' : url.pathname + url.hash
       } else {
@@ -66,17 +98,20 @@ export default function rehypeRewriteUrls(options) {
     }
   }
 
+  /**
+   * @param {URL} url
+   * @param {string | undefined} origin
+   * @returns {URL | undefined}
+   */
   function rewriteNpm(url, origin) {
     let host = url.host
-    let rest
-    let name
 
     if (host.startsWith('www.')) {
       host = host.slice(4)
     }
 
     if (host === 'npmjs.com' && url.pathname.startsWith('/package/')) {
-      rest = url.pathname.slice('/package/'.length).split('/')
+      const rest = url.pathname.slice('/package/'.length).split('/')
 
       // Ignore trailing slasg.
       if (rest[rest.length - 1] === '') {
@@ -85,7 +120,7 @@ export default function rehypeRewriteUrls(options) {
 
       // Support unscoped and scoped.
       if (rest.length > 0 && rest.length < 3) {
-        name = rest.join('/')
+        const name = rest.join('/')
 
         if (own.call(data.packageByName, name)) {
           return new URL('/explore/package/' + name + '/' + url.hash, origin)
@@ -94,27 +129,26 @@ export default function rehypeRewriteUrls(options) {
     }
   }
 
+  /**
+   * @param {URL} url
+   * @param {string | undefined} origin
+   * @returns {URL | undefined}
+   */
   function rewriteGithub(url, origin) {
     const host = url.host
-    let rest
-    let repo
-    let length
-    let packages
-    let slug
-    let match
 
     if (host === 'github.com') {
-      rest = url.pathname.slice(1).split('/')
+      let rest = url.pathname.slice(1).split('/')
 
       // Tree goes to directories, blob to files.
       if (rest[3] === 'master' && (rest[2] === 'tree' || rest[2] === 'blob')) {
         rest[3] = 'HEAD'
       }
 
-      repo = rest.slice(0, 2).join('/')
+      const repo = rest.slice(0, 2).join('/')
 
-      if (own.call(data.projectByRepo, repo)) {
-        packages = data.packagesByRepo[repo]
+      if (own.call(data.packagesByRepo, repo)) {
+        const packages = data.packagesByRepo[repo]
         rest = rest.slice(2)
 
         // Tree goes to directories, blob to files.
@@ -138,12 +172,12 @@ export default function rehypeRewriteUrls(options) {
           url.hash = ''
         }
 
-        length = rest.length
+        let length = rest.length
 
         while (length > -1) {
-          slug = rest.slice(0, length)
-          slug = slug.length === 0 ? undefined : slug.join('/')
-          match = packages.find(
+          const slugParts = rest.slice(0, length)
+          const slug = slugParts.length === 0 ? undefined : slugParts.join('/')
+          const match = packages.find(
             (d) => data.packageByName[d].manifestBase === slug
           )
 

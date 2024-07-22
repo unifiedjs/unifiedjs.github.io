@@ -1,3 +1,8 @@
+/**
+ * @import {Element} from 'hast'
+ * @import {Person} from '../../../data/sponsors.js'
+ */
+
 import {h} from 'hastscript'
 import {oc as ocBadge} from '../../atom/micro/oc.js'
 import {gh as ghBadge} from '../../atom/micro/gh.js'
@@ -7,6 +12,10 @@ import {item as card} from '../../atom/card/item.js'
 
 const base = 'http://opencollective.com/'
 
+/**
+ * @param {Person} d
+ * @returns {Element}
+ */
 export function item(d) {
   const {name, description, image, oc, github, twitter, url, gold} = d
   const className = gold ? ['gold'] : []

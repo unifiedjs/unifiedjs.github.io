@@ -1,9 +1,18 @@
+/**
+ * @import {Root} from 'hast'
+ * @import {Metadata} from '../component/article/list.js'
+ */
+
 import {h} from 'hastscript'
 import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {list} from '../component/article/list.js'
 import {helperSort} from '../component/article/helper-sort.js'
 import {page} from './page.js'
 
+/**
+ * @param {ReadonlyArray<Metadata>} sections
+ * @returns {Root}
+ */
 export function learn(sections) {
   return page(h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/learn/'))), [
     h('.article.content', [
@@ -20,9 +29,10 @@ export function learn(sections) {
         'through how to complete bigger tasks.'
       ])
     ]),
-    sections.flatMap((d) => [
+    ...sections.flatMap((d) => [
       h('.article.content', [h('h3', {}, d.title), h('p', {}, d.description)]),
-      list(d, helperSort(d.entries))
+      // To do: assert that entries exists?
+      list(d, helperSort(d.entries || []))
     ]),
     h('.article.content', [
       h('h3', 'Explore'),

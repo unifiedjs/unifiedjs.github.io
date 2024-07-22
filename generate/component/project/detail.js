@@ -1,10 +1,20 @@
+/**
+ * @import {Element} from 'hast'
+ * @import {Data} from '../../data.js'
+ */
+
 import {h} from 'hastscript'
 import {list} from '../package/list.js'
 import {helperSort} from '../package/helper-sort.js'
 
+/**
+ * @param {Data} data
+ * @param {string} d
+ * @returns {Array<Element>}
+ */
 export function detail(data, d) {
   const {packagesByRepo} = data
-  const packages = packagesByRepo[d]
+  const packages = packagesByRepo[d] || []
 
   return [
     h(

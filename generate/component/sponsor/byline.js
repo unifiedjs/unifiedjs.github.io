@@ -1,7 +1,14 @@
+/**
+ * @import {Element} from 'hast'
+ */
+
 import {h} from 'hastscript'
 
 const oc = 'http://opencollective.com/unified'
 
+/**
+ * @returns {Element}
+ */
 export function byline() {
   return h('p', [
     'Maintaining the collective, developing new projects, keeping everything ',

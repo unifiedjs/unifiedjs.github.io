@@ -1,4 +1,8 @@
-// The orgs in the collective.
+/**
+ * The orgs in the collective.
+ *
+ * @type {ReadonlyArray<string>}
+ */
 export const constantCollective = [
   'remarkjs',
   'rehypejs',

@@ -1,3 +1,8 @@
+/**
+ * @import {Root} from 'hast'
+ * @import {CommunityData} from '../index.js'
+ */
+
 import {h} from 'hastscript'
 import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {list as members} from '../component/member/list.js'
@@ -17,6 +22,10 @@ const support = base + 'support.md'
 const contributing = base + 'contributing.md'
 const security = base + 'security.md'
 
+/**
+ * @param {CommunityData} data
+ * @returns {Root}
+ */
 export function community(data) {
   return page(
     h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/community/'))),

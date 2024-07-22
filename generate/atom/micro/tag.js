@@ -1,7 +1,19 @@
+/**
+ * @import {ElementContent} from 'hast'
+ */
+
 import {h} from 'hastscript'
 import {fmtCompact} from '../../util/fmt-compact.js'
 
+/**
+ *
+ * @param {string} label
+ * @param {number | undefined} [count]
+ * @param {string | undefined} [href]
+ * @returns
+ */
 export function tag(label, count, href) {
+  /** @type {Array<ElementContent | string>} */
   const nodes = [label]
 
   if (count) {

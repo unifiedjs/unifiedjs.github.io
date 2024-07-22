@@ -1,3 +1,8 @@
+/**
+ * @import {ElementContent} from 'hast'
+ * @import {Data} from '../../data.js'
+ */
+
 import {h} from 'hastscript'
 import {description} from '../../atom/micro/description.js'
 import {downloads} from '../../atom/micro/downloads.js'
@@ -14,6 +19,11 @@ import {helperReduceDownloads} from './helper-reduce-downloads.js'
 import {helperReduceLicense} from './helper-reduce-license.js'
 import {helperReduceScore} from './helper-reduce-score.js'
 
+/**
+ * @param {Data} data
+ * @param {string} repo
+ * @returns {Array<ElementContent>}
+ */
 export function head(data, repo) {
   const d = data.projectByRepo[repo]
   const [owner, name] = repo.split('/')
@@ -30,7 +40,7 @@ export function head(data, repo) {
         ])
       ),
       h('ol.flex.column.ellipsis-l', [
-        url(d.url),
+        d.url ? url(d.url) : undefined,
         description(d.description, d.descriptionRich)
       ]),
       h('.column', [

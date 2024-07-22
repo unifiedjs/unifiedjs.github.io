@@ -1,10 +1,25 @@
+/**
+ * @import {VFile} from 'vfile'
+ */
+
 import {asc} from '../../util/sort.js'
 
-// Sort articles by index.
+/**
+ * Sort articles by index.
+ *
+ * @param {ReadonlyArray<VFile>} data
+ * @returns {Array<VFile>}
+ */
 export function helperSort(data) {
   return asc(data, score)
 }
 
+/**
+ * @param {VFile} d
+ * @returns {number}
+ */
 function score(d) {
-  return (d.data.matter || {}).index || Number.POSITIVE_INFINITY
+  const matter = d.data.matter || {}
+  // @ts-expect-error: to do: type `index`?
+  return matter.index || Number.POSITIVE_INFINITY
 }

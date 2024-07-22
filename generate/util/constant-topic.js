@@ -1,4 +1,8 @@
-// Topics used to tag projects.
+/**
+ * Topics used to tag projects.
+ *
+ * @type {ReadonlyArray<string>}
+ */
 export const constantTopic = [
   'micromark-extension',
   'unified-plugin',
@@ -14,6 +18,7 @@ export const constantTopic = [
   'nlcst-util',
   'vfile-util',
   'unifiedjs',
+  // To do: investigate?
   // 'mdx', // Used too often by unrelated things...
   'remark-lint-rule'
 ]

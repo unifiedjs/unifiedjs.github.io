@@ -1,4 +1,32 @@
-import fs from 'node:fs'
+/**
+ * @import {Root} from 'hast'
+ * @import {DataMap, VFile} from 'vfile'
+ * @import {Human} from '../data/humans.js'
+ * @import {Release} from '../data/releases.js'
+ * @import {Person as Sponsor} from '../data/sponsors.js'
+ * @import {Team} from '../data/teams.js'
+ * @import {Metadata} from './component/article/list.js'
+ *
+ * @typedef CommunityData
+ * @property {ReadonlyArray<Human>} humans
+ * @property {ReadonlyArray<Sponsor>} sponsors
+ * @property {ReadonlyArray<Team>} teams
+ * @property {ReadonlyArray<ShowcaseUser>} users
+ *
+ * @typedef Page
+ * @property {VFile} file
+ * @property {Root} tree
+ *
+ * @typedef ShowcaseUser
+ * @property {string} gh
+ * @property {string} short
+ * @property {string} src
+ * @property {string} title
+ * @property {string} url
+ */
+
+import assert from 'node:assert/strict'
+import fs from 'node:fs/promises'
 import path from 'node:path'
 import yaml from 'js-yaml'
 import {glob} from 'glob'
@@ -37,8 +65,11 @@ import {sponsor} from './page/sponsors.js'
 import {topic} from './page/topic.js'
 import {topics} from './page/topics.js'
 
-const users = yaml.load(fs.readFileSync(path.join('doc', 'showcase.yml')))
+const users = /** @type {Array<ShowcaseUser>} */ (
+  yaml.load(await fs.readFile(path.join('doc', 'showcase.yml'), 'utf8'))
+)
 
+/** @type {Array<() => Promise<Page> | Page>} */
 const tasks = []
 
 // Render descriptions
@@ -46,17 +77,20 @@ expandDescription(data.projectByRepo)
 expandDescription(data.packageByName)
 expandReleases(dataReleases)
 
-const entries = glob.sync('doc/learn/**/*.md').map((input) => {
+const input = await glob('doc/learn/**/*.md')
+
+const entries = input.map(function (input) {
   const file = readSync(input)
   matter(file)
   const slug = path.basename(input, path.extname(input))
-  const {group, tags} = file.data.matter
-
-  file.data.meta = {
-    type: 'article',
-    tags: [].concat(group || [], tags || []),
-    pathname: ['', 'learn', group, slug, ''].join('/')
-  }
+  if (!file.data.meta) file.data.meta = {}
+  assert(file.data.matter)
+  const {group, tags} = file.data.matter || {}
+  assert(typeof group === 'string')
+  file.data.meta.type = 'article'
+  file.data.meta.tags = [group]
+  if (tags) file.data.meta.tags.push(...tags)
+  file.data.meta.pathname = ['', 'learn', group, slug, ''].join('/')
 
   return file
 })
@@ -74,17 +108,21 @@ const sections = [
     description:
       'Learn unified through byte-sized articles, that stand on their own, explaining how to complete a small, specific, focussed task'
   }
-].map((d) => {
+].map(function (d) {
   const {slug} = d
-  return {
+  /** @type {Metadata} */
+  const result = {
     ...d,
     tags: [slug, 'learn'],
     pathname: '/learn/' + slug + '/',
-    entries: entries.filter((d) => d.data.matter.group === slug)
+    entries: entries.filter((d) => {
+      return d.data.matter && d.data.matter.group === slug
+    })
   }
+  return result
 })
 
-page(() => home({...data, articles: entries, sponsors, users}), {
+page(() => home({...data, articles: entries, humans, sponsors, teams, users}), {
   description:
     'Content as structured data: unified compiles content and provides hundreds of packages to work with content',
   pathname: '/'
@@ -101,6 +139,7 @@ entries.forEach((file) => {
 sections.forEach((section) => {
   const {title, description, tags, pathname, entries} = section
   const meta = {title, description, tags, pathname}
+  assert(entries)
   page(() => articles(meta, entries), meta)
 })
 
@@ -188,7 +227,7 @@ Object.keys(data.projectByRepo).forEach((d) => {
   page(() => project(data, d), {
     title: d,
     description,
-    tags: topics,
+    tags: [...topics],
     pathname: '/explore/project/' + d + '/'
   })
 })
@@ -218,7 +257,7 @@ page(() => community({teams, humans, sponsors, users}), {
   pathname: '/community/'
 })
 
-page(() => members({teams, humans}), {
+page(() => members({teams, humans, sponsors, users}), {
   title: 'Team - Community',
   description: 'Meet the team maintaining unified',
   pathname: '/community/member/'
@@ -258,10 +297,23 @@ const promises = tasks.map((fn) => () => {
 
 all(promises, {concurrency: 50})
 
+/**
+ *
+ * @param {() => Root} fn
+ * @param {DataMap['meta']} meta
+ * @returns {undefined}
+ */
 function page(fn, meta) {
-  tasks.push(() => ({tree: fn(), file: toVFile({data: {meta}})}))
+  tasks.push(function () {
+    return {tree: fn(), file: toVFile({data: {meta}})}
+  })
 }
 
+/**
+ * @template {{description: string, descriptionRich?: Root}} T
+ * @param {Record<string, T>} map
+ * @returns {undefined}
+ */
 function expandDescription(map) {
   Object.keys(map).forEach((id) => {
     const d = map[id]
@@ -270,6 +322,10 @@ function expandDescription(map) {
   })
 }
 
+/**
+ * @param {ReadonlyArray<Release>} releases
+ * @returns {undefined}
+ */
 function expandReleases(releases) {
   releases.forEach((d) => {
     const pipeline = createReleasePipeline(d)

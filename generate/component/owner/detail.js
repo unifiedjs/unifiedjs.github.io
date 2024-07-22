@@ -1,8 +1,18 @@
+/**
+ * @import {Element} from 'hast'
+ * @import {Data} from '../../data.js'
+ */
+
 import {h} from 'hastscript'
 import {more} from '../../atom/box/more.js'
 import {list} from '../project/list.js'
 import {helperSort} from '../project/helper-sort.js'
 
+/**
+ * @param {Data} data
+ * @param {string} d
+ * @returns {Array<Element>}
+ */
 export function detail(data, d) {
   const {projectsByOwner} = data
 

@@ -1,3 +1,8 @@
+/**
+ * @import {Schema} from 'hast-util-sanitize'
+ */
+
+/** @type {Schema} */
 export const descriptionSchema = {
   strip: ['script'],
   ancestors: {},

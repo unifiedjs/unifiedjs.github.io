@@ -1,16 +1,29 @@
+/**
+ * @import {Element} from 'hast'
+ * @import {VFile} from 'vfile'
+ */
+
+import assert from 'node:assert/strict'
 import {h} from 'hastscript'
 import {item as card} from '../../atom/card/item.js'
 import {tag} from '../../atom/micro/tag.js'
 
+/**
+ * @param {VFile} d
+ * @returns {Element}
+ */
 export function item(d) {
   const {matter, meta} = d.data
   const data = {...matter, ...meta}
-  let {title, description, author, authorGithub, tags, pathname} = data
+  // @ts-expect-error: to do: type `authorGithub`?
+  const {title, description, author, authorGithub, tags, pathname} = data
 
-  author = h('span.ellipsis', {}, author)
+  assert(pathname)
+
+  let authorDisplay = h('span.ellipsis', {}, author)
 
   if (authorGithub) {
-    author = h('a.row', {href: 'https://github.com/' + authorGithub}, [
+    authorDisplay = h('a.row', {href: 'https://github.com/' + authorGithub}, [
       h('.thumbnail', {
         role: 'presentation',
         style:
@@ -18,7 +31,7 @@ export function item(d) {
           authorGithub +
           '.png?size=64)'
       }),
-      author
+      authorDisplay
     ])
   }
 
@@ -33,6 +46,6 @@ export function item(d) {
         (tags || []).map((d) => tag(d))
       )
     ]),
-    h('li.row', {}, author)
+    h('li.row', {}, authorDisplay)
   )
 }

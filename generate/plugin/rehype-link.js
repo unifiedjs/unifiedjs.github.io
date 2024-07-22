@@ -1,4 +1,5 @@
 /**
+ * @import {Root} from 'hast'
  * @import {FindAndReplaceTuple} from 'hast-util-find-and-replace'
  */
 
@@ -19,9 +20,17 @@ const ignore = defaultIgnore.concat([
   'h6'
 ])
 
+/**
+ * @returns
+ *   Transform.
+ */
 export default function rehypeLink() {
   return transform
 
+  /**
+   * @param {Root} tree
+   * @returns {undefined}
+   */
   function transform(tree) {
     findAndReplace(tree, replacements, {ignore})
   }
@@ -33,6 +42,7 @@ export default function rehypeLink() {
 function initialise() {
   /** @type {Array<FindAndReplaceTuple>} */
   const result = []
+  /** @type {Record<string, string>} */
   const dictionary = {
     'v|file': 'vfile/vfile',
     'uni|fied': 'unifiedjs/unified',
@@ -55,6 +65,9 @@ function initialise() {
 
   return result
 
+  /**
+   * @param {string} find
+   */
   function add(find) {
     const parts = find.split('|')
     const name = parts.join('')

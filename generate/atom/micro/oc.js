@@ -1,6 +1,14 @@
+/**
+ * @import {ElementContent} from 'hast'
+ */
+
 import {h} from 'hastscript'
 import {oc as icon} from '../icon/oc.js'
 
+/**
+ * @param {string} name
+ * @returns {ElementContent}
+ */
 export function oc(name) {
   let node = icon()
 

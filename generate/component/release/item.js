@@ -1,3 +1,9 @@
+/**
+ * @import {Element} from 'hast'
+ * @import {Data} from '../../data.js'
+ * @import {Release} from '../../../data/releases.js'
+ */
+
 import {h} from 'hastscript'
 import TimeAgo from 'javascript-time-ago'
 import en from 'javascript-time-ago/locale/en'
@@ -9,6 +15,11 @@ TimeAgo.addDefaultLocale(en)
 const timeAgo = new TimeAgo(constantLocale)
 const dateTime = new Intl.DateTimeFormat(constantLocale, {dateStyle: 'medium'})
 
+/**
+ * @param {Data} data
+ * @param {Release} d
+ * @returns {Element}
+ */
 export function item(data, d) {
   const {packagesByRepo} = data
   const {repo, published, tag} = d

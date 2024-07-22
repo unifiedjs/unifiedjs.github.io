@@ -1,3 +1,10 @@
+/**
+ * @import {Root} from 'hast'
+ * @import {VFile} from 'vfile'
+ * @import {Data} from '../data.js'
+ * @import {CommunityData} from '../index.js'
+ */
+
 import {h} from 'hastscript'
 import {block} from '../atom/macro/block.js'
 import {list as articlesList} from '../component/article/list.js'
@@ -21,6 +28,10 @@ const linux = 3_166_218 // Checked from the `diskUsage` result for `torvalds/lin
 const mobyDick = 1.2 * 1024 * 1024
 // Apparently Gutenberg’s version is 1.2mb.
 
+/**
+ * @param {Data & CommunityData & {articles: ReadonlyArray<VFile>}} data
+ * @returns {Root}
+ */
 export function home(data) {
   const {packageByName, projectByRepo} = data
   const names = sortPkg(data, Object.keys(packageByName))
@@ -162,6 +173,11 @@ export function home(data) {
   }
 }
 
+/**
+ * @param {number} a
+ * @param {number} b
+ * @returns {number}
+ */
 function sum(a, b) {
   return a + (b || 0)
 }

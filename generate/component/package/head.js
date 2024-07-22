@@ -1,3 +1,9 @@
+/**
+ * @import {ElementContent} from 'hast'
+ * @import {Data} from '../../data.js'
+ */
+
+import assert from 'node:assert/strict'
 import {h} from 'hastscript'
 import {description} from '../../atom/micro/description.js'
 import {downloads} from '../../atom/micro/downloads.js'
@@ -13,17 +19,27 @@ import {listSmall} from '../keyword/list-small.js'
 import {helperFilter} from '../keyword/helper-filter.js'
 import {helperSort} from '../keyword/helper-sort.js'
 
+/**
+ * @param {Data} data
+ * @param {string} id
+ * @returns {Array<ElementContent>}
+ */
 export function head(data, id) {
   const {projectByRepo, packageByName} = data
   const d = packageByName[id]
   const project = projectByRepo[d.repo]
   const [owner, projectName] = d.repo.split('/')
-  let [scope, pkgName] = id.split('/')
+  let [scope, pkgName] =
+    /** @type {[scope: string | undefined, name: string | undefined]} */ (
+      id.split('/')
+    )
 
   if (!pkgName) {
     pkgName = scope
-    scope = null
+    scope = undefined
   }
+
+  assert(pkgName)
 
   return [
     h('.row-l.column-nl', [
@@ -55,7 +71,7 @@ export function head(data, id) {
         h('ol.row.justify-end-l', [
           score(d.score),
           verified(d.repo),
-          license(d.license),
+          d.license ? license(d.license) : undefined,
           stars(project.stars, d.repo),
           gh(d.repo)
         ]),

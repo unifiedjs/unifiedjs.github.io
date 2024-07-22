@@ -1,3 +1,9 @@
+/**
+ * @import {ElementContent, Element} from 'hast'
+ * @import {Human} from '../../../data/humans.js'
+ * @import {CommunityData} from '../../index.js'
+ */
+
 import {h} from 'hastscript'
 import {gh as ghBadge} from '../../atom/micro/gh.js'
 import {npm as npmBadge} from '../../atom/micro/npm.js'
@@ -6,9 +12,16 @@ import {item as card} from '../../atom/card/item.js'
 
 const base = 'https://github.com/'
 
+/**
+ * @param {CommunityData} data
+ * @param {Human} d
+ * @returns {Element}
+ */
 export function item(data, d) {
   const {name, github, npm, url} = d
+  /** @type {Array<ElementContent>} */
   const footer = [ghBadge(github)]
+  /** @type {Array<ElementContent>} */
   const memberships = []
 
   if (npm) {
@@ -45,7 +58,7 @@ export function item(data, d) {
         'p.double-ellipsis',
         roles.length === 0
           ? 'Contributor'
-          : [h('span.label', 'Teams: ')].concat(roles)
+          : [h('span.label', 'Teams: '), ...roles]
       )
     ]),
     footer

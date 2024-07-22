@@ -1,5 +1,10 @@
+/**
+ * @import {ElementContent} from 'hast'
+ */
+
 import {h} from 'hastscript'
 
+/** @returns {ElementContent} */
 export function footer() {
   return h('footer.container', [
     h('nav.row-l.flex', [

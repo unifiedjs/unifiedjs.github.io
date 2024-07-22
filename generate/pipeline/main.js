@@ -1,3 +1,9 @@
+/**
+ * @import {Root} from 'hast'
+ * @import {VFile} from 'vfile'
+ */
+
+import assert from 'node:assert/strict'
 import path from 'node:path'
 import {mkdirp} from 'vfile-mkdirp'
 import {unified} from 'unified'
@@ -68,8 +74,16 @@ export const main = unified()
 // Plugin that moves a file’s path to the output location
 function move() {
   return transform
+  /**
+   * @param {Root} _
+   * @param {VFile} file
+   * @returns {undefined}
+   */
   function transform(_, file) {
-    const {pathname} = file.data.meta
+    const meta = file.data.meta
+    assert(meta)
+    const pathname = meta.pathname
+    assert(typeof pathname === 'string')
     const parts = pathname.slice(1).split(path.posix.sep)
     const last = parts.pop()
 
@@ -85,7 +99,12 @@ function move() {
 // Plugin to make sure the directories to a file exist.
 function mkdir() {
   return transformer
-  function transformer(_, file) {
-    return mkdirp(file).then(() => {})
+  /**
+   * @param {Root} _
+   * @param {VFile} file
+   * @returns {Promise<undefined>}
+   */
+  async function transformer(_, file) {
+    await mkdirp(file)
   }
 }

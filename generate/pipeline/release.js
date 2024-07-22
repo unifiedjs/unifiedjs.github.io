@@ -1,4 +1,12 @@
-import fs from 'node:fs'
+/**
+ * @import {Root} from 'hast'
+ * @import {PackageJson} from 'type-fest'
+ * @import {BuildVisitor} from 'unist-util-visit'
+ * @import {Release} from '../../data/releases.js'
+ */
+
+import assert from 'node:assert/strict'
+import fs from 'node:fs/promises'
 import {unified} from 'unified'
 import deepmerge from 'deepmerge'
 import remarkParse from 'remark-parse'
@@ -16,11 +24,17 @@ import {shiftHeading} from 'hast-util-shift-heading'
 import rehypeResolveUrls from '../plugin/rehype-resolve-urls.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 
-const pkg = JSON.parse(fs.readFileSync('package.json'))
-const origin = pkg.homepage
+const packageValue = await fs.readFile('package.json', 'utf8')
+/** @type {PackageJson} */
+const packageJson = JSON.parse(packageValue)
+const origin = packageJson.homepage
+assert(typeof origin === 'string')
 
 const schema = deepmerge(defaultSchema, {attributes: {code: ['className']}})
 
+/**
+ * @param {Release} d
+ */
 export function release(d) {
   return unified()
     .use(remarkParse)
@@ -39,6 +53,10 @@ export function release(d) {
   function headings() {
     return transform
 
+    /**
+     * @param {Root} tree
+     * @returns {undefined}
+     */
     function transform(tree) {
       let depth = 6
       const goal = 4
@@ -51,6 +69,7 @@ export function release(d) {
         shiftHeading(tree, shift)
       }
 
+      /** @type {BuildVisitor<Root, 'element'>} */
       function pre(node) {
         const rank = headingRank(node)
 

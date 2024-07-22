@@ -1,5 +1,12 @@
+/**
+ * @import {Element} from 'hast'
+ */
+
 import {s} from 'hastscript'
 
+/**
+ * @returns {Element}
+ */
 export function link() {
   return s(
     'svg.icon',

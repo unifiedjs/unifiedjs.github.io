@@ -1,8 +1,20 @@
+/**
+ * @import {ElementContent, Element} from 'hast'
+ */
+
 import {h} from 'hastscript'
 import {tw} from '../atom/icon/tw.js'
 import {gh} from '../atom/icon/gh.js'
 
+/**
+ * @returns {Array<ElementContent>}
+ */
 export function header() {
+  const twitter = tw()
+  const github = gh()
+  enlarge(twitter)
+  enlarge(github)
+
   return [
     h('.blm', [
       h('.container', [
@@ -36,13 +48,13 @@ export function header() {
           h('ol.row.x-show-l.justify-end-l', [
             h('li', [
               h('a', {href: 'https://twitter.com/unifiedjs'}, [
-                enlarge(tw()),
+                twitter,
                 h('span.x-hide-l', 'Twitter')
               ])
             ]),
             h('li', [
               h('a', {href: 'https://github.com/unifiedjs'}, [
-                enlarge(gh()),
+                github,
                 h('span.x-hide-l', 'GitHub')
               ])
             ])
@@ -53,6 +65,10 @@ export function header() {
   ]
 }
 
+/**
+ * @param {Element} node
+ * @returns {undefined}
+ */
 function enlarge(node) {
   Object.assign(node.properties, {
     role: 'img',
@@ -60,5 +76,4 @@ function enlarge(node) {
     height: 24,
     className: ['icon', 'x-show-l']
   })
-  return node
 }

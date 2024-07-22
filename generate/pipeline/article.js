@@ -1,4 +1,9 @@
-import fs from 'node:fs'
+/**
+ * @import {PackageJson} from 'type-fest'
+ */
+
+import assert from 'node:assert/strict'
+import fs from 'node:fs/promises'
 import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'
@@ -13,8 +18,11 @@ import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 import rehypeAbbreviate from '../plugin/rehype-abbreviate.js'
 import {link} from '../atom/icon/link.js'
 
-const pkg = JSON.parse(fs.readFileSync('package.json'))
-const origin = pkg.homepage
+const packageValue = await fs.readFile('package.json', 'utf8')
+/** @type {PackageJson} */
+const packageJson = JSON.parse(packageValue)
+const origin = packageJson.homepage
+assert(typeof origin === 'string')
 
 export const article = unified()
   .use(remarkParse)

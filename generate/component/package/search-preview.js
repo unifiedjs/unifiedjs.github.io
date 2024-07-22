@@ -1,9 +1,18 @@
+/**
+ * @import {ElementContent} from 'hast'
+ * @import {Data} from '../../data.js'
+ */
+
 import {more} from '../../atom/box/more.js'
 import {fmtCompact} from '../../util/fmt-compact.js'
 import {pickRandom} from '../../util/pick-random.js'
 import {list} from './list.js'
 import {helperSort} from './helper-sort.js'
 
+/**
+ * @param {Data} data
+ * @returns {ElementContent}
+ */
 export function searchPreview(data) {
   const {packageByName} = data
   const names = helperSort(data, Object.keys(packageByName))

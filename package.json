@@ -16,14 +16,19 @@
   ],
   "type": "module",
   "devDependencies": {
+    "@types/bytes": "^3.0.0",
+    "@types/d3-scale": "^4.0.0",
+    "@types/js-yaml": "^4.0.0",
+    "@types/node": "^20.0.0",
+    "@types/random-useragent": "^0.3.0",
     "budo": "^11.0.0",
     "bytes": "^3.0.0",
     "chalk": "^5.0.0",
-    "compute-mean": "^3.0.0",
     "cssnano": "^7.0.0",
     "cssnano-preset-advanced": "^7.0.0",
     "d3-scale": "^4.0.0",
     "deepmerge": "^4.0.0",
+    "devlop": "^1.0.0",
     "dictionary-en": "^4.0.0",
     "dotenv": "^16.0.0",
     "esbuild": "^0.23.0",
@@ -91,6 +96,7 @@
     "to-vfile": "^8.0.0",
     "trough": "^2.0.0",
     "type-coverage": "^2.0.0",
+    "type-fest": "^4.0.0",
     "typescript": "^5.0.0",
     "unified": "^11.0.0",
     "unist-util-visit": "^5.0.0",
@@ -123,6 +129,31 @@
     "trailingComma": "none"
   },
   "xo": {
+    "overrides": [
+      {
+        "files": [
+          "**/*.d.ts"
+        ],
+        "rules": {
+          "@typescript-eslint/array-type": [
+            "error",
+            {
+              "default": "generic"
+            }
+          ],
+          "@typescript-eslint/ban-types": [
+            "error",
+            {
+              "extendDefaults": true
+            }
+          ],
+          "@typescript-eslint/consistent-type-definitions": [
+            "error",
+            "interface"
+          ]
+        }
+      }
+    ],
     "prettier": true,
     "rules": {
       "complexity": "off",
