@@ -13,7 +13,7 @@ export default function rehypeWrap() {
    * @returns {undefined}
    */
   function transform(tree) {
-    tree.children.unshift(...header())
+    tree.children.unshift(header())
     tree.children.push(footer())
   }
 }
