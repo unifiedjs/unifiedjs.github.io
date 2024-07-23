@@ -14,7 +14,7 @@ import {block} from '../macro/block.js'
  * @returns {Element}
  */
 export function item(href, main, footer) {
-  const box = h('a.box', {href}, JSON.parse(JSON.stringify(main)))
+  const box = h('a.box', {href}, structuredClone(main))
 
   visit(box, 'element', cleanNestedLinks)
 

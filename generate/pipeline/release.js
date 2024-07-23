@@ -8,7 +8,6 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import {unified} from 'unified'
-import deepmerge from 'deepmerge'
 import remarkParse from 'remark-parse'
 import remarkGemoji from 'remark-gemoji'
 import remarkGfm from 'remark-gfm'
@@ -17,7 +16,6 @@ import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeHighlight from 'rehype-highlight'
-import {defaultSchema} from 'hast-util-sanitize'
 import {visit} from 'unist-util-visit'
 import {headingRank} from 'hast-util-heading-rank'
 import {shiftHeading} from 'hast-util-shift-heading'
@@ -30,8 +28,6 @@ const packageJson = JSON.parse(packageValue)
 const origin = packageJson.homepage
 assert(typeof origin === 'string')
 
-const schema = deepmerge(defaultSchema, {attributes: {code: ['className']}})
-
 /**
  * @param {Release} d
  */
@@ -43,7 +39,7 @@ export function release(d) {
     .use(remarkGemoji)
     .use(remarkRehype, {allowDangerousHtml: true})
     .use(rehypeRaw)
-    .use(rehypeSanitize, schema)
+    .use(rehypeSanitize)
     .use(rehypeHighlight, {detect: false, plainText: ['ignore']})
     .use(rehypeResolveUrls, {repo: d.repo, object: d.tag})
     .use(rehypeRewriteUrls, {origin})
