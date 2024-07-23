@@ -12,7 +12,9 @@ import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeHighlight from 'rehype-highlight'
+import sourceGitignore from '@wooorm/starry-night/source.gitignore'
+import {common} from '@wooorm/starry-night'
+import rehypeStarryNight from 'rehype-starry-night'
 import rehypeLink from '../plugin/rehype-link.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 import rehypeAbbreviate from '../plugin/rehype-abbreviate.js'
@@ -30,7 +32,10 @@ export const article = unified()
   .use(remarkFrontmatter)
   .use(remarkRehype, {allowDangerousHtml: true})
   .use(rehypeRaw)
-  .use(rehypeHighlight, {detect: false, plainText: ['ignore']})
+  .use(rehypeStarryNight, {
+    grammars: [...common, sourceGitignore],
+    plainText: ['txt']
+  })
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, {
     behavior: 'prepend',

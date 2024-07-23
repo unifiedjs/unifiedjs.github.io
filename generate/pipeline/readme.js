@@ -14,7 +14,8 @@ import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import rehypeSanitize from 'rehype-sanitize'
-import rehypeHighlight from 'rehype-highlight'
+import rehypeStarryNight from 'rehype-starry-night'
+import {all} from '@wooorm/starry-night'
 import {link} from '../atom/icon/link.js'
 import rehypeResolveUrls from '../plugin/rehype-resolve-urls.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
@@ -33,7 +34,10 @@ export const readme = unified()
   .use(remarkRehype, {allowDangerousHtml: true})
   .use(rehypeRaw)
   .use(rehypeSanitize)
-  .use(rehypeHighlight, {detect: false, plainText: ['ignore']})
+  .use(rehypeStarryNight, {
+    grammars: all,
+    plainText: ['ascii', 'mdx-broken', 'mdx-invalid', 'text', 'txt']
+  })
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, {
     behavior: 'prepend',

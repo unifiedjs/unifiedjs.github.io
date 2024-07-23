@@ -26,17 +26,15 @@ export const main = unified()
       // We take images from these two, so preconnect asap.
       {rel: 'preconnect', href: 'https://github.com'},
       {rel: 'preconnect', href: 'https://images.opencollective.com'},
-      {rel: 'stylesheet', href: '/syntax-light.css'},
+      {
+        rel: 'stylesheet',
+        href: 'https://esm.sh/@wooorm/starry-night@3/style/both.css'
+      },
       {rel: 'stylesheet', href: '/index.css'},
       {
         rel: 'stylesheet',
         href: '/big.css',
         media: '(min-width:36em)'
-      },
-      {
-        rel: 'stylesheet',
-        href: '/syntax-dark.css',
-        media: '(prefers-color-scheme:dark)'
       },
       {
         rel: 'stylesheet',

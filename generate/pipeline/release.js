@@ -15,7 +15,7 @@ import remarkGithub from 'remark-github'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
-import rehypeHighlight from 'rehype-highlight'
+import rehypeStarryNight from 'rehype-starry-night'
 import {visit} from 'unist-util-visit'
 import {headingRank} from 'hast-util-heading-rank'
 import {shiftHeading} from 'hast-util-shift-heading'
@@ -40,7 +40,7 @@ export function release(d) {
     .use(remarkRehype, {allowDangerousHtml: true})
     .use(rehypeRaw)
     .use(rehypeSanitize)
-    .use(rehypeHighlight, {detect: false, plainText: ['ignore']})
+    .use(rehypeStarryNight)
     .use(rehypeResolveUrls, {repo: d.repo, object: d.tag})
     .use(rehypeRewriteUrls, {origin})
     .use(headings)

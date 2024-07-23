@@ -75,7 +75,7 @@ const tasks = []
 // Render descriptions
 expandDescription(data.projectByRepo)
 expandDescription(data.packageByName)
-expandReleases(dataReleases)
+await expandReleases(dataReleases)
 
 const input = await glob('doc/learn/**/*.md')
 
@@ -324,12 +324,14 @@ function expandDescription(map) {
 
 /**
  * @param {ReadonlyArray<Release>} releases
- * @returns {undefined}
+ * @returns {Promise<undefined>}
  */
-function expandReleases(releases) {
-  releases.forEach((d) => {
-    const pipeline = createReleasePipeline(d)
-    const tree = pipeline.parse(d.description)
-    d.descriptionRich = pipeline.runSync(tree)
-  })
+async function expandReleases(releases) {
+  await Promise.all(
+    releases.map(async (d) => {
+      const pipeline = createReleasePipeline(d)
+      const tree = pipeline.parse(d.description)
+      d.descriptionRich = await pipeline.run(tree)
+    })
+  )
 }
