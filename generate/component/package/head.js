@@ -8,7 +8,6 @@ import {h} from 'hastscript'
 import {description} from '../../atom/micro/description.js'
 import {downloads} from '../../atom/micro/downloads.js'
 import {gh} from '../../atom/micro/gh.js'
-import {graph} from '../../atom/micro/graph.js'
 import {gzip} from '../../atom/micro/gzip.js'
 import {license} from '../../atom/micro/license.js'
 import {npm} from '../../atom/micro/npm.js'
@@ -64,7 +63,6 @@ export function head(data, id) {
         ])
       ]),
       h('ol.flex.column.ellipsis-l', [
-        graph(d.dependents, id),
         description(d.description, d.descriptionRich)
       ]),
       h('.column', [
