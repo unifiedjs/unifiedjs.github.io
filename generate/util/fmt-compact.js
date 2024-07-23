@@ -1,5 +1,4 @@
-// @ts-expect-error - untyped.
-import numberAbbreviate from 'number-abbreviate'
+import {constantLocale} from './constant-locale.js'
 
 // To do: switch?
 // Would like to use: `.toLocaleString(locale, {notation: 'compact'})`,
@@ -9,5 +8,7 @@ import numberAbbreviate from 'number-abbreviate'
  * @returns {string}
  */
 export function fmtCompact(value) {
-  return String(numberAbbreviate(value || 0))
+  return (value || 0)
+    .toLocaleString(constantLocale, {notation: 'compact'})
+    .toLowerCase()
 }
