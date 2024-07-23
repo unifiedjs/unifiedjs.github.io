@@ -42,7 +42,6 @@ import path from 'node:path'
 import process from 'node:process'
 import chalk from 'chalk'
 import dotenv from 'dotenv'
-import fetch from 'node-fetch'
 
 dotenv.config()
 
