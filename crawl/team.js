@@ -2,7 +2,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
-import yaml from 'js-yaml'
+import yaml from 'yaml'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -61,7 +61,7 @@ for (const filename of files) {
       'export const ' +
         stem +
         ' = ' +
-        JSON.stringify(yaml.load(d), undefined, 2)
+        JSON.stringify(yaml.parse(d), undefined, 2)
     ].join('\n')
   )
 }

@@ -18,7 +18,6 @@
   "devDependencies": {
     "@types/bytes": "^3.0.0",
     "@types/d3-scale": "^4.0.0",
-    "@types/js-yaml": "^4.0.0",
     "@types/node": "^20.0.0",
     "@types/random-useragent": "^0.3.0",
     "budo": "^11.0.0",
@@ -42,7 +41,6 @@
     "hosted-git-info": "^7.0.0",
     "humanize-url": "^3.0.0",
     "javascript-time-ago": "^2.0.0",
-    "js-yaml": "^4.0.0",
     "number-abbreviate": "^2.0.0",
     "p-all": "^5.0.0",
     "pick-random": "^4.0.0",
@@ -101,7 +99,8 @@
     "vfile-mkdirp": "^3.0.0",
     "vfile-rename": "^3.0.0",
     "vfile-reporter": "^8.0.0",
-    "xo": "^0.59.0"
+    "xo": "^0.59.0",
+    "yaml": "^2.0.0"
   },
   "scripts": {
     "build": "tsc --build --clean && tsc --build && type-coverage",

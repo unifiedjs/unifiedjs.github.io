@@ -28,7 +28,7 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import path from 'node:path'
-import yaml from 'js-yaml'
+import yaml from 'yaml'
 import {glob} from 'glob'
 import {matter} from 'vfile-matter'
 import all from 'p-all'
@@ -66,7 +66,7 @@ import {topic} from './page/topic.js'
 import {topics} from './page/topics.js'
 
 const users = /** @type {Array<ShowcaseUser>} */ (
-  yaml.load(await fs.readFile(path.join('doc', 'showcase.yml'), 'utf8'))
+  yaml.parse(await fs.readFile(path.join('doc', 'showcase.yml'), 'utf8'))
 )
 
 /** @type {Array<() => Promise<Page> | Page>} */
