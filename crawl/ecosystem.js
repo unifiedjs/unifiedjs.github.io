@@ -124,6 +124,7 @@
  * @typedef RawProject
  * @property {string | undefined} default
  * @property {string} description
+ * @property {boolean} hasPackages
  * @property {number} issueClosed
  * @property {number} issueOpen
  * @property {Array<string>} manifests
@@ -225,6 +226,10 @@ await fs.writeFile(
 
 const projects = results.map((d) => d.project)
 
+const packages = await findPackages(projects)
+
+const projectsWithPackages = projects.filter((d) => d.hasPackages)
+
 await fs.writeFile(
   new URL('../data/projects.js', import.meta.url),
   [
@@ -245,7 +250,7 @@ await fs.writeFile(
     '/** @type {ReadonlyArray<Project>} */',
     'export const projects = ' +
       JSON.stringify(
-        projects.map(function (d) {
+        projectsWithPackages.map(function (d) {
           return {
             description: d.description,
             repo: d.repo,
@@ -261,12 +266,12 @@ await fs.writeFile(
   ].join('\n')
 )
 
-console.info('✓ done (%d projects)', projects.length)
+console.info('✓ done (%d projects)', projectsWithPackages.length)
 
 const meta = {size: 0, issueOpen: 0, issueClosed: 0, prOpen: 0, prClosed: 0}
 const metaKeys = /** @type {Array<keyof typeof meta>} */ (Object.keys(meta))
 
-for (const d of projects) {
+for (const d of projectsWithPackages) {
   const [owner] = d.repo.split('/')
 
   if (constantCollective.includes(owner)) {
@@ -281,8 +286,6 @@ await fs.writeFile(
   // Types are inferred correctly.
   'export const meta = ' + JSON.stringify(meta, undefined, 2) + '\n'
 )
-
-const packages = await findPackages(projects)
 
 await fs.writeFile(
   new URL('../data/packages.js', import.meta.url),
@@ -339,6 +342,7 @@ async function findPackages(projects) {
           getSize(packageInfo.name)
         ])
         if (!readme) return
+        project.hasPackages = true
 
         const readmeName =
           packageInfo.name.replace(/^@/g, '').replace(/\//g, '-') + '.md'
@@ -620,6 +624,7 @@ async function crawlRepo(repo) {
     project: {
       default: defaultBranch,
       description: repository.description || '',
+      hasPackages: false,
       issueClosed: repository.issueClosed?.totalCount || 0,
       issueOpen: repository.issueOpen?.totalCount || 0,
       manifests: (repository.dependencyGraphManifests?.nodes || [])
