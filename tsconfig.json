@@ -11,6 +11,6 @@
     "strict": true,
     "target": "es2022"
   },
-  "exclude": ["coverage/", "node_modules/", "build/"],
+  "exclude": ["build/", "coverage/", "node_modules/"],
   "include": ["**/*.js", "generate/types.d.ts"]
 }
