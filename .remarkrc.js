@@ -1,29 +1,27 @@
-import fs from 'fs'
-import strip from 'strip-comments'
+import fs from 'node:fs/promises'
 import dictionaryEn from 'dictionary-en'
-import {unified} from 'unified'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkLintFirstHeadingLevel from 'remark-lint-first-heading-level'
+import remarkLintNoDeadUrls from 'remark-lint-no-dead-urls'
+import remarkLintNoHtml from 'remark-lint-no-html'
+import remarkPresetWooorm from 'remark-preset-wooorm'
+import remarkRetext from 'remark-retext'
+import remarkValidateLinks from 'remark-validate-links'
+import retextEmoji from 'retext-emoji'
 import retextEnglish from 'retext-english'
-import retextPresetWooorm from 'retext-preset-wooorm'
 import retextEquality from 'retext-equality'
 import retextPassive from 'retext-passive'
+import retextPresetWooorm from 'retext-preset-wooorm'
 import retextProfanities from 'retext-profanities'
 import retextReadability from 'retext-readability'
 import retextSimplify from 'retext-simplify'
-import retextEmoji from 'retext-emoji'
+import retextSpell from 'retext-spell'
 import retextSyntaxMentions from 'retext-syntax-mentions'
 import retextSyntaxUrls from 'retext-syntax-urls'
-import retextSpell from 'retext-spell'
-import remarkPresetWooorm from 'remark-preset-wooorm'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkRetext from 'remark-retext'
-import remarkValidateLinks from 'remark-validate-links'
-import remarkLintNoDeadUrls from 'remark-lint-no-dead-urls'
-import remarkLintFirstHeadingLevel from 'remark-lint-first-heading-level'
-import remarkLintNoHtml from 'remark-lint-no-html'
+import stripComments from 'strip-comments'
+import {unified} from 'unified'
 
-var personal = strip(fs.readFileSync('dictionary.txt', 'utf8'))
-
-var naturalLanguage = unified().use([
+const naturalLanguage = unified().use([
   retextEnglish,
   retextPresetWooorm,
   [retextEquality, {ignore: ['whitespace']}],
@@ -34,7 +32,13 @@ var naturalLanguage = unified().use([
   retextEmoji,
   retextSyntaxMentions,
   retextSyntaxUrls,
-  [retextSpell, {dictionary: dictionaryEn, personal: personal}]
+  [
+    retextSpell,
+    {
+      dictionary: dictionaryEn,
+      personal: stripComments(await fs.readFile('dictionary.txt', 'utf8'))
+    }
+  ]
 ])
 
 const config = {
@@ -42,7 +46,7 @@ const config = {
     remarkPresetWooorm,
     remarkFrontmatter,
     [remarkRetext, naturalLanguage],
-    [remarkValidateLinks, false],
+    remarkValidateLinks,
     [remarkLintNoDeadUrls, 'https://unifiedjs.com'],
     [remarkLintFirstHeadingLevel, 2],
     [remarkLintNoHtml, false]

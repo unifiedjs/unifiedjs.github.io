@@ -136,6 +136,9 @@
   "type": "module",
   "version": "1.0.0",
   "xo": {
+    "ignores": [
+      "!.remarkrc.js"
+    ],
     "overrides": [
       {
         "files": [
