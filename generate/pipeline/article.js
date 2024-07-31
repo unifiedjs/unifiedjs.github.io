@@ -4,6 +4,7 @@
 
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
+import {fileURLToPath} from 'node:url'
 import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'
@@ -15,6 +16,8 @@ import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import sourceGitignore from '@wooorm/starry-night/source.gitignore'
 import {common} from '@wooorm/starry-night'
 import rehypeStarryNight from 'rehype-starry-night'
+import rehypeTwoslash from 'rehype-twoslash'
+import typescript from 'typescript'
 import rehypeLink from '../plugin/rehype-link.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 import rehypeAbbreviate from '../plugin/rehype-abbreviate.js'
@@ -26,6 +29,28 @@ const packageJson = JSON.parse(packageValue)
 const origin = packageJson.homepage
 assert(typeof origin === 'string')
 
+const configPath = typescript.findConfigFile(
+  fileURLToPath(import.meta.url),
+  typescript.sys.fileExists,
+  'tsconfig.json'
+)
+assert(configPath)
+const commandLine = typescript.getParsedCommandLineOfConfigFile(
+  configPath,
+  undefined,
+  {
+    fileExists: typescript.sys.fileExists,
+    getCurrentDirectory: typescript.sys.getCurrentDirectory,
+    onUnRecoverableConfigFileDiagnostic(x) {
+      console.warn('Unrecoverable diagnostic', x)
+    },
+    readDirectory: typescript.sys.readDirectory,
+    readFile: typescript.sys.readFile,
+    useCaseSensitiveFileNames: typescript.sys.useCaseSensitiveFileNames
+  }
+)
+assert(commandLine)
+
 export const article = unified()
   .use(remarkParse)
   .use(remarkGfm)
@@ -36,6 +61,7 @@ export const article = unified()
     grammars: [...common, sourceGitignore],
     plainText: ['txt']
   })
+  .use(rehypeTwoslash, {twoslash: {compilerOptions: commandLine.options}})
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, {
     behavior: 'prepend',
