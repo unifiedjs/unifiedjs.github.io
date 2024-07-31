@@ -18,14 +18,14 @@
     padding-right: calc(1em + 1ex);
   }
 
-  .landing .article {
-    padding: calc(6 * (1em + 1ex) / 1.125) calc(3 * (1em + 1ex) / 1.125);
-  }
-
   .article {
     font-size: 1.125em;
     padding-left: calc(3 * (1em + 1ex) / 1.125);
     padding-right: calc(3 * (1em + 1ex) / 1.125);
+  }
+
+  .landing .article {
+    padding: calc(6 * (1em + 1ex) / 1.125) calc(3 * (1em + 1ex) / 1.125);
   }
 
   .x-hide-l {

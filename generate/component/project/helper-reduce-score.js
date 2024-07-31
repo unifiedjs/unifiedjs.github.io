@@ -9,14 +9,15 @@
  */
 export function helperReduceScore(data, repo) {
   const {packagesByRepo, packageByName} = data
+  const list = packagesByRepo[repo]
+  let all = 0
 
-  if (!Object.hasOwn(packagesByRepo, repo)) {
-    return 0
+  if (list) {
+    for (const d of list) {
+      const score = packageByName[d].score
+      if (score > all) all = score
+    }
   }
 
-  return packagesByRepo[repo]
-    .map((d) => {
-      return packageByName[d].score
-    })
-    .reduce((all, d) => (d > all ? d : all), 0)
+  return all
 }

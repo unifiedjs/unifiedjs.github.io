@@ -1,5 +1,5 @@
 /**
- * @import {ElementContent, Element} from 'hast'
+ * @import {Element} from 'hast'
  * @import {Data} from '../../data.js'
  */
 
@@ -12,13 +12,15 @@ import {itemSmall} from './item-small.js'
  * @returns {Element}
  */
 export function listSmall(data, d) {
-  return h('.block', {}, h('ol.flow', {}, d.map(map)))
-
-  /**
-   * @param {string} d
-   * @returns {ElementContent}
-   */
-  function map(d) {
-    return itemSmall(data, d)
-  }
+  return h(
+    '.block',
+    {},
+    h(
+      'ol.flow',
+      {},
+      d.map(function (d) {
+        return itemSmall(data, d)
+      })
+    )
+  )
 }

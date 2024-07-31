@@ -16,13 +16,7 @@ export function helperFilter(data, names, min) {
   const {packagesByKeyword} = data
   const value = min || defaults
 
-  return names.filter(filter)
-
-  /**
-   * @param {string} d
-   * @returns {boolean}
-   */
-  function filter(d) {
+  return names.filter(function (d) {
     return (packagesByKeyword[d] || []).length > value
-  }
+  })
 }

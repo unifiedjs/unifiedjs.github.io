@@ -9,8 +9,8 @@ import {h} from 'hastscript'
 import {block} from '../atom/macro/block.js'
 import {list as articlesList} from '../component/article/list.js'
 import {helperSort as articlesSort} from '../component/article/helper-sort.js'
-import {list as listPkg} from '../component/package/list.js'
-import {helperSort as sortPkg} from '../component/package/helper-sort.js'
+import {list as listPackage} from '../component/package/list.js'
+import {helperSort as sortPackage} from '../component/package/helper-sort.js'
 import {list as sponsors} from '../component/sponsor/list.js'
 import {list as cases} from '../component/case/list.js'
 import {explorePreview as release} from '../component/release/explore-preview.js'
@@ -34,12 +34,18 @@ const mobyDick = 1.2 * 1024 * 1024
  */
 export function home(data) {
   const {packageByName, projectByRepo} = data
-  const names = sortPkg(data, Object.keys(packageByName))
+  const names = sortPackage(data, Object.keys(packageByName))
   const repos = Object.keys(projectByRepo)
   const downloads = names
     .map((d) => packageByName[d].downloads || 0)
-    .reduce(sum, 0)
-  const stars = repos.map((d) => projectByRepo[d].stars || 0).reduce(sum, 0)
+    .reduce(function (a, b) {
+      return a + b
+    }, 0)
+  const stars = repos
+    .map((d) => projectByRepo[d].stars || 0)
+    .reduce(function (a, b) {
+      return a + b
+    }, 0)
   const d = pickRandom(names.slice(0, 75), 5)
   const closed = meta.issueClosed + meta.prClosed
   const open = meta.issueOpen + meta.prOpen
@@ -112,7 +118,7 @@ export function home(data) {
           'by the community. '
         ])
       ]),
-      listPkg(data, d, {trail: explore()}),
+      listPackage(data, d, {trail: explore()}),
       h('.article.content', [
         h('h2', 'Work'),
         h('p', [
@@ -171,13 +177,4 @@ export function home(data) {
       )
     )
   }
-}
-
-/**
- * @param {number} a
- * @param {number} b
- * @returns {number}
- */
-function sum(a, b) {
-  return a + (b || 0)
 }

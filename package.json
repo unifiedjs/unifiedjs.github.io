@@ -1,20 +1,12 @@
 {
-  "private": true,
-  "name": "unifiedjs.com",
-  "version": "1.0.0",
-  "description": "Site for unified",
-  "license": "MIT",
-  "keywords": [],
-  "homepage": "https://unifiedjs.com",
-  "repository": "unifiedjs/unifiedjs.github.io",
-  "bugs": "https://github.com/unifiedjs/unifiedjs.github.io/issues",
   "author": "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
+  "bugs": "https://github.com/unifiedjs/unifiedjs.github.io/issues",
   "contributors": [
     "Titus Wormer <tituswormer@gmail.com> (https://wooorm.com)",
     "Dustin Deus <deusdustin@gmail.com>",
     "Merlijn Vos <merlijn@soverin.net>"
   ],
-  "type": "module",
+  "description": "Site for unified",
   "devDependencies": {
     "@types/bytes": "^3.0.0",
     "@types/d3-scale": "^4.0.0",
@@ -103,35 +95,51 @@
     "xo": "^0.59.0",
     "yaml": "^2.0.0"
   },
+  "homepage": "https://unifiedjs.com",
+  "keywords": [],
+  "license": "MIT",
+  "name": "unifiedjs.com",
+  "prettier": {
+    "bracketSpacing": false,
+    "semi": false,
+    "singleQuote": true,
+    "tabWidth": 2,
+    "trailingComma": "none",
+    "useTabs": false
+  },
+  "private": true,
+  "repository": "unifiedjs/unifiedjs.github.io",
   "scripts": {
     "build": "tsc --build --clean && tsc --build && type-coverage",
-    "format": "remark . -qo && prettier . -w --log-level warn && stylelint \"**/*.css\" --fix && xo --fix",
-    "crawl:sponsors": "mkdir -p data; node crawl/sponsors",
-    "crawl:team": "mkdir -p data; node crawl/team",
-    "crawl:ecosystem": "mkdir -p data; mkdir -p data/readme; node crawl/ecosystem",
+    "crawl:ecosystem": "mkdir -p data; mkdir -p data/readme; node crawl/ecosystem.js --conditions development",
+    "crawl:sponsors": "mkdir -p data; node crawl/sponsors.js --conditions development",
+    "crawl:team": "mkdir -p data; node crawl/team.js --conditions development",
     "crawl": "npm run crawl:sponsors && npm run crawl:team && npm run crawl:ecosystem",
-    "generate:asset": "node generate/asset",
-    "generate:pages": "node generate/index",
+    "format": "remark . --output --quiet && prettier . --log-level warn --write && stylelint \"**/*.css\" --fix && xo --fix",
+    "generate:asset": "node generate/asset.js --conditions development",
+    "generate:pages": "node generate/index.js --conditions development",
     "generate": "npm run generate:asset && npm run generate:pages",
     "test": "npm run format && npm run crawl && npm run generate"
+  },
+  "stylelint": {
+    "extends": [
+      "stylelint-config-standard"
+    ],
+    "rules": {
+      "no-descending-specificity": null
+    }
   },
   "typeCoverage": {
     "atLeast": 100,
     "strict": true
   },
-  "prettier": {
-    "tabWidth": 2,
-    "useTabs": false,
-    "singleQuote": true,
-    "bracketSpacing": false,
-    "semi": false,
-    "trailingComma": "none"
-  },
+  "type": "module",
+  "version": "1.0.0",
   "xo": {
     "overrides": [
       {
         "files": [
-          "**/*.d.ts"
+          "**/*.ts"
         ],
         "rules": {
           "@typescript-eslint/array-type": [
@@ -155,23 +163,15 @@
     ],
     "prettier": true,
     "rules": {
-      "complexity": "off",
-      "logical-assignment-operators": "off",
       "no-await-in-loop": "off",
-      "unicorn/no-array-callback-reference": "off",
-      "unicorn/no-array-for-each": "off",
-      "unicorn/no-array-reduce": "off",
-      "unicorn/prefer-at": "off",
-      "unicorn/prefer-string-replace-all": "off",
-      "unicorn/prevent-abbreviations": "off"
-    }
-  },
-  "stylelint": {
-    "extends": [
-      "stylelint-config-standard"
-    ],
-    "rules": {
-      "no-descending-specificity": null
+      "unicorn/prevent-abbreviations": [
+        "error",
+        {
+          "replacements": {
+            "src": false
+          }
+        }
+      ]
     }
   }
 }

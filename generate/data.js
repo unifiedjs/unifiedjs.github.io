@@ -27,19 +27,19 @@ export const data = {
   projectsByTopic: {}
 }
 
-projects.forEach((d) => {
+for (const d of projects) {
   const {repo, topics} = d
 
   data.projectByRepo[repo] = d
 
   index(data.projectsByOwner, repo.split('/')[0], repo)
 
-  topics.forEach((d) => {
+  for (const d of topics) {
     index(data.projectsByTopic, d, repo)
-  })
-})
+  }
+}
 
-packages.forEach((p) => {
+for (const p of packages) {
   const {name, repo, keywords} = p
   const pos = name.indexOf('/')
   const scope = pos === -1 ? null : p.name.slice(0, pos)
@@ -53,11 +53,11 @@ packages.forEach((p) => {
   }
 
   if (keywords) {
-    keywords.forEach((d) => {
+    for (const d of keywords) {
       index(data.packagesByKeyword, d, name)
-    })
+    }
   }
-})
+}
 
 /**
  * @template T
@@ -67,5 +67,12 @@ packages.forEach((p) => {
  * @returns {undefined}
  */
 function index(object, key, value) {
-  ;(object[key] || (object[key] = [])).push(value)
+  let list = object[key]
+
+  if (!list) {
+    list = []
+    object[key] = list
+  }
+
+  list.push(value)
 }

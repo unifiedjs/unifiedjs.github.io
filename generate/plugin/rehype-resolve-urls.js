@@ -69,34 +69,34 @@ export default function rehypeResolveUrls(options) {
 
     /**
      * @param {Element} node
-     * @param {string} prop
+     * @param {string} property
      * @param {string} name
      * @returns {undefined}
      */
-    function resolve(node, prop, name) {
-      const value = node.properties[prop]
+    function resolve(node, property, name) {
+      const value = node.properties[property]
 
       if (value && typeof value === 'object' && 'length' in value) {
         /** @type {Array<string>} */
         const result = []
         let index = -1
         while (++index < value.length) {
-          result[index] = resolveOne(value[index], prop, name)
+          result[index] = resolveOne(value[index], property, name)
         }
 
-        node.properties[prop] = result
+        node.properties[property] = result
       } else if (value !== null && value !== undefined) {
-        node.properties[prop] = resolveOne(value, prop, name)
+        node.properties[property] = resolveOne(value, property, name)
       }
     }
 
     /**
      * @param {boolean | number | string} value
-     * @param {string} prop
+     * @param {string} property
      * @param {string} name
      * @returns {string}
      */
-    function resolveOne(value, prop, name) {
+    function resolveOne(value, property, name) {
       value = String(value)
 
       // Absolute paths are interpreted relative to the base, not to GH itself.
@@ -106,7 +106,7 @@ export default function rehypeResolveUrls(options) {
 
       const url = new URL(value, base)
 
-      if (name === 'img' && prop === 'src' && url.host === 'github.com') {
+      if (name === 'img' && property === 'src' && url.host === 'github.com') {
         url.searchParams.set('raw', 'true')
       }
 

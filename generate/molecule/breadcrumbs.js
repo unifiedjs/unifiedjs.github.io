@@ -29,28 +29,22 @@ const overwrites = {
  * @returns {Array<ElementContent | string | undefined>}
  */
 export function breadcrumbs(filepath, title) {
-  return filepath.split(slash).filter(Boolean).flatMap(map)
+  return filepath
+    .split(slash)
+    .filter(Boolean)
+    .flatMap(function (d, index, data) {
+      const last = data.length - 1 === index
+      const components = data.slice(0, index + 1)
+      const href = slash + components.join(slash) + slash
+      let node = h('a', {href}, word(last && title ? title : d, last))
 
-  /**
-   *
-   * @param {string} d
-   * @param {number} i
-   * @param {Array<string>} data
-   * @returns {Array<ElementContent | string | undefined>}
-   */
-  function map(d, i, data) {
-    const last = data.length - 1 === i
-    const components = data.slice(0, i + 1)
-    const href = slash + components.join(slash) + slash
-    let node = h('a', {href}, word(last && title ? title : d, last))
+      if (last) {
+        node.properties.rel = ['canonical']
+        node = h('span.content', {}, node)
+      }
 
-    if (last) {
-      node.properties.rel = ['canonical']
-      node = h('span.content', {}, node)
-    }
-
-    return [node, last ? undefined : h('span.lowlight.separator', '/')]
-  }
+      return [node, last ? undefined : h('span.lowlight.separator', '/')]
+    })
 }
 
 /**

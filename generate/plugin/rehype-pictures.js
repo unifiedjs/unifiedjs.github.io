@@ -1,5 +1,5 @@
 /**
- * @import {Element, Parents, Properties, Root} from 'hast'
+ * @import {Element, Parents, Root} from 'hast'
  * @import {BuildVisitor} from 'unist-util-visit'
  * @import {Spec} from 'vfile-rename'
  * @import {Metadata} from 'sharp'

@@ -61,17 +61,9 @@ function initialise() {
     'MD|X': 'mdx-js/mdx'
   }
 
-  Object.keys(dictionary).forEach(add)
-
-  return result
-
-  /**
-   * @param {string} find
-   */
-  function add(find) {
+  for (const [find, slug] of Object.entries(dictionary)) {
     const parts = find.split('|')
     const name = parts.join('')
-    const slug = dictionary[find]
 
     result.push([
       name,
@@ -84,4 +76,6 @@ function initialise() {
       }
     ])
   }
+
+  return result
 }

@@ -13,6 +13,6 @@ import {page} from './page.js'
  * @param {Root} tree
  * @returns {Root}
  */
-export function pkg(data, d, tree) {
+export function renderPackage(data, d, tree) {
   return page(head(data, d), [detail(data, d, tree)])
 }

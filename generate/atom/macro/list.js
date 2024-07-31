@@ -40,7 +40,9 @@ export function list(names, map, options) {
     values = names.slice(0, max - 1)
   }
 
-  const children = values.flatMap(map)
+  const children = values.flatMap(function (d) {
+    return map(d)
+  })
 
   if (trail) {
     children.push(trail)

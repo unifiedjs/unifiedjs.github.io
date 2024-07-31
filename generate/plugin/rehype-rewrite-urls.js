@@ -67,11 +67,11 @@ export default function rehypeRewriteUrls(options) {
 
     /**
      * @param {Element} node
-     * @param {string} prop
+     * @param {string} property
      * @returns {undefined}
      */
-    function rewrite(node, prop) {
-      let value = node.properties[prop]
+    function rewrite(node, property) {
+      let value = node.properties[property]
       /** @type {URL | undefined} */
       let url
 
@@ -98,7 +98,7 @@ export default function rehypeRewriteUrls(options) {
         value = url.href
       }
 
-      node.properties[prop] = value
+      node.properties[property] = value
     }
   }
 
@@ -117,8 +117,8 @@ export default function rehypeRewriteUrls(options) {
     if (host === 'npmjs.com' && url.pathname.startsWith('/package/')) {
       const rest = url.pathname.slice('/package/'.length).split('/')
 
-      // Ignore trailing slasg.
-      if (rest[rest.length - 1] === '') {
+      // Ignore trailing slas.
+      if (rest.at(-1) === '') {
         rest.pop()
       }
 
@@ -162,12 +162,14 @@ export default function rehypeRewriteUrls(options) {
         }
 
         // Pop trailing slash.
-        if (rest[rest.length - 1] === '') {
+        let tail = rest.at(-1)
+        if (tail === '') {
           rest.pop()
+          tail = rest.at(-1)
         }
 
         // Pop readme.
-        if (/^readme.md$/i.test(rest[rest.length - 1])) {
+        if (tail && /^readme\.md$/i.test(tail)) {
           rest.pop()
         }
 

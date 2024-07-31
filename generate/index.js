@@ -55,7 +55,7 @@ import {keywords} from './page/keywords.js'
 import {learn} from './page/learn.js'
 import {members} from './page/members.js'
 import {owner} from './page/owner.js'
-import {pkg} from './page/package.js'
+import {renderPackage} from './page/package.js'
 import {packages} from './page/packages.js'
 import {project} from './page/project.js'
 import {projects} from './page/projects.js'
@@ -83,14 +83,20 @@ const entries = input.map(function (input) {
   const file = readSync(input)
   matter(file)
   const slug = path.basename(input, path.extname(input))
-  if (!file.data.meta) file.data.meta = {}
+  let meta = file.data.meta
+
+  if (!meta) {
+    meta = {}
+    file.data.meta = meta
+  }
+
   assert(file.data.matter)
   const {group, tags} = file.data.matter || {}
   assert(typeof group === 'string')
-  file.data.meta.type = 'article'
-  file.data.meta.tags = [group]
-  if (tags) file.data.meta.tags.push(...tags)
-  file.data.meta.pathname = ['', 'learn', group, slug, ''].join('/')
+  meta.type = 'article'
+  meta.tags = [group]
+  if (tags) meta.tags.push(...tags)
+  meta.pathname = ['', 'learn', group, slug, ''].join('/')
 
   return file
 })
@@ -128,20 +134,20 @@ page(() => home({...data, articles: entries, humans, sponsors, teams, users}), {
   pathname: '/'
 })
 
-entries.forEach((file) => {
+for (const file of entries) {
   tasks.push(() =>
     articlePipeline
       .run(articlePipeline.parse(file), file)
       .then((tree) => ({tree: article(tree, file), file}))
   )
-})
+}
 
-sections.forEach((section) => {
+for (const section of sections) {
   const {title, description, tags, pathname, entries} = section
   const meta = {title, description, tags, pathname}
   assert(entries)
   page(() => articles(meta, entries), meta)
-})
+}
 
 page(() => learn(sections), {
   title: 'Learn',
@@ -162,23 +168,23 @@ page(() => keywords(data), {
   pathname: '/explore/keyword/'
 })
 
-Object.keys(data.packagesByKeyword).forEach((d) => {
+for (const d of Object.keys(data.packagesByKeyword)) {
   page(() => keyword(data, d), {
     title: d + ' - Keywords',
     description:
       'Explore packages in the unified ecosystem with the “' + d + '” keyword',
     pathname: '/explore/keyword/' + d + '/'
   })
-})
+}
 
-Object.keys(data.packagesByScope).forEach((d) => {
+for (const d of Object.keys(data.packagesByScope)) {
   page(() => scope(data, d), {
     title: d + ' - Scope',
     description:
       'Explore packages in the unified ecosystem in the “' + d + '” scope',
     pathname: '/explore/package/' + d + '/'
   })
-})
+}
 
 page(() => topics(data), {
   title: 'Topics - Explore',
@@ -186,22 +192,22 @@ page(() => topics(data), {
   pathname: '/explore/topic/'
 })
 
-Object.keys(data.projectsByTopic).forEach((d) => {
+for (const d of Object.keys(data.projectsByTopic)) {
   page(() => topic(data, d), {
     title: d + ' - Topics',
     description:
       'Explore projects in the unified ecosystem with the “' + d + '” topic',
     pathname: '/explore/topic/' + d + '/'
   })
-})
+}
 
-Object.keys(data.projectsByOwner).forEach((d) => {
+for (const d of Object.keys(data.projectsByOwner)) {
   page(() => owner(data, d), {
     title: '@' + d + ' - Owner',
     description: 'Explore projects in the unified ecosystem by “@' + d + '”',
     pathname: '/explore/project/' + d + '/'
   })
-})
+}
 
 page(() => packages(data), {
   title: 'Packages - Explore',
@@ -221,8 +227,8 @@ page(() => releases(data), {
   pathname: '/explore/release/'
 })
 
-Object.keys(data.projectByRepo).forEach((d) => {
-  const {description, topics} = data.projectByRepo[d]
+for (const [d, p] of Object.entries(data.projectByRepo)) {
+  const {description, topics} = p
 
   page(() => project(data, d), {
     title: d,
@@ -230,10 +236,9 @@ Object.keys(data.projectByRepo).forEach((d) => {
     tags: [...topics],
     pathname: '/explore/project/' + d + '/'
   })
-})
+}
 
-Object.keys(data.packageByName).forEach((d) => {
-  const pack = data.packageByName[d]
+for (const [d, pack] of Object.entries(data.packageByName)) {
   const {description, readmeName, repo, manifestBase, keywords} = pack
   const input = path.join('data', 'readme', readmeName)
   const pathname = '/explore/package/' + d + '/'
@@ -246,10 +251,10 @@ Object.keys(data.packageByName).forEach((d) => {
 
       return readmePipeline
         .run(readmePipeline.parse(file), file)
-        .then((tree) => ({tree: pkg(data, d, tree), file}))
+        .then((tree) => ({tree: renderPackage(data, d, tree), file}))
     })
   )
-})
+}
 
 page(() => community({teams, humans, sponsors, users}), {
   title: 'Community',
@@ -275,8 +280,8 @@ page(() => cases(users), {
   pathname: '/community/case/'
 })
 
-const promises = tasks.map((fn) => () => {
-  return Promise.resolve(fn())
+const promises = tasks.map((render) => () => {
+  return Promise.resolve(render())
     .then(({tree, file}) =>
       pipeline.run(tree, file).then((tree) => ({tree, file}))
     )
@@ -302,27 +307,26 @@ all(promises, {concurrency: 50})
 
 /**
  *
- * @param {() => Root} fn
+ * @param {() => Root} render
  * @param {DataMap['meta']} meta
  * @returns {undefined}
  */
-function page(fn, meta) {
+function page(render, meta) {
   tasks.push(function () {
-    return {tree: fn(), file: toVFile({data: {meta}})}
+    return {tree: render(), file: toVFile({data: {meta}})}
   })
 }
 
 /**
- * @template {{description: string, descriptionRich?: Root}} T
+ * @template {{description?: string, descriptionRich?: Root}} T
  * @param {Record<string, T>} map
  * @returns {undefined}
  */
 function expandDescription(map) {
-  Object.keys(map).forEach((id) => {
-    const d = map[id]
+  for (const d of Object.values(map)) {
     const tree = descriptionPipeline.parse(d.description)
     d.descriptionRich = descriptionPipeline.runSync(tree)
-  })
+  }
 }
 
 /**

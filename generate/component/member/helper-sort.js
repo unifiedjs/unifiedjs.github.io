@@ -21,7 +21,19 @@ export function helperSort(data, d) {
   /** @type {Record<string, number>} */
   const scores = {}
 
-  data.teams.forEach(team)
+  for (const team of data.teams) {
+    const members = team.humans
+
+    for (const [d, role] of Object.entries(members)) {
+      const active = Boolean(team.collective && role === 'maintainer')
+
+      scores[d] =
+        (scores[d] || 0) +
+        (roles[role] || 1) *
+          // Note: ternary is just for TS, JS works fine without it.
+          collective[active ? 'true' : 'false']
+    }
+  }
 
   return sort(d, score)
 
@@ -31,24 +43,5 @@ export function helperSort(data, d) {
    */
   function score(d) {
     return scores[d.github]
-  }
-
-  /**
-   * @param {Team} team
-   * @returns {undefined}
-   */
-  function team(team) {
-    const members = team.humans
-
-    Object.keys(members).forEach((d) => {
-      const role = members[d]
-      const active = Boolean(team.collective && role === 'maintainer')
-
-      scores[d] =
-        (scores[d] || 0) +
-        (roles[role] || 1) *
-          // Note: ternary is just for TS, JS works fine without it.
-          collective[active ? 'true' : 'false']
-    })
   }
 }

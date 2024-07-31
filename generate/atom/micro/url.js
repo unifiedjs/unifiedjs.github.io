@@ -8,12 +8,16 @@ import {link as icon} from '../icon/link.js'
 
 /**
  * @param {string} value
- * @param {Properties | undefined} [linkProps]
+ * @param {Properties | undefined} [linkProperties]
  * @returns {ElementContent}
  */
-export function url(value, linkProps) {
+export function url(value, linkProperties) {
   return h(
     'li.ellipsis',
-    h('a.tap-target', {...linkProps, href: value}, [icon(), ' ', fmtUrl(value)])
+    h('a.tap-target', {...linkProperties, href: value}, [
+      icon(),
+      ' ',
+      fmtUrl(value)
+    ])
   )
 }

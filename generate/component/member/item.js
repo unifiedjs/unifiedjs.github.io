@@ -32,16 +32,16 @@ export function item(data, d) {
     footer.push(urlLine(url))
   }
 
-  data.teams.forEach((team) => {
+  for (const team of data.teams) {
     const role = team.humans[github]
     if (role && role !== 'contributor') {
       memberships.push(h(team.collective ? 'b' : 'span', team.name))
     }
-  })
+  }
 
-  const roles = memberships.flatMap((d, i, all) => [
+  const roles = memberships.flatMap((d, index, all) => [
     d,
-    i === all.length - 1 ? '' : ', '
+    index === all.length - 1 ? '' : ', '
   ])
 
   return card(

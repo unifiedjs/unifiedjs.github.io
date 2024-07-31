@@ -15,16 +15,18 @@ const defaults = 60 * 24 * 60 * 60 * 1000
  * @returns {Array<Release>}
  */
 export function helperFilter(data, releases, ms) {
-  const {projectByRepo} = data
   const value = Date.now() - (ms || defaults)
+  /** @type {Array<Release>} */
+  const results = []
 
-  return releases.filter(filter)
-
-  /**
-   * @param {Release} d
-   * @returns {boolean}
-   */
-  function filter(d) {
-    return projectByRepo[d.repo] && new Date(d.published).valueOf() > value
+  for (const release of releases) {
+    if (
+      data.projectByRepo[release.repo] &&
+      new Date(release.published).valueOf() > value
+    ) {
+      results.push(release)
+    }
   }
+
+  return results
 }

@@ -152,7 +152,6 @@ import randomUseragent from 'random-useragent'
 import pAll from 'p-all'
 import bytes from 'bytes'
 import dotenv from 'dotenv'
-import {unique} from '../generate/util/unique.js'
 import {constantTopic} from '../generate/util/constant-topic.js'
 import {constantCollective} from '../generate/util/constant-collective.js'
 
@@ -186,7 +185,7 @@ const orgRepos = await pAll(
   {concurrency: 1}
 )
 
-const repos = [...topicRepos.flat(), ...orgRepos.flat()].filter(unique)
+const repos = [...new Set([...topicRepos.flat(), ...orgRepos.flat()])]
 
 const results = await pAll(
   repos.map(function (repo) {
@@ -296,7 +295,7 @@ await fs.writeFile(
     '',
     '/**',
     ' * @typedef Package',
-    ' * @property {string} description',
+    ' * @property {string} [description]',
     ' * @property {Root} [descriptionRich]',
     ' * @property {number} downloads',
     ' * @property {number} [gzip]',
@@ -345,7 +344,7 @@ async function findPackages(projects) {
         project.hasPackages = true
 
         const readmeName =
-          packageInfo.name.replace(/^@/g, '').replace(/\//g, '-') + '.md'
+          packageInfo.name.replaceAll(/^@/g, '').replaceAll('/', '-') + '.md'
 
         await fs.writeFile(
           new URL('../data/readme/' + readmeName, import.meta.url),
@@ -642,10 +641,15 @@ async function crawlRepo(repo) {
       // Size of repo in bytes.
       size: repository.diskUsage * 1024,
       stars: repository.stargazers?.totalCount || 0,
-      topics: (repository.repositoryTopics?.nodes || [])
-        .map((d) => d.topic.name)
-        .filter(validTag)
-        .filter(unique),
+      topics: [
+        ...new Set(
+          (repository.repositoryTopics?.nodes || [])
+            .map((d) => d.topic.name)
+            .filter(function (d) {
+              return validTag(d)
+            })
+        )
+      ],
       url: repository.homepageUrl || undefined
     },
     releases
@@ -807,7 +811,13 @@ async function getPackage(project, manifest, packageJson) {
 
   return {
     description,
-    keywords: keywords.filter(validTag).filter(unique),
+    keywords: [
+      ...new Set(
+        keywords.filter(function (d) {
+          return validTag(d)
+        })
+      )
+    ],
     latest,
     license,
     name,

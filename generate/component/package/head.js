@@ -28,17 +28,17 @@ export function head(data, id) {
   const d = packageByName[id]
   const project = projectByRepo[d.repo]
   const [owner, projectName] = d.repo.split('/')
-  let [scope, pkgName] =
+  let [scope, packageName] =
     /** @type {[scope: string | undefined, name: string | undefined]} */ (
       id.split('/')
     )
 
-  if (!pkgName) {
-    pkgName = scope
+  if (!packageName) {
+    packageName = scope
     scope = undefined
   }
 
-  assert(pkgName)
+  assert(packageName)
 
   return [
     h('.row-l.column-nl', [
@@ -53,7 +53,7 @@ export function head(data, id) {
           h('span.x-hide-l.medlight.label', 'Package: '),
           scope ? h('a', {href: '/explore/package/' + scope}, scope) : '',
           scope ? h('span.lowlight.separator', '/') : '',
-          h('a', {href: '/explore/package/' + id}, pkgName),
+          h('a', {href: '/explore/package/' + id}, packageName),
           d.latest
             ? [
                 h('span.lowlight.separator', '@'),

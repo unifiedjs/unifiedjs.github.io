@@ -13,16 +13,17 @@ const defaults = 1
  * @returns {Array<string>}
  */
 export function helperFilter(data, names, min) {
-  const {projectsByTopic} = data
   const value = min || defaults
+  /** @type {Array<string>} */
+  const results = []
 
-  return names.filter(filter)
+  for (const d of names) {
+    const projects = data.projectsByTopic[d]
 
-  /**
-   * @param {string} d
-   * @returns {boolean}
-   */
-  function filter(d) {
-    return (projectsByTopic[d] || []).length > value
+    if (projects && projects.length > value) {
+      results.push(d)
+    }
   }
+
+  return results
 }

@@ -41,7 +41,6 @@ import {searchResults as packageResults} from '../generate/component/package/sea
 import {searchPreview as projectPreview} from '../generate/component/project/search-preview.js'
 import {searchEmpty as projectEmpty} from '../generate/component/project/search-empty.js'
 import {searchResults as projectResults} from '../generate/component/project/search-results.js'
-import {unique} from '../generate/util/unique.js'
 import {asc, desc} from '../generate/util/sort.js'
 
 const Index = flexsearch.Index
@@ -80,7 +79,7 @@ function init() {
       create(search) {
         return new Promise((resolve) => {
           window.requestAnimationFrame(() => {
-            keywords.forEach((d) => search.index.add(d, d))
+            for (const d of keywords) search.index.add(d, d)
             resolve(undefined)
           })
         })
@@ -106,7 +105,7 @@ function init() {
       create(search) {
         return new Promise((resolve) => {
           window.requestAnimationFrame(() => {
-            topics.forEach((d) => search.index.add(d, d))
+            for (const d of topics) search.index.add(d, d)
             resolve(undefined)
           })
         })
@@ -143,12 +142,11 @@ function init() {
             const end = start + size
             const slice = names.slice(start, end)
 
-            slice.forEach((d) =>
+            for (const d of slice)
               search.index.add(
                 d,
                 d.split('/').join(' ') + ' ' + data.packageByName[d].description
               )
-            )
 
             if (slice.length === 0) {
               resolve(undefined)
@@ -189,12 +187,12 @@ function init() {
             const end = start + size
             const slice = repos.slice(start, end)
 
-            slice.forEach((d) => {
+            for (const d of slice) {
               search.index.add(
                 d,
                 d.split('/').join(' ') + ' ' + data.projectByRepo[d].description
               )
-            })
+            }
 
             if (slice.length === 0) {
               resolve(undefined)
@@ -257,16 +255,16 @@ function init() {
     }
 
     /**
-     * @param {HTMLElementEventMap['submit']} ev
+     * @param {HTMLElementEventMap['submit']} event
      * @returns {undefined}
      */
-    function onsubmit(ev) {
+    function onsubmit(event) {
       const url = new URL(loc.href)
       const current = clean(url.searchParams.get(parameter))
       assert($input instanceof HTMLInputElement)
       const value = clean($input.value)
 
-      ev.preventDefault()
+      event.preventDefault()
 
       if (current === value) {
         return
@@ -278,7 +276,11 @@ function init() {
         url.searchParams.delete(parameter)
       }
 
-      history.pushState({}, '', url.pathname + url.search.replace(/%20/g, '+'))
+      history.pushState(
+        {},
+        '',
+        url.pathname + url.search.replaceAll('%20', '+')
+      )
 
       search(value)
     }
@@ -295,16 +297,18 @@ function init() {
 
       if (!query) {
         $release.style.removeProperty('display')
-        searches.forEach((search) => replace(search, [], query))
+        for (const search of searches) replace(search, [], query)
         return
       }
 
       $release.style.display = 'block'
 
-      searches.forEach((search) => {
+      for (const search of searches) {
         search.index.searchAsync(query, {suggest: true}, (result) => {
-          const clean = /** @type {Array<string>} */ (result.filter(unique))
-          const weighted = desc(clean, weight)
+          const clean = [...new Set(/** @type {Array<string>} */ (result))]
+          const weighted = desc(clean, function (d) {
+            return search.weight(d)
+          })
 
           replace(search, asc(clean, combined), query)
 
@@ -316,15 +320,7 @@ function init() {
             return (clean.indexOf(d) + weighted.indexOf(d)) / 2
           }
         })
-
-        /**
-         * @param {string} d
-         * @returns {number}
-         */
-        function weight(d) {
-          return search.weight(d)
-        }
-      })
+      }
     }
   })
 }

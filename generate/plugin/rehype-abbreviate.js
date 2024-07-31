@@ -60,13 +60,13 @@ export default function rehypeAbbreviate(titles) {
       }
 
       /** @type {Properties} */
-      const props = {title}
+      const properties = {title}
 
       if (first) {
-        props.className = ['first']
+        properties.className = ['first']
       }
 
-      return h('abbr', props, $0)
+      return h('abbr', properties, $0)
     }
   }
 }

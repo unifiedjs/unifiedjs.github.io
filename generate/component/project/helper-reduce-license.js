@@ -2,8 +2,6 @@
  * @import {Data} from '../../data.js'
  */
 
-import {unique} from '../../util/unique.js'
-
 /**
  * @param {Data} data
  * @param {string} repo
@@ -11,13 +9,22 @@ import {unique} from '../../util/unique.js'
  */
 export function helperReduceLicense(data, repo) {
   const {packagesByRepo, packageByName} = data
-  const licenses =
-    packagesByRepo[repo]
-      ?.map((d) => packageByName[d].license)
-      .filter(Boolean)
-      .filter(unique) || []
+  let multi = false
+  /** @type {string | undefined} */
+  let main
 
-  const main = licenses[0] || undefined
+  for (const d of packagesByRepo[repo]) {
+    const license = packageByName[d].license
 
-  return licenses.length > 1 ? '±' + main : main
+    if (!license) continue
+
+    if (main && license !== main) {
+      multi = true
+      break
+    }
+
+    main = license
+  }
+
+  return multi ? '±' + main : main
 }

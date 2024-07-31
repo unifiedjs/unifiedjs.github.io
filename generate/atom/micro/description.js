@@ -5,7 +5,7 @@
 import {h} from 'hastscript'
 
 /**
- * @param {string} value
+ * @param {string | undefined} value
  * @param {Parents | undefined} [rich]
  * @returns {Element}
  */
