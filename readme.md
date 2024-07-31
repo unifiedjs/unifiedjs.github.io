@@ -1,4 +1,4 @@
-<!-- lint disable first-heading-level -->
+<!-- lint ignore first-heading-level -->
 
 # [`unifiedjs.com`][site]
 

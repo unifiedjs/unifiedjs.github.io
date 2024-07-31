@@ -9,7 +9,6 @@ import process from 'node:process'
 import {glob} from 'glob'
 import sharp from 'sharp'
 import pAll from 'p-all'
-import {mkdirp} from 'vfile-mkdirp'
 import {VFile} from 'vfile'
 import {read, write} from 'to-vfile'
 import {reporter} from 'vfile-reporter'
@@ -65,7 +64,8 @@ const tasks = [
             'build',
             ...file.dirname.split(path.sep).slice(1)
           ].join(path.sep)
-          await mkdirp(file)
+          assert(file.dirname)
+          await fs.mkdir(file.dirname, {recursive: true})
           await write(file)
           file.stored = true
           console.error(reporter(file))
@@ -75,7 +75,8 @@ const tasks = [
         file.dirname = ['build', ...file.dirname.split(path.sep).slice(1)].join(
           path.sep
         )
-        await mkdirp(file)
+        assert(file.dirname)
+        await fs.mkdir(file.dirname, {recursive: true})
         await fs.copyFile(file.history[0], file.path)
         file.stored = true
         console.error(reporter(file))

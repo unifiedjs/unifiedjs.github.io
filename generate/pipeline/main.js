@@ -4,8 +4,8 @@
  */
 
 import assert from 'node:assert/strict'
+import fs from 'node:fs/promises'
 import path from 'node:path'
-import {mkdirp} from 'vfile-mkdirp'
 import {unified} from 'unified'
 import rehypePresetMinify from 'rehype-preset-minify'
 import rehypeDocument from 'rehype-document'
@@ -103,6 +103,7 @@ function mkdir() {
    * @returns {Promise<undefined>}
    */
   async function transformer(_, file) {
-    await mkdirp(file)
+    assert(file.dirname)
+    await fs.mkdir(file.dirname, {recursive: true})
   }
 }

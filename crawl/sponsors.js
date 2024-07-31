@@ -40,7 +40,6 @@
 import fs from 'node:fs/promises'
 import path from 'node:path'
 import process from 'node:process'
-import chalk from 'chalk'
 import dotenv from 'dotenv'
 
 dotenv.config()
@@ -121,8 +120,7 @@ const members = json.data.collective.members.nodes
 
     if (!info) {
       console.error(
-        chalk.red('✖') +
-          ' @%s is an unknown sponsor, please define whether it’s spam or not in `sponsors.txt`',
+        '✖ @%s is an unknown sponsor, please define whether it’s spam or not in `sponsors.txt`',
         oc
       )
     }

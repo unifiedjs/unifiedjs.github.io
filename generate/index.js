@@ -1,6 +1,6 @@
 /**
  * @import {Root} from 'hast'
- * @import {DataMap, VFile} from 'vfile'
+ * @import {DataMap} from 'vfile'
  * @import {Human} from '../data/humans.js'
  * @import {Release} from '../data/releases.js'
  * @import {Person as Sponsor} from '../data/sponsors.js'
@@ -32,8 +32,9 @@ import yaml from 'yaml'
 import {glob} from 'glob'
 import {matter} from 'vfile-matter'
 import all from 'p-all'
-import {toVFile, read, readSync, write} from 'to-vfile'
+import {read, write} from 'to-vfile'
 import {reporter} from 'vfile-reporter'
+import {VFile} from 'vfile'
 import {humans} from '../data/humans.js'
 import {releases as dataReleases} from '../data/releases.js'
 import {sponsors} from '../data/sponsors.js'
@@ -79,27 +80,29 @@ await expandReleases(dataReleases)
 
 const input = await glob('doc/learn/**/*.md')
 
-const entries = input.map(function (input) {
-  const file = readSync(input)
-  matter(file)
-  const slug = path.basename(input, path.extname(input))
-  let meta = file.data.meta
+const entries = await Promise.all(
+  input.map(async function (input) {
+    const file = await read(input)
+    matter(file)
+    const slug = path.basename(input, path.extname(input))
+    let meta = file.data.meta
 
-  if (!meta) {
-    meta = {}
-    file.data.meta = meta
-  }
+    if (!meta) {
+      meta = {}
+      file.data.meta = meta
+    }
 
-  assert(file.data.matter)
-  const {group, tags} = file.data.matter || {}
-  assert(typeof group === 'string')
-  meta.type = 'article'
-  meta.tags = [group]
-  if (tags) meta.tags.push(...tags)
-  meta.pathname = ['', 'learn', group, slug, ''].join('/')
+    assert(file.data.matter)
+    const {group, tags} = file.data.matter || {}
+    assert(typeof group === 'string')
+    meta.type = 'article'
+    meta.tags = [group]
+    if (tags) meta.tags.push(...tags)
+    meta.pathname = ['', 'learn', group, slug, ''].join('/')
 
-  return file
-})
+    return file
+  })
+)
 
 const sections = [
   {
@@ -313,7 +316,7 @@ all(promises, {concurrency: 50})
  */
 function page(render, meta) {
   tasks.push(function () {
-    return {tree: render(), file: toVFile({data: {meta}})}
+    return {tree: render(), file: new VFile({data: {meta}})}
   })
 }
 
