@@ -11,8 +11,9 @@
  * @property {string | null | undefined} [repo]
  */
 
+import {isElement} from 'hast-util-is-element'
+import {urlAttributes} from 'html-url-attributes'
 import {visit} from 'unist-util-visit'
-import {tagToUrl} from '../util/tag-to-url.js'
 
 const own = {}.hasOwnProperty
 const gh = 'https://github.com'
@@ -56,9 +57,13 @@ export default function rehypeResolveUrls(options) {
 
     /** @type {BuildVisitor<Root, 'element'>} */
     function visitor(node) {
-      const {tagName} = node
-      if (own.call(tagToUrl, tagName)) {
-        tagToUrl[tagName].forEach((p) => resolve(node, p, tagName))
+      for (const property in node.properties) {
+        if (
+          own.call(urlAttributes, property) &&
+          isElement(node, urlAttributes[property])
+        ) {
+          resolve(node, property, node.tagName)
+        }
       }
     }
 

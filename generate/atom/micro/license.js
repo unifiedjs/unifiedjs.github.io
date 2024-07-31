@@ -1,5 +1,3 @@
-// To do: remove? Unused?
-
 /**
  * @import {ElementContent, Element} from 'hast'
  */

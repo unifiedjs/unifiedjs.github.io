@@ -12,13 +12,12 @@ import {downloads as icon} from '../icon/downloads.js'
  * @returns {Array<ElementContent> | ElementContent}
  */
 export function downloads(value, name) {
-  let node
-
   if (!value) {
     return []
   }
 
-  node = [icon(), ' ', fmtCompact(value)]
+  /** @type {Array<ElementContent | string> | ElementContent} */
+  let node = [icon(), ' ', fmtCompact(value)]
 
   if (name) {
     node = h('a.tap-target', {href: 'https://www.npmtrends.com/' + name}, node)

@@ -3,6 +3,7 @@
  * @import {Metadata} from '../component/article/list.js'
  */
 
+import {ok as assert} from 'devlop'
 import {h} from 'hastscript'
 import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {list} from '../component/article/list.js'
@@ -29,11 +30,16 @@ export function learn(sections) {
         'through how to complete bigger tasks.'
       ])
     ]),
-    ...sections.flatMap((d) => [
-      h('.article.content', [h('h3', {}, d.title), h('p', {}, d.description)]),
-      // To do: assert that entries exists?
-      list(d, helperSort(d.entries || []))
-    ]),
+    ...sections.flatMap((d) => {
+      assert(d.entries)
+      return [
+        h('.article.content', [
+          h('h3', {}, d.title),
+          h('p', {}, d.description)
+        ]),
+        list(d, helperSort(d.entries || []))
+      ]
+    }),
     h('.article.content', [
       h('h3', 'Explore'),
       h('p', [

@@ -101,7 +101,7 @@
  *
  *
  * @typedef PackageInfo
- * @property {string} description
+ * @property {string | undefined} description
  * @property {Array<string>} keywords
  * @property {string | undefined} latest
  * @property {string | undefined} license
@@ -109,7 +109,7 @@
  * @property {number} score
  *
  * @typedef RawPackage
- * @property {string} description
+ * @property {string | undefined} description
  * @property {number} downloads
  * @property {number | undefined} [gzip]
  * @property {Array<string>} keywords
@@ -753,22 +753,23 @@ async function getPackage(project, manifest, packageJson) {
     return
   }
 
-  // To do: this would probabl go higher? If there’s an error returned?
+  // To do: this would probably go higher? If there’s an error returned?
   // if (body.code === 'NOT_FOUND') {
   //   console.warn('%s#%s: could not find package (on npms)', repo, manifest)
   //   return
   // }
 
-  // To do: remove fallbacks and allow `undefined`?
-  const name = body.collected.metadata.name || ''
-  const description = body.collected.metadata.description || ''
+  const name = body.collected.metadata.name || undefined
+  const description = body.collected.metadata.description || undefined
   const keywords = body.collected.metadata.keywords || []
   const license = body.collected.metadata.license || undefined
   const latest = body.collected.metadata.version || undefined
   const repository = body.collected.metadata.repository
-  const url = (repository && repository.url) || ''
+  const url = (repository && repository.url) || undefined
   const score = body.score.final || 0
   // Note: we used to look at `dependents`, but that’s always on `0` apparently now?
+
+  if (!name) return
 
   if (body.collected.metadata.deprecated) {
     console.warn(

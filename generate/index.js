@@ -289,6 +289,9 @@ const promises = tasks.map((fn) => () => {
       function (x) {
         console.log(reporter(x))
       },
+      /**
+       * @param {unknown} error
+       */
       function (error) {
         console.error(error)
       }

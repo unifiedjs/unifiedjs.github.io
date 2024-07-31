@@ -31,8 +31,7 @@ function factory(match) {
    * @returns {Array<T>}
    */
   function sort(list, score) {
-    // To do: no `concat`.
-    return (list || []).concat().sort(sorter)
+    return [...list].sort(sorter)
     /**
      * @param {T} a
      * @param {T} b

@@ -20,6 +20,5 @@ export function helperSort(data) {
  */
 function score(d) {
   const matter = d.data.matter || {}
-  // @ts-expect-error: to do: type `index`?
   return matter.index || Number.POSITIVE_INFINITY
 }

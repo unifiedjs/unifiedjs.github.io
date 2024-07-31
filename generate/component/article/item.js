@@ -15,7 +15,6 @@ import {tag} from '../../atom/micro/tag.js'
 export function item(d) {
   const {matter, meta} = d.data
   const data = {...matter, ...meta}
-  // @ts-expect-error: to do: type `authorGithub`?
   const {title, description, author, authorGithub, tags, pathname} = data
 
   assert(pathname)

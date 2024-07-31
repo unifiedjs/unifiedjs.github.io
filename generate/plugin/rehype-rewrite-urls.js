@@ -11,8 +11,9 @@
  */
 
 import assert from 'node:assert/strict'
+import {isElement} from 'hast-util-is-element'
+import {urlAttributes} from 'html-url-attributes'
 import {visit} from 'unist-util-visit'
-import {tagToUrl} from '../util/tag-to-url.js'
 import {data} from '../data.js'
 
 const own = {}.hasOwnProperty
@@ -46,14 +47,17 @@ export default function rehypeRewriteUrls(options) {
 
     /** @type {BuildVisitor<Root, 'element'>} */
     function visitor(node) {
-      let head
-
-      if (own.call(tagToUrl, node.tagName)) {
-        tagToUrl[node.tagName].forEach((p) => rewrite(node, p))
+      for (const property in node.properties) {
+        if (
+          own.call(urlAttributes, property) &&
+          isElement(node, urlAttributes[property])
+        ) {
+          rewrite(node, property)
+        }
       }
 
       if (node.tagName === 'a') {
-        head = String(node.properties.href || '').charAt(0)
+        const head = String(node.properties.href || '').charAt(0)
 
         if (head && head !== '/' && head !== '#') {
           node.properties.rel = ['nofollow', 'noopener', 'noreferrer']

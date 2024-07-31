@@ -119,10 +119,16 @@ async function transformJs(file) {
     write: false
   })
 
-  // To do: improve error handling.
-  if (result.errors.length > 0) throw new Error('esbuild errors')
-  if (result.warnings.length > 0) throw new Error('esbuild warnings')
-  // To do: asset size
+  const logs = await Promise.all([
+    esbuild.formatMessages(result.errors, {kind: 'error'}),
+    esbuild.formatMessages(result.warnings, {kind: 'warning'})
+  ])
+  const flatLogs = logs.flat()
+  if (flatLogs.length > 0) {
+    console.error(flatLogs.join('\n'))
+  }
+
+  assert.equal(result.outputFiles.length, 1)
   const output = result.outputFiles[0]
   file.value = output.contents
   return file

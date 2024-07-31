@@ -1,3 +1,4 @@
+// Note: `mdx` not included as it is used too often by unrelated things.
 /**
  * Topics used to tag projects.
  *
@@ -18,7 +19,5 @@ export const constantTopic = [
   'nlcst-util',
   'vfile-util',
   'unifiedjs',
-  // To do: investigate?
-  // 'mdx', // Used too often by unrelated things...
   'remark-lint-rule'
 ]
