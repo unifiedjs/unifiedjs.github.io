@@ -4,19 +4,17 @@
 
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
-import path from 'node:path'
 import process from 'node:process'
-import {glob} from 'glob'
-import sharp from 'sharp'
-import pAll from 'p-all'
-import {VFile} from 'vfile'
-import {read, write} from 'to-vfile'
-import {reporter} from 'vfile-reporter'
-import esbuild from 'esbuild'
-import postcss from 'postcss'
-import postcssPresetEnv from 'postcss-preset-env'
 import cssnano from 'cssnano'
 import dotenv from 'dotenv'
+import esbuild from 'esbuild'
+import {glob} from 'glob'
+import postcssPresetEnv from 'postcss-preset-env'
+import postcss from 'postcss'
+import sharp from 'sharp'
+import {read, write} from 'to-vfile'
+import {reporter} from 'vfile-reporter'
+import {VFile} from 'vfile'
 
 const packageValue = await fs.readFile('package.json', 'utf8')
 /** @type {PackageJson} */
@@ -44,58 +42,41 @@ if (process.env.UNIFIED_OPTIMIZE_IMAGES) {
 }
 
 const paths = await glob('asset/**/*.*')
-/** @type {Array<() => Promise<undefined>>} */
-const tasks = [
-  ...paths.map(function (fp) {
-    /**
-     * @returns {Promise<undefined>}
-     */
-    return async function () {
-      const file = new VFile({path: fp})
-      const extname = file.extname
 
-      if (extname && extname in externals) {
-        const pipeline = externals[extname]
-        const result = await pipeline(file)
-        const files = Array.isArray(result) ? result : [result]
-        for (const file of files) {
-          assert(file.dirname)
-          file.dirname = [
-            'build',
-            ...file.dirname.split(path.sep).slice(1)
-          ].join(path.sep)
-          assert(file.dirname)
-          await fs.mkdir(file.dirname, {recursive: true})
-          await write(file)
-          file.stored = true
-          console.error(reporter(file))
-        }
-      } else {
-        assert(file.dirname)
-        file.dirname = ['build', ...file.dirname.split(path.sep).slice(1)].join(
-          path.sep
-        )
-        assert(file.dirname)
-        await fs.mkdir(file.dirname, {recursive: true})
-        await fs.copyFile(file.history[0], file.path)
-        file.stored = true
-        console.error(reporter(file))
-      }
+for (const fp of paths) {
+  const file = new VFile({path: fp})
+  const extname = file.extname
+
+  if (extname && extname in externals) {
+    const pipeline = externals[extname]
+    const result = await pipeline(file)
+    const files = Array.isArray(result) ? result : [result]
+    for (const file of files) {
+      assert(file.dirname)
+      file.dirname = 'build/' + file.dirname.replace(/^asset\//, '')
+      await fs.mkdir(file.dirname, {recursive: true})
+      await write(file)
+      file.stored = true
+      console.error(reporter(file))
     }
-  }),
-  async function () {
-    assert(typeof packageJson.homepage === 'string')
-    const cname = new VFile({
-      dirname: 'build',
-      basename: 'CNAME',
-      value: new URL(packageJson.homepage).host + '\n'
-    })
-    await write(cname)
-    console.error(reporter(cname))
+  } else {
+    assert(file.dirname)
+    file.dirname = 'build/' + file.dirname.replace(/^asset\//, '')
+    await fs.mkdir(file.dirname, {recursive: true})
+    await fs.copyFile(file.history[0], file.path)
+    file.stored = true
+    console.error(reporter(file))
   }
-]
+}
 
-await pAll(tasks, {concurrency: 5})
+assert(typeof packageJson.homepage === 'string')
+const cname = new VFile({
+  basename: 'CNAME',
+  dirname: 'build',
+  value: new URL(packageJson.homepage).host + '\n'
+})
+await write(cname)
+console.error(reporter(cname))
 
 /**
  * @param {VFile} file
@@ -114,19 +95,19 @@ async function transformCss(file) {
  */
 async function transformJs(file) {
   const result = await esbuild.build({
-    entryPoints: [file.path],
     bundle: true,
+    entryPoints: [file.path],
     minify: true,
     write: false
   })
 
-  const logs = await Promise.all([
-    esbuild.formatMessages(result.errors, {kind: 'error'}),
-    esbuild.formatMessages(result.warnings, {kind: 'warning'})
-  ])
-  const flatLogs = logs.flat()
-  if (flatLogs.length > 0) {
-    console.error(flatLogs.join('\n'))
+  const logs = [
+    ...(await esbuild.formatMessages(result.errors, {kind: 'error'})),
+    ...(await esbuild.formatMessages(result.warnings, {kind: 'warning'}))
+  ]
+
+  if (logs.length > 0) {
+    console.error(logs.join('\n'))
   }
 
   assert.equal(result.outputFiles.length, 1)
@@ -143,8 +124,8 @@ async function transformPng(file) {
   // Note: see `rehype-pictures` for the inverse.
   const sizes = [200, 600, 1200, 2000]
   const options = {
-    webp: {quality: 50, alphaQuality: 50},
-    png: {quality: 50, compressionLevel: 9}
+    png: {compressionLevel: 9, quality: 50},
+    webp: {alphaQuality: 50, quality: 50}
   }
   const formats = /** @type {Array<keyof typeof options>} */ (
     Object.keys(options)

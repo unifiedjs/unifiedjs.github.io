@@ -5,23 +5,23 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
-import {unified} from 'unified'
-import remarkParse from 'remark-parse'
-import remarkGfm from 'remark-gfm'
-import remarkFrontmatter from 'remark-frontmatter'
-import remarkRehype from 'remark-rehype'
-import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
 import sourceGitignore from '@wooorm/starry-night/source.gitignore'
 import {common} from '@wooorm/starry-night'
+import remarkFrontmatter from 'remark-frontmatter'
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeRaw from 'rehype-raw'
+import rehypeSlug from 'rehype-slug'
 import rehypeStarryNight from 'rehype-starry-night'
 import rehypeTwoslash from 'rehype-twoslash'
+import {unified} from 'unified'
 import typescript from 'typescript'
+import {link} from '../atom/icon/link.js'
+import rehypeAbbreviate from '../plugin/rehype-abbreviate.js'
 import rehypeLink from '../plugin/rehype-link.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
-import rehypeAbbreviate from '../plugin/rehype-abbreviate.js'
-import {link} from '../atom/icon/link.js'
 
 const packageValue = await fs.readFile('package.json', 'utf8')
 /** @type {PackageJson} */
@@ -65,25 +65,24 @@ export const article = unified()
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, {
     behavior: 'prepend',
-    properties: {ariaLabel: 'Link to self', className: ['anchor']},
-    content: link()
+    content: link(),
+    properties: {ariaLabel: 'Link to self', className: ['anchor']}
   })
   .use(rehypeAbbreviate, {
-    AST: 'Abstract syntax tree',
-    CLI: 'Command-line interface',
-    CSS: 'Cascading Style Sheets',
-    DOM: 'Document object model',
-    ECMAScript: null,
-    GFM: 'GitHub flavored markdown',
-    HSL: 'Hue, saturation, lightness',
-    HTML: 'Hypertext markup language',
-    JSDoc: null,
-    JSON: 'JavaScript Object Notation',
-    JSX: null,
-    MDX: null,
-    PR: 'Pull request',
-    XML: 'Extensible Markup Language',
-    XSS: 'Cross Site Scripting'
+    ignore: ['ECMAScript', 'JSDoc', 'JSX', 'MDX'],
+    titles: {
+      AST: 'Abstract syntax tree',
+      CLI: 'Command-line interface',
+      CSS: 'Cascading Style Sheets',
+      DOM: 'Document object model',
+      GFM: 'GitHub flavored markdown',
+      HSL: 'Hue, saturation, lightness',
+      HTML: 'Hypertext markup language',
+      JSON: 'JavaScript Object Notation',
+      PR: 'Pull request',
+      XML: 'Extensible Markup Language',
+      XSS: 'Cross Site Scripting'
+    }
   })
   .use(rehypeLink)
   .use(rehypeRewriteUrls, {origin})

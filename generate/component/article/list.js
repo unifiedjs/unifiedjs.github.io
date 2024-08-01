@@ -9,7 +9,7 @@
  * @property {string | undefined} [description]
  * @property {ReadonlyArray<VFile> | undefined} [entries]
  * @property {string} pathname
- * @property {string} [slug]
+ * @property {string | undefined} [slug]
  * @property {Array<string> | undefined} [tags]
  * @property {string | undefined} [title]
  */
@@ -22,7 +22,7 @@ import {more} from './more.js'
  * @param {Metadata} section
  * @param {Array<VFile>} d
  * @param {Options | undefined} [options]
- * @returns
+ * @returns {Element}
  */
 export function list(section, d, options) {
   return cards(d, item, {more: map, ...options})

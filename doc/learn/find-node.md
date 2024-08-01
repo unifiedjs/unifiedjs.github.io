@@ -53,12 +53,14 @@ We want to find the first occurrence of emphasis in our markdown.
 import {remark} from 'remark'
 import find from 'unist-util-find'
 
-remark()
-  .use(() => (tree) => {
-    const node = find(tree, {type: 'emphasis'})
-    console.log(node)
+await remark()
+  .use(function () {
+    return function (tree) {
+      const node = find(tree, {type: 'emphasis'})
+      console.log(node)
+    }
   })
-  .processSync('Some _emphasis_, **strongness**, _more emphasis_, and `code`.')
+  .process('Some _emphasis_, **strongness**, _more emphasis_, and `code`.')
 ```
 
 yields

@@ -50,14 +50,14 @@ Another paragraph with **importance** (and *more emphasis*).
 And a script, `example.js`:
 
 ```js
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import {visit} from 'unist-util-visit'
 
-const doc = fs.readFileSync('example.md')
+const document = await fs.readFile('example.md')
 
-const tree = unified().use(remarkParse).parse(doc)
+const tree = unified().use(remarkParse).parse(document)
 
 visit(tree, 'emphasis', function (node) {
   console.log(node)
@@ -93,9 +93,9 @@ Luckily, the function given to `visit` gets not only `node`, but also that
 
 ```diff
 +++ b/example.js
-@@ -7,6 +7,6 @@ const doc = fs.readFileSync('example.md')
+@@ -7,6 +7,6 @@ const document = await fs.readFile('example.md')
 
- const tree = unified().use(remarkParse).parse(doc)
+ const tree = unified().use(remarkParse).parse(document)
 
 -visit(tree, 'emphasis', function (node) {
 -  console.log(node)
@@ -118,8 +118,8 @@ With this information, and `splice`, we can now remove emphasis nodes:
 ```diff
 --- a/example.js
 +++ b/example.js
-@@ -8,5 +8,8 @@ const doc = fs.readFileSync('example.md')
- const tree = unified().use(remarkParse).parse(doc)
+@@ -8,5 +8,8 @@ const document = await fs.readFile('example.md')
+ const tree = unified().use(remarkParse).parse(document)
 
  visit(tree, 'emphasis', function (node, index, parent) {
 -  console.log(node.type, index, parent.type)
@@ -179,11 +179,11 @@ To do that: return that information from `visitor`:
  import {unified} from 'unified'
  import remarkParse from 'remark-parse'
 -import {visit} from 'unist-util-visit'
-+import {visit, SKIP} from 'unist-util-visit'
++import {SKIP, visit} from 'unist-util-visit'
 
- const doc = fs.readFileSync('example.md')
+ const document = await fs.readFile('example.md')
 
- const tree = unified().use(remarkParse).parse(doc)
+ const tree = unified().use(remarkParse).parse(document)
 
  visit(tree, 'emphasis', function (node, index, parent) {
    parent.children.splice(index, 1)
@@ -209,8 +209,8 @@ To do that, we can do the following:
 ```diff
 --- a/example.js
 +++ b/example.js
-@@ -8,7 +8,7 @@ const doc = fs.readFileSync('example.md')
- const tree = unified().use(remarkParse).parse(doc)
+@@ -8,7 +8,7 @@ const document = await fs.readFile('example.md')
+ const tree = unified().use(remarkParse).parse(document)
 
  visit(tree, 'emphasis', function (node, index, parent) {
 -  parent.children.splice(index, 1)

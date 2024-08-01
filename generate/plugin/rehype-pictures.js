@@ -1,24 +1,25 @@
 /**
- * @import {Element, Parents, Root} from 'hast'
+ * @import {ElementContent, Element, Parents, Root} from 'hast'
  * @import {BuildVisitor} from 'unist-util-visit'
  * @import {Spec} from 'vfile-rename'
- * @import {Metadata} from 'sharp'
  */
 
 /**
  * @typedef Options
  *   Configuration.
- * @property {string} base
- *   Base directory.
+ * @property {URL} base
+ *   Base folder.
+ * @property {URL | string} from
+ *   Base URL.
  */
 
-import fs from 'node:fs'
-import path from 'node:path'
-import {VFile} from 'vfile'
-import sharp from 'sharp'
-import {rename} from 'vfile-rename'
-import {visit} from 'unist-util-visit'
+import fs from 'node:fs/promises'
+import {fileURLToPath, pathToFileURL} from 'node:url'
 import {h} from 'hastscript'
+import sharp from 'sharp'
+import {visit} from 'unist-util-visit'
+import {rename} from 'vfile-rename'
+import {VFile} from 'vfile'
 
 /**
  * @param {Options} options
@@ -27,38 +28,34 @@ import {h} from 'hastscript'
  *   Transform.
  */
 export default function rehypePictures(options) {
-  const sizes = [null, 200, 600, 1200, 2000]
-  const mimes = {webp: 'image/webp', png: 'image/png'}
+  const sizes = [undefined, 200, 600, 1200, 2000]
+  const mimes = {png: 'image/png', webp: 'image/webp'}
   const formats = /** @type {Array<keyof typeof mimes>} */ (Object.keys(mimes))
   const modes = ['', '-dark']
   const base = options.base
-  const sources = formats
-    .flatMap((format) =>
-      modes.flatMap((mode) =>
-        sizes.flatMap(function (size) {
-          /** @type {Spec} */
-          const spec = {
-            stem: {suffix: mode + (size ? '-' + size : '')},
-            extname: '.' + format
-          }
-          return spec
+  const fromUrl =
+    typeof options.from === 'string' ? new URL(options.from) : options.from
+  /** @type {Array<Spec>} */
+  const sources = []
+
+  for (const format of formats) {
+    for (const mode of modes) {
+      for (const size of sizes) {
+        const suffix = mode + (size ? '-' + size : '')
+        // Ignore default file, w/o mode (light) and w/o size: that’s what we
+        // link to already.
+        if (!suffix) continue
+        sources.push({
+          extname: '.' + format,
+          stem: {suffix}
         })
-      )
-    )
-    // Remove the default file, w/o mode (light) and w/o size: that’s what we
-    // link to already.
-    .filter(
-      (d) =>
-        d.stem &&
-        typeof d.stem === 'object' &&
-        d.stem.suffix &&
-        d.stem.suffix !== ''
-    )
+      }
+    }
+  }
 
   return transform
 
   /**
-   *
    * @param {Root} tree
    * @returns {Promise<undefined>}
    */
@@ -74,7 +71,7 @@ export default function rehypePictures(options) {
     function visitor(node, _, parent) {
       const src = node.tagName === 'img' ? node.properties.src : undefined
 
-      if (!parent || typeof src !== 'string' || src.charAt(0) !== '/') {
+      if (!parent || typeof src !== 'string') {
         return
       }
 
@@ -87,73 +84,86 @@ export default function rehypePictures(options) {
        * @returns {Promise<undefined>}
        */
       async function rewrite(src, node, parent) {
-        const resolved = path.join(base, src.split('/').join(path.sep))
-        /** @type {[...files: Array<Promise<string | undefined>>, metadata: Promise<Metadata>]} */
-        const promises = [
-          // See which images exist.
-          ...sources.map(async (d) => {
-            const file = new VFile({path: resolved})
+        const srcUrl = new URL(src, fromUrl)
+        if (srcUrl.origin !== fromUrl.origin) return
+        const localUrl = new URL('.' + srcUrl.pathname, base)
+        /** @type {Set<string>} */
+        const available = new Set()
+        // See which images exist.
+        /** @type {Array<() => Promise<undefined>>} */
+        const tasks = []
+
+        for (const d of sources) {
+          tasks.push(async function () {
+            const file = new VFile({path: localUrl})
             rename(file, d)
 
             try {
-              await fs.promises.access(file.path, fs.constants.R_OK)
-              return file.path
-            } catch {}
+              await fs.access(file.path, fs.constants.R_OK)
+            } catch {
+              return
+            }
 
-            return undefined
-          }),
-          // See dimension.
-          sharp(resolved).metadata()
-        ]
+            available.add(file.path)
+          })
+        }
 
-        const result = await Promise.all(promises)
-
-        const info = /** @type {Metadata} */ (result.pop())
-        const rest = /** @type {Array<string | undefined>} */ (result)
-        const available = new Set(rest.filter((d) => typeof d === 'string'))
+        await Promise.all(tasks)
+        // See dimension.
+        const info = await sharp(fileURLToPath(localUrl)).metadata()
 
         // Generate the sources, but only if they exist.
-        const srcs = formats.flatMap((format) =>
-          modes.flatMap((mode) => {
-            const applicable = sizes
-              .map((size) => {
-                const file = new VFile({path: resolved})
-                rename(file, {
-                  stem: {suffix: mode + (size ? '-' + size : '')},
-                  extname: '.' + format
-                })
-                const fp = file.path
-                /** @type {[path: string, size: number | null] | undefined} */
-                const tuple = available.has(fp) ? [fp, size] : undefined
+        /** @type {Array<ElementContent>} */
+        const results = []
 
-                return tuple
+        for (const format of formats) {
+          for (const mode of modes) {
+            /** @type {Array<[path: string, size: number | undefined]>} */
+            const applicable = []
+
+            for (const size of sizes) {
+              const file = new VFile({path: localUrl})
+              rename(file, {
+                extname: '.' + format,
+                stem: {suffix: mode + (size ? '-' + size : '')}
               })
-              .filter((d) => d !== undefined)
 
-            return applicable.length === 0
-              ? []
-              : h('source', {
-                  srcSet: applicable
-                    .map(
-                      (d) =>
-                        ['/' + path.relative(base, d[0])] +
-                        (d[1] ? ' ' + d[1] + 'w' : '')
-                    )
-                    .join(','),
+              if (available.has(file.path)) {
+                applicable.push([file.path, size])
+              }
+            }
+
+            if (applicable.length > 0) {
+              /** @type {Array<string>} */
+              const srcSet = []
+
+              for (const d of applicable) {
+                srcSet.push(
+                  '/' +
+                    pathToFileURL(d[0]).href.slice(base.href.length) +
+                    (d[1] ? ' ' + d[1] + 'w' : '')
+                )
+              }
+
+              results.push(
+                h('source', {
                   media:
                     '(prefers-color-scheme: ' + (mode ? 'dark' : 'light') + ')',
+                  srcSet: srcSet.join(','),
                   type: mimes[format]
                 })
-          })
-        )
+              )
+            }
+          }
+        }
 
-        const siblings = parent.children
-
+        node.properties.height = info.height
         node.properties.loading = 'lazy'
         node.properties.width = info.width
-        node.properties.height = info.height
 
-        siblings[siblings.indexOf(node)] = h('picture', {}, srcs.concat(node))
+        const siblings = parent.children
+        const index = siblings.indexOf(node)
+        siblings[index] = h('picture', {}, [...results, node])
       }
     }
   }

@@ -16,8 +16,6 @@ import {urlAttributes} from 'html-url-attributes'
 import {visit} from 'unist-util-visit'
 import {data} from '../data.js'
 
-const own = {}.hasOwnProperty
-
 /**
  * @param {Options | null | undefined} [options]
  *   Configuration.
@@ -40,7 +38,10 @@ export default function rehypeRewriteUrls(options) {
     const pathname = meta.pathname || settings.pathname || '/'
 
     if (!origin) {
-      file.fail('Missing `origin` in `options` or `file.data.meta`', tree)
+      file.fail(
+        'Unexpected missing `origin` in `options` or `file.data.meta`',
+        tree
+      )
     }
 
     visit(tree, 'element', visitor)
@@ -49,7 +50,7 @@ export default function rehypeRewriteUrls(options) {
     function visitor(node) {
       for (const property in node.properties) {
         if (
-          own.call(urlAttributes, property) &&
+          Object.hasOwn(urlAttributes, property) &&
           isElement(node, urlAttributes[property])
         ) {
           rewrite(node, property)
@@ -75,7 +76,7 @@ export default function rehypeRewriteUrls(options) {
       /** @type {URL | undefined} */
       let url
 
-      if (value === undefined || value === null) {
+      if (value === null || value === undefined) {
         return
       }
 
@@ -126,7 +127,7 @@ export default function rehypeRewriteUrls(options) {
       if (rest.length > 0 && rest.length < 3) {
         const name = rest.join('/')
 
-        if (own.call(data.packageByName, name)) {
+        if (Object.hasOwn(data.packageByName, name)) {
           return new URL('/explore/package/' + name + '/' + url.hash, origin)
         }
       }
@@ -151,7 +152,7 @@ export default function rehypeRewriteUrls(options) {
 
       const repo = rest.slice(0, 2).join('/')
 
-      if (own.call(data.packagesByRepo, repo)) {
+      if (Object.hasOwn(data.packagesByRepo, repo)) {
         const packages = data.packagesByRepo[repo]
         rest = rest.slice(2)
 
@@ -183,9 +184,9 @@ export default function rehypeRewriteUrls(options) {
         while (length > -1) {
           const slugParts = rest.slice(0, length)
           const slug = slugParts.length === 0 ? undefined : slugParts.join('/')
-          const match = packages.find(
-            (d) => data.packageByName[d].manifestBase === slug
-          )
+          const match = packages.find(function (d) {
+            return data.packageByName[d].manifestBase === slug
+          })
 
           if (match && rest.length === length) {
             return new URL('/explore/package/' + match + '/' + url.hash, origin)

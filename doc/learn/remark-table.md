@@ -93,21 +93,21 @@ Let’s say we have some markdown with a GFM table, in an `example.md` file:
 And a script set up to transform markdown with tables to HTML, `example.js`:
 
 ```javascript
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import {unified} from 'unified'
 import remarkParse from 'remark-parse'
 import remarkGfm from 'remark-gfm'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
 
-const doc = fs.readFileSync('example.md')
+const document = await fs.readFile('example.md')
 
-const file = unified()
+const file = await unified()
   .use(remarkParse) // Parse markdown.
   .use(remarkGfm) // Support GFM (tables, autolinks, tasklists, strikethrough).
   .use(remarkRehype) // Turn it into HTML.
   .use(rehypeStringify) // Serialize HTML.
-  .processSync(doc)
+  .process(document)
 
 console.log(String(file))
 ```

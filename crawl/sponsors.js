@@ -38,7 +38,6 @@
  */
 
 import fs from 'node:fs/promises'
-import path from 'node:path'
 import process from 'node:process'
 import dotenv from 'dotenv'
 
@@ -48,7 +47,6 @@ const token = process.env.OC_TOKEN
 
 if (!token) {
   console.error('Cannot crawl sponsors without OC token')
-  /* eslint-disable-next-line unicorn/no-process-exit */
   process.exit()
 }
 
@@ -80,74 +78,87 @@ const query = `query($slug: String) {
 }
 `
 
-const [sponsorsTxt, response] = await Promise.all([
-  fs.readFile(path.join('crawl', 'sponsors.txt'), 'utf8'),
-  fetch('https://api.opencollective.com/graphql/v2', {
-    body: JSON.stringify({variables: {slug: 'unified'}, query}),
-    headers: {
-      'Api-Key': token,
-      'Content-Type': 'application/json'
-    },
-    method: 'POST'
-  })
-])
+const sponsorsTxt = await fs.readFile(
+  new URL('sponsors.txt', import.meta.url),
+  'utf8'
+)
 
-const control = sponsorsTxt.split('\n').map(function (d) {
-  const spam = d.charAt(0) === '-'
-  /** @type {Sponsor} */
-  const sponsor = {oc: spam ? d.slice(1) : d, spam}
-  return sponsor
+const response = await fetch('https://api.opencollective.com/graphql/v2', {
+  body: JSON.stringify({query, variables: {slug: 'unified'}}),
+  headers: {
+    'Api-Key': token,
+    'Content-Type': 'application/json'
+  },
+  method: 'POST'
 })
+
+/** @type {Array<Sponsor>} */
+const control = []
+
+for (const d of sponsorsTxt.split('\n')) {
+  const spam = d.charAt(0) === '-'
+
+  control.push({oc: spam ? d.slice(1) : d, spam})
+}
 
 const json =
   /** @type {{data: {collective: {members: {nodes: Array<Member>}}}}} */ (
     await response.json()
   )
 
-/** @type {Array<string>} */
-const seen = []
-const members = json.data.collective.members.nodes
-  .map((d) => {
-    const oc = d.account.slug
-    const github = d.account.githubHandle || undefined
-    const twitter = d.account.twitterHandle || undefined
-    let url = d.account.website || undefined
-    const info = control.find((d) => d.oc === oc)
+/** @type {Set<string>} */
+const seen = new Set()
+/** @type {Array<Person>} */
+const members = []
 
-    if (url === ghBase + github || url === twBase + twitter) {
-      url = undefined
-    }
-
-    if (!info) {
-      console.error(
-        '✖ @%s is an unknown sponsor, please define whether it’s spam or not in `sponsors.txt`',
-        oc
-      )
-    }
-
-    /** @type {Person} */
-    const person = {
-      amount: d.totalDonations.value,
-      description: d.account.description || undefined,
-      github,
-      gold: (d.tier && d.tier.name && /gold/i.test(d.tier.name)) || undefined,
-      image: d.account.imageUrl,
-      name: d.account.name,
-      oc,
-      spam: !info || info.spam,
-      twitter,
-      url
-    }
-
-    return person
+for (const d of json.data.collective.members.nodes) {
+  const oc = d.account.slug
+  const github = d.account.githubHandle || undefined
+  const twitter = d.account.twitterHandle || undefined
+  let url = d.account.website || undefined
+  const info = control.find(function (d) {
+    return d.oc === oc
   })
-  .filter((d) => {
-    const ignore = d.spam || seen.includes(d.oc) // Ignore dupes in data.
-    seen.push(d.oc)
-    return d.amount > min && !ignore
-  })
-  .sort(sort)
-  .map((d) => Object.assign(d, {amount: undefined}))
+
+  if (url === ghBase + github || url === twBase + twitter) {
+    url = undefined
+  }
+
+  if (!info) {
+    console.error(
+      '✖ @%s is an unknown sponsor, please define whether it’s spam or not in `sponsors.txt`',
+      oc
+    )
+  }
+
+  /** @type {Person} */
+  const person = {
+    amount: d.totalDonations.value,
+    description: d.account.description || undefined,
+    github,
+    gold: (d.tier && d.tier.name && /gold/i.test(d.tier.name)) || undefined,
+    image: d.account.imageUrl,
+    name: d.account.name,
+    oc,
+    spam: !info || info.spam,
+    twitter,
+    url
+  }
+
+  const ignore = person.spam || seen.has(person.oc) // Ignore dupes in data.
+  seen.add(person.oc)
+
+  if (person.amount > min && !ignore) {
+    members.push(person)
+  }
+}
+
+members.sort(sort)
+
+for (const d of members) {
+  // @ts-expect-error: intentional.
+  delete d.amount
+}
 
 await fs.writeFile(
   new URL('../data/sponsors.js', import.meta.url),

@@ -4,13 +4,13 @@
  * @type {ReadonlyArray<string>}
  */
 export const constantCollective = [
-  'remarkjs',
-  'rehypejs',
-  'retextjs',
-  'redotjs',
-  'syntax-tree',
-  'vfile',
-  'unifiedjs',
+  'mdx-js',
   'micromark',
-  'mdx-js'
+  'redotjs',
+  'rehypejs',
+  'remarkjs',
+  'retextjs',
+  'syntax-tree',
+  'unifiedjs',
+  'vfile'
 ]

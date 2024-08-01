@@ -1,16 +1,15 @@
 /**
- * @import {ElementContent} from 'hast'
+ * @import {ElementContent, Element} from 'hast'
  */
 
 import {h} from 'hastscript'
 import {fmtCompact} from '../../util/fmt-compact.js'
 
 /**
- *
  * @param {string} label
  * @param {number | undefined} [count]
  * @param {string | undefined} [href]
- * @returns
+ * @returns {Element}
  */
 export function tag(label, count, href) {
   /** @type {Array<ElementContent | string>} */

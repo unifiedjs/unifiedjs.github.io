@@ -1,4 +1,4 @@
-import pick from 'pick-random'
+import pickRandom_ from 'pick-random'
 
 /**
  * @template T
@@ -7,5 +7,5 @@ import pick from 'pick-random'
  * @returns {Array<T>}
  */
 export function pickRandom(list, max) {
-  return list.length > max ? pick(list, {count: max}) : [...list]
+  return list.length > max ? pickRandom_(list, {count: max}) : [...list]
 }

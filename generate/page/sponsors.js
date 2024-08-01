@@ -5,8 +5,8 @@
 
 import {h} from 'hastscript'
 import {breadcrumbs} from '../molecule/breadcrumbs.js'
-import {list} from '../component/sponsor/list.js'
 import {byline} from '../component/sponsor/byline.js'
+import {list} from '../component/sponsor/list.js'
 import {page} from './page.js'
 
 /**

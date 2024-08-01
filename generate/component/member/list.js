@@ -13,7 +13,7 @@ import {more} from './more.js'
 /**
  * @param {CommunityData} data
  * @param {ReadonlyArray<Human>} d
- * @param {Options} [options]
+ * @param {Options | undefined} [options]
  * @returns {Element}
  */
 export function list(data, d, options) {

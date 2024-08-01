@@ -10,7 +10,7 @@ import {more} from './more.js'
 
 /**
  * @param {ReadonlyArray<Metadata>} d
- * @param {Options} [options]
+ * @param {Options | undefined} [options]
  * @returns {Element}
  */
 export function list(d, options) {

@@ -11,11 +11,11 @@
  * @property {string | null | undefined} [repo]
  */
 
+import {ok as assert} from 'devlop'
 import {isElement} from 'hast-util-is-element'
 import {urlAttributes} from 'html-url-attributes'
 import {visit} from 'unist-util-visit'
 
-const own = {}.hasOwnProperty
 const gh = 'https://github.com'
 
 /**
@@ -38,17 +38,18 @@ export default function rehypeResolveUrls(options) {
    */
   function transform(tree, file) {
     const data = file.data
-    const repo = data.repo || settings.repo
+    const repo = data.repo || settings.repo || undefined
     const dirname = data.dirname || settings.dirname || '/'
     const object = settings.object || 'HEAD'
-    let prefix = [repo, 'blob', object]
 
-    if (!repo) {
-      file.fail('Missing `repo` in `options` or `file.data`', tree)
+    if (!repo || typeof repo !== 'string') {
+      file.fail('Unexpected missing `repo` in `options` or `file.data`', tree)
     }
 
+    let prefix = [repo, 'blob', object]
+
     if (typeof dirname === 'string' && dirname !== '/') {
-      prefix = prefix.concat(dirname.split('/'))
+      prefix.push(...dirname.split('/'))
     }
 
     const base = [gh, ...prefix, ''].join('/')
@@ -59,7 +60,7 @@ export default function rehypeResolveUrls(options) {
     function visitor(node) {
       for (const property in node.properties) {
         if (
-          own.call(urlAttributes, property) &&
+          Object.hasOwn(urlAttributes, property) &&
           isElement(node, urlAttributes[property])
         ) {
           resolve(node, property, node.tagName)

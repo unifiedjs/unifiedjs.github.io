@@ -2,7 +2,7 @@
  * @import {ElementContent, Element} from 'hast'
  */
 
-import spdx from 'spdx-license-list'
+import spdxLicenseList from 'spdx-license-list'
 import {h} from 'hastscript'
 import {license as icon} from '../icon/license.js'
 
@@ -11,7 +11,8 @@ import {license as icon} from '../icon/license.js'
  * @returns {Array<ElementContent> | ElementContent}
  */
 export function license(value) {
-  const url = value && value in spdx ? spdx[value].url : null
+  const url =
+    value && value in spdxLicenseList ? spdxLicenseList[value].url : undefined
   /** @type {Array<ElementContent | string> | Element | string} */
   let node = value ? [icon(), ' ', value] : ''
 

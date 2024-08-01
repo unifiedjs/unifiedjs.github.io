@@ -5,9 +5,9 @@
 
 import {more} from '../../atom/box/more.js'
 import {releases} from '../../../data/releases.js'
-import {list} from './list.js'
 import {helperFilter} from './helper-filter.js'
 import {helperSort} from './helper-sort.js'
+import {list} from './list.js'
 
 /**
  * @param {Data} data

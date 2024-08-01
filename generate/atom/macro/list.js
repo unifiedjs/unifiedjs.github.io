@@ -19,7 +19,7 @@
 /**
  * @typedef Options
  * @property {number | undefined} [max]
- * @property {More} [more]
+ * @property {More | undefined} [more]
  * @property {ElementContent | undefined} [trail]
  */
 
@@ -40,9 +40,18 @@ export function list(names, map, options) {
     values = names.slice(0, max - 1)
   }
 
-  const children = values.flatMap(function (d) {
-    return map(d)
-  })
+  /** @type {Array<ElementContent>} */
+  const children = []
+
+  for (const d of values) {
+    const result = map(d)
+
+    if (Array.isArray(result)) {
+      children.push(...result)
+    } else {
+      children.push(result)
+    }
+  }
 
   if (trail) {
     children.push(trail)

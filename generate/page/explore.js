@@ -4,12 +4,12 @@
  */
 
 import {h} from 'hastscript'
-import {breadcrumbs} from '../molecule/breadcrumbs.js'
-import {searchPreview as packagePreview} from '../component/package/search-preview.js'
 import {searchPreview as keywordPreview} from '../component/keyword/search-preview.js'
+import {searchPreview as packagePreview} from '../component/package/search-preview.js'
 import {searchPreview as projectPreview} from '../component/project/search-preview.js'
-import {searchPreview as topicPreview} from '../component/topic/search-preview.js'
 import {explorePreview as release} from '../component/release/explore-preview.js'
+import {searchPreview as topicPreview} from '../component/topic/search-preview.js'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {page} from './page.js'
 
 /**

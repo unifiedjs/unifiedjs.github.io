@@ -4,7 +4,7 @@
  */
 
 import {h} from 'hastscript'
-import {visit, SKIP} from 'unist-util-visit'
+import {SKIP, visit} from 'unist-util-visit'
 import {block} from '../macro/block.js'
 
 /**

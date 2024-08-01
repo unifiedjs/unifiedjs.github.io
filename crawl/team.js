@@ -1,9 +1,8 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
-import path from 'node:path'
 import process from 'node:process'
-import yaml from 'yaml'
 import dotenv from 'dotenv'
+import yaml from 'yaml'
 
 dotenv.config()
 
@@ -11,12 +10,12 @@ const ghToken = process.env.GH_TOKEN
 
 if (!ghToken) {
   console.error('Cannot crawl team without GH token')
-  /* eslint-disable-next-line unicorn/no-process-exit */
   process.exit()
 }
 
 const base = 'https://raw.githubusercontent.com/unifiedjs/collective/HEAD/data/'
-const files = ['humans.yml', 'teams.yml']
+const humans = 'humans.yml'
+const files = [humans, 'teams.yml']
 
 const humansTypes = [
   '/**',
@@ -52,12 +51,11 @@ for (const filename of files) {
     headers: {Authorization: 'bearer ' + ghToken}
   })
   const d = await response.text()
-  const stem = path.basename(filename, path.extname(filename))
-  assert(stem === 'humans' || stem === 'teams')
+  const stem = filename.replace(/\.[a-z]+$/i, '')
   await fs.writeFile(
-    path.join('data', stem + '.js'),
+    new URL('../data/' + stem + '.js'),
     [
-      stem === 'humans' ? humansTypes : teamsTypes,
+      filename === humans ? humansTypes : teamsTypes,
       'export const ' +
         stem +
         ' = ' +

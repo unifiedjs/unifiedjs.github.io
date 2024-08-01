@@ -8,7 +8,7 @@
  * @returns {string | undefined}
  */
 export function helperReduceLicense(data, repo) {
-  const {packagesByRepo, packageByName} = data
+  const {packageByName, packagesByRepo} = data
   let multi = false
   /** @type {string | undefined} */
   let main

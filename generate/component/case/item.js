@@ -1,5 +1,5 @@
 /**
- * @import {Element, ElementContent} from 'hast'
+ * @import {ElementContent, Element} from 'hast'
  */
 
 /**
@@ -13,9 +13,9 @@
 
 import assert from 'node:assert/strict'
 import {h} from 'hastscript'
+import {item as card} from '../../atom/card/item.js'
 import {gh as ghBadge} from '../../atom/micro/gh.js'
 import {url as urlLine} from '../../atom/micro/url.js'
-import {item as card} from '../../atom/card/item.js'
 
 /**
  *
@@ -23,7 +23,7 @@ import {item as card} from '../../atom/card/item.js'
  * @returns {Element}
  */
 export function item(d) {
-  const {title, short, url, gh, src} = d
+  const {gh, short, src, title, url} = d
   /** @type {Array<ElementContent>} */
   const footer = []
 
@@ -37,7 +37,7 @@ export function item(d) {
   return card(
     url,
     [
-      h('.screen', {}, h('img', {src, alt: ''})),
+      h('.screen', {}, h('img', {alt: '', src})),
       h('.column', [
         h('h3.row', [h('span.ellipsis', {}, title)]),
         h('p.double-ellipsis', {}, short)

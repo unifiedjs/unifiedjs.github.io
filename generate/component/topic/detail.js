@@ -5,8 +5,8 @@
 
 import {h} from 'hastscript'
 import {more} from '../../atom/box/more.js'
-import {list} from '../project/list.js'
 import {helperSort} from '../project/helper-sort.js'
+import {list} from '../project/list.js'
 
 /**
  * @param {Data} data

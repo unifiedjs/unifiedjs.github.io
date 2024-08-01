@@ -22,7 +22,7 @@ const dateTime = new Intl.DateTimeFormat(constantLocale, {dateStyle: 'medium'})
  */
 export function item(data, d) {
   const {packagesByRepo} = data
-  const {repo, published, tag} = d
+  const {published, repo, tag} = d
   const [owner, project] = repo.split('/')
   const url = base + repo + '/releases/tag/' + encodeURIComponent(tag)
 

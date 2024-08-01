@@ -7,18 +7,18 @@
 
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
-import {unified} from 'unified'
-import remarkParse from 'remark-parse'
+import {headingRank} from 'hast-util-heading-rank'
+import {shiftHeading} from 'hast-util-shift-heading'
 import remarkGemoji from 'remark-gemoji'
 import remarkGfm from 'remark-gfm'
 import remarkGithub from 'remark-github'
+import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import rehypeSanitize from 'rehype-sanitize'
 import rehypeStarryNight from 'rehype-starry-night'
+import {unified} from 'unified'
 import {visit} from 'unist-util-visit'
-import {headingRank} from 'hast-util-heading-rank'
-import {shiftHeading} from 'hast-util-shift-heading'
 import rehypeResolveUrls from '../plugin/rehype-resolve-urls.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
 
@@ -41,19 +41,17 @@ export function release(d) {
     .use(rehypeRaw)
     .use(rehypeSanitize)
     .use(rehypeStarryNight)
-    .use(rehypeResolveUrls, {repo: d.repo, object: d.tag})
+    .use(rehypeResolveUrls, {object: d.tag, repo: d.repo})
     .use(rehypeRewriteUrls, {origin})
     .use(headings)
     .freeze()
 
   function headings() {
-    return transform
-
     /**
      * @param {Root} tree
      * @returns {undefined}
      */
-    function transform(tree) {
+    return function (tree) {
       let depth = 6
       const goal = 4
 

@@ -16,13 +16,13 @@ export default function rehypeDefer() {
   function transform(tree) {
     /** @type {Array<Element>} */
     const scripts = []
-    /** @type {Element | null} */
-    let head = null
+    /** @type {Element | undefined} */
+    let head
 
     visit(tree, 'element', visitor)
 
     const scope = head || tree
-    scope.children = scope.children.concat(scripts)
+    scope.children.push(...scripts)
 
     /** @type {BuildVisitor<Root, 'element'>} */
     function visitor(node, index, parent) {

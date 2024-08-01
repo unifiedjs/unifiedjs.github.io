@@ -1,5 +1,5 @@
 /**
- * @import {Element, Root} from 'hast'
+ * @import {Root} from 'hast'
  */
 
 import {header} from '../molecule/header.js'

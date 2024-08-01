@@ -4,9 +4,9 @@
  */
 
 import {h} from 'hastscript'
+import {more as box} from '../../atom/box/more.js'
 import {fmtCompact} from '../../util/fmt-compact.js'
 import {fmtPlural} from '../../util/fmt-plural.js'
-import {more as box} from '../../atom/box/more.js'
 import {helperSort} from '../package/helper-sort.js'
 import {list} from '../package/list.js'
 

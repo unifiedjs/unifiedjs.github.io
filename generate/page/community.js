@@ -5,13 +5,13 @@
 
 import {h} from 'hastscript'
 import {breadcrumbs} from '../molecule/breadcrumbs.js'
-import {list as members} from '../component/member/list.js'
+import {byline as casesByline} from '../component/case/byline.js'
+import {list as cases} from '../component/case/list.js'
 import {byline as membersByline} from '../component/member/byline.js'
 import {helperSort as sortMembers} from '../component/member/helper-sort.js'
-import {list as sponsors} from '../component/sponsor/list.js'
+import {list as members} from '../component/member/list.js'
 import {byline as sponsorsByline} from '../component/sponsor/byline.js'
-import {list as cases} from '../component/case/list.js'
-import {byline as casesByline} from '../component/case/byline.js'
+import {list as sponsors} from '../component/sponsor/list.js'
 import {page} from './page.js'
 
 const twitter = 'https://twitter.com/unifiedjs'

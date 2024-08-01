@@ -8,7 +8,7 @@
  * @returns {number}
  */
 export function helperReduceScore(data, repo) {
-  const {packagesByRepo, packageByName} = data
+  const {packageByName, packagesByRepo} = data
   const list = packagesByRepo[repo]
   let all = 0
 

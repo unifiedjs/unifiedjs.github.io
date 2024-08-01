@@ -4,10 +4,10 @@
  */
 
 import {h} from 'hastscript'
-import {score} from '../../atom/micro/score.js'
-import {verified} from '../../atom/micro/verified.js'
 import {downloads} from '../../atom/micro/downloads.js'
 import {gzip} from '../../atom/micro/gzip.js'
+import {score} from '../../atom/micro/score.js'
+import {verified} from '../../atom/micro/verified.js'
 import {item as box} from '../../atom/box/item.js'
 
 /**

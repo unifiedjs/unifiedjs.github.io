@@ -102,19 +102,18 @@ Now, let’s create an `example.js` file that will process our text file and
 report any found problems.
 
 ```javascript
-import fs from 'fs'
+import fs from 'node:fs/promises'
 import {retext} from 'retext'
 import {reporter} from 'vfile-reporter'
 import retextSentenceSpacing from './index.js'
 
-const buffer = fs.readFileSync('example.md')
+const document = await fs.readFile('example.md', 'utf8')
 
-retext()
+const file = await retext()
   .use(retextSentenceSpacing)
-  .process(buffer)
-  .then((file) => {
-    console.error(reporter(file))
-  })
+  .process(document)
+
+console.error(reporter(file))
 ```
 
 > Don’t forget to `npm install` dependencies (`retext`, `vfile-reporter`)!
@@ -144,7 +143,7 @@ Let’s create them in our plugin file `index.js`:
 
 ```javascript
 export default function retextSentenceSpacing() {
-  return (tree, file) => {
+  return function (tree, file) {
   }
 }
 ```
@@ -161,8 +160,8 @@ Let’s add that.
 +import {visit} from 'unist-util-visit'
 +
  export default function retextSentenceSpacing() {
-   return (tree, file) => {
-+    visit(tree, 'ParagraphNode', (node) => {
+   return function (tree, file) {
++    visit(tree, 'ParagraphNode', function (node) {
 +      console.log(node)
 +    })
    }
@@ -224,12 +223,12 @@ We use a small utility for checking node types: [`unist-util-is`][is].
 +import {is} from 'unist-util-is'
 
  export default function retextSentenceSpacing() {
-   return (tree, file) => {
-     visit(tree, 'ParagraphNode', (node) => {
+   return function (tree, file) {
+     visit(tree, 'ParagraphNode', function (node) {
 -      console.log(node)
 +      const children = node.children
 +
-+      children.forEach((child, index) => {
++      children.forEach(function (child, index) {
 +        if (
 +          is(children[index - 1], 'SentenceNode') &&
 +          is(child, 'WhiteSpaceNode') &&

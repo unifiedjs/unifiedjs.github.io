@@ -10,7 +10,7 @@ import {item} from './item.js'
 /**
  * @param {Data} data
  * @param {ReadonlyArray<string>} d
- * @param {Options} [options]
+ * @param {Options | undefined} [options]
  * @returns {Array<ElementContent>}
  */
 export function list(data, d, options) {

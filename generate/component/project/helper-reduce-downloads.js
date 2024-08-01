@@ -9,7 +9,7 @@
  * @returns {number}
  */
 export function helperReduceDownloads(data, repo) {
-  const {packagesByRepo, packageByName} = data
+  const {packageByName, packagesByRepo} = data
 
   return packagesByRepo[repo]?.reduce(sum, 0) || 0
 

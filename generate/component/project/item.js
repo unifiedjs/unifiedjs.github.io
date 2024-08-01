@@ -4,11 +4,11 @@
  */
 
 import {h} from 'hastscript'
+import {item as box} from '../../atom/box/item.js'
 import {downloads} from '../../atom/micro/downloads.js'
 import {score} from '../../atom/micro/score.js'
 import {stars} from '../../atom/micro/stars.js'
 import {verified} from '../../atom/micro/verified.js'
-import {item as box} from '../../atom/box/item.js'
 import {helperReduceDownloads} from './helper-reduce-downloads.js'
 import {helperReduceScore} from './helper-reduce-score.js'
 
@@ -18,7 +18,7 @@ import {helperReduceScore} from './helper-reduce-score.js'
  * @returns {ElementContent}
  */
 export function item(data, name) {
-  const {projectByRepo, packagesByRepo} = data
+  const {packagesByRepo, projectByRepo} = data
   const d = projectByRepo[name]
   const names = packagesByRepo[name]
 

@@ -31,9 +31,9 @@ a condition (such as in an if-statement) tells TypeScript to narrow a node.
 Here are some ways to narrow nodes:
 
 ```ts
-import type {Node, Literal} from 'unist'
-import type {List, Blockquote, Strong, Emphasis, Heading} from 'mdast'
-import {is, convert} from 'unist-util-is'
+import type {Literal, Node} from 'unist'
+import type {Blockquote, Emphasis, Heading, List, Strong} from 'mdast'
+import {convert, is} from 'unist-util-is'
 
 // `Node` could come from a plugin, a utility, or be passed into a function
 // here we hard code a Node for testing purposes

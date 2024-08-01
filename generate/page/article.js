@@ -5,8 +5,8 @@
 
 import assert from 'node:assert/strict'
 import {h} from 'hastscript'
-import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {detail} from '../component/article/detail.js'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {page} from './page.js'
 
 /**

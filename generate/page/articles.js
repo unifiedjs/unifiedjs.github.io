@@ -1,13 +1,13 @@
 /**
  * @import {Root} from 'hast'
- * @import {Metadata} from '../component/article/list.js'
  * @import {VFile} from 'vfile'
+ * @import {Metadata} from '../component/article/list.js'
  */
 
 import {h} from 'hastscript'
-import {breadcrumbs} from '../molecule/breadcrumbs.js'
-import {list} from '../component/article/list.js'
 import {helperSort} from '../component/article/helper-sort.js'
+import {list} from '../component/article/list.js'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {page} from './page.js'
 
 /**
@@ -16,7 +16,7 @@ import {page} from './page.js'
  * @returns {Root}
  */
 export function articles(section, articles) {
-  const {title, pathname, description} = section
+  const {description, pathname, title} = section
 
   return page(
     h('.row-l.column-l', {}, h('h2', {}, breadcrumbs(pathname, title))),

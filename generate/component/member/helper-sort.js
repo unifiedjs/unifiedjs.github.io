@@ -1,14 +1,14 @@
 /**
  * @import {Human} from '../../../data/humans.js'
- * @import {Role, Team} from '../../../data/teams.js'
+ * @import {Role} from '../../../data/teams.js'
  * @import {CommunityData} from '../../index.js'
  */
 
 import {sort} from '../../util/sort.js'
 
-const collective = {true: 4, false: 1}
+const collective = {false: 1, true: 4}
 /** @type {Partial<Record<Role, number>>} */
-const roles = {releaser: 3, merger: 2, maintainer: 2}
+const roles = {maintainer: 2, merger: 2, releaser: 3}
 
 /**
  * Sort humans by “influence”.

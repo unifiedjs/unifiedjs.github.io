@@ -40,9 +40,9 @@ for (const d of projects) {
 }
 
 for (const p of packages) {
-  const {name, repo, keywords} = p
+  const {keywords, name, repo} = p
   const pos = name.indexOf('/')
-  const scope = pos === -1 ? null : p.name.slice(0, pos)
+  const scope = pos === -1 ? undefined : p.name.slice(0, pos)
 
   data.packageByName[name] = p
 

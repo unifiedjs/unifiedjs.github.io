@@ -7,8 +7,8 @@ import {h} from 'hastscript'
 import {fmtCompact} from '../../util/fmt-compact.js'
 import {fmtPlural} from '../../util/fmt-plural.js'
 import {more as box} from '../../atom/box/more.js'
-import {list} from '../project/list.js'
 import {helperSort} from '../project/helper-sort.js'
+import {list} from '../project/list.js'
 
 /**
  * @param {Data} data

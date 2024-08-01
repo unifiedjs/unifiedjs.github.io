@@ -6,21 +6,21 @@ import {h} from 'hastscript'
 
 const slash = '/'
 
-/** @type {Record<string, [string, string] | string>} */
+/** @type {Record<string, [plural: string, singular: string] | string>} */
 const overwrites = {
-  learn: 'Learn',
-  guide: ['Guides', 'Guide'],
-  recipe: ['Recipes', 'Recipe'],
+  case: 'Cases',
+  community: 'Community',
   explore: 'Explore',
   keyword: ['Keywords', 'Keyword'],
-  topic: ['Topics', 'Topic'],
+  guide: ['Guides', 'Guide'],
+  learn: 'Learn',
+  member: 'Members',
   package: ['Packages', 'Package'],
   project: ['Projects', 'Project'],
+  recipe: ['Recipes', 'Recipe'],
   release: 'Releases',
-  community: 'Community',
   sponsor: 'Sponsors',
-  case: 'Cases',
-  member: 'Members'
+  topic: ['Topics', 'Topic']
 }
 
 /**
@@ -29,22 +29,31 @@ const overwrites = {
  * @returns {Array<ElementContent | string | undefined>}
  */
 export function breadcrumbs(filepath, title) {
-  return filepath
-    .split(slash)
-    .filter(Boolean)
-    .flatMap(function (d, index, data) {
-      const last = data.length - 1 === index
-      const components = data.slice(0, index + 1)
-      const href = slash + components.join(slash) + slash
-      let node = h('a', {href}, word(last && title ? title : d, last))
+  const parts = filepath.split(slash).filter(Boolean)
+  let index = -1
+  /** @type {Array<ElementContent>} */
+  const results = []
 
-      if (last) {
-        node.properties.rel = ['canonical']
-        node = h('span.content', {}, node)
-      }
+  while (++index < parts.length) {
+    const part = parts[index]
+    const last = parts.length - 1 === index
+    const components = parts.slice(0, index + 1)
+    const href = slash + components.join(slash) + slash
+    let node = h('a', {href}, word(last && title ? title : part, last))
 
-      return [node, last ? undefined : h('span.lowlight.separator', '/')]
-    })
+    if (last) {
+      node.properties.rel = ['canonical']
+      node = h('span.content', {}, node)
+    }
+
+    results.push(node)
+
+    if (!last) {
+      results.push(h('span.lowlight.separator', '/'))
+    }
+  }
+
+  return results
 }
 
 /**

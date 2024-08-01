@@ -27,7 +27,7 @@
  *
  * @typedef NpmsPackageCollectedLinks
  * @property {string | undefined} [bugs]
- * @property {string} [homepage]
+ * @property {string | undefined} [homepage]
  * @property {string} npm
  * @property {string | undefined} [repository]
  *
@@ -68,7 +68,7 @@
  * @property {string} url
  *
  * @typedef NpmsPackageCollectedSource
- * @property {Array<{urls: unknown, info: unknown}>} badges
+ * @property {Array<{info: unknown, urls: unknown}>} badges
  * @property {number} coverage
  * @property {{hasChangelog: boolean, readmeSize: number, testsSize: number}} files
  * @property {Array<string>} linters
@@ -141,19 +141,24 @@
  * @property {string} published
  * @property {string} repo
  * @property {string} tag
+ *
+ * @typedef SimpleProject
+ * @property {string} description
+ * @property {string} repo
+ * @property {number} stars
+ * @property {ReadonlyArray<string>} topics
+ * @property {string | undefined} url
  */
 
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
-import path from 'node:path'
 import process from 'node:process'
-import hostedGitInfo from 'hosted-git-info'
-import randomUseragent from 'random-useragent'
-import pAll from 'p-all'
 import bytes from 'bytes'
 import dotenv from 'dotenv'
-import {constantTopic} from '../generate/util/constant-topic.js'
+import hostedGitInfo from 'hosted-git-info'
+import randomUseragent from 'random-useragent'
 import {constantCollective} from '../generate/util/constant-collective.js'
+import {constantTopic} from '../generate/util/constant-topic.js'
 
 dotenv.config()
 
@@ -167,34 +172,37 @@ const ghEndpoint = 'https://api.github.com/graphql'
 const npmsEndpoint = 'https://api.npms.io/v2/package'
 const npmDownloadsEndpoint = 'https://api.npmjs.org/downloads'
 
-const topicRepos = await pAll(
-  constantTopic.map(function (topic) {
-    return function () {
-      return searchTopic(topic)
-    }
-  }),
-  {concurrency: 1}
-)
+/** @type {Set<string>} */
+const reposSet = new Set()
 
-const orgRepos = await pAll(
-  constantCollective.map(function (org) {
-    return function () {
-      return searchOrg(org)
-    }
-  }),
-  {concurrency: 1}
-)
+for (const d of constantCollective) {
+  const results = await searchOrg(d)
+  for (const d of results) reposSet.add(d)
+}
 
-const repos = [...new Set([...topicRepos.flat(), ...orgRepos.flat()])]
+for (const d of constantTopic) {
+  const results = await searchTopic(d)
+  for (const d of results) reposSet.add(d)
+}
 
-const results = await pAll(
-  repos.map(function (repo) {
-    return function () {
-      return crawlRepo(repo)
-    }
-  }),
-  {concurrency: 1}
-)
+const repos = [...reposSet]
+
+/** @type {Array<{project: RawProject, releases: Array<RawRelease>}>} */
+const results = []
+
+for (const d of repos) {
+  results.push(await crawlRepo(d))
+}
+
+/** @type {Array<RawProject>} */
+const projects = []
+/** @type {Array<RawRelease>} */
+const releases = []
+
+for (const d of results) {
+  projects.push(d.project)
+  releases.push(...d.releases)
+}
 
 await fs.writeFile(
   new URL('../data/releases.js', import.meta.url),
@@ -213,21 +221,34 @@ await fs.writeFile(
     ' */',
     '',
     '/** @type {ReadonlyArray<Release>} */',
-    'export const releases = ' +
-      JSON.stringify(
-        results.flatMap((d) => d.releases),
-        undefined,
-        2
-      ),
+    'export const releases = ' + JSON.stringify(releases, undefined, 2),
     ''
   ].join('\n')
 )
 
-const projects = results.map((d) => d.project)
-
 const packages = await findPackages(projects)
 
-const projectsWithPackages = projects.filter((d) => d.hasPackages)
+/** @type {Array<RawProject>} */
+const projectsWithPackages = []
+
+for (const project of projects) {
+  if (project.hasPackages) {
+    projectsWithPackages.push(project)
+  }
+}
+
+/** @type {Array<SimpleProject>} */
+const simpleProjects = []
+
+for (const d of projectsWithPackages) {
+  simpleProjects.push({
+    description: d.description,
+    repo: d.repo,
+    stars: d.stars,
+    topics: d.topics,
+    url: d.url
+  })
+}
 
 await fs.writeFile(
   new URL('../data/projects.js', import.meta.url),
@@ -247,27 +268,14 @@ await fs.writeFile(
     ' */',
     '',
     '/** @type {ReadonlyArray<Project>} */',
-    'export const projects = ' +
-      JSON.stringify(
-        projectsWithPackages.map(function (d) {
-          return {
-            description: d.description,
-            repo: d.repo,
-            stars: d.stars,
-            topics: d.topics,
-            url: d.url
-          }
-        }),
-        undefined,
-        2
-      ),
+    'export const projects = ' + JSON.stringify(simpleProjects, undefined, 2),
     ''
   ].join('\n')
 )
 
 console.info('✓ done (%d projects)', projectsWithPackages.length)
 
-const meta = {size: 0, issueOpen: 0, issueClosed: 0, prOpen: 0, prClosed: 0}
+const meta = {issueClosed: 0, issueOpen: 0, prClosed: 0, prOpen: 0, size: 0}
 const metaKeys = /** @type {Array<keyof typeof meta>} */ (Object.keys(meta))
 
 for (const d of projectsWithPackages) {
@@ -318,57 +326,50 @@ await fs.writeFile(
 console.info('✓ done (%d packages)', packages.length)
 
 /**
- *
  * @param {ReadonlyArray<RawProject>} projects
  * @returns {Promise<Array<RawPackage>>}
  */
 async function findPackages(projects) {
   /** @type {Array<RawPackage>} */
   const packages = []
-  /** @type {Array<() => Promise<undefined>>} */
-  const tasks = []
 
   for (const project of projects) {
     for (const manifest of project.manifests) {
-      tasks.push(async function () {
-        const {manifestBase, packageJson} = await getManifest(project, manifest)
-        if (!packageJson) return
-        const packageInfo = await getPackage(project, manifest, packageJson)
-        if (!packageInfo) return
-        const [readme, downloads, size] = await Promise.all([
-          getReadme(project, manifestBase),
-          getDownloads(packageInfo.name),
-          getSize(packageInfo.name)
-        ])
-        if (!readme) return
-        project.hasPackages = true
+      const {manifestBase, packageJson} = await getManifest(project, manifest)
+      if (!packageJson) continue
+      const packageInfo = await getPackage(project, manifest, packageJson)
+      if (!packageInfo) continue
+      const [readme, downloads, size] = await Promise.all([
+        getReadme(project, manifestBase),
+        getDownloads(packageInfo.name),
+        getSize(packageInfo.name)
+      ])
+      if (!readme) continue
+      project.hasPackages = true
 
-        const readmeName =
-          packageInfo.name.replaceAll(/^@/g, '').replaceAll('/', '-') + '.md'
+      const readmeName =
+        packageInfo.name.replaceAll(/^@/g, '').replaceAll('/', '-') + '.md'
 
-        await fs.writeFile(
-          new URL('../data/readme/' + readmeName, import.meta.url),
-          readme
-        )
+      await fs.writeFile(
+        new URL('../data/readme/' + readmeName, import.meta.url),
+        readme
+      )
 
-        packages.push({
-          description: packageInfo.description,
-          downloads,
-          gzip: size,
-          keywords: packageInfo.keywords,
-          latest: packageInfo.latest,
-          license: packageInfo.license,
-          manifestBase,
-          name: packageInfo.name,
-          readmeName,
-          repo: project.repo,
-          score: packageInfo.score
-        })
+      packages.push({
+        description: packageInfo.description,
+        downloads,
+        gzip: size,
+        keywords: packageInfo.keywords,
+        latest: packageInfo.latest,
+        license: packageInfo.license,
+        manifestBase,
+        name: packageInfo.name,
+        readmeName,
+        repo: project.repo,
+        score: packageInfo.score
       })
     }
   }
-
-  await pAll(tasks, {concurrency: 1})
 
   return packages
 }
@@ -386,7 +387,7 @@ async function searchTopic(topic) {
 
   const query = `
     query($after: String, $query: String!) {
-      search(after: $after, first: 100, type: REPOSITORY, query: $query) {
+      search(after: $after, first: 100, query: $query, type: REPOSITORY) {
         nodes { ... on Repository { nameWithOwner } }
         pageInfo { hasNextPage endCursor }
         repositoryCount
@@ -397,8 +398,8 @@ async function searchTopic(topic) {
   while (!done) {
     const response = await fetch(ghEndpoint, {
       body: JSON.stringify({
-        variables: {after, query: 'sort:stars-desc topic:' + topic},
-        query
+        query,
+        variables: {after, query: 'sort:stars-desc topic:' + topic}
       }),
       headers: {
         Authorization: 'bearer ' + ghToken,
@@ -419,7 +420,9 @@ async function searchTopic(topic) {
       done = true
     }
 
-    matches.push(...data.nodes.map((d) => d.nameWithOwner))
+    for (const d of data.nodes) {
+      matches.push(d.nameWithOwner)
+    }
   }
 
   return matches
@@ -461,12 +464,12 @@ async function searchOrg(org) {
 
   while (!done) {
     const response = await fetch(ghEndpoint, {
-      method: 'POST',
       body: JSON.stringify({query, variables: {org, after}}),
       headers: {
-        'Content-Type': 'application/json',
-        Authorization: 'bearer ' + ghToken
-      }
+        Authorization: 'bearer ' + ghToken,
+        'Content-Type': 'application/json'
+      },
+      method: 'POST'
     })
     const json =
       /** @type {{data: {organization: {repositories: {nodes: Array<{hasIssuesEnabled: boolean, isArchived: boolean, isDisabled: boolean, isTemplate: boolean, nameWithOwner: string}>, pageInfo: {hasNextPage: boolean, endCursor: string}}}}}} */ (
@@ -481,17 +484,16 @@ async function searchOrg(org) {
       done = true
     }
 
-    matches.push(
-      ...data.nodes
-        .filter(
-          (d) =>
-            d.hasIssuesEnabled &&
-            !d.isArchived &&
-            !d.isDisabled &&
-            !d.isTemplate
-        )
-        .map((d) => d.nameWithOwner)
-    )
+    for (const d of data.nodes) {
+      if (
+        d.hasIssuesEnabled &&
+        !d.isArchived &&
+        !d.isDisabled &&
+        !d.isTemplate
+      ) {
+        matches.push(d.nameWithOwner)
+      }
+    }
   }
 
   return matches
@@ -619,6 +621,33 @@ async function crawlRepo(repo) {
     }
   }
 
+  /** @type {Array<string>} */
+  const manifests = []
+
+  if (defaultBranch && repository.dependencyGraphManifests?.nodes) {
+    for (const d of repository.dependencyGraphManifests.nodes) {
+      if (
+        d.filename.endsWith('package.json') &&
+        d.parseable &&
+        !d.exceedsMaxSize
+      ) {
+        manifests.push(d.filename)
+      }
+    }
+  }
+
+  /** @type {Array<string>} */
+  const topics = []
+
+  if (repository.repositoryTopics?.nodes) {
+    for (const d of repository.repositoryTopics.nodes) {
+      const name = d.topic.name
+      if (validTag(name)) {
+        topics.push(name)
+      }
+    }
+  }
+
   return {
     project: {
       default: defaultBranch,
@@ -626,30 +655,14 @@ async function crawlRepo(repo) {
       hasPackages: false,
       issueClosed: repository.issueClosed?.totalCount || 0,
       issueOpen: repository.issueOpen?.totalCount || 0,
-      manifests: (repository.dependencyGraphManifests?.nodes || [])
-        .filter(
-          (d) =>
-            defaultBranch &&
-            d.filename.endsWith('package.json') &&
-            d.parseable &&
-            !d.exceedsMaxSize
-        )
-        .map((d) => d.filename),
+      manifests,
       prClosed: repository.prClosed?.totalCount || 0,
       prOpen: repository.prOpen?.totalCount || 0,
       repo,
       // Size of repo in bytes.
       size: repository.diskUsage * 1024,
       stars: repository.stargazers?.totalCount || 0,
-      topics: [
-        ...new Set(
-          (repository.repositoryTopics?.nodes || [])
-            .map((d) => d.topic.name)
-            .filter(function (d) {
-              return validTag(d)
-            })
-        )
-      ],
+      topics,
       url: repository.homepageUrl || undefined
     },
     releases
@@ -665,16 +678,14 @@ async function getManifest(project, manifest) {
   const {repo} = project
   const [owner, name] = repo.split('/')
   const target = [project.default || 'master', manifest].join(':')
-  /** @type {string | undefined} */
-  let manifestBase = path.dirname(manifest)
+  const parts = manifest.split('/')
+  const tail = parts.pop()
+  assert(tail === 'package.json')
+  const manifestBase = parts.join('/') || undefined
   /** @type {string | undefined} */
   let packageJsonText
   /** @type {PackageJson | undefined} */
   let packageJson
-
-  if (manifestBase === '.') {
-    manifestBase = undefined
-  }
 
   try {
     const response = await fetch(ghEndpoint, {
@@ -809,15 +820,18 @@ async function getPackage(project, manifest, packageJson) {
     return
   }
 
+  /** @type {Array<string>} */
+  const validKeywords = []
+
+  for (const d of keywords) {
+    if (validTag(d) && !validKeywords.includes(d)) {
+      validKeywords.push(d)
+    }
+  }
+
   return {
     description,
-    keywords: [
-      ...new Set(
-        keywords.filter(function (d) {
-          return validTag(d)
-        })
-      )
-    ],
+    keywords: validKeywords,
     latest,
     license,
     name,
@@ -952,8 +966,8 @@ async function getSize(name) {
 
   // I’m not 100% why exactly but this is how bundlephobia’s JSON converts to
   // what it displays on the site:
-  // => https://bundlephobia.com/api/size?package=micromark@3.0.0 => 14273
-  // => https://bundlephobia.com/package/micromark@3.0.0 => 13.9kb
+  // * https://bundlephobia.com/api/size?package=micromark@3.0.0 = 14273
+  // * https://bundlephobia.com/package/micromark@3.0.0 = 13.9kb
   return (((bytes.parse(value) / 1024) * 1000) / 1024) * 1000
 }
 

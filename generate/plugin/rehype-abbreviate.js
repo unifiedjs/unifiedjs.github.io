@@ -1,68 +1,83 @@
 /**
  * @import {Element, Properties, Root} from 'hast'
- * @import {ReplaceFunction} from 'hast-util-find-and-replace'
+ * @import {RegExpMatchObject, ReplaceFunction} from 'hast-util-find-and-replace'
  * @import {VFile} from 'vfile'
  */
 
 /**
- * @typedef {Record<string, string | null>} Titles
+ * @typedef Options
+ *   Configuration.
+ * @property {ReadonlyArray<string> | null | undefined} [ignore]
+ *   Abbreviations to ignore.
+ * @property {Readonly<Record<string, string>>} titles
+ *   Abbreviations.
  */
 
+import {ok as assert} from 'devlop'
 import {h} from 'hastscript'
-import {findAndReplace, defaultIgnore} from 'hast-util-find-and-replace'
+import {defaultIgnore, findAndReplace} from 'hast-util-find-and-replace'
 import pluralize from 'pluralize'
 
-const re = /\b([A-Z]\.?[A-Z][\w.]*)\b/g
-
-const ignore = defaultIgnore.concat(['pre', 'code'])
+const re = /\b[A-Z]\.?[A-Z][\w.]*\b/g
 
 /**
- * @param {Titles} titles
- *   Abbreviation titles.
+ * @param {Options} options
+ *   Configuration.
  * @returns
  *   Transform.
  */
-export default function rehypeAbbreviate(titles) {
-  return transform
+export default function rehypeAbbreviate(options) {
+  assert(options)
+  const titles = options.titles
+  assert(titles)
 
   /**
    * @param {Root} tree
    * @param {VFile} file
    * @returns {undefined}
    */
-  function transform(tree, file) {
-    /** @type {Array<string>} */
-    const cache = []
+  return function (tree, file) {
+    /** @type {Set<string>} */
+    const cache = new Set()
 
-    findAndReplace(tree, [re, replace], {ignore})
+    findAndReplace(tree, [re, replace], {
+      ignore: [...defaultIgnore, 'code', 'pre']
+    })
 
     /**
      * @param {string} $0
-     * @returns {Element | string}
+     * @param {RegExpMatchObject} match
+     * @returns {Element | string | false}
      * @satisfies {ReplaceFunction}
      */
-    function replace($0) {
+    function replace($0, match) {
       const id = pluralize.singular($0)
-      const first = !cache.includes(id)
+
+      if (options.ignore?.includes(id)) {
+        return false
+      }
+
       const title = titles[id]
 
-      if (title === null) {
-        return $0
-      }
-
       if (!title) {
-        file.message('Missing abbreviation title for `' + id + '`')
-        return $0
-      }
-
-      if (first) {
-        cache.push(id)
+        file.message(
+          'Unexpected abbreviation `' +
+            id +
+            '` w/o description in options, expected it in `ignore` or `titles`',
+          {
+            ancestors: match.stack,
+            source: 'rehype-abbreviate',
+            ruleId: 'missing-title'
+          }
+        )
+        return false
       }
 
       /** @type {Properties} */
       const properties = {title}
 
-      if (first) {
+      if (!cache.has(id)) {
+        cache.add(id)
         properties.className = ['first']
       }
 

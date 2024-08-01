@@ -81,7 +81,7 @@ console.log(
 
 // SVG:
 console.log(
-  s('svg', {xmlns: 'http://www.w3.org/2000/svg', viewbox: '0 0 500 500'}, [
+  s('svg', {viewbox: '0 0 500 500', xmlns: 'http://www.w3.org/2000/svg'}, [
     s('title', 'SVG `<circle>` element'),
     s('circle', {cx: 120, cy: 120, r: 100})
   ])

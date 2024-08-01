@@ -40,16 +40,18 @@ import type {Root} from 'mdast'
 import {visit} from 'unist-util-visit'
 
 const markdownFile = await remark()
-  .use(() => (mdast: Root) => {
-    visit(
-      mdast,
-      // Check that the Node is a heading:
-      'heading',
-      (node) => {
-        // The types know `node` is a heading.
-        node.depth += 1
-      }
-    )
+  .use(function () {
+    return function (mdast: Root) {
+      visit(
+        mdast,
+        // Check that the Node is a heading:
+        'heading',
+        function (node) {
+          // The types know `node` is a heading.
+          node.depth += 1
+        }
+      )
+    }
   })
   .process('## Hello, *World*!')
 
@@ -64,18 +66,20 @@ import type {Root} from 'mdast'
 import {visit} from 'unist-util-visit'
 
 const markdownFile = await remark()
-  .use(() => (mdast: Root) => {
-    visit(
-      mdast,
-      // Check that the Node is a list:
-      'list',
-      (node) => {
-        if (node.ordered) {
-          // The types know `node` is an ordered list.
-          node.ordered = false
+  .use(function () {
+    return function (mdast: Root) {
+      visit(
+        mdast,
+        // Check that the Node is a list:
+        'list',
+        function (node) {
+          if (node.ordered) {
+            // The types know `node` is an ordered list.
+            node.ordered = false
+          }
         }
-      }
-    )
+      )
+    }
   })
   .process('1. list item')
 
@@ -92,19 +96,25 @@ For example if we want to check if all markdown `ListItem` are inside a `List`
 we could:
 
 ```ts
+import type {ListItem, Root} from 'mdast'
 import remark from 'remark'
-import type {Root, ListItem} from 'mdast'
 import {visitParents} from 'unist-util-visit-parents'
 
 remark()
-  .use(() => (mdast: Root) => {
-    visitParents(mdast, 'listItem', (listItem, parents) => {
-      // The types know `listItem` is a list item, and that `parents` are mdast
-      // parents.
-      if (!parents.some((parent) => parent.type === 'list')) {
-        console.warn('listItem is outside a list')
-      }
-    })
+  .use(function () {
+    return function (mdast: Root) {
+      visitParents(mdast, 'listItem', function (listItem, parents) {
+        // The types know `listItem` is a list item, and that `parents` are mdast
+        // parents.
+        if (
+          !parents.some(function (parent) {
+            return parent.type === 'list')
+          }
+        ) {
+          console.warn('listItem is outside a list')
+        }
+      })
+    }
   })
   .process('1. list item')
 ```
@@ -124,9 +134,11 @@ import type {Root} from 'mdast'
 import {selectAll} from 'unist-util-select'
 
 remark()
-  .use(() => (mdast: Root) => {
-    const matches = selectAll('blockquote paragraph', mdast)
-    console.log(matches)
+  .use(function () {
+    return function (mdast: Root) {
+      const matches = selectAll('blockquote paragraph', mdast)
+      console.log(matches)
+    }
   })
   .process('1. list item')
 ```

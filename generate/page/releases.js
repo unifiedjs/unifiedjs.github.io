@@ -4,11 +4,11 @@
  */
 
 import {h} from 'hastscript'
-import {breadcrumbs} from '../molecule/breadcrumbs.js'
-import {list} from '../component/release/list.js'
+import {releases as dataReleases} from '../../data/releases.js'
 import {helperFilter} from '../component/release/helper-filter.js'
 import {helperSort} from '../component/release/helper-sort.js'
-import {releases as dataReleases} from '../../data/releases.js'
+import {list} from '../component/release/list.js'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {page} from './page.js'
 
 /**

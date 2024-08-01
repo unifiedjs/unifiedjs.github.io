@@ -6,8 +6,8 @@
 import {more} from '../../atom/box/more.js'
 import {fmtCompact} from '../../util/fmt-compact.js'
 import {pickRandom} from '../../util/pick-random.js'
-import {list} from './list.js'
 import {helperSort} from './helper-sort.js'
+import {list} from './list.js'
 
 /**
  * @param {Data} data

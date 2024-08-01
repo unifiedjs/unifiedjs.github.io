@@ -5,19 +5,19 @@
  * @type {ReadonlyArray<string>}
  */
 export const constantTopic = [
-  'micromark-extension',
-  'unified-plugin',
-  'remark-plugin',
-  'rehype-plugin',
-  'retext-plugin',
-  'redot-plugin',
-  'unist-util',
-  'mdast-util',
   'hast-util',
-  'xast-util',
   'esast-util',
+  'mdast-util',
+  'micromark-extension',
   'nlcst-util',
-  'vfile-util',
+  'redot-plugin',
+  'rehype-plugin',
+  'remark-lint-rule',
+  'remark-plugin',
+  'retext-plugin',
+  'unified-plugin',
   'unifiedjs',
-  'remark-lint-rule'
+  'unist-util',
+  'vfile-util',
+  'xast-util'
 ]

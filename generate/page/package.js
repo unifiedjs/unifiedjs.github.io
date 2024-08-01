@@ -3,8 +3,8 @@
  * @import {Data} from '../data.js'
  */
 
-import {head} from '../component/package/head.js'
 import {detail} from '../component/package/detail.js'
+import {head} from '../component/package/head.js'
 import {page} from './page.js'
 
 /**

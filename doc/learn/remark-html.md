@@ -50,15 +50,13 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
 
-unified()
+const file = await unified()
   .use(remarkParse) // Parse markdown content to a syntax tree
   .use(remarkRehype) // Turn markdown syntax tree to HTML syntax tree, ignoring embedded HTML
   .use(rehypeStringify) // Serialize HTML syntax tree
   .process('*emphasis* and **strong**')
-  .then((file) => console.log(String(file)))
-  .catch((error) => {
-    throw error
-  })
+
+console.log(String(file))
 ```
 
 This turns `*emphasis* and **strong**` into
@@ -80,15 +78,13 @@ import rehypeParse from 'rehype-parse'
 import rehypeRemark from 'rehype-remark'
 import remarkStringify from 'remark-stringify'
 
-unified()
+const file = await unified()
   .use(rehypeParse) // Parse HTML to a syntax tree
   .use(rehypeRemark) // Turn HTML syntax tree to markdown syntax tree
   .use(remarkStringify) // Serialize HTML syntax tree
   .process('<em>emphasis</em> and <strong>strong</strong>')
-  .then((file) => console.log(String(file)))
-  .catch((error) => {
-    throw error
-  })
+
+console.log(String(file))
 ```
 
 This turns `<em>emphasis</em> and <strong>strong</strong>` into
@@ -112,15 +108,13 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
 
-unified()
+const file = await unified()
   .use(remarkParse)
   .use(remarkRehype, {allowDangerousHtml: true}) // Pass raw HTML strings through.
   .use(rehypeStringify, {allowDangerousHtml: true}) // Serialize the raw HTML strings
   .process('*emphasis* and <strong>strong</strong>')
-  .then((file) => console.log(String(file)))
-  .catch((error) => {
-    throw error
-  })
+
+console.log(String(file))
 ```
 
 This solution **is not safe**: content you don’t trust can cause XSS
@@ -140,16 +134,14 @@ import remarkRehype from 'remark-rehype'
 import rehypeRaw from 'rehype-raw'
 import rehypeStringify from 'rehype-stringify'
 
-unified()
+const file = await unified()
   .use(remarkParse)
   .use(remarkRehype, {allowDangerousHtml: true})
   .use(rehypeRaw) // *Parse* the raw HTML strings embedded in the tree
   .use(rehypeStringify)
   .process('*emphasis* and <strong>strong</strong>')
-  .then((file) => console.log(String(file)))
-  .catch((error) => {
-    throw error
-  })
+
+console.log(String(file))
 ```
 
 This solution **is not safe**: content you don’t trust can cause XSS

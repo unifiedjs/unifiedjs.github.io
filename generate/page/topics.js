@@ -4,10 +4,10 @@
  */
 
 import {h} from 'hastscript'
-import {breadcrumbs} from '../molecule/breadcrumbs.js'
-import {list} from '../component/topic/list.js'
 import {helperFilter} from '../component/topic/helper-filter.js'
 import {helperSort} from '../component/topic/helper-sort.js'
+import {list} from '../component/topic/list.js'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {page} from './page.js'
 
 /**

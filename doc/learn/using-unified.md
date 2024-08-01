@@ -257,7 +257,7 @@ like so:
 +++ b/index.js
 @@ -1,4 +1,5 @@
 -import {stream} from 'unified-stream'
-+import {readSync, writeSync} from 'to-vfile'
++import {read, write} from 'to-vfile'
 +import {reporter} from 'vfile-reporter'
  import {unified} from 'unified'
  import remarkParse from 'remark-parse'
@@ -267,18 +267,13 @@ like so:
    .use(rehypeStringify)
 
 -process.stdin.pipe(stream(processor)).pipe(process.stdout)
-+processor
-+  .process(readSync('example.md'))
-+  .then(
-+    (file) => {
-+      console.error(reporter(file))
-+      file.extname = '.html'
-+      writeSync(file)
-+    },
-+    (error) => {
-+      throw error
-+    }
-+  )
++const file = await read('example.md')
++
++await processor.process(file)
++
++console.error(reporter(file))
++file.extname = '.html'
++await write(file)
 ```
 
 If we now run our script on its own, without shell redirects, we get a report

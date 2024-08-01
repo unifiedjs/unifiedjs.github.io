@@ -4,8 +4,8 @@
  */
 
 import {h} from 'hastscript'
-import {list} from '../package/list.js'
 import {helperSort} from '../package/helper-sort.js'
+import {list} from '../package/list.js'
 
 /**
  * @param {Data} data

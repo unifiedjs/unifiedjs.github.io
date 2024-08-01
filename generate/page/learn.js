@@ -1,13 +1,13 @@
 /**
- * @import {Root} from 'hast'
+ * @import {ElementContent, Root} from 'hast'
  * @import {Metadata} from '../component/article/list.js'
  */
 
 import {ok as assert} from 'devlop'
 import {h} from 'hastscript'
-import {breadcrumbs} from '../molecule/breadcrumbs.js'
-import {list} from '../component/article/list.js'
 import {helperSort} from '../component/article/helper-sort.js'
+import {list} from '../component/article/list.js'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {page} from './page.js'
 
 /**
@@ -15,6 +15,17 @@ import {page} from './page.js'
  * @returns {Root}
  */
 export function learn(sections) {
+  /** @type {Array<ElementContent>} */
+  const articles = []
+
+  for (const d of sections) {
+    assert(d.entries)
+    articles.push(
+      h('.article.content', [h('h3', {}, d.title), h('p', {}, d.description)]),
+      list(d, helperSort(d.entries || []))
+    )
+  }
+
   return page(h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/learn/'))), [
     h('.article.content', [
       h('h3', 'Intro'),
@@ -30,16 +41,7 @@ export function learn(sections) {
         'through how to complete bigger tasks.'
       ])
     ]),
-    ...sections.flatMap((d) => {
-      assert(d.entries)
-      return [
-        h('.article.content', [
-          h('h3', {}, d.title),
-          h('p', {}, d.description)
-        ]),
-        list(d, helperSort(d.entries || []))
-      ]
-    }),
+    ...articles,
     h('.article.content', [
       h('h3', 'Explore'),
       h('p', [

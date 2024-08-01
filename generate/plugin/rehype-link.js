@@ -4,21 +4,22 @@
  */
 
 import {h} from 'hastscript'
-import {findAndReplace, defaultIgnore} from 'hast-util-find-and-replace'
+import {defaultIgnore, findAndReplace} from 'hast-util-find-and-replace'
 
 const replacements = initialise()
 
-const ignore = defaultIgnore.concat([
+const ignore = [
+  ...defaultIgnore,
   'a',
-  'pre',
   'code',
   'h1',
   'h2',
   'h3',
   'h4',
   'h5',
-  'h6'
-])
+  'h6',
+  'pre'
+]
 
 /**
  * @returns
@@ -44,21 +45,21 @@ function initialise() {
   const result = []
   /** @type {Record<string, string>} */
   const dictionary = {
-    'v|file': 'vfile/vfile',
-    'uni|fied': 'unifiedjs/unified',
-    're|mark': 'remarkjs/remark',
-    're|text': 'retextjs/retext',
-    're|hype': 'rehypejs/rehype',
-    're|dot': 'redotjs/redot',
-    'syntax|-tree': 'syntax-tree',
-    'uni|st': 'syntax-tree/unist',
-    'nl|cst': 'syntax-tree/nlcst',
-    'md|ast': 'syntax-tree/mdast',
+    'MD|X': 'mdx-js/mdx',
+    'dot|ast': 'redotjs/dotast',
     'es|ast': 'syntax-tree/esast',
     'h|ast': 'syntax-tree/hast',
-    'x|ast': 'syntax-tree/xast',
-    'dot|ast': 'redotjs/dotast',
-    'MD|X': 'mdx-js/mdx'
+    'md|ast': 'syntax-tree/mdast',
+    'nl|cst': 'syntax-tree/nlcst',
+    're|dot': 'redotjs/redot',
+    're|hype': 'rehypejs/rehype',
+    're|mark': 'remarkjs/remark',
+    're|text': 'retextjs/retext',
+    'syntax|-tree': 'syntax-tree',
+    'uni|fied': 'unifiedjs/unified',
+    'uni|st': 'syntax-tree/unist',
+    'v|file': 'vfile/vfile',
+    'x|ast': 'syntax-tree/xast'
   }
 
   for (const [find, slug] of Object.entries(dictionary)) {

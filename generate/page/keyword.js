@@ -4,8 +4,8 @@
  */
 
 import {h} from 'hastscript'
-import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {detail} from '../component/keyword/detail.js'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {page} from './page.js'
 
 /**

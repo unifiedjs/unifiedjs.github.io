@@ -166,16 +166,14 @@ npm install --save-dev @types/unist
 To import the types into a TypeScript file, use:
 
 ```ts
-import type {Node, Literal, Parent} from 'unist'
+import type {Literal, Node, Parent} from 'unist'
 ```
 
 To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ```js
 /**
- * @typedef {import('unist').Node} Node
- * @typedef {import('unist').Literal} Literal
- * @typedef {import('unist').Parent} Parent
+ * @import {Literal, Node, Parent} from 'unist'
  */
 ```
 
@@ -195,16 +193,14 @@ npm install --save-dev @types/mdast
 To import the types into a TypeScript file, use:
 
 ```ts
-import type {Heading, Code, Link} from 'mdast'
+import type {Code, Heading, Link} from 'mdast'
 ```
 
 To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ```js
 /**
- * @typedef {import('mdast').Heading} Heading
- * @typedef {import('mdast').Code} Code
- * @typedef {import('mdast').Link} Link
+ * @import {Code, Heading, Link} from 'mdast'
  */
 ```
 
@@ -224,16 +220,14 @@ npm install --save-dev @types/hast
 To import the types into a TypeScript file, use:
 
 ```ts
-import type {Element, Comment, DocType} from 'hast'
+import type {Comment, Doctype, Element} from 'hast'
 ```
 
 To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ```js
 /**
- * @typedef {import('hast').Element} Element
- * @typedef {import('hast').Comment} Comment
- * @typedef {import('hast').DocType} DocType
+ * @import {Comment, Doctype, Element} from 'hast'
  */
 ```
 
@@ -253,16 +247,14 @@ npm install --save-dev @types/xast
 To import the types into a TypeScript file, use:
 
 ```ts
-import type {Element, CData, Instruction} from 'xast'
+import type {Cdata, Element, Instruction} from 'xast'
 ```
 
 To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ```js
 /**
- * @typedef {import('xast').Element} Element
- * @typedef {import('xast').CData} CData
- * @typedef {import('xast').Instruction} Instruction
+ * @import {Cdata, Element, Instruction} from 'xast'
  */
 ```
 

@@ -4,9 +4,9 @@
  */
 
 import {h} from 'hastscript'
-import {breadcrumbs} from '../molecule/breadcrumbs.js'
-import {list} from '../component/package/list.js'
 import {helperSort} from '../component/package/helper-sort.js'
+import {list} from '../component/package/list.js'
+import {breadcrumbs} from '../molecule/breadcrumbs.js'
 import {page} from './page.js'
 
 /**

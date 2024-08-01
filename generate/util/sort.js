@@ -19,6 +19,7 @@ export {descending as desc, descending as sort, ascending as asc}
 
 /**
  * @param {Compare} match
+ *   Match.
  * @returns
  *   Sort.
  */

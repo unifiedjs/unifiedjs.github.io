@@ -11,7 +11,7 @@ import {more} from './more.js'
 /**
  * @param {Data} data
  * @param {ReadonlyArray<string>} names
- * @param {Options} [options]
+ * @param {Options | undefined} [options]
  * @returns {Element}
  */
 export function list(data, names, options) {

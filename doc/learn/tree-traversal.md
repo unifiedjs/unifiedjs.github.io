@@ -58,13 +58,13 @@ You could parse that with the following code (using [`unified`][unified] and
 [`rehype-parse`][rehype-parse]):
 
 ```js
-import fs from 'node:fs'
+import fs from 'node:fs/promises'
 import {unified} from 'unified'
 import rehypeParse from 'rehype-parse'
 
-const doc = fs.readFileSync('example.html')
+const document = await fs.readFile('example.html')
 
-const tree = unified().use(rehypeParse, {fragment: true}).parse(doc)
+const tree = unified().use(rehypeParse, {fragment: true}).parse(document)
 
 console.log(tree)
 ```
@@ -123,7 +123,7 @@ import {visit} from 'unist-util-visit'
 
 // …
 
-visit(tree, (node) => {
+visit(tree, function (node) {
   console.log(node.type)
 })
 ```
@@ -158,7 +158,7 @@ import {visit} from 'unist-util-visit'
 
 // …
 
-visit(tree, 'element', (node) => {
+visit(tree, 'element', function (node) {
   console.log(node.tagName)
 })
 ```
@@ -174,7 +174,7 @@ You can do this yourself as well.
 The above works the same as:
 
 ```js
-visit(tree, (node) => {
+visit(tree, function (node) {
   if (node.type === 'element') {
     console.log(node.tagName)
   }
@@ -185,7 +185,7 @@ But the test passed to `visit` can be more advanced, such as the following to
 visit different kinds of nodes.
 
 ```js
-visit(tree, ['comment', 'text'], (node) => {
+visit(tree, ['comment', 'text'], function (node) {
   console.log([node.value])
 })
 ```

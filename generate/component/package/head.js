@@ -24,7 +24,7 @@ import {helperSort} from '../keyword/helper-sort.js'
  * @returns {Array<ElementContent>}
  */
 export function head(data, id) {
-  const {projectByRepo, packageByName} = data
+  const {packageByName, projectByRepo} = data
   const d = packageByName[id]
   const project = projectByRepo[d.repo]
   const [owner, projectName] = d.repo.split('/')

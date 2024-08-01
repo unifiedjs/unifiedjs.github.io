@@ -7,20 +7,20 @@
 
 import {h} from 'hastscript'
 import {block} from '../atom/macro/block.js'
-import {list as articlesList} from '../component/article/list.js'
 import {helperSort as articlesSort} from '../component/article/helper-sort.js'
-import {list as listPackage} from '../component/package/list.js'
-import {helperSort as sortPackage} from '../component/package/helper-sort.js'
-import {list as sponsors} from '../component/sponsor/list.js'
+import {list as articlesList} from '../component/article/list.js'
 import {list as cases} from '../component/case/list.js'
+import {helperSort as sortPackage} from '../component/package/helper-sort.js'
+import {list as listPackage} from '../component/package/list.js'
 import {explorePreview as release} from '../component/release/explore-preview.js'
 import {helperFilter as releaseFilter} from '../component/release/helper-filter.js'
-import {fmtCompact} from '../util/fmt-compact.js'
-import {fmtPercent} from '../util/fmt-percent.js'
-import {constantCollective} from '../util/constant-collective.js'
-import {pickRandom} from '../util/pick-random.js'
+import {list as sponsors} from '../component/sponsor/list.js'
 import {meta} from '../../data/meta.js'
 import {releases as dataReleases} from '../../data/releases.js'
+import {constantCollective} from '../util/constant-collective.js'
+import {fmtCompact} from '../util/fmt-compact.js'
+import {fmtPercent} from '../util/fmt-percent.js'
+import {pickRandom} from '../util/pick-random.js'
 import {page} from './page.js'
 
 const linux = 3_166_218 // Checked from the `diskUsage` result for `torvalds/linux`
@@ -29,26 +29,38 @@ const mobyDick = 1.2 * 1024 * 1024
 // Apparently Gutenberg’s version is 1.2mb.
 
 /**
- * @param {Data & CommunityData & {articles: ReadonlyArray<VFile>}} data
+ * @param {CommunityData & Data & {articles: ReadonlyArray<VFile>}} data
  * @returns {Root}
  */
 export function home(data) {
   const {packageByName, projectByRepo} = data
   const names = sortPackage(data, Object.keys(packageByName))
   const repos = Object.keys(projectByRepo)
-  const downloads = names
-    .map((d) => packageByName[d].downloads || 0)
-    .reduce(function (a, b) {
-      return a + b
-    }, 0)
-  const stars = repos
-    .map((d) => projectByRepo[d].stars || 0)
-    .reduce(function (a, b) {
-      return a + b
-    }, 0)
   const d = pickRandom(names.slice(0, 75), 5)
   const closed = meta.issueClosed + meta.prClosed
   const open = meta.issueOpen + meta.prOpen
+  const applicableReleases = releaseFilter(
+    data,
+    dataReleases,
+    30 * 24 * 60 * 60 * 1000
+  )
+  let downloads = 0
+  let stars = 0
+  let releases = 0
+
+  for (const d of names) {
+    downloads += packageByName[d].downloads || 0
+  }
+
+  for (const d of repos) {
+    stars += projectByRepo[d].stars || 0
+  }
+
+  for (const d of applicableReleases) {
+    if (constantCollective.includes(d.repo.split('/')[0])) {
+      releases++
+    }
+  }
 
   return page(
     [
@@ -131,16 +143,7 @@ export function home(data) {
           ' are currently open (',
           fmtPercent(open / (open + closed)),
           '). ',
-          'In the last 30 days, we’ve cut ' +
-            String(
-              releaseFilter(
-                data,
-                dataReleases,
-                30 * 24 * 60 * 60 * 1000
-              ).filter((d) => constantCollective.includes(d.repo.split('/')[0]))
-                .length
-            ) +
-            ' new releases.'
+          'In the last 30 days, we’ve cut ' + releases + ' new releases.'
         ])
       ]),
       release(data),

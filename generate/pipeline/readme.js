@@ -4,18 +4,18 @@
 
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
-import {unified} from 'unified'
-import remarkParse from 'remark-parse'
-import remarkGfm from 'remark-gfm'
+import {all} from '@wooorm/starry-night'
+import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeRaw from 'rehype-raw'
+import rehypeSanitize from 'rehype-sanitize'
+import rehypeSlug from 'rehype-slug'
+import rehypeStarryNight from 'rehype-starry-night'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGemoji from 'remark-gemoji'
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
-import rehypeRaw from 'rehype-raw'
-import rehypeSlug from 'rehype-slug'
-import rehypeAutolinkHeadings from 'rehype-autolink-headings'
-import rehypeSanitize from 'rehype-sanitize'
-import rehypeStarryNight from 'rehype-starry-night'
-import {all} from '@wooorm/starry-night'
+import {unified} from 'unified'
 import {link} from '../atom/icon/link.js'
 import rehypeResolveUrls from '../plugin/rehype-resolve-urls.js'
 import rehypeRewriteUrls from '../plugin/rehype-rewrite-urls.js'
@@ -41,8 +41,8 @@ export const readme = unified()
   .use(rehypeSlug)
   .use(rehypeAutolinkHeadings, {
     behavior: 'prepend',
-    properties: {ariaLabel: 'Link to self', className: ['anchor']},
-    content: link()
+    content: link(),
+    properties: {ariaLabel: 'Link to self', className: ['anchor']}
   })
   .use(rehypeResolveUrls)
   .use(rehypeRewriteUrls, {origin})

@@ -13,10 +13,18 @@ const defaults = 1
  * @returns {Array<string>}
  */
 export function helperFilter(data, names, min) {
-  const {packagesByKeyword} = data
   const value = min || defaults
+  /** @type {Array<string>} */
+  const results = []
 
-  return names.filter(function (d) {
-    return (packagesByKeyword[d] || []).length > value
-  })
+  for (const d of names) {
+    if (
+      Object.hasOwn(data.packagesByKeyword, d) &&
+      data.packagesByKeyword[d].length > value
+    ) {
+      results.push(d)
+    }
+  }
+
+  return results
 }

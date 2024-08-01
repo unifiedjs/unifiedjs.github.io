@@ -164,11 +164,11 @@ function render(text) {
   const node = parse(text)
 
   return h('div', {className: 'editor'}, [
-    h('div', {key: 'draw', className: 'draw'}, highlight(node)),
+    h('div', {className: 'draw', key: 'draw'}, highlight(node)),
     h('textarea', {
       key: 'area',
-      value: text,
-      oninput: onchange
+      oninput: onchange,
+      value: text
     })
   ])
 
@@ -348,7 +348,7 @@ Change `index.js` like so:
 +  let key = 0
 
    return h('div', {className: 'editor'}, [
-     h('div', {key: 'draw', className: 'draw'}, highlight(node)),
+     h('div', {className: 'draw', key: 'draw'}, highlight(node)),
 @@ -45,6 +46,22 @@ function render(text) {
 
    function one(node) {
@@ -410,7 +410,7 @@ Update `index.js` like so:
 +  function count(node) {
 +    let value = 0
 +
-+    visit(node, 'WordNode', () => {
++    visit(node, 'WordNode', function () {
 +      value++
 +    })
 +

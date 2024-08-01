@@ -4,11 +4,11 @@
  */
 
 import {h} from 'hastscript'
-import {oc as ocBadge} from '../../atom/micro/oc.js'
+import {item as card} from '../../atom/card/item.js'
 import {gh as ghBadge} from '../../atom/micro/gh.js'
+import {oc as ocBadge} from '../../atom/micro/oc.js'
 import {tw as twitterBadge} from '../../atom/micro/tw.js'
 import {url as urlLine} from '../../atom/micro/url.js'
-import {item as card} from '../../atom/card/item.js'
 
 const base = 'http://opencollective.com/'
 
@@ -17,7 +17,7 @@ const base = 'http://opencollective.com/'
  * @returns {Element}
  */
 export function item(d) {
-  const {name, description, image, oc, github, twitter, url, gold} = d
+  const {description, github, gold, image, name, oc, twitter, url} = d
   const className = gold ? ['gold'] : []
   const footer = [ocBadge(oc)]
 
@@ -30,7 +30,7 @@ export function item(d) {
   }
 
   if (url) {
-    footer.push(urlLine(url, {rel: ['sponsored', 'nofollow']}))
+    footer.push(urlLine(url, {rel: ['nofollow', 'sponsored']}))
   }
 
   return card(

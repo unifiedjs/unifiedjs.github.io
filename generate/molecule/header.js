@@ -3,8 +3,8 @@
  */
 
 import {h} from 'hastscript'
-import {tw} from '../atom/icon/tw.js'
 import {gh} from '../atom/icon/gh.js'
+import {tw} from '../atom/icon/tw.js'
 
 /**
  * @returns {ElementContent}
@@ -12,6 +12,7 @@ import {gh} from '../atom/icon/gh.js'
 export function header() {
   const twitter = tw()
   const github = gh()
+
   enlarge(twitter)
   enlarge(github)
 
@@ -48,10 +49,8 @@ export function header() {
  * @returns {undefined}
  */
 function enlarge(node) {
-  Object.assign(node.properties, {
-    role: 'img',
-    width: 24,
-    height: 24,
-    className: ['icon', 'x-show-l']
-  })
+  node.properties.className = ['icon', 'x-show-l']
+  node.properties.height = 24
+  node.properties.role = 'img'
+  node.properties.width = 24
 }
