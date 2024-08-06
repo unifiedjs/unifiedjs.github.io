@@ -53,7 +53,7 @@ for (const filename of files) {
   const d = await response.text()
   const stem = filename.replace(/\.[a-z]+$/i, '')
   await fs.writeFile(
-    new URL('../data/' + stem + '.js'),
+    new URL('../data/' + stem + '.js', import.meta.url),
     [
       filename === humans ? humansTypes : teamsTypes,
       'export const ' +
