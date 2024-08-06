@@ -8,6 +8,7 @@ import fs from 'node:fs/promises'
 import rehypeDocument from 'rehype-document'
 import rehypeMeta from 'rehype-meta'
 import rehypePresetMinify from 'rehype-preset-minify'
+import rehypePreventFaviconRequest from 'rehype-prevent-favicon-request'
 import rehypeStringify from 'rehype-stringify'
 import {unified} from 'unified'
 import rehypeDefer from '../plugin/rehype-defer.js'
@@ -66,6 +67,7 @@ export const main = unified()
   })
   .use(rehypeDefer)
   .use(rehypePresetMinify)
+  .use(rehypePreventFaviconRequest)
   .use(move)
   .use(mkdir)
   .use(rehypeStringify)
