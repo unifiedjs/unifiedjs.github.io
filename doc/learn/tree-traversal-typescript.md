@@ -1,23 +1,23 @@
 ---
+authorGithub: ChristianMurphy
+author: Christian Murphy
+description: How to do tree traversal in TypeScript
 group: recipe
 index: 9
-title: Tree traversal with TypeScript
-description: How to do tree traversal in TypeScript
+modified: 2024-08-05
+published: 2020-06-09
 tags:
+  - traverse
+  - tree
   - typescript
   - unist
-  - tree
-  - traverse
-author: Christian Murphy
-authorGithub: ChristianMurphy
-published: 2020-06-09
-modified: 2020-06-11
+title: Tree traversal with TypeScript
 ---
 
 ## Traversing trees with TypeScript
 
 📓 Please read the
-[introduction to tree traversal in JavaScript](/learn/recipe/tree-traversal/)
+[introduction to tree traversal in JavaScript][tree-traversal]
 before reading this section.
 
 A frequent task when working with unified is to traverse trees to find certain
@@ -27,118 +27,134 @@ Several type safe unified utilities can be used to help with this.
 
 ### `unist-util-visit`
 
-[`unist-util-visit`](https://github.com/syntax-tree/unist-util-visit#readme)
-takes a syntax tree, a `Test`, and a callback.
+[`unist-util-visit`][visit] takes a syntax tree,
+a `Test`,
+and a callback.
 The callback is called for each node in the tree that passes `Test`.
 
 For example if we want to increasing the heading level of all headings in a
 markdown document:
 
-```ts
-import {remark} from 'remark'
+```ts twoslash
+/// <reference types="node" />
+// ---cut---
 import type {Root} from 'mdast'
+import {remark} from 'remark'
 import {visit} from 'unist-util-visit'
 
-const markdownFile = await remark()
+const file = await remark()
   .use(function () {
-    return function (mdast: Root) {
-      visit(
-        mdast,
-        // Check that the Node is a heading:
-        'heading',
-        function (node) {
-          // The types know `node` is a heading.
-          node.depth += 1
-        }
-      )
+    return function (tree: Root) {
+      // Check that the Node is a heading:
+      visit(tree, 'heading', function (node) {
+        // The types know `node` is a heading.
+        node.depth += 1
+      })
     }
   })
   .process('## Hello, *World*!')
 
-console.log(markdownFile.toString())
+console.log(String(file))
 ```
 
 Or if we want to make all ordered lists in a markdown document unordered:
 
-```ts
-import {remark} from 'remark'
+```ts twoslash
+/// <reference types="node" />
+// ---cut---
 import type {Root} from 'mdast'
+import {remark} from 'remark'
 import {visit} from 'unist-util-visit'
 
-const markdownFile = await remark()
+const file = await remark()
   .use(function () {
-    return function (mdast: Root) {
-      visit(
-        mdast,
-        // Check that the Node is a list:
-        'list',
-        function (node) {
-          if (node.ordered) {
-            // The types know `node` is an ordered list.
-            node.ordered = false
-          }
-        }
-      )
-    }
-  })
-  .process('1. list item')
-
-console.log(markdownFile.toString())
-```
-
-### `unist-util-visit-parents`
-
-Sometimes it’s needed to know the ancestors of a node (all its parents).
-[`unist-util-visit-parents`](https://github.com/syntax-tree/unist-util-visit-parents)
-is like `unist-util-visit` but includes a list of all parent nodes.
-
-For example if we want to check if all markdown `ListItem` are inside a `List`
-we could:
-
-```ts
-import type {ListItem, Root} from 'mdast'
-import remark from 'remark'
-import {visitParents} from 'unist-util-visit-parents'
-
-remark()
-  .use(function () {
-    return function (mdast: Root) {
-      visitParents(mdast, 'listItem', function (listItem, parents) {
-        // The types know `listItem` is a list item, and that `parents` are mdast
-        // parents.
-        if (
-          !parents.some(function (parent) {
-            return parent.type === 'list')
-          }
-        ) {
-          console.warn('listItem is outside a list')
+    return function (tree: Root) {
+      // Check that the Node is a list:
+      visit(tree, 'list', function (node) {
+        if (node.ordered) {
+          // The types know `node` is an ordered list.
+          node.ordered = false
         }
       })
     }
   })
   .process('1. list item')
+
+console.log(String(file))
+```
+
+As always with TypeScript,
+make sure that the input values are typed correctly.
+
+### `unist-util-visit-parents`
+
+Sometimes it’s needed to know the ancestors of a node (all its parents).
+[`unist-util-visit-parents`][visit-parents] is like `unist-util-visit` but
+includes a list of all parent nodes.
+
+For example if we want to check if `code` is in a `pre`, at any depth,
+we could:
+
+```ts twoslash
+/// <reference types="node" />
+// ---cut---
+import type {Root} from 'hast'
+import rehypeParse from 'rehype-parse'
+import rehypeStringify from 'rehype-stringify'
+import {unified} from 'unified'
+import {visitParents} from 'unist-util-visit-parents'
+
+const file = await unified()
+  .use(rehypeParse, {fragment: true})
+  .use(function () {
+    return function (tree: Root) {
+      visitParents(tree, 'element', function (node, parents) {
+        if (
+          node.tagName === 'code' &&
+          parents.some(function (parent) {
+            return parent.type === 'element' && parent.tagName === 'pre'
+          })
+        ) {
+          console.log('`<code>` in `<pre>`')
+        }
+      })
+    }
+  })
+  .use(rehypeStringify)
+  .process(
+    "<pre><code>console.log('hi!')</code></pre><p><code>hello!</code></p>"
+  )
 ```
 
 ### `unist-util-select`
 
 Sometimes CSS selectors are easier to read than several (nested) if/else
 statements.
-[`unist-util-select`](https://github.com/syntax-tree/unist-util-select) lets
-you do that.
+[`unist-util-select`][select] lets you do that.
 For example if we want to find all `Paragraph`s that are somewhere in a
 `Blockquote`, we could:
 
-```ts
-import remark from 'remark'
-import type {Root} from 'mdast'
+```ts twoslash
+/// <reference types="node" />
+// ---cut---
+import type {Paragraph, Root} from 'mdast'
+import {remark} from 'remark'
 import {selectAll} from 'unist-util-select'
 
 remark()
   .use(function () {
     return function (mdast: Root) {
-      const matches = selectAll('blockquote paragraph', mdast)
+      const matches = selectAll('blockquote paragraph', mdast) as Paragraph[]
       console.log(matches)
     }
   })
-  .process('1. list item')
+  .process('> block quote')
 ```
+
+[tree-traversal]: /learn/recipe/tree-traversal/
+
+[visit]: https://github.com/syntax-tree/unist-util-visit
+
+[visit-parents]: https://github.com/syntax-tree/unist-util-visit-parents
+
+[select]: https://github.com/syntax-tree/unist-util-select

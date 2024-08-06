@@ -53,7 +53,7 @@ for (const fp of paths) {
     const files = Array.isArray(result) ? result : [result]
     for (const file of files) {
       assert(file.dirname)
-      file.dirname = 'build/' + file.dirname.replace(/^asset\//, '')
+      file.dirname = 'build' + file.dirname.replace(/^asset/, '')
       await fs.mkdir(file.dirname, {recursive: true})
       await write(file)
       file.stored = true

@@ -1,5 +1,5 @@
 - title: Prettier
-  short: Uses unified to format Markdown
+  short: Uses unified to format markdown
   url: https://prettier.io
   gh: prettier/prettier
   src: /image/prettier.png
@@ -24,7 +24,7 @@
   gh: get-alex/alex
   src: /image/alex.png
 - title: MDX
-  short: Uses unified to combine Markdown with JSX
+  short: Uses unified to combine markdown with JSX
   url: https://mdxjs.com
   gh: mdx-js/mdx
   src: /image/mdx.png
@@ -53,7 +53,7 @@
   gh: storybookjs/storybook
   src: /image/storybook.png
 - title: ESLint
-  short: Uses unified to check JavaScript in Markdown
+  short: Uses unified to check JavaScript in markdown
   url: https://eslint.org
   gh: eslint/eslint-plugin-markdown
   src: /image/eslint.png
@@ -108,7 +108,7 @@
   gh: documentationjs/documentation
   src: /image/documentation.png
 - title: react-markdown
-  short: Uses unified for parse Markdown
+  short: Uses unified for parse markdown
   url: https://remarkjs.github.io/react-markdown/
   gh: rexxars/react-markdown
   src: /image/react-markdown.png
@@ -128,7 +128,7 @@
   gh: elmasse/nextein/
   src: /image/nextein.png
 - title: nteract
-  short: Uses unified for math in Markdown
+  short: Uses unified for math in markdown
   url: https://nteract.io
   gh: nteract/nteract
   src: /image/nteract.png

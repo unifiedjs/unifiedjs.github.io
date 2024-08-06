@@ -1,18 +1,20 @@
 ---
-group: guide
-title: Syntax trees in TypeScript
-description: Guide that shows how to use types to work with syntax trees
-author: Christian Murphy
 authorGithub: ChristianMurphy
-tags:
-  - typescript
-  - unist
-  - node
-  - mdast
-  - hast
-  - xast
+author: Christian Murphy
+description: Guide that shows how to use types to work with syntax trees
+group: guide
+modified: 2024-08-02
 published: 2020-06-09
-modified: 2020-06-15
+tags:
+  - hast
+  - mdast
+  - nlcst
+  - node
+  - typescript
+  - types
+  - unist
+  - xast
+title: Syntax trees in TypeScript
 ---
 
 ## How to work with syntax trees in TypeScript
@@ -38,7 +40,7 @@ The main type is `Node`.
 Everything else extends it.
 `Literal` and `Parent` are more specific types which also extend `Node`.
 
-The types provided by unist are abstract interfaces.
+The types provided by unist are **abstract** interfaces.
 Often, you will instead use more practical interfaces depending on what language
 you’re working with.
 Each language supported by unified, like markdown, HTML, and XML, has its own
@@ -69,41 +71,53 @@ When a syntax tree is parsed from a file, it includes positional information:
 a `Position` interface at the `position` field.
 This describes where the node occurred in the source file.
 
-```ts
+````ts twoslash
 /**
- * Syntactic units in unist syntax trees are called nodes.
- */
-interface Node {
-  /**
-   * The variant of a node.
-   */
-  type: string
-
-  /**
-   * Information from the ecosystem.
-   */
-  data?: Data | undefined
-
-  /**
-   * Location of a node in a source document.
-   * Must not be present if a node is generated.
-   */
-  position?: Position | undefined
-}
-
-/**
- * Information associated by the ecosystem with the node.
- * Space is guaranteed to never be specified by unist or specifications
+ * Info associated with nodes by the ecosystem.
+ *
+ * This space is guaranteed to never be specified by unist or specifications
  * implementing unist.
+ * But you can use it in utilities and plugins to store data.
+ *
+ * This type can be augmented to register custom data.
+ * For example:
+ *
+ * ```ts
+ * declare module 'unist' {
+ *   interface Data {
+ *     // `someNode.data.myId` is typed as `number | undefined`
+ *     myId?: number | undefined
+ *   }
+ * }
+ * ```
  */
-export interface Data {
-  [key: string]: unknown
+interface Data {}
+
+/**
+ * One place in a source file.
+ */
+interface Point {
+  /**
+   * Line in a source file (1-indexed integer).
+   */
+  line: number
+
+  /**
+   * Column in a source file (1-indexed integer).
+   */
+  column: number
+  /**
+   * Character in a source file (0-indexed integer).
+   */
+  offset?: number | undefined
 }
 
 /**
- * Location of a node in a source file.
+ * Position of a node in a source document.
+ *
+ * A position is a range between two points.
  */
-export interface Position {
+interface Position {
   /**
    * Place of the first character of the parsed source region.
    */
@@ -113,15 +127,38 @@ export interface Position {
    * Place of the first character after the parsed source region.
    */
   end: Point
-
-  /**
-   * Start column at each index (plus start line) in the source region,
-   * for elements that span multiple lines.
-   */
-  indent?: number[] | undefined
 }
 
-```
+/**
+ * Abstract unist node.
+ *
+ * The syntactic unit in unist syntax trees are called nodes.
+ *
+ * This interface is supposed to be extended.
+ * If you can use {@link Literal} or {@link Parent}, you should.
+ * But for example in markdown, a `thematicBreak` (`***`), is neither literal
+ * nor parent, but still a node.
+ */
+interface Node {
+  /**
+   * Node type.
+   */
+  type: string
+
+  /**
+   * Info from the ecosystem.
+   */
+  data?: Data | undefined
+
+  /**
+   * Position of a node in a source document.
+   *
+   * Nodes that are generated (not in the original source document) must not
+   * have a position.
+   */
+  position?: Position | undefined
+}
+````
 
 #### `Literal`
 
@@ -129,11 +166,20 @@ export interface Position {
 For example a markdown `Code` node extends `Literal` and sets `value` to be a
 `string`.
 
-```ts
+```ts twoslash
+import type {Node} from 'unist'
+// ---cut---
 /**
- * Nodes containing a value.
+ * Abstract unist node that contains the smallest possible value.
+ *
+ * This interface is supposed to be extended.
+ *
+ * For example, in HTML, a `text` node is a leaf that contains text.
  */
-export interface Literal extends Node {
+interface Literal extends Node {
+  /**
+   * Plain value.
+   */
   value: unknown
 }
 ```
@@ -143,15 +189,22 @@ export interface Literal extends Node {
 `Parent` extends `Node` and adds `children`.
 Children represent other content which is inside or a part of this node.
 
-```ts
+```ts twoslash
+import type {Node} from 'unist'
+// ---cut---
 /**
- * Nodes containing other nodes.
+ * Abstract unist node that contains other nodes (*children*).
+ *
+ * This interface is supposed to be extended.
+ *
+ * For example, in XML, an element is a parent of different things, such as
+ * comments, text, and further elements.
  */
-export interface Parent extends Node {
+interface Parent extends Node {
   /**
-   * List representing the children of a node.
+   * List of children.
    */
-  children: Node[];
+  children: Node[]
 }
 ```
 
@@ -159,19 +212,19 @@ export interface Parent extends Node {
 
 Install:
 
-```bash
+```sh
 npm install --save-dev @types/unist
 ```
 
 To import the types into a TypeScript file, use:
 
-```ts
+```ts twoslash
 import type {Literal, Node, Parent} from 'unist'
 ```
 
 To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
-```js
+```js twoslash
 /**
  * @import {Literal, Node, Parent} from 'unist'
  */
@@ -179,82 +232,82 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 ### mdast (markdown)
 
-[mdast][] extends unist with types specific for markdown such as `Heading`,
-`Code`, `Link`, and many more.
+[mdast][] extends unist with types specific for markdown such as
+`Code`, `Heading`, `Link`, and many more.
 The specification includes a full list of nodes.
 The types are available in a types only package: [`@types/mdast`][ts-mdast].
 
 Install:
 
-```bash
+```sh
 npm install --save-dev @types/mdast
 ```
 
 To import the types into a TypeScript file, use:
 
-```ts
-import type {Code, Heading, Link} from 'mdast'
+```ts twoslash
+import type {Code, Heading, Link, Root} from 'mdast'
 ```
 
 To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
-```js
+```js twoslash
 /**
- * @import {Code, Heading, Link} from 'mdast'
+ * @import {Code, Heading, Link, Root} from 'mdast'
  */
 ```
 
 ### hast (HTML)
 
 [hast][] extends unist with types specific for HTML such as
-`Element`, `Comment`, `Doctype`, and many more.
+`Comment`, `Doctype`, `Element`, and many more.
 The specification includes a full list of nodes.
 The types are available in a types only package: [`@types/hast`][ts-hast].
 
 Install:
 
-```bash
+```sh
 npm install --save-dev @types/hast
 ```
 
 To import the types into a TypeScript file, use:
 
-```ts
-import type {Comment, Doctype, Element} from 'hast'
+```ts twoslash
+import type {Comment, Doctype, Element, Root} from 'hast'
 ```
 
 To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
-```js
+```js twoslash
 /**
- * @import {Comment, Doctype, Element} from 'hast'
+ * @import {Comment, Doctype, Element, Root} from 'hast'
  */
 ```
 
 ### xast (XML)
 
 [xast][] extends unist with types specific for XML such as
-`Element`, `CData`, `Instruction`, and many more.
+`Cdata`, `Element`, `Instruction`, and many more.
 The specification includes a full list of nodes.
 The types are available in a types only package: [`@types/xast`][ts-xast].
 
 Install:
 
-```bash
+```sh
 npm install --save-dev @types/xast
 ```
 
 To import the types into a TypeScript file, use:
 
-```ts
-import type {Cdata, Element, Instruction} from 'xast'
+```ts twoslash
+import type {Cdata, Element, Instruction, Root} from 'xast'
 ```
 
 To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
-```js
+```js twoslash
 /**
- * @import {Cdata, Element, Instruction} from 'xast'
+ * @import {Cdata, Element, Instruction, Root} from 'xast'
  */
 ```
 

@@ -1,26 +1,27 @@
 ---
+authorGithub: wooorm
+authorTwitter: wooorm
+author: Titus Wormer
+description: How to remove nodes in any unist tree
 group: recipe
 index: 7
-title: Remove a node
-description: How to remove nodes in any unist tree
-tags:
-  - node
-  - tree
-  - remove
-  - delete
-  - traverse
-  - walk
-author: Titus Wormer
-authorTwitter: wooorm
-authorGithub: wooorm
+modified: 2024-08-02
 published: 2020-06-15
-modified: 2020-06-15
+tags:
+  - delete
+  - node
+  - remove
+  - traverse
+  - tree
+  - walk
+title: Remove a node
 ---
 
 ## How to remove a node
 
-Once you have found the node(s) you want to remove (see [tree
-traversal][tree-traversal]), you can remove them.
+Once you have found the node(s) you want to remove
+(see [tree traversal][tree-traversal]),
+you can remove them.
 
 ### Contents
 
@@ -31,7 +32,7 @@ traversal][tree-traversal]), you can remove them.
 ### Prerequisites
 
 * [Tree traversal][tree-traversal]
-  — Intro on how to walk trees and find specific nodes with `unist-util-visit`
+  — intro on how to walk trees and find specific nodes with `unist-util-visit`
 
 ### Removing a node
 
@@ -41,21 +42,23 @@ traversal][tree-traversal]), so let’s say we already have some code to find al
 
 First, our `example.md` file:
 
-```markdown
+```md
 Some text with *emphasis*.
 
 Another paragraph with **importance** (and *more emphasis*).
 ```
 
-And a script, `example.js`:
+And a module, `example.js`:
 
-```js
+```js twoslash
+/// <reference types="node" />
+// ---cut---
 import fs from 'node:fs/promises'
-import {unified} from 'unified'
 import remarkParse from 'remark-parse'
+import {unified} from 'unified'
 import {visit} from 'unist-util-visit'
 
-const document = await fs.readFile('example.md')
+const document = await fs.readFile('example.md', 'utf8')
 
 const tree = unified().use(remarkParse).parse(document)
 
@@ -64,7 +67,7 @@ visit(tree, 'emphasis', function (node) {
 })
 ```
 
-Now, running `node example` yields (ignoring positions for brevity):
+Now, running `node example.js` yields (ignoring positions for brevity):
 
 ```js
 {
@@ -92,15 +95,16 @@ Luckily, the function given to `visit` gets not only `node`, but also that
 `index` and `parent`:
 
 ```diff
+--- a/example.js
 +++ b/example.js
-@@ -7,6 +7,6 @@ const document = await fs.readFile('example.md')
+@@ -7,6 +7,6 @@ const document = await fs.readFile('example.md', 'utf8')
 
  const tree = unified().use(remarkParse).parse(document)
 
 -visit(tree, 'emphasis', function (node) {
 -  console.log(node)
 +visit(tree, 'emphasis', function (node, index, parent) {
-+  console.log(node.type, index, parent.type)
++  console.log(node.type, index, parent?.type)
  })
 ```
 
@@ -118,13 +122,14 @@ With this information, and `splice`, we can now remove emphasis nodes:
 ```diff
 --- a/example.js
 +++ b/example.js
-@@ -8,5 +8,8 @@ const document = await fs.readFile('example.md')
+@@ -8,5 +8,9 @@ const document = await fs.readFile('example.md', 'utf8')
  const tree = unified().use(remarkParse).parse(document)
 
  visit(tree, 'emphasis', function (node, index, parent) {
--  console.log(node.type, index, parent.type)
+-  console.log(node.type, index, parent?.type)
++  if (typeof index !== 'number' || !parent) return
++  // Note: this is buggy, see next section.
 +  parent.children.splice(index, 1)
-+  // (Note: this is buggy, see next section)
  })
 +
 +console.log(tree)
@@ -174,20 +179,21 @@ To do that: return that information from `visitor`:
 ```diff
 --- a/example.js
 +++ b/example.js
-@@ -1,15 +1,15 @@
- import fs from 'node:fs'
- import {unified} from 'unified'
+@@ -1,7 +1,7 @@
+ import fs from 'node:fs/promises'
  import remarkParse from 'remark-parse'
+ import {unified} from 'unified'
 -import {visit} from 'unist-util-visit'
 +import {SKIP, visit} from 'unist-util-visit'
 
- const document = await fs.readFile('example.md')
+ const document = await fs.readFile('example.md', 'utf8')
 
- const tree = unified().use(remarkParse).parse(document)
+@@ -9,8 +9,9 @@ const tree = unified().use(remarkParse).parse(document)
 
  visit(tree, 'emphasis', function (node, index, parent) {
+   if (typeof index !== 'number' || !parent) return
+-  // Note: this is buggy, see next section.
    parent.children.splice(index, 1)
--  // (Note: this is buggy, see next section)
 +  // Do not traverse `node`, continue at the node *now* at `index`.
 +  return [SKIP, index]
  })
@@ -209,10 +215,10 @@ To do that, we can do the following:
 ```diff
 --- a/example.js
 +++ b/example.js
-@@ -8,7 +8,7 @@ const document = await fs.readFile('example.md')
- const tree = unified().use(remarkParse).parse(document)
+@@ -9,7 +9,7 @@ const tree = unified().use(remarkParse).parse(document)
 
  visit(tree, 'emphasis', function (node, index, parent) {
+   if (typeof index !== 'number' || !parent) return
 -  parent.children.splice(index, 1)
 +  parent.children.splice(index, 1, ...node.children)
    // Do not traverse `node`, continue at the node *now* at `index`.

@@ -50,6 +50,7 @@ function initialise() {
     'es|ast': 'syntax-tree/esast',
     'h|ast': 'syntax-tree/hast',
     'md|ast': 'syntax-tree/mdast',
+    'micro|mark': 'micromark/micromark',
     'nl|cst': 'syntax-tree/nlcst',
     're|dot': 'redotjs/redot',
     're|hype': 'rehypejs/rehype',

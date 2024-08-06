@@ -1,25 +1,24 @@
 ---
+authorGithub: wooorm
+authorTwitter: wooorm
+author: Titus Wormer
+description: Guide that delves into transforming markdown to HTML
 group: guide
 index: 2
-title: Use unified
-description: Guide that delves into transforming Markdown to HTML
-author: Titus Wormer
-authorTwitter: wooorm
-authorGithub: wooorm
-tags:
-  - use
-  - transform
-  - remark
-  - rehype
+modified: 2024-08-02
 published: 2017-05-03
-modified: 2020-06-14
+tags:
+  - rehype
+  - remark
+  - transform
+  - use
+title: Use unified
 ---
 
 ## Using unified
 
-This guide delves into how unified can be used to transform a Markdown file to
-HTML.
-It’ll also show how to generate a table of contents, and sidestep into checking
+This guide shows how unified can be used to transform a markdown file to HTML.
+It also shows how to generate a table of contents and sidesteps into checking
 prose.
 
 > Stuck?
@@ -36,17 +35,17 @@ prose.
 
 ### Tree transformations
 
-For this example, we’ll start out with Markdown content, then transform to HTML.
-We need a Markdown parser and an HTML stringifier for that.
+For this example we start out with markdown content and then transform to HTML.
+We need a markdown parser and an HTML stringifier (compiler) for that.
 The relevant projects are respectively [`remark-parse`][parse] and
 [`rehype-stringify`][stringify].
-To transform between the two syntaxes, we’ll use
-[`remark-rehype`][remark-rehype].
-Finally, we’ll use unified itself to glue these together, and
-[`unified-stream`][unified-stream] for streaming.
+To transform between the two syntaxes we use [`remark-rehype`][remark-rehype].
+Finally, we use unified itself to glue these together.
 
 First set up a project.
-Create a folder, `example`, enter it, and initialize a new project:
+Create a folder `example`,
+enter it,
+and initialize a new package:
 
 ```sh
 mkdir example
@@ -54,16 +53,16 @@ cd example
 npm init -y
 ```
 
-Then make sure the project is a module, so that `import` and `export` work,
-by changing `package.json`:
+Then make sure the project is a module so that `import` and `export` work by
+specifying `"type": "module"`:
 
 ```diff
 --- a/package.json
 +++ b/package.json
-@@ -2,6 +2,7 @@
+@@ -1,6 +1,7 @@
+ {
    "name": "example",
    "version": "1.0.0",
-   "description": "",
 +  "type": "module",
    "main": "index.js",
    "scripts": {
@@ -71,90 +70,110 @@ by changing `package.json`:
 ```
 
 Now let’s install the needed dependencies with [npm][], which comes bundled with
-[Node][].
+[Node.js][node].
 
 ```sh
-npm install unified unified-stream remark-parse remark-rehype rehype-stringify
+npm install rehype-stringify remark-parse remark-rehype unified
 ```
 
-Now create a Markdown file, `example.md`, that we’re going to transform.
+Now create a markdown file, `example.md`, that we’re going to transform.
 
-```markdown
-# Hello World
+```md
+# Pluto
 
-## Table of Content
+Pluto is an dwarf planet in the Kuiper belt.
 
-## Install
+## Contents
 
-A **example**.
+## History
 
-## Use
+### Discovery
 
-More `text`.
+In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
+position of…
 
-## License
+### Name and symbol
 
-MIT
+The name Pluto is for the Roman god of the underworld, from a Greek epithet for
+Hades…
+
+### Planet X disproved
+
+Once Pluto was found, its faintness and lack of a viewable disc cast doubt…
+
+## Orbit
+
+Pluto’s orbital period is about 248 years…
 ```
 
 Then create `index.js` as well.
-It’ll transform Markdown to HTML.
-It’s hooked up to read from stdin and write to stdout.
+It transforms markdown to HTML:
 
-```javascript
-import {stream} from 'unified-stream'
-import {unified} from 'unified'
+```js twoslash
+/// <reference types="node" />
+// ---cut---
+import fs from 'node:fs/promises'
+import rehypeStringify from 'rehype-stringify'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
-import rehypeStringify from 'rehype-stringify'
+import {unified} from 'unified'
 
-const processor = unified()
+const document = await fs.readFile('example.md', 'utf8')
+
+const file = await unified()
   .use(remarkParse)
   .use(remarkRehype)
-  .use(rehypeStringify)
+  .use(rehypeStringify).process(document)
 
-process.stdin.pipe(stream(processor)).pipe(process.stdout)
+console.log(String(file))
 ```
 
-Now, running our script with [Node][] (this uses your Shell to read
-`example.md` and write `example.html`):
+Now, running our module with [Node][]:
 
 ```sh
-node index.js < example.md > example.html
+node index.js
 ```
 
 …gives us an `example.html` file that looks as follows:
 
 ```html
-<h1>Hello World</h1>
-<h2>Table of Content</h2>
-<h2>Install</h2>
-<p>A <strong>example</strong>.</p>
-<h2>Use</h2>
-<p>More <code>text</code>.</p>
-<h2>License</h2>
-<p>MIT</p>
+<h1>Pluto</h1>
+<p>Pluto is an dwarf planet in the Kuiper belt.</p>
+<h2>Contents</h2>
+<h2>History</h2>
+<h3>Discovery</h3>
+<p>In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
+position of…</p>
+<h3>Name and symbol</h3>
+<p>The name Pluto is for the Roman god of the underworld, from a Greek epithet for
+Hades…</p>
+<h3>Planet X disproved</h3>
+<p>Once Pluto was found, its faintness and lack of a viewable disc cast doubt…</p>
+<h2>Orbit</h2>
+<p>Pluto’s orbital period is about 248 years…</p>
 ```
 
+> 👉
 > Note that [`remark-rehype`][remark-rehype] doesn’t deal with HTML inside the
-> Markdown.
-> You’ll need [`rehype-raw`][rehype-raw] if you’re planning on doing that.
+> markdown.
+> See [*HTML and remark*][html-and-remark] for more info.
 
 🎉
 Nifty!
-It doesn’t do much yet, but we’ll get there.
-In the next section, we’ll make this more useful by introducing plugins.
+It doesn’t do much yet.
+We’ll get there.
+In the next section, we make this more useful by introducing plugins.
 
 ### Plugins
 
-We’re still missing some things, notably a table of contents, and proper HTML
-document structure.
+We’re still missing some things
+Notably a table of contents and proper HTML document structure.
 
-We can use [`remark-slug`][slug] and [`remark-toc`][toc] for the former, and
-[`rehype-document`][document] to do the latter tasks.
+We can use [`rehype-slug`][slug] and [`remark-toc`][toc] for the former
+and [`rehype-document`][document] for the latter task.
 
 ```sh
-npm install remark-slug remark-toc rehype-document
+npm install rehype-document rehype-slug remark-toc
 ```
 
 Let’s now use those two as well, by modifying our `index.js` file:
@@ -162,25 +181,27 @@ Let’s now use those two as well, by modifying our `index.js` file:
 ```diff
 --- a/index.js
 +++ b/index.js
-@@ -1,12 +1,18 @@
- import {stream} from 'unified-stream'
- import {unified} from 'unified'
- import remarkParse from 'remark-parse'
-+import remarkSlug from 'remark-slug'
-+import remarkToc from 'remark-toc'
- import remarkRehype from 'remark-rehype'
+@@ -1,14 +1,20 @@
+ import fs from 'node:fs/promises'
 +import rehypeDocument from 'rehype-document'
++import rehypeSlug from 'rehype-slug'
  import rehypeStringify from 'rehype-stringify'
+ import remarkParse from 'remark-parse'
+ import remarkRehype from 'remark-rehype'
++import remarkToc from 'remark-toc'
+ import {unified} from 'unified'
 
- const processor = unified()
+ const document = await fs.readFile('example.md', 'utf8')
+
+ const file = await unified()
    .use(remarkParse)
-+  .use(remarkSlug)
 +  .use(remarkToc)
    .use(remarkRehype)
-+  .use(rehypeDocument, {title: 'Contents'})
++  .use(rehypeSlug)
++  .use(rehypeDocument, {title: 'Pluto'})
    .use(rehypeStringify)
+   .process(document)
 
- process.stdin.pipe(stream(processor)).pipe(process.stdout)
 ```
 
 We pass options to `rehype-document`.
@@ -192,113 +213,141 @@ These are described in detail in its [`readme.md`][document].
 Many other plugins accept options as well, so make sure to read through their
 docs to learn more.
 
-> Note that remark plugins work on a Markdown tree, and rehype plugins work on
-> an HTML tree.
-> It’s important that you place your `.use` calls in the correct places.
+> 👉
+> Note that remark plugins work on a markdown tree.
+> rehype plugins work on an HTML tree.
+> It’s important that you place your `.use` calls in the correct places:
+> plugins are order sensitive!
 
-Now, when running our script like before, we’d get the following `example.html`
-file:
+When running our module like before,
+we’d get the following `example.html` file:
 
 ```html
 <!doctype html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Contents</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pluto</title>
+<meta content="width=device-width, initial-scale=1" name="viewport">
 </head>
 <body>
-<h1 id="hello-world">Hello World</h1>
-<h2 id="table-of-content">Table of Content</h2>
+<h1 id="pluto">Pluto</h1>
+<p>Pluto is an dwarf planet in the Kuiper belt.</p>
+<h2 id="contents">Contents</h2>
 <ul>
-<li><a href="#install">Install</a></li>
-<li><a href="#use">Use</a></li>
-<li><a href="#license">License</a></li>
+<li><a href="#history">History</a>
+<ul>
+<li><a href="#discovery">Discovery</a></li>
+<li><a href="#name-and-symbol">Name and symbol</a></li>
+<li><a href="#planet-x-disproved">Planet X disproved</a></li>
 </ul>
-<h2 id="install">Install</h2>
-<p>A <strong>example</strong>.</p>
-<h2 id="use">Use</h2>
-<p>More <code>text</code>.</p>
-<h2 id="license">License</h2>
-<p>MIT</p>
+</li>
+<li><a href="#orbit">Orbit</a></li>
+</ul>
+<h2 id="history">History</h2>
+<h3 id="discovery">Discovery</h3>
+<p>In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
+position of…</p>
+<h3 id="name-and-symbol">Name and symbol</h3>
+<p>The name Pluto is for the Roman god of the underworld, from a Greek epithet for
+Hades…</p>
+<h3 id="planet-x-disproved">Planet X disproved</h3>
+<p>Once Pluto was found, its faintness and lack of a viewable disc cast doubt…</p>
+<h2 id="orbit">Orbit</h2>
+<p>Pluto’s orbital period is about 248 years…</p>
 </body>
 </html>
 ```
 
-> You may noticed the document isn’t formatted nicely.
+> 👉
+> Note that the document isn’t formatted nicely.
 > There’s a plugin for that though!
-> Feel free to add [`rehype-format`][rehype-format] to the plugins, below `doc`!
+> Feel free to add [`rehype-format`][rehype-format] to the plugins.
+> Right after `rehypeDocument`!
 
 💯
 You’re acing it!
 This is getting pretty useful, right?
 
-In the next section, we’ll lay the groundwork for creating a report.
+In the next section,
+we lay the groundwork for creating a report.
 
 ### Reporting
 
-Before we check some prose (yes, we’re getting there), we’ll first switch up our
-`index.js` file to print a pretty report (we’ll fill it in the next section).
+Before we check some prose, let’s first switch up our `index.js` file to print
+a pretty report.
 
 We can use [`to-vfile`][to-vfile] to read and write virtual files from the file
-system, and we can use [`vfile-reporter`][reporter] to report messages relating
-to those files.
+system.
+Then we can use [`vfile-reporter`][reporter] to report messages relating to
+those files.
 Let’s install those.
 
 ```sh
 npm install to-vfile vfile-reporter
 ```
 
-…and now unhook stdin/stdout from our example and use the file-system instead,
-like so:
+…and then use vfile in our example instead, like so:
 
 ```diff
 --- a/index.js
 +++ b/index.js
-@@ -1,4 +1,5 @@
--import {stream} from 'unified-stream'
-+import {read, write} from 'to-vfile'
-+import {reporter} from 'vfile-reporter'
- import {unified} from 'unified'
+@@ -1,21 +1,24 @@
+-import fs from 'node:fs/promises'
+ import rehypeDocument from 'rehype-document'
+ import rehypeSlug from 'rehype-slug'
+ import rehypeStringify from 'rehype-stringify'
  import remarkParse from 'remark-parse'
- import remarkSlug from 'remark-slug'
-@@ -15,4 +16,15 @@ const processor = unified()
-   .use(rehypeDocument, {title: 'Contents'})
-   .use(rehypeStringify)
+ import remarkRehype from 'remark-rehype'
+ import remarkToc from 'remark-toc'
++import {read, write} from 'to-vfile'
+ import {unified} from 'unified'
++import {reporter} from 'vfile-reporter'
 
--process.stdin.pipe(stream(processor)).pipe(process.stdout)
+-const document = await fs.readFile('example.md', 'utf8')
 +const file = await read('example.md')
-+
-+await processor.process(file)
-+
+
+-const file = await unified()
++await unified()
+   .use(remarkParse)
+   .use(remarkToc)
+   .use(remarkRehype)
+   .use(rehypeSlug)
+   .use(rehypeDocument, {title: 'Pluto'})
+   .use(rehypeStringify)
+-  .process(document)
++  .process(file)
+
+-console.log(String(file))
 +console.error(reporter(file))
 +file.extname = '.html'
 +await write(file)
 ```
 
-If we now run our script on its own, without shell redirects, we get a report
-showing everything’s fine:
+If we now run our module on its own we get a report showing everything’s fine:
 
 ```sh
 $ node index.js
 example.md: no issues found
 ```
 
-But everything’s not fine, there’s a typo in the Markdown!
+But everything’s not fine: there’s a typo in the markdown!
 The next section shows how to detect prose errors by adding retext.
 
 ### Checking prose
 
-I did notice a typo in there, so let’s check some prose to prevent that from
-happening in the future.
+I did notice a typo in there.
+So let’s check some prose to prevent that from happening in the future.
 We can use retext and its ecosystem for our natural language parsing.
-As we’re writing in English, we use [`retext-english`][english] specifically to
-parse English natural language.
-The problem in our `example.md` file is that it has `a example` instead of
-`an example`, which is conveniently checked for by
+As we’re writing in English,
+we use [`retext-english`][english] specifically to parse English natural
+language.
+The problem in our `example.md` file is that it has `an dwarf planet` instead
+of `a dwarf planet`,
+which is conveniently checked for by
 [`retext-indefinite-article`][indefinite-article].
-To bridge from markup to prose, we’ll use [`remark-retext`][remark-retext].
-First, let’s install these dependencies as well.
+To bridge from markup to prose we use [`remark-retext`][remark-retext].
+Let’s install these dependencies as well.
 
 ```sh
 npm install remark-retext retext-english retext-indefinite-article
@@ -309,54 +358,60 @@ npm install remark-retext retext-english retext-indefinite-article
 ```diff
 --- a/index.js
 +++ b/index.js
-@@ -4,12 +4,16 @@ import {unified} from 'unified'
+@@ -3,7 +3,10 @@ import rehypeSlug from 'rehype-slug'
+ import rehypeStringify from 'rehype-stringify'
  import remarkParse from 'remark-parse'
- import remarkSlug from 'remark-slug'
- import remarkToc from 'remark-toc'
+ import remarkRehype from 'remark-rehype'
 +import remarkRetext from 'remark-retext'
+ import remarkToc from 'remark-toc'
 +import retextEnglish from 'retext-english'
 +import retextIndefiniteArticle from 'retext-indefinite-article'
- import remarkRehype from 'remark-rehype'
- import rehypeDocument from 'rehype-document'
- import rehypeStringify from 'rehype-stringify'
+ import {read, write} from 'to-vfile'
+ import {unified} from 'unified'
+ import {reporter} from 'vfile-reporter'
+@@ -12,6 +15,8 @@ const file = await read('example.md')
 
- const processor = unified()
+ await unified()
    .use(remarkParse)
++  // @ts-expect-error: fine.
 +  .use(remarkRetext, unified().use(retextEnglish).use(retextIndefiniteArticle))
-   .use(remarkSlug)
    .use(remarkToc)
    .use(remarkRehype)
+   .use(rehypeSlug)
 ```
 
-As the code shows, `remark-retext` receives another `unified` middleware
-pipeline.
+As the code shows,
+`remark-retext` receives another `unified` pipeline.
 A natural language pipeline.
-The plugin will transform the origin syntax (Markdown) with the given pipeline’s
-parser.
-Then, it’ll run the attached plugins on the natural language syntax tree.
+The plugin will transform the origin syntax (markdown) with the parser defined
+on the given pipeline.
+Then it runs the attached plugins on the natural language syntax tree.
 
-Now, when running our script one final time:
+Now when running our module one final time:
 
 ```sh
 $ node index.js
 example.md
-  7:1-7:2  warning  Use `An` before `example`, not `A`  retext-indefinite-article  retext-indefinite-article
+3:10-3:12 warning Unexpected article `an` before `dwarf`, expected `a` retext-indefinite-article retext-indefinite-article
 
 ⚠ 1 warning
 ```
 
-…we’ll get a useful message.
+…we get a useful message.
 
 💃
-You’ve got a really cool system set up already, nicely done!
+You’ve got a really cool system set up already.
+Nicely done!
 That’s a wrap though, check out the next section for further exercises and
 resources.
 
 ### Further exercises
 
-Finally, check out the lists of available plugins for [retext][retext-plugins],
-[remark][remark-plugins], and [rehype][rehype-plugins], and try some of them
-out.
+Finally,
+check out the lists of available plugins for [retext][retext-plugins],
+[remark][remark-plugins],
+and [rehype][rehype-plugins],
+and try some of them out.
 
 If you haven’t already, check out the other articles in the
 [learn section][learn]!
@@ -375,7 +430,7 @@ If you haven’t already, check out the other articles in the
 
 [node]: https://nodejs.org
 
-[slug]: https://github.com/remarkjs/remark-slug
+[slug]: https://github.com/rehypejs/rehype-slug
 
 [toc]: https://github.com/remarkjs/remark-toc
 
@@ -384,8 +439,6 @@ If you haven’t already, check out the other articles in the
 [to-vfile]: https://github.com/vfile/to-vfile
 
 [reporter]: https://github.com/vfile/vfile-reporter
-
-[unified-stream]: https://github.com/unifiedjs/unified-stream
 
 [english]: https://github.com/retextjs/retext/tree/HEAD/packages/retext-english
 
@@ -399,8 +452,8 @@ If you haven’t already, check out the other articles in the
 
 [rehype-plugins]: https://github.com/rehypejs/rehype/blob/HEAD/doc/plugins.md
 
-[rehype-raw]: https://github.com/rehypejs/rehype-raw
-
 [rehype-format]: https://github.com/rehypejs/rehype-format
 
 [learn]: /learn/
+
+[html-and-remark]: /learn/recipe/remark-html/

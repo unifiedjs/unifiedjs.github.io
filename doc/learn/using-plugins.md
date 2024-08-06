@@ -1,9 +1,9 @@
 ---
-group: guide
-title: Using plugins
 description: Guide that shows how to use plugins and presets
+group: guide
+modified: 2024-08-05
 published: 2019-12-12
-modified: 2019-12-12
+title: Using plugins
 ---
 
 ## Using plugins

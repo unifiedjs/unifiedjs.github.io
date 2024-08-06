@@ -1,9 +1,11 @@
 // Jargon
 API
+CLI
+XSS
 attacher
 bundler
-CLI
 debounced
+esbuild
 hacky
 linter
 math
@@ -20,31 +22,33 @@ stdout
 stringifier
 stringify
 syntaxes
-XSS
+whitespace
 
 // Names, products, etc.
 BundlePhobia
-browserify
+CDN
 CommonMark
 DOM
+Deno
 GFM
 HSL
-hast
 JSDoc
 JSON
 JSX
-MacBook
 MDX
-mdast
+MacBook
 Node.js
+Otander
+Preact
+hast
+mdast
 nlcst
 npm
-Otander
 rehype
 remark
 retext
-unist
 unified
+unist
 vfile
 xast
 xo

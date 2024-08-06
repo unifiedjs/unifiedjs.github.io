@@ -1,4 +1,5 @@
 /**
+ * @import {Root} from 'hast'
  * @import {PackageJson} from 'type-fest'
  */
 
@@ -6,6 +7,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
 import sourceGitignore from '@wooorm/starry-night/source.gitignore'
+import sourceTsx from '@wooorm/starry-night/source.tsx'
 import {common} from '@wooorm/starry-night'
 import remarkFrontmatter from 'remark-frontmatter'
 import remarkGfm from 'remark-gfm'
@@ -17,6 +19,7 @@ import rehypeSlug from 'rehype-slug'
 import rehypeStarryNight from 'rehype-starry-night'
 import rehypeTwoslash from 'rehype-twoslash'
 import {unified} from 'unified'
+import {visit} from 'unist-util-visit'
 import typescript from 'typescript'
 import {link} from '../atom/icon/link.js'
 import rehypeAbbreviate from '../plugin/rehype-abbreviate.js'
@@ -56,9 +59,25 @@ export const article = unified()
   .use(remarkGfm)
   .use(remarkFrontmatter)
   .use(remarkRehype, {allowDangerousHtml: true})
+  .use(function () {
+    /**
+     * @param {Root} tree
+     * @returns {undefined}
+     */
+    return function (tree) {
+      visit(tree, 'element', function (node) {
+        if (node.tagName === 'code' && node.data?.meta === 'twoslash') {
+          const className = Array.isArray(node.properties.className)
+            ? node.properties.className
+            : (node.properties.className = [])
+          className.push('twoslash')
+        }
+      })
+    }
+  })
   .use(rehypeRaw)
   .use(rehypeStarryNight, {
-    grammars: [...common, sourceGitignore],
+    grammars: [...common, sourceGitignore, sourceTsx],
     plainText: ['txt']
   })
   .use(rehypeTwoslash, {twoslash: {compilerOptions: commandLine.options}})
@@ -69,19 +88,26 @@ export const article = unified()
     properties: {ariaLabel: 'Link to self', className: ['anchor']}
   })
   .use(rehypeAbbreviate, {
-    ignore: ['ECMAScript', 'JSDoc', 'JSX', 'MDX'],
+    ignore: ['ECMAScript', 'ID', 'JSDoc', 'JSX', 'MDX'],
     titles: {
+      API: 'Application programming interface',
+      ARIA: 'Accessible rich internet applications',
       AST: 'Abstract syntax tree',
+      CDN: 'Content delivery network',
+      CDATUM: 'Character data',
       CLI: 'Command-line interface',
-      CSS: 'Cascading Style Sheets',
+      CSS: 'Cascading style sheets',
       DOM: 'Document object model',
+      DSL: 'Domain-specific language',
       GFM: 'GitHub flavored markdown',
       HSL: 'Hue, saturation, lightness',
       HTML: 'Hypertext markup language',
-      JSON: 'JavaScript Object Notation',
+      JSON: 'JavaScript object notation',
+      MDN: 'Mozilla developer network',
       PR: 'Pull request',
-      XML: 'Extensible Markup Language',
-      XSS: 'Cross Site Scripting'
+      URL: 'Uniform resource locator',
+      XML: 'Extensible markup language',
+      XSS: 'Cross site scripting'
     }
   })
   .use(rehypeLink)

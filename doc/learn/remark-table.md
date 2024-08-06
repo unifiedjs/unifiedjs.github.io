@@ -1,19 +1,19 @@
 ---
+authorGithub: wooorm
+authorTwitter: wooorm
+author: Titus Wormer
+description: How to support GitHub-style tables in remark (or react-markdown)
 group: recipe
 index: 5
-title: Support tables in remark
-description: How to support GitHub-style tables in remark (or react-markdown)
+modified: 2024-08-02
+published: 2021-02-24
 tags:
-  - remark
-  - plugin
   - gfm
   - github
+  - plugin
+  - remark
   - table
-author: Titus Wormer
-authorTwitter: wooorm
-authorGithub: wooorm
-published: 2021-02-24
-modified: 2021-02-24
+title: Support tables in remark
 ---
 
 ## How to support tables in remark
@@ -22,8 +22,8 @@ Tables are a non-standard feature in markdown: they are **not** defined in
 [CommonMark][] and will not work everywhere.
 
 Tables are an extension that GitHub supports in their [GFM][].
-They work on `github.com` in most places: a readme, issue, PR, discussion,
-comment, etc.
+They work on `github.com` in most places:
+a readme, issue, PR, discussion, comment, etc.
 
 remark and unified can support them through a plugin:
 [`remark-gfm`][remark-gfm].
@@ -61,16 +61,19 @@ The result on a website would look something like this:
 
 Use pipe characters (`|`) between cells in a row.
 A new line starts a new row.
-You don’t have to align the pipes (`|`) to form a nice grid, but it does make
-the source more readable.
+You don’t have to align the pipes (`|`) to form a nice grid.
+But it does make the source more readable.
 
 The first row is the *table header* and its cells are the labels for their
 respective column.
 
-The second row is the *alignment row* and each “cell” must include a dash (`-`).
-A cell can be aligned left with a colon at the start (`:--`), aligned right with
-a colon at the end (`--:`), or aligned center with colons at the start and end
-(`:-:`).
+The second row is the *alignment row* and there must be as many cells in it as
+in the header row.
+Each “cell” must include a dash (`-`).
+A cell can be aligned left with a colon at the start (`:-`),
+aligned right with a colon at the end (`-:`),
+or aligned center with colons at the start and end (`:-:`).
+This alignment cell is used to align all corresponding cells in its column.
 
 Further rows are the *table body* and are optional.
 Their cells are the table data.
@@ -90,17 +93,19 @@ Let’s say we have some markdown with a GFM table, in an `example.md` file:
 | staging | fedcba9876543210 |
 ```
 
-And a script set up to transform markdown with tables to HTML, `example.js`:
+And a module set up to transform markdown with tables to HTML, `example.js`:
 
-```javascript
+```js twoslash
+/// <reference types="node" />
+// ---cut---
 import fs from 'node:fs/promises'
-import {unified} from 'unified'
-import remarkParse from 'remark-parse'
-import remarkGfm from 'remark-gfm'
-import remarkRehype from 'remark-rehype'
 import rehypeStringify from 'rehype-stringify'
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
 
-const document = await fs.readFile('example.md')
+const document = await fs.readFile('example.md', 'utf8')
 
 const file = await unified()
   .use(remarkParse) // Parse markdown.
@@ -112,7 +117,7 @@ const file = await unified()
 console.log(String(file))
 ```
 
-Now, running `node example` yields:
+Now, running `node example.js` yields:
 
 ```html
 <h1>Table</h1>
@@ -143,45 +148,45 @@ But it can support them with a plugin: [`remark-gfm`][remark-gfm].
 
 Let’s say we have some markdown with a GFM table, in an `example.md` file:
 
-```js
+```js twoslash
+/// <reference lib="dom" />
+// ---cut---
 import React from 'react'
-import ReactMarkdown from 'react-markdown'
+import {createRoot} from 'react-dom/client'
+import Markdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
-const markdown = `# Table
+const markdown = `| Branch | Commit |
+| - | - |
+| main | 0123456789abcdef |`
 
-| Branch  | Commit           |
-| ------- | ---------------- |
-| main    | 0123456789abcdef |
-| staging | fedcba9876543210 |`
-
-console.log(<ReactMarkdown plugins={[remarkGfm]} children={markdown} />)
+createRoot(document.body).render(
+  <Markdown remarkPlugins={[remarkGfm]}>{markdown}</Markdown>
+)
 ```
 
 Yields in JSX:
 
-```javascript
-<>
-  <h1>Table</h1>
-  <table>
-    <thead>
-      <tr>
-        <th>Branch</th>
-        <th>Commit</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>main</td>
-        <td>0123456789abcdef</td>
-      </tr>
-      <tr>
-        <td>staging</td>
-        <td>fedcba9876543210</td>
-      </tr>
-    </tbody>
-  </table>
-</>
+```tsx
+console.log(
+  <>
+    <h1>Table</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Branch</th>
+          <th>Commit</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>main</td>
+          <td>0123456789abcdef</td>
+        </tr>
+      </tbody>
+    </table>
+  </>
+)
 ```
 
 [commonmark]: https://commonmark.org

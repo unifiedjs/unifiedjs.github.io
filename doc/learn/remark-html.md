@@ -1,31 +1,32 @@
 ---
+authorGithub: wooorm
+authorTwitter: wooorm
+author: Titus Wormer
+description: How to use remark to turn markdown into HTML, and to allow embedded HTML inside markdown
 group: recipe
 index: 6
-title: HTML and remark
-description: How to use remark to turn markdown into HTML, and to allow embedded HTML inside markdown
-tags:
-  - remark
-  - html
-  - plugin
-  - markdown
-  - html
-  - parse
-author: Titus Wormer
-authorTwitter: wooorm
-authorGithub: wooorm
+modified: 2024-08-02
 published: 2021-03-09
-modified: 2021-03-09
+tags:
+  - html
+  - markdown
+  - parse
+  - plugin
+  - remark
+title: HTML and remark
 ---
 
 ## HTML and remark
 
 remark is a markdown compiler.
+It’s focus is markdown.
 It’s concerned with HTML in two ways:
 
 1. markdown is often turned into HTML
 2. markdown sometimes has embedded HTML
 
-When dealing with HTML and markdown, we will use both remark and rehype.
+When dealing with HTML and markdown,
+both remark and rehype are used.
 This article shows some examples of how to do that.
 
 ### Contents
@@ -44,11 +45,13 @@ That’s what rehype does, which exists to parse and serialize HTML.
 To turn markdown into HTML, we need [`remark-parse`][remark-parse],
 [`remark-rehype`][remark-rehype], and [`rehype-stringify`][rehype-stringify]:
 
-```javascript
-import {unified} from 'unified'
+```js twoslash
+/// <reference types="node" />
+// ---cut---
+import rehypeStringify from 'rehype-stringify'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
-import rehypeStringify from 'rehype-stringify'
+import {unified} from 'unified'
 
 const file = await unified()
   .use(remarkParse) // Parse markdown content to a syntax tree
@@ -60,8 +63,9 @@ console.log(String(file))
 ```
 
 This turns `*emphasis* and **strong**` into
-`<em>emphasis</em> and <strong>strong</strong>`, but it does not support HTML
-embedded inside markdown (such as `*emphasis* and <strong>strong</strong>`).
+`<em>emphasis</em> and <strong>strong</strong>`,
+but it does not support HTML embedded inside markdown
+(such as `*emphasis* and <strong>strong</strong>`).
 
 This solution **is safe**: content you don’t trust cannot cause an XSS
 vulnerability.
@@ -72,11 +76,13 @@ We can also do the inverse.
 To turn HTML into markdown, we need [`rehype-parse`][rehype-parse],
 [`rehype-remark`][rehype-remark], and [`remark-stringify`][remark-stringify]:
 
-```javascript
-import {unified} from 'unified'
+```js twoslash
+/// <reference types="node" />
+// ---cut---
 import rehypeParse from 'rehype-parse'
 import rehypeRemark from 'rehype-remark'
 import remarkStringify from 'remark-stringify'
+import {unified} from 'unified'
 
 const file = await unified()
   .use(rehypeParse) // Parse HTML to a syntax tree
@@ -87,8 +93,8 @@ const file = await unified()
 console.log(String(file))
 ```
 
-This turns `<em>emphasis</em> and <strong>strong</strong>` into
-`*emphasis* and **strong**`.
+This turns `<em>emphasis</em> and <strong>strong</strong>`
+into `*emphasis* and **strong**`.
 
 ### How to allow HTML embedded in markdown
 
@@ -102,11 +108,13 @@ HTML embedded in markdown can be allowed when going from markdown to HTML
 by configuring [`remark-rehype`][remark-rehype] and
 [`rehype-stringify`][rehype-stringify]:
 
-```javascript
-import {unified} from 'unified'
+```js twoslash
+/// <reference types="node" />
+// ---cut---
+import rehypeStringify from 'rehype-stringify'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
-import rehypeStringify from 'rehype-stringify'
+import {unified} from 'unified'
 
 const file = await unified()
   .use(remarkParse)
@@ -127,12 +135,14 @@ To properly support HTML embedded inside markdown, we need another plugin:
 This plugin will take the strings of HTML embedded in markdown and parse them
 with an actual HTML parser.
 
-```javascript
-import {unified} from 'unified'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
+```js twoslash
+/// <reference types="node" />
+// ---cut---
 import rehypeRaw from 'rehype-raw'
 import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
 
 const file = await unified()
   .use(remarkParse)

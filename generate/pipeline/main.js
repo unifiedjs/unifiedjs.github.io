@@ -22,7 +22,7 @@ export const main = unified()
     from: 'https://unifiedjs.com'
   })
   .use(rehypeDocument, {
-    js: ['/houdini.js', '/search.js'],
+    js: ['/browser.js', '/search.js'],
     link: [
       // We take images from these two, so preconnect asap.
       {href: 'https://github.com', rel: 'preconnect'},

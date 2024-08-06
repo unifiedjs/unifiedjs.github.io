@@ -1,94 +1,86 @@
 ---
+authorGithub: ChristianMurphy
+author: Christian Murphy
+description: How to narrow generic `Node` to specific syntax types
 group: recipe
 index: 10
-title: Narrow nodes in TypeScript
-description: How to narrow generic `Node` to specific syntax types
+modified: 2024-08-02
+published: 2020-06-09
 tags:
+  - node
   - typescript
   - unist
-  - node
-author: Christian Murphy
-authorGithub: ChristianMurphy
-published: 2020-06-09
-modified: 2020-06-15
+title: Narrow nodes in TypeScript
 ---
 
 ## How to narrow `Node`s in TypeScript
 
-To work with a specific node type or a set of node types we need to
-[narrow][ts-narrow] their type.
-For example, we can take a `Node` and do a type safe check to get a more
-specific type like a `Link`.
-unified provides a utility to help with this.
-TypeScript also provides some language features that can help.
-Let’s first take a look at `unist-util-is`.
+In most cases,
+when working with unist (the syntax trees used by unified) in TypeScript,
+one actually works with a more specific syntax tree,
+such as mdast (markdown) or hast (HTML).
+These syntax trees extend `Node` and add more specific types.
+For example, a `Link` is a particular and more narrow `Node` in mdast
+and `Element` in hast.
 
-[`unist-util-is`][unist-is] takes a `Node` and a `Test` and returns whether the
-test passes.
-It can be used as a [TypeScript type predicate][ts-predicate] which when used as
-a condition (such as in an if-statement) tells TypeScript to narrow a node.
+```ts twoslash
+/// <reference types="node" />
+// @errors: 2741
+// ---cut---
+import type {Link} from 'mdast'
 
-Here are some ways to narrow nodes:
+// TS checks the types, here knowing that `url` is missing:
+const node: Link = {type: 'link', children: []}
+```
 
-```ts
-import type {Literal, Node} from 'unist'
-import type {Blockquote, Emphasis, Heading, List, Strong} from 'mdast'
-import {convert, is} from 'unist-util-is'
+When you don’t know the exact input node, you likely still know you work with
+mdast or hast or something else.
+In that case, you can use the `Nodes` type (the `s` is important)
+from the respective package.
+That type is a discriminated union of all possible node types in that syntax
+tree.
+Then, regular [narrowing in TypeScript][ts-narrow] works:
 
-// `Node` could come from a plugin, a utility, or be passed into a function
-// here we hard code a Node for testing purposes
-const node: Node = {type: 'example'}
+```ts twoslash
+/// <reference types="node" />
+// ---cut---
+import type {Nodes} from 'hast'
 
-if (is<List>(node, 'list')) {
-  // If we’re here, node is List.
-  //
-  // `'list'` is compared to `node.type` to make sure they match.
-  // `true` means a match, `false` means no match.
-  //
-  // `<List>` tells TypeScript to ensure `'list'` matches `List.type` and that
-  // if `'list'` matches both `node.type` and `List.type`, we know that node is
-  // `List` within this if condition.
+const node = {type: 'comment', value: 'Hi!'} as Nodes
+
+if (node.type === 'comment') {
+  console.log(node) // TS knows this is `Comment`.
+} else {
+  console.log(node) // TS knows this is *not* `Comment`.
 }
 
-if (is<Strong | Emphasis>(node, ['strong', 'emphasis'])) {
-  // If we get here, node is `Strong` or `Emphasis`.
-
-  // If we want even more specific type, we can use a discriminated union
-  // <https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions>
-  if (node.type === 'emphasis') {
-    // If we get here, node is `Emphasis`.
-  }
-}
-
-if (is<Heading>(node, {type: 'heading', depth: 1})) {
-  // If we get here, node is `Heading`.
-  //
-  // TypeScript checks that the properties used in the `Test` are valid
-  // attributes of `<Heading>`.
-  //
-  // It does not narrow `node.depth` only be 1, which can be done with
-  // `<Heading & {depth: 1}>`.
-}
-
-// For advanced use cases, another predicate can be passed to `is`
-if (is<Literal>(node, (node: Node): node is Literal => 'value' in node)) {
-  // If we get here, node is one of the `Literal` types.
-  //
-  // Here any comparison function can be used, as long as it is a predicate
-  // <https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates>
-  // and as long as the predicate and generic match.
-  // For example here, `<Literal>` and `is Literal` match.
-}
-
-// Reusable predicates can also be created using any `Test`
-const isBlockquote = convert<Blockquote>('blockquote')
-if (isBlockquote(node)) {
-  // If we get here, node is `Blockquote`.
+if ('value' in node) {
+  console.log(node) // TS knows this is `Comment` or `Text`.
+} else {
+  console.log(node) // TS knows this is *not* `Comment` or `Text`.
 }
 ```
 
-[unist-is]: https://github.com/syntax-tree/unist-util-is
+TypeScript sometimes gets confused when using a large union of many possible
+nodes.
+So,
+when making plugins and utilities that accept syntax trees representing whole
+documents,
+you can use the `Root` type.
+
+```ts twoslash
+/// <reference types="node" />
+// ---cut---
+import type {Root} from 'mdast'
+import {visit} from 'unist-util-visit'
+
+export default function myRemarkPlugin() {
+  return function (tree: Root) {
+    visit(tree, 'heading', function (node) {
+      node.depth += 1
+    })
+  }
+}
+```
 
 [ts-narrow]: https://www.typescriptlang.org/docs/handbook/2/narrowing.html
-
-[ts-predicate]: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates

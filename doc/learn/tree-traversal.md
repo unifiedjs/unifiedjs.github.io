@@ -1,19 +1,19 @@
 ---
+authorGithub: wooorm
+authorTwitter: wooorm
+author: Titus Wormer
+description: How to do tree traversal (also known as walking or visiting a tree)
 group: recipe
 index: 3
-title: Tree traversal
-description: How to do tree traversal (also known as walking or visiting a tree)
-tags:
-  - unist
-  - tree
-  - traverse
-  - walk
-  - visit
-author: Titus Wormer
-authorTwitter: wooorm
-authorGithub: wooorm
+modified: 2024-08-02
 published: 2019-12-23
-modified: 2020-06-14
+tags:
+  - traverse
+  - tree
+  - unist
+  - visit
+  - walk
+title: Tree traversal
 ---
 
 ## How to walk a tree
@@ -33,7 +33,8 @@ inside it).
 Traversal means stopping at every node to do something.
 So, tree traversal means doing something for every node in a tree.
 
-Tree traversal is often also called “walking a tree”, or “visiting a tree”.
+Tree traversal is often also called “walking a tree”.
+Or “visiting a tree”.
 
 To learn more, continue reading, but when working with unist (unified’s trees)
 you probably need either:
@@ -57,10 +58,12 @@ Let’s say we have the following fragment of HTML, in a file `example.html`:
 You could parse that with the following code (using [`unified`][unified] and
 [`rehype-parse`][rehype-parse]):
 
-```js
+```js twoslash
+/// <reference types="node" />
+// ---cut---
 import fs from 'node:fs/promises'
-import {unified} from 'unified'
 import rehypeParse from 'rehype-parse'
+import {unified} from 'unified'
 
 const document = await fs.readFile('example.html')
 
@@ -118,7 +121,13 @@ As we are all set up, we can traverse the tree.
 
 A useful utility for that is [`unist-util-visit`][visit], and it works like so:
 
-```js
+```js twoslash
+/// <reference types="node" />
+/**
+ * @import {Root} from 'hast'
+ */
+const tree = /** @type {Root} */ (/** @type {unknown} */ (undefined))
+// ---cut---
 import {visit} from 'unist-util-visit'
 
 // …
@@ -153,11 +162,15 @@ We traversed the entire tree, and for each node, we printed its `type`.
 To “visit” only a certain `type` of node, pass a test to
 [`unist-util-visit`][visit] like so:
 
-```js
+```js twoslash
+/// <reference types="node" />
+/**
+ * @import {Root} from 'hast'
+ */
 import {visit} from 'unist-util-visit'
 
-// …
-
+const tree = /** @type {Root} */ (/** @type {unknown} */ (undefined))
+// ---cut---
 visit(tree, 'element', function (node) {
   console.log(node.tagName)
 })
@@ -173,7 +186,15 @@ code
 You can do this yourself as well.
 The above works the same as:
 
-```js
+```js twoslash
+/// <reference types="node" />
+/**
+ * @import {Root} from 'hast'
+ */
+import {visit} from 'unist-util-visit'
+
+const tree = /** @type {Root} */ (/** @type {unknown} */ (undefined))
+// ---cut---
 visit(tree, function (node) {
   if (node.type === 'element') {
     console.log(node.tagName)
@@ -184,7 +205,16 @@ visit(tree, function (node) {
 But the test passed to `visit` can be more advanced, such as the following to
 visit different kinds of nodes.
 
-```js
+```js twoslash
+/// <reference types="node" />
+/**
+ * @import {Root} from 'hast'
+ */
+import {visit} from 'unist-util-visit'
+
+const tree = /** @type {Root} */ (/** @type {unknown} */ (undefined))
+// @errors: 2339
+// ---cut---
 visit(tree, ['comment', 'text'], function (node) {
   console.log([node.value])
 })
@@ -202,6 +232,30 @@ visit(tree, ['comment', 'text'], function (node) {
 [ '.\n' ]
 [ '\n' ]
 ```
+
+Sadly,
+TypeScript isn’t great with arrays and discriminated unions.
+When you want to do more complex tests with TypeScript,
+it’s recommended to omit the test and use explicit `if` statements:
+
+```js twoslash
+/// <reference types="node" />
+/**
+ * @import {Root} from 'hast'
+ */
+import {visit} from 'unist-util-visit'
+
+const tree = /** @type {Root} */ (/** @type {unknown} */ (undefined))
+// ---cut---
+visit(tree, function (node) {
+  if (node.type === 'comment' || node.type === 'text')  {
+    console.log([node.value])
+  }
+})
+```
+
+Code that is more explicit and is understandable by TypeScript,
+is often also easier to understand by humans.
 
 Read more about [`unist-util-visit`][visit] in its readme.
 

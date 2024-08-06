@@ -249,10 +249,13 @@ abbr {
 }
 
 .mdast .hl,
+.micromark .hl,
 .remark .hl,
 .content .mdast:hover .hl,
+.content .micromark:hover .hl,
 .content .remark:hover .hl,
 .content .mdast:focus .hl,
+.content .micromark:focus .hl,
 .content .remark:focus .hl {
   color: hsl(0deg 97% 43%);
 }
@@ -825,6 +828,56 @@ a.tag:focus .count {
 
 .content abbr.first {
   border-bottom-color: var(--gray-3);
+}
+
+.rehype-twoslash-completion-deprecated {
+  opacity: 0.5;
+}
+
+.rehype-twoslash-popover-target {
+  cursor: default;
+}
+
+.highlight:is(:hover, :focus-within) .rehype-twoslash-popover-target {
+  background-color: var(--gray-2);
+}
+
+/* Wavy underline for errors. */
+.rehype-twoslash-error-target {
+  background-repeat: repeat-x;
+  background-position: bottom left;
+  background-image: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 6 3" enable-background="new 0 0 6 3" height="3" width="6"><g fill="%23c94824"><polygon points="5.5,0 2.5,3 1.1,3 4.1,0"/><polygon points="4,0 6,2 6,0.6 5.4,0"/><polygon points="0,2 1,3 2.4,3 0,0.6"/></g></svg>');
+}
+
+/* The content that will be shown in the tooltip. */
+.rehype-twoslash-popover {
+  position: absolute;
+  max-width: calc(45 * (1em + 1ex));
+  padding: calc(0.5 * (1em + 1ex));
+  margin: 0;
+  background-color: var(--gray-0);
+  border: 1px solid var(--gray-2);
+  border-radius: 3px;
+}
+
+/* No padding if we have a padded code block (and perhaps more blocks) */
+.rehype-twoslash-popover:has(.rehype-twoslash-popover-code) {
+  padding: 0;
+}
+
+.rehype-twoslash-popover-code {
+  /* Overwrite `.content pre` */
+  margin: 0 !important;
+}
+
+.rehype-twoslash-popover-code > code {
+  mask-image: none;
+  border-radius: 0;
+}
+
+.rehype-twoslash-popover-description {
+  background-color: var(--gray-0);
+  padding: 0 calc(2 * (1em + 1ex));
 }
 
 @media (width <= 48em) {

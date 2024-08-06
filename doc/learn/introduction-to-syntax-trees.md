@@ -1,9 +1,9 @@
 ---
-group: guide
-title: Intro to syntax trees
 description: Guide that shows the basics of syntax trees (ASTs)
+group: guide
+modified: 2024-08-05
 published: 2019-12-12
-modified: 2019-12-12
+title: Intro to syntax trees
 ---
 
 ## Introduction to syntax trees

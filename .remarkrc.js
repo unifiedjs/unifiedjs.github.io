@@ -25,7 +25,7 @@ const naturalLanguage = unified().use([
   retextEnglish,
   retextPresetWooorm,
   [retextEquality, {ignore: ['whitespace']}],
-  retextPassive,
+  [retextPassive, {ignore: ['hidden']}],
   [retextProfanities, {sureness: 1}],
   [retextReadability, {age: 18, minWords: 8}],
   [retextSimplify, {ignore: ['function', 'interface', 'maintain', 'type']}],

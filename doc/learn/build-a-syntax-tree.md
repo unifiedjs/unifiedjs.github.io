@@ -1,17 +1,19 @@
 ---
+authorGithub: ChristianMurphy
+author: Christian Murphy
+description: How to build content with syntax trees
 group: recipe
 index: 8
-title: Build a syntax tree
-description: How to build content with syntax trees
-tags:
-  - unist
-  - mdast
-  - hast
-  - xast
-author: Christian Murphy
-authorGithub: ChristianMurphy
+modified: 2024-08-02
 published: 2020-06-09
-modified: 2020-06-15
+tags:
+  - esast
+  - hast
+  - mdast
+  - nlcst
+  - unist
+  - xast
+title: Build a syntax tree
 ---
 
 ## How to build a syntax tree
@@ -28,10 +30,11 @@ The most basic way to create a tree is with plain object and arrays.
 To prevent type errors, this can be checked with the types for the given syntax
 tree language, in this case mdast:
 
-```ts
+```ts twoslash
 import type {Root} from 'mdast'
 
-// Note the `: Root` is a TypeScript annotation. Remove it (and the import) for plain JavaScript.
+// Note the `: Root` is a TypeScript annotation.
+// For plain JavaScript, remove it (and the import).
 const mdast: Root = {
   type: 'root',
   children: [
@@ -54,9 +57,14 @@ It’s also possible to build trees with [`unist-builder`][u].
 It allows a more concise, “hyperscript” like syntax (which is also like
 `React.createElement`):
 
-```js
+```js twoslash
+/**
+ * @import {Root} from 'mdast'
+ */
+
 import {u} from 'unist-builder'
 
+/** @type {Root} */
 const mdast = u('root', [
   u('paragraph', [
     u('text', 'example')
@@ -68,7 +76,9 @@ const mdast = u('root', [
 
 When working with hast (HTML), [`hastscript`][h] can be used.
 
-```js
+```js twoslash
+/// <reference types="node" />
+// ---cut---
 import {h, s} from 'hastscript'
 
 console.log(
@@ -81,7 +91,7 @@ console.log(
 
 // SVG:
 console.log(
-  s('svg', {viewbox: '0 0 500 500', xmlns: 'http://www.w3.org/2000/svg'}, [
+  s('svg', {viewBox: '0 0 500 500', xmlns: 'http://www.w3.org/2000/svg'}, [
     s('title', 'SVG `<circle>` element'),
     s('circle', {cx: 120, cy: 120, r: 100})
   ])
@@ -90,9 +100,10 @@ console.log(
 
 `hastscript` can also be used as a JSX configuration comment:
 
-```jsx
-/** @jsx h @jsxFrag null */
-import {h} from 'hastscript'
+```tsx twoslash
+/// <reference types="node" />
+// ---cut---
+/** @jsxImportSource hastscript */
 
 console.log(
   <form method="POST">
@@ -108,7 +119,9 @@ console.log(
 When working with xast (XML), [`xastscript`][x]
 can be used.
 
-```js
+```js twoslash
+/// <reference types="node" />
+// ---cut---
 import {x} from 'xastscript'
 
 console.log(
@@ -122,9 +135,10 @@ console.log(
 
 `xastscript` can also be used as a JSX configuration comment:
 
-```jsx
-/** @jsx x @jsxFrag null */
-import {x} from 'xastscript'
+```tsx twoslash
+/// <reference types="node" />
+// ---cut---
+/** @jsxImportSource xastscript */
 
 console.log(
   <album id={123}>
