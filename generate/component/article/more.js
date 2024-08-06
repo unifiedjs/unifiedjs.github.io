@@ -7,11 +7,11 @@ import {fmtCompact} from '../../util/fmt-compact.js'
 import {fmtPlural} from '../../util/fmt-plural.js'
 
 /**
- * @param {Metadata} section
+ * @param {string} href
  * @param {number} rest
  */
-export function more(section, rest) {
-  return card(section.pathname, [
+export function more(href, rest) {
+  return card(href, [
     'See ',
     fmtCompact(rest),
     ' other ',

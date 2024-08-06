@@ -106,7 +106,7 @@ export function home(data) {
           'make things with unified. '
         ])
       ]),
-      articlesList({pathname: '/learn/'}, articlesSort(data.articles), {
+      articlesList('/learn/', articlesSort(data.articles), {
         max: 6
       }),
       h('.article.content', [

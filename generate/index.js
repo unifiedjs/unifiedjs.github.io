@@ -64,6 +64,8 @@ import {topics} from './page/topics.js'
 import {topic} from './page/topic.js'
 import {data} from './data.js'
 
+const origin = 'https://unifiedjs.com'
+
 const users = /** @type {Array<ShowcaseUser>} */ (
   yaml.parse(
     await fs.readFile(new URL('../doc/showcase.yml', import.meta.url), 'utf8')
@@ -101,6 +103,7 @@ for (const d of input) {
   meta.type = 'article'
   meta.tags = [group]
   if (tags) meta.tags.push(...tags)
+  meta.origin = origin
   meta.pathname = ['', 'learn', group, slug, ''].join('/')
 
   entries.push(file)
@@ -138,6 +141,7 @@ for (const d of minidata) {
   sections.push({
     ...d,
     entries: groupEntries,
+    origin,
     pathname: '/learn/' + slug + '/',
     tags: [slug, 'learn']
   })
@@ -150,6 +154,7 @@ page(
   {
     description:
       'Content as structured data: unified compiles content and provides hundreds of packages to work with content',
+    origin,
     pathname: '/'
   }
 )
@@ -165,7 +170,13 @@ for (const file of entries) {
 
 for (const section of sections) {
   const {description, entries, pathname, tags, title} = section
-  const meta = {description, pathname, tags, title}
+  const meta = {
+    description,
+    origin,
+    pathname,
+    tags,
+    title
+  }
   assert(entries)
   page(function () {
     return articles(meta, entries)
@@ -178,6 +189,7 @@ page(
   },
   {
     description: 'Learn unified through guides and recipes',
+    origin,
     pathname: '/learn/',
     tags: ['learn', 'recipe', 'guide', 'tutorial'],
     title: 'Learn'
@@ -190,6 +202,7 @@ page(
   },
   {
     description: 'Explore the unified ecosystem',
+    origin,
     pathname: '/explore/',
     title: 'Explore'
   }
@@ -201,6 +214,7 @@ page(
   },
   {
     description: 'Explore packages in the unified ecosystem by keyword',
+    origin,
     pathname: '/explore/keyword/',
     title: 'Keywords - Explore'
   }
@@ -216,6 +230,7 @@ for (const d of Object.keys(data.packagesByKeyword)) {
         'Explore packages in the unified ecosystem with the “' +
         d +
         '” keyword',
+      origin,
       pathname: '/explore/keyword/' + d + '/',
       title: d + ' - Keywords'
     }
@@ -230,6 +245,7 @@ for (const d of Object.keys(data.packagesByScope)) {
     {
       description:
         'Explore packages in the unified ecosystem in the “' + d + '” scope',
+      origin,
       pathname: '/explore/package/' + d + '/',
       title: d + ' - Scope'
     }
@@ -242,6 +258,7 @@ page(
   },
   {
     description: 'Explore projects in the unified ecosystem by topic',
+    origin,
     pathname: '/explore/topic/',
     title: 'Topics - Explore'
   }
@@ -255,6 +272,7 @@ for (const d of Object.keys(data.projectsByTopic)) {
     {
       description:
         'Explore projects in the unified ecosystem with the “' + d + '” topic',
+      origin,
       pathname: '/explore/topic/' + d + '/',
       title: d + ' - Topics'
     }
@@ -268,6 +286,7 @@ for (const d of Object.keys(data.projectsByOwner)) {
     },
     {
       description: 'Explore projects in the unified ecosystem by “@' + d + '”',
+      origin,
       pathname: '/explore/project/' + d + '/',
       title: '@' + d + ' - Owner'
     }
@@ -280,6 +299,7 @@ page(
   },
   {
     description: 'Explore all packages in the unified ecosystem',
+    origin,
     pathname: '/explore/package/',
     title: 'Packages - Explore'
   }
@@ -291,6 +311,7 @@ page(
   },
   {
     description: 'Explore all projects in the unified ecosystem',
+    origin,
     pathname: '/explore/project/',
     title: 'Projects - Explore'
   }
@@ -302,6 +323,7 @@ page(
   },
   {
     description: 'Explore recent releases in the unified ecosystem',
+    origin,
     pathname: '/explore/release/',
     title: 'Releases - Explore'
   }
@@ -316,6 +338,7 @@ for (const [d, p] of Object.entries(data.projectByRepo)) {
     },
     {
       description,
+      origin,
       pathname: '/explore/project/' + d + '/',
       tags: [...topics],
       title: d
@@ -330,7 +353,7 @@ for (const [d, pack] of Object.entries(data.packageByName)) {
 
   tasks.push(async function () {
     const file = await read(input)
-    const meta = {description, pathname, tags: keywords, title: d}
+    const meta = {description, origin, pathname, tags: keywords, title: d}
 
     file.data = {meta, repo}
     const inputTree = readmePipeline.parse(file)
@@ -346,6 +369,7 @@ page(
   },
   {
     description: 'Get involved, meet the team, and support us',
+    origin,
     pathname: '/community/',
     title: 'Community'
   }
@@ -357,6 +381,7 @@ page(
   },
   {
     description: 'Meet the team maintaining unified',
+    origin,
     pathname: '/community/member/',
     title: 'Team - Community'
   }
@@ -368,6 +393,7 @@ page(
   },
   {
     description: 'Support unified by becoming a sponsor',
+    origin,
     pathname: '/community/sponsor/',
     title: 'Sponsor - Community'
   }
@@ -379,6 +405,7 @@ page(
   },
   {
     description: 'Showcase of interesting use cases of unified',
+    origin,
     pathname: '/community/case/',
     title: 'Showcase - Community'
   }

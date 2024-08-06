@@ -8,6 +8,7 @@
  * @typedef Metadata
  * @property {string | undefined} [description]
  * @property {ReadonlyArray<VFile> | undefined} [entries]
+ * @property {string} origin
  * @property {string} pathname
  * @property {string | undefined} [slug]
  * @property {Array<string> | undefined} [tags]
@@ -19,18 +20,18 @@ import {item} from './item.js'
 import {more} from './more.js'
 
 /**
- * @param {Metadata} section
+ * @param {string} href
  * @param {Array<VFile>} d
  * @param {Options | undefined} [options]
  * @returns {Element}
  */
-export function list(section, d, options) {
+export function list(href, d, options) {
   return cards(d, item, {more: map, ...options})
   /**
    * @param {number} rest
    * @returns {Element}
    */
   function map(rest) {
-    return more(section, rest)
+    return more(href, rest)
   }
 }

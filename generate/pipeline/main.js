@@ -7,6 +7,7 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import rehypeDocument from 'rehype-document'
 import rehypeMeta from 'rehype-meta'
+import rehypeMinifyUrl from 'rehype-minify-url'
 import rehypePresetMinify from 'rehype-preset-minify'
 import rehypePreventFaviconRequest from 'rehype-prevent-favicon-request'
 import rehypeStringify from 'rehype-stringify'
@@ -57,8 +58,6 @@ export const main = unified()
     },
     name: 'unified',
     og: true,
-    origin: 'https://unifiedjs.com',
-    pathname: '/',
     siteAuthor: 'unified collective',
     siteTags: ['ast', 'parse', 'process', 'stringify', 'transform', 'unified'],
     siteTwitter: '@unifiedjs',
@@ -68,6 +67,7 @@ export const main = unified()
   .use(rehypeDefer)
   .use(rehypePresetMinify)
   .use(rehypePreventFaviconRequest)
+  .use(rehypeMinifyUrl)
   .use(move)
   .use(mkdir)
   .use(rehypeStringify)

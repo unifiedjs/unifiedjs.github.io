@@ -22,7 +22,7 @@ export function learn(sections) {
     assert(d.entries)
     articles.push(
       h('.article.content', [h('h3', {}, d.title), h('p', {}, d.description)]),
-      list(d, helperSort(d.entries || []))
+      list(d.pathname, helperSort(d.entries || []))
     )
   }
 
