@@ -14,6 +14,7 @@ import remarkGfm from 'remark-gfm'
 import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import rehypeAutolinkHeadings from 'rehype-autolink-headings'
+import rehypeInferReadingTimeMeta from 'rehype-infer-reading-time-meta'
 import rehypeRaw from 'rehype-raw'
 import rehypeSlug from 'rehype-slug'
 import rehypeStarryNight from 'rehype-starry-night'
@@ -76,6 +77,7 @@ export const article = unified()
     }
   })
   .use(rehypeRaw)
+  .use(rehypeInferReadingTimeMeta)
   .use(rehypeStarryNight, {
     grammars: [...common, sourceGitignore, sourceTsx],
     plainText: ['txt']
