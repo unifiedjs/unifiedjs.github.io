@@ -90,22 +90,24 @@ export default function rehypePictures(options) {
         /** @type {Set<string>} */
         const available = new Set()
         // See which images exist.
-        /** @type {Array<() => Promise<undefined>>} */
+        /** @type {Array<Promise<undefined>>} */
         const tasks = []
 
         for (const d of sources) {
-          tasks.push(async function () {
-            const file = new VFile({path: localUrl})
-            rename(file, d)
+          tasks.push(
+            (async function () {
+              const file = new VFile({path: localUrl})
+              rename(file, d)
 
-            try {
-              await fs.access(file.path, fs.constants.R_OK)
-            } catch {
-              return
-            }
+              try {
+                await fs.access(file.path, fs.constants.R_OK)
+              } catch {
+                return
+              }
 
-            available.add(file.path)
-          })
+              available.add(file.path)
+            })()
+          )
         }
 
         await Promise.all(tasks)
@@ -159,6 +161,7 @@ export default function rehypePictures(options) {
 
         node.properties.height = info.height
         node.properties.loading = 'lazy'
+        node.properties.sizes = 'auto'
         node.properties.width = info.width
 
         const siblings = parent.children
