@@ -1,6 +1,7 @@
 /**
  * @import {Root} from 'hast'
  * @import {DataMap} from 'vfile'
+ * @import {Entry as FeedEntry} from 'xast-util-feed'
  * @import {Entry as SitemapEntry} from 'xast-util-sitemap'
  * @import {Human} from '../data/humans.js'
  * @import {Release} from '../data/releases.js'
@@ -29,10 +30,18 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import {glob} from 'glob'
+import {fromHtml} from 'hast-util-from-html'
+import {isElement} from 'hast-util-is-element'
+import {sanitize} from 'hast-util-sanitize'
+import {select} from 'hast-util-select'
+import {toHtml} from 'hast-util-to-html'
+import {urlAttributes} from 'html-url-attributes'
 import {read, write} from 'to-vfile'
+import {visit} from 'unist-util-visit'
 import {matter} from 'vfile-matter'
 import {reporter} from 'vfile-reporter'
 import {VFile} from 'vfile'
+import {rss} from 'xast-util-feed'
 import {sitemap} from 'xast-util-sitemap'
 import {toXml} from 'xast-util-to-xml'
 import yaml from 'yaml'
@@ -416,6 +425,9 @@ page(
 
 /** @type {Array<SitemapEntry>} */
 const sitemapEntries = []
+/** @type {Array<VFile>} */
+const learnFiles = []
+const now = new Date()
 
 for (const render of tasks) {
   const {tree, file} = await render()
@@ -428,14 +440,18 @@ for (const render of tasks) {
   const modified = matter.modified || meta.modified
   assert(pathname)
   sitemapEntries.push({url: new URL(pathname, origin).href, modified})
+
+  if (matter.group) {
+    learnFiles.push(file)
+  }
 }
 
 await fs.writeFile(
-  new URL('../build/sitemap.xml', import.meta.url),
-  toXml(sitemap(sitemapEntries))
+  new URL('../build/CNAME', import.meta.url),
+  new URL(origin).host + '\n'
 )
 
-console.log('✔ `/sitemap.xml`')
+console.error('✔ `/CNAME`')
 
 await fs.writeFile(
   new URL('../build/robots.txt', import.meta.url),
@@ -447,7 +463,104 @@ await fs.writeFile(
   ].join('\n')
 )
 
-console.log('✔ `/robots.txt`')
+console.error('✔ `/robots.txt`')
+
+await fs.writeFile(
+  new URL('../build/sitemap.xml', import.meta.url),
+  toXml(sitemap(sitemapEntries))
+)
+
+console.error('✔ `/sitemap.xml`')
+
+learnFiles.sort(function (a, b) {
+  assert(a.data.matter?.published)
+  assert(b.data.matter?.published)
+  return (
+    new Date(b.data.matter.published).valueOf() -
+    new Date(a.data.matter.published).valueOf()
+  )
+})
+
+const newestLearnFiles = learnFiles.slice(0, 10)
+/** @type {Array<FeedEntry>} */
+const learnEntries = []
+
+for (const file of newestLearnFiles) {
+  const tree = fromHtml(file.value)
+  const body = select('main', tree)
+  assert(body)
+  const fragment = sanitize(body)
+
+  const {matter, meta} = file.data
+  assert(matter)
+  assert(meta)
+  assert(meta.pathname)
+  const base = new URL(meta.pathname, origin)
+
+  visit(fragment, 'element', function (node, index, parent) {
+    // Make URLs absolute.
+    for (const property in node.properties) {
+      if (
+        Object.hasOwn(urlAttributes, property) &&
+        isElement(node, urlAttributes[property]) &&
+        node.properties[property] != null
+      ) {
+        node.properties[property] = new URL(
+          String(node.properties[property]),
+          base
+        ).href
+      }
+    }
+
+    if (parent && typeof index === 'number') {
+      // Drop empty spans, left from syntax highlighting.
+      if (
+        node.tagName === 'span' &&
+        Object.keys(node.properties).length === 0
+      ) {
+        parent.children.splice(index, 1, ...node.children)
+        return index
+      }
+
+      // Drop tooltips from twoslash.
+      if (
+        node.tagName === 'div' &&
+        typeof node.properties.id === 'string' &&
+        node.properties.id.startsWith('user-content-rehype-twoslash')
+      ) {
+        parent.children.splice(index, 1)
+        return index
+      }
+    }
+  })
+
+  learnEntries.push({
+    author: matter.author,
+    descriptionHtml: toHtml(fragment),
+    description: matter.description,
+    modified: matter.modified,
+    published: matter.published,
+    title: matter.title,
+    url: base.href
+  })
+}
+
+await fs.writeFile(
+  new URL('../build/rss.xml', import.meta.url),
+  toXml(
+    rss(
+      {
+        feedUrl: new URL('rss.xml', origin).href,
+        lang: 'en',
+        title: 'unified - learn',
+        url: origin
+      },
+      learnEntries
+    )
+  ) + '\n'
+)
+
+console.error('✔ `/rss.xml`')
 
 /**
  *

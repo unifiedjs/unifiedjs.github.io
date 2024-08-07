@@ -26,6 +26,12 @@ export const main = unified()
   .use(rehypeDocument, {
     js: ['/browser.js', '/search.js'],
     link: [
+      {
+        href: '/rss.xml',
+        rel: 'alternate',
+        title: 'unifiedjs.com',
+        type: 'application/rss+xml'
+      },
       // We take images from these two, so preconnect asap.
       {href: 'https://github.com', rel: 'preconnect'},
       {href: 'https://images.opencollective.com', rel: 'preconnect'},

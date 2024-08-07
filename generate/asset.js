@@ -1,7 +1,3 @@
-/**
- * @import {PackageJson} from 'type-fest'
- */
-
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import process from 'node:process'
@@ -15,10 +11,6 @@ import sharp from 'sharp'
 import {read, write} from 'to-vfile'
 import {reporter} from 'vfile-reporter'
 import {VFile} from 'vfile'
-
-const packageValue = await fs.readFile('package.json', 'utf8')
-/** @type {PackageJson} */
-const packageJson = JSON.parse(packageValue)
 
 dotenv.config()
 
@@ -68,15 +60,6 @@ for (const fp of paths) {
     console.error(reporter(file))
   }
 }
-
-assert(typeof packageJson.homepage === 'string')
-const cname = new VFile({
-  basename: 'CNAME',
-  dirname: 'build',
-  value: new URL(packageJson.homepage).host + '\n'
-})
-await write(cname)
-console.error(reporter(cname))
 
 /**
  * @param {VFile} file

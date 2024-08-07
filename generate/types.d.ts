@@ -21,7 +21,7 @@ interface UnifiedjsGenerateFields {
   /**
    * Group of post; data specific to `unifiedjs.github.io`.
    */
-  group?: string | undefined
+  group?: 'recipe' | 'guide' | undefined
 }
 
 declare module 'vfile' {

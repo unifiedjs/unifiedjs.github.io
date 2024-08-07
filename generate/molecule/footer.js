@@ -15,6 +15,7 @@ export function footer() {
         h('li', {}, h('a', {href: '/community/'}, 'Community'))
       ]),
       h('ol.row.justify-end-l', [
+        h('li', {}, h('a', {href: '/rss.xml'}, 'RSS Feed')),
         h(
           'li',
           h('a', {href: 'https://opencollective.com/unified'}, 'OpenCollective')
