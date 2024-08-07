@@ -35,8 +35,9 @@ prose.
 
 ### Tree transformations
 
-For this example we start out with markdown content and then transform to HTML.
-We need a markdown parser and an HTML stringifier (compiler) for that.
+For this example we start out with markdown content and then turn it into HTML.
+We need something to parse markdown and something to compile (stringify) HTML
+for that.
 The relevant projects are respectively [`remark-parse`][parse] and
 [`rehype-stringify`][stringify].
 To transform between the two syntaxes we use [`remark-rehype`][remark-rehype].

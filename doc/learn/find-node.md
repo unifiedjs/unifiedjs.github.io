@@ -88,7 +88,7 @@ await remark()
 
 Read more about [`unist-util-find`][unist-util-find] in its readme.
 
-`unist-util-find` is rather basic and slow.
+The package `unist-util-find` is rather basic and slow.
 You likely want to [traverse a tree][tree-traversal]
 with [`unist-util-visit`][unist-util-visit]
 

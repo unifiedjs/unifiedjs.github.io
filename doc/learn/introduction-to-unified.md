@@ -56,7 +56,7 @@ Together with other tools and specifications they form the unified collective.
 
 The unified collective spans like-minded organizations.
 These organizations have the shared goal to innovate content processing.
-Seamless, interchangeable, and pluggable tooling is how that’s achieved.
+Seamless, interchangeable, and plugable tooling is how that’s achieved.
 
 Depending on what you want to do you reference different organizations.
 So let’s start off with an introduction round.
