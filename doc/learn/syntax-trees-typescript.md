@@ -28,6 +28,7 @@ This guide will introduce you to using unist and unified with TypeScript.
 * [mdast (markdown)](#mdast-markdown)
 * [hast (HTML)](#hast-html)
 * [xast (XML)](#xast-xml)
+* [nlcst (Natural language)](#nlcst-natural-language)
 * [Summary](#summary)
 * [Next steps](#next-steps)
 
@@ -311,6 +312,33 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
  */
 ```
 
+### nlcst (Natural language)
+
+[nlcst][] extends unist with types specific for natural language such as
+`Sentence`, `Word`, and many more.
+The specification includes a full list of nodes.
+The types are available in a types only package: [`@types/nlcst`][ts-nlcst].
+
+Install:
+
+```sh
+npm install --save-dev @types/nlcst
+```
+
+To import the types into a TypeScript file, use:
+
+```ts twoslash
+import type {Paragraph, Sentence, Word, Root} from 'nlcst'
+```
+
+To import the types in [JSDoc TypeScript][ts-jsdoc], use:
+
+```js twoslash
+/**
+ * @import {Paragraph, Sentence, Word, Root} from 'nlcst'
+ */
+```
+
 ### Summary
 
 * unified provides types for each language’s syntax tree
@@ -330,6 +358,8 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 [hast]: https://github.com/syntax-tree/hast
 
+[nlcst]: https://github.com/syntax-tree/nlcst
+
 [xast]: https://github.com/syntax-tree/xast#readme
 
 [ts-unist]: https://www.npmjs.com/package/@types/unist
@@ -337,6 +367,8 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 [ts-mdast]: https://www.npmjs.com/package/@types/mdast
 
 [ts-hast]: https://www.npmjs.com/package/@types/hast
+
+[ts-nlcst]: https://www.npmjs.com/package/@types/nlcst
 
 [ts-xast]: https://www.npmjs.com/package/@types/xast
 
