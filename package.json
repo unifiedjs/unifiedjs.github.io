@@ -108,6 +108,8 @@
     "vfile-matter": "^5.0.0",
     "vfile-rename": "^3.0.0",
     "vfile-reporter": "^8.0.0",
+    "xast-util-sitemap": "^2.0.0",
+    "xast-util-to-xml": "^4.0.0",
     "xastscript": "^4.0.0",
     "xo": "^0.59.0",
     "yaml": "^2.0.0"

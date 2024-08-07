@@ -1,6 +1,7 @@
 /**
  * @import {Root} from 'hast'
  * @import {DataMap} from 'vfile'
+ * @import {Entry as SitemapEntry} from 'xast-util-sitemap'
  * @import {Human} from '../data/humans.js'
  * @import {Release} from '../data/releases.js'
  * @import {Person as Sponsor} from '../data/sponsors.js'
@@ -32,6 +33,8 @@ import {read, write} from 'to-vfile'
 import {matter} from 'vfile-matter'
 import {reporter} from 'vfile-reporter'
 import {VFile} from 'vfile'
+import {sitemap} from 'xast-util-sitemap'
+import {toXml} from 'xast-util-to-xml'
 import yaml from 'yaml'
 import {humans} from '../data/humans.js'
 import {releases as dataReleases} from '../data/releases.js'
@@ -411,12 +414,28 @@ page(
   }
 )
 
+/** @type {Array<SitemapEntry>} */
+const sitemapEntries = []
+
 for (const render of tasks) {
   const {tree, file} = await render()
   file.value = pipeline.stringify(await pipeline.run(tree, file), file)
   await write(file)
-  console.log(reporter(file))
+  console.error(reporter(file))
+  const meta = file.data.meta || {}
+  const matter = file.data.matter || {}
+  const pathname = matter.pathname || meta.pathname
+  const modified = matter.modified || meta.modified
+  assert(pathname)
+  sitemapEntries.push({url: new URL(pathname, origin).href, modified})
 }
+
+await fs.writeFile(
+  new URL('../build/sitemap.xml', import.meta.url),
+  toXml(sitemap(sitemapEntries))
+)
+
+console.log('✔ `/sitemap.xml`')
 
 /**
  *
