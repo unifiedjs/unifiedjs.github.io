@@ -437,6 +437,18 @@ await fs.writeFile(
 
 console.log('✔ `/sitemap.xml`')
 
+await fs.writeFile(
+  new URL('../build/robots.txt', import.meta.url),
+  [
+    'User-agent: *',
+    'Allow: /',
+    'Sitemap: ' + new URL('sitemap.xml', origin).href,
+    ''
+  ].join('\n')
+)
+
+console.log('✔ `/robots.txt`')
+
 /**
  *
  * @param {() => Root} render
