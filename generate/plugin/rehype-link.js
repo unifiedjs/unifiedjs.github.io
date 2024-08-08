@@ -12,6 +12,7 @@ const ignore = [
   ...defaultIgnore,
   'a',
   'code',
+  'div', // Twoslash?
   'h1',
   'h2',
   'h3',
