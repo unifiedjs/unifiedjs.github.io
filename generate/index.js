@@ -359,7 +359,7 @@ for (const [d, p] of Object.entries(data.projectByRepo)) {
 }
 
 for (const [d, pack] of Object.entries(data.packageByName)) {
-  const {description, keywords, manifestBase, readmeName, repo} = pack
+  const {description, keywords, readmeName, repo} = pack
   const input = new URL('../data/readme/' + readmeName, import.meta.url)
   const pathname = '/explore/package/' + d + '/'
 
@@ -427,7 +427,6 @@ page(
 const sitemapEntries = []
 /** @type {Array<VFile>} */
 const learnFiles = []
-const now = new Date()
 
 for (const render of tasks) {
   const {tree, file} = await render()
@@ -503,7 +502,8 @@ for (const file of newestLearnFiles) {
       if (
         Object.hasOwn(urlAttributes, property) &&
         isElement(node, urlAttributes[property]) &&
-        node.properties[property] != null
+        node.properties[property] !== null &&
+        node.properties[property] !== undefined
       ) {
         node.properties[property] = new URL(
           String(node.properties[property]),

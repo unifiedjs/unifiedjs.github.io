@@ -1,4 +1,3 @@
-import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import process from 'node:process'
 import dotenv from 'dotenv'

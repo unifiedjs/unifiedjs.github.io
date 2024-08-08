@@ -11,7 +11,6 @@
  * @property {string | null | undefined} [repo]
  */
 
-import {ok as assert} from 'devlop'
 import {isElement} from 'hast-util-is-element'
 import {urlAttributes} from 'html-url-attributes'
 import {visit} from 'unist-util-visit'
@@ -46,7 +45,7 @@ export default function rehypeResolveUrls(options) {
       file.fail('Unexpected missing `repo` in `options` or `file.data`', tree)
     }
 
-    let prefix = [repo, 'blob', object]
+    const prefix = [repo, 'blob', object]
 
     if (typeof dirname === 'string' && dirname !== '/') {
       prefix.push(...dirname.split('/'))

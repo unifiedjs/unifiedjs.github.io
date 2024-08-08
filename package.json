@@ -159,9 +159,6 @@
   "type": "module",
   "version": "1.0.0",
   "xo": {
-    "ignores": [
-      "!.remarkrc.js"
-    ],
     "overrides": [
       {
         "files": [
@@ -189,7 +186,9 @@
     ],
     "prettier": true,
     "rules": {
+      "complexity": "off",
       "no-await-in-loop": "off",
+      "unicorn/no-process-exit": "off",
       "unicorn/prevent-abbreviations": [
         "error",
         {
@@ -197,7 +196,8 @@
             "src": false
           }
         }
-      ]
+      ],
+      "unicorn/prefer-query-selector": "off"
     }
   }
 }
