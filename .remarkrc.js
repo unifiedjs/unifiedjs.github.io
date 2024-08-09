@@ -24,7 +24,7 @@ import {unified} from 'unified'
 const naturalLanguage = unified().use([
   retextEnglish,
   retextPresetWooorm,
-  [retextEquality, {ignore: ['whitespace']}],
+  [retextEquality, {ignore: ['hosts', 'whitespace']}],
   [retextPassive, {ignore: ['hidden']}],
   [retextProfanities, {sureness: 1}],
   [retextReadability, {age: 18, minWords: 8}],

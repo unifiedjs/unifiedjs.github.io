@@ -79,7 +79,7 @@ const id = 'search-root'
 
 // For some reason this can be fired multiple times.
 if (loc.pathname === home && !document.querySelector('#' + id + ' form')) {
-  await init()
+  init()
 }
 
 async function init() {

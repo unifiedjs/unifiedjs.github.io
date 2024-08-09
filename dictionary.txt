@@ -2,6 +2,7 @@
 CLI
 XSS
 attacher
+bundlers
 bundler
 esbuild
 minified
@@ -36,5 +37,6 @@ rehype
 retext
 unist
 vfile
+webpack
 xast
 xo
