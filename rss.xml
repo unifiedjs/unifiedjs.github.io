@@ -1,0 +1,702 @@
+<?xml version="1.0" encoding="utf-8"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unified - learn</title><description></description><link>https://unifiedjs.com/</link><lastBuildDate>Fri, 09 Aug 2024 08:18:42 GMT</lastBuildDate><dc:date>2024-08-09T08:18:42.388Z</dc:date><atom:link href="https://unifiedjs.com/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><dc:language>en</dc:language><item><title>HTML and remark</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/recipe/remark-html/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/remark-html/</guid><pubDate>Tue, 09 Mar 2021 00:00:00 GMT</pubDate><dc:date>2021-03-09T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-html-and-remark">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#html-and-remark" class="" aria-label="Link to self">&#x3C;/a>HTML and remark&#x3C;/h2>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> is a markdown compiler. It’s focus is markdown. It’s concerned with HTML in two ways:&#x3C;/p>&#x3C;ol>&#x3C;li>markdown is often turned into HTML&#x3C;/li>&#x3C;li>markdown sometimes has embedded HTML&#x3C;/li>&#x3C;/ol>&#x3C;p>When dealing with HTML and markdown, both &#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> and &#x3C;a href="https://unifiedjs.com/explore/project/rehypejs/rehype/" class="">rehype&#x3C;/a> are used. This article shows some examples of how to do that.&#x3C;/p>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-markdown-into-html">How to turn markdown into HTML&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown">How to turn HTML into markdown&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-allow-html-embedded-in-markdown">How to allow HTML embedded in markdown&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-properly-support-html-inside-markdown">How to properly support HTML inside markdown&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-how-to-turn-markdown-into-html">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-markdown-into-html" class="" aria-label="Link to self">&#x3C;/a>How to turn markdown into HTML&#x3C;/h3>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> handles markdown: it can parse and serialize it. But it’s &#x3C;strong>not&#x3C;/strong> for HTML. That’s what &#x3C;a href="https://unifiedjs.com/explore/project/rehypejs/rehype/" class="">rehype&#x3C;/a> does, which exists to parse and serialize HTML.&#x3C;/p>&#x3C;p>To turn markdown into HTML, we need &#x3C;a href="https://unifiedjs.com/explore/package/remark-parse/">&#x3C;code>remark-parse&#x3C;/code>&#x3C;/a>, &#x3C;a href="https://unifiedjs.com/explore/package/remark-rehype/">&#x3C;code>remark-rehype&#x3C;/code>&#x3C;/a>, and &#x3C;a href="https://unifiedjs.com/explore/package/rehype-stringify/">&#x3C;code>rehype-stringify&#x3C;/code>&#x3C;/a>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse) // Parse markdown content to a syntax tree
+  .use(remarkRehype) // Turn markdown syntax tree to HTML syntax tree, ignoring embedded HTML
+  .use(rehypeStringify) // Serialize HTML syntax tree
+  .process('*emphasis* and **strong**')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>This turns &#x3C;code>*emphasis* and **strong**&#x3C;/code> into &#x3C;code>&#x26;#x3C;em>emphasis&#x26;#x3C;/em> and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>&#x3C;/code>, but it does not support HTML embedded inside markdown (such as &#x3C;code>*emphasis* and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>&#x3C;/code>).&#x3C;/p>&#x3C;p>This solution &#x3C;strong>is safe&#x3C;/strong>: content you don’t trust cannot cause an XSS vulnerability.&#x3C;/p>&#x3C;h3 id="user-content-how-to-turn-html-into-markdown">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown" class="" aria-label="Link to self">&#x3C;/a>How to turn HTML into markdown&#x3C;/h3>&#x3C;p>We can also do the inverse. To turn HTML into markdown, we need &#x3C;a href="https://unifiedjs.com/explore/package/rehype-parse/">&#x3C;code>rehype-parse&#x3C;/code>&#x3C;/a>, &#x3C;a href="https://unifiedjs.com/explore/package/rehype-remark/">&#x3C;code>rehype-remark&#x3C;/code>&#x3C;/a>, and &#x3C;a href="https://unifiedjs.com/explore/package/remark-stringify/">&#x3C;code>remark-stringify&#x3C;/code>&#x3C;/a>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeParse from 'rehype-parse'
+import rehypeRemark from 'rehype-remark'
+import remarkStringify from 'remark-stringify'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(rehypeParse) // Parse HTML to a syntax tree
+  .use(rehypeRemark) // Turn HTML syntax tree to markdown syntax tree
+  .use(remarkStringify) // Serialize HTML syntax tree
+  .process('&#x26;#x3C;em>emphasis&#x26;#x3C;/em> and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>This turns &#x3C;code>&#x26;#x3C;em>emphasis&#x26;#x3C;/em> and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>&#x3C;/code> into &#x3C;code>*emphasis* and **strong**&#x3C;/code>.&#x3C;/p>&#x3C;h3 id="user-content-how-to-allow-html-embedded-in-markdown">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-allow-html-embedded-in-markdown" class="" aria-label="Link to self">&#x3C;/a>How to allow HTML embedded in markdown&#x3C;/h3>&#x3C;p>Markdown is a content format that’s great for the more basic things: it’s nicer to write &#x3C;code>*emphasis*&#x3C;/code> than &#x3C;code>&#x26;#x3C;em>emphasis&#x26;#x3C;/em>&#x3C;/code>. But, it’s limited: only a couple things are supported with its terse syntax. Luckily, for more complex things, markdown allows HTML inside it. A common example of this is to include a &#x3C;code>&#x26;#x3C;details>&#x3C;/code> element.&#x3C;/p>&#x3C;p>HTML embedded in markdown can be allowed when going from markdown to HTML by configuring &#x3C;a href="https://unifiedjs.com/explore/package/remark-rehype/">&#x3C;code>remark-rehype&#x3C;/code>&#x3C;/a> and &#x3C;a href="https://unifiedjs.com/explore/package/rehype-stringify/">&#x3C;code>rehype-stringify&#x3C;/code>&#x3C;/a>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype, {allowDangerousHtml: true}) // Pass raw HTML strings through.
+  .use(rehypeStringify, {allowDangerousHtml: true}) // Serialize the raw HTML strings
+  .process('*emphasis* and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>This solution &#x3C;strong>is not safe&#x3C;/strong>: content you don’t trust can cause XSS vulnerabilities.&#x3C;/p>&#x3C;h3 id="user-content-how-to-properly-support-html-inside-markdown">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-properly-support-html-inside-markdown" class="" aria-label="Link to self">&#x3C;/a>How to properly support HTML inside markdown&#x3C;/h3>&#x3C;p>To properly support HTML embedded inside markdown, we need another plugin: &#x3C;a href="https://unifiedjs.com/explore/package/rehype-raw/">&#x3C;code>rehype-raw&#x3C;/code>&#x3C;/a>. This plugin will take the strings of HTML embedded in markdown and parse them with an actual HTML parser.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeRaw from 'rehype-raw'
+import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype, {allowDangerousHtml: true})
+  .use(rehypeRaw) // *Parse* the raw HTML strings embedded in the tree
+  .use(rehypeStringify)
+  .process('*emphasis* and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>This solution &#x3C;strong>is not safe&#x3C;/strong>: content you don’t trust can cause XSS vulnerabilities.&#x3C;/p>&#x3C;p>But because we now have a complete HTML syntax tree, we can sanitize that tree. For a safe solution, add &#x3C;a href="https://unifiedjs.com/explore/package/rehype-sanitize/">&#x3C;code>rehype-sanitize&#x3C;/code>&#x3C;/a> right before &#x3C;code>rehype-stringify&#x3C;/code>.&#x3C;/p>&#x3C;/div></description></item><item><title>Support tables in remark</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/recipe/remark-table/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/remark-table/</guid><pubDate>Wed, 24 Feb 2021 00:00:00 GMT</pubDate><dc:date>2021-02-24T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-how-to-support-tables-in-remark">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables-in-remark" class="" aria-label="Link to self">&#x3C;/a>How to support tables in remark&#x3C;/h2>&#x3C;p>Tables are a non-standard feature in markdown: they are &#x3C;strong>not&#x3C;/strong> defined in &#x3C;a href="https://commonmark.org/">CommonMark&#x3C;/a> and will not work everywhere.&#x3C;/p>&#x3C;p>Tables are an extension that GitHub supports in their &#x3C;a href="https://github.github.com/gfm/">GFM&#x3C;/a>. They work on &#x3C;code>github.com&#x3C;/code> in most places: a readme, issue, PR, discussion, comment, etc.&#x3C;/p>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> and &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> can support them through a plugin: &#x3C;a href="https://unifiedjs.com/explore/package/remark-gfm/">&#x3C;code>remark-gfm&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#what-are-tables">What are tables?&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-write-tables">How to write tables&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables">How to support tables&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables-in-react-markdown">How to support tables in &#x3C;code>react-markdown&#x3C;/code>&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-what-are-tables">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#what-are-tables" class="" aria-label="Link to self">&#x3C;/a>What are tables?&#x3C;/h3>&#x3C;p>Tables in markdown are used for tabular data and look like this:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown">| Beep |   No.  |   Boop |
+| :--- | :----: | -----: |
+| beep |  1024  |    xyz |
+| boop | 338845 |    tuv |
+| foo  |  10106 | qrstuv |
+| bar  |   45   |   lmno |
+&#x3C;/code>&#x3C;/pre>&#x3C;p>The result on a website would look something like this:&#x3C;/p>&#x3C;table>&#x3C;thead>&#x3C;tr>&#x3C;th align="left">Beep&#x3C;/th>&#x3C;th align="center">No.&#x3C;/th>&#x3C;th align="right">Boop&#x3C;/th>&#x3C;/tr>&#x3C;/thead>&#x3C;tbody>&#x3C;tr>&#x3C;td align="left">beep&#x3C;/td>&#x3C;td align="center">1024&#x3C;/td>&#x3C;td align="right">xyz&#x3C;/td>&#x3C;/tr>&#x3C;tr>&#x3C;td align="left">boop&#x3C;/td>&#x3C;td align="center">338845&#x3C;/td>&#x3C;td align="right">tuv&#x3C;/td>&#x3C;/tr>&#x3C;tr>&#x3C;td align="left">foo&#x3C;/td>&#x3C;td align="center">10106&#x3C;/td>&#x3C;td align="right">qrstuv&#x3C;/td>&#x3C;/tr>&#x3C;tr>&#x3C;td align="left">bar&#x3C;/td>&#x3C;td align="center">45&#x3C;/td>&#x3C;td align="right">lmno&#x3C;/td>&#x3C;/tr>&#x3C;/tbody>&#x3C;/table>&#x3C;h3 id="user-content-how-to-write-tables">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-write-tables" class="" aria-label="Link to self">&#x3C;/a>How to write tables&#x3C;/h3>&#x3C;p>Use pipe characters (&#x3C;code>|&#x3C;/code>) between cells in a row. A new line starts a new row. You don’t have to align the pipes (&#x3C;code>|&#x3C;/code>) to form a nice grid. But it does make the source more readable.&#x3C;/p>&#x3C;p>The first row is the &#x3C;em>table header&#x3C;/em> and its cells are the labels for their respective column.&#x3C;/p>&#x3C;p>The second row is the &#x3C;em>alignment row&#x3C;/em> and there must be as many cells in it as in the header row. Each “cell” must include a dash (&#x3C;code>-&#x3C;/code>). A cell can be aligned left with a colon at the start (&#x3C;code>:-&#x3C;/code>), aligned right with a colon at the end (&#x3C;code>-:&#x3C;/code>), or aligned center with colons at the start and end (&#x3C;code>:-:&#x3C;/code>). This alignment cell is used to align all corresponding cells in its column.&#x3C;/p>&#x3C;p>Further rows are the &#x3C;em>table body&#x3C;/em> and are optional. Their cells are the table data.&#x3C;/p>&#x3C;h3 id="user-content-how-to-support-tables">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables" class="" aria-label="Link to self">&#x3C;/a>How to support tables&#x3C;/h3>&#x3C;p>As tables are non-standard, &#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> does not support them by default. But it can support them with a plugin: &#x3C;a href="https://unifiedjs.com/explore/package/remark-gfm/">&#x3C;code>remark-gfm&#x3C;/code>&#x3C;/a>. Let’s say we have some markdown with a GFM table, in an &#x3C;code>example.md&#x3C;/code> file:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown"># Table
+
+| Branch  | Commit           |
+| ------- | ---------------- |
+| main    | 0123456789abcdef |
+| staging | fedcba9876543210 |
+&#x3C;/code>&#x3C;/pre>&#x3C;p>And a module set up to transform markdown with tables to HTML, &#x3C;code>example.js&#x3C;/code>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import fs from 'node:fs/promises'
+import rehypeStringify from 'rehype-stringify'
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const document = await fs.readFile('example.md', 'utf8')
+
+const file = await unified()
+  .use(remarkParse) // Parse markdown.
+  .use(remarkGfm) // Support GFM (tables, autolinks, tasklists, strikethrough).
+  .use(remarkRehype) // Turn it into HTML.
+  .use(rehypeStringify) // Serialize HTML.
+  .process(document)
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Now, running &#x3C;code>node example.js&#x3C;/code> yields:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-html">&#x26;#x3C;h1>Table&#x26;#x3C;/h1>
+&#x26;#x3C;table>
+&#x26;#x3C;thead>
+&#x26;#x3C;tr>
+&#x26;#x3C;th>Branch&#x26;#x3C;/th>
+&#x26;#x3C;th>Commit&#x26;#x3C;/th>
+&#x26;#x3C;/tr>
+&#x26;#x3C;/thead>
+&#x26;#x3C;tbody>
+&#x26;#x3C;tr>
+&#x26;#x3C;td>main&#x26;#x3C;/td>
+&#x26;#x3C;td>0123456789abcdef&#x26;#x3C;/td>
+&#x26;#x3C;/tr>
+&#x26;#x3C;tr>
+&#x26;#x3C;td>staging&#x26;#x3C;/td>
+&#x26;#x3C;td>fedcba9876543210&#x26;#x3C;/td>
+&#x26;#x3C;/tr>
+&#x26;#x3C;/tbody>
+&#x26;#x3C;/table>
+&#x3C;/code>&#x3C;/pre>&#x3C;h3 id="user-content-how-to-support-tables-in-react-markdown">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables-in-react-markdown" class="" aria-label="Link to self">&#x3C;/a>How to support tables in &#x3C;code>react-markdown&#x3C;/code>&#x3C;/h3>&#x3C;p>As tables are non-standard, &#x3C;code>react-markdown&#x3C;/code> does not support them by default. But it can support them with a plugin: &#x3C;a href="https://unifiedjs.com/explore/package/remark-gfm/">&#x3C;code>remark-gfm&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>Let’s say we have some markdown with a GFM table, in an &#x3C;code>example.md&#x3C;/code> file:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import React from 'react'
+import {createRoot} from 'react-dom/client'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+
+const markdown = `| Branch | Commit |
+| - | - |
+| main | 0123456789abcdef |`
+
+createRoot(document.body).render(
+  &#x26;#x3C;Markdown remarkPlugins={[remarkGfm]}>{markdown}&#x26;#x3C;/Markdown>
+)
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Yields in JSX:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-tsx">console.log(
+  &#x26;#x3C;>
+    &#x26;#x3C;h1>Table&#x26;#x3C;/h1>
+    &#x26;#x3C;table>
+      &#x26;#x3C;thead>
+        &#x26;#x3C;tr>
+          &#x26;#x3C;th>Branch&#x26;#x3C;/th>
+          &#x26;#x3C;th>Commit&#x26;#x3C;/th>
+        &#x26;#x3C;/tr>
+      &#x26;#x3C;/thead>
+      &#x26;#x3C;tbody>
+        &#x26;#x3C;tr>
+          &#x26;#x3C;td>main&#x26;#x3C;/td>
+          &#x26;#x3C;td>0123456789abcdef&#x26;#x3C;/td>
+        &#x26;#x3C;/tr>
+      &#x26;#x3C;/tbody>
+    &#x26;#x3C;/table>
+  &#x26;#x3C;/>
+)
+&#x3C;/code>&#x3C;/pre>&#x3C;/div></description></item><item><title>Remove a node</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/recipe/remove-node/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/remove-node/</guid><pubDate>Mon, 15 Jun 2020 00:00:00 GMT</pubDate><dc:date>2020-06-15T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-how-to-remove-a-node">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#how-to-remove-a-node" class="" aria-label="Link to self">&#x3C;/a>How to remove a node&#x3C;/h2>&#x3C;p>Once you have found the node(s) you want to remove (see &#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">tree traversal&#x3C;/a>), you can remove them.&#x3C;/p>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#prerequisites">Prerequisites&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#removing-a-node">Removing a node&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#replacing-a-node-with-its-children">Replacing a node with its children&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-prerequisites">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#prerequisites" class="" aria-label="Link to self">&#x3C;/a>Prerequisites&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">Tree traversal&#x3C;/a> — intro on how to walk trees and find specific nodes with &#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-removing-a-node">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#removing-a-node" class="" aria-label="Link to self">&#x3C;/a>Removing a node&#x3C;/h3>&#x3C;p>For the most part, removing nodes has to do with finding them first (see &#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">tree traversal&#x3C;/a>), so let’s say we already have some code to find all &#x3C;code>emphasis&#x3C;/code> nodes.&#x3C;/p>&#x3C;p>First, our &#x3C;code>example.md&#x3C;/code> file:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-md">Some text with *emphasis*.
+
+Another paragraph with **importance** (and *more emphasis*).
+&#x3C;/code>&#x3C;/pre>&#x3C;p>And a module, &#x3C;code>example.js&#x3C;/code>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import fs from 'node:fs/promises'
+import remarkParse from 'remark-parse'
+import {unified} from 'unified'
+import {visit} from 'unist-util-visit'
+
+const document = await fs.readFile('example.md', 'utf8')
+
+const tree = unified().use(remarkParse).parse(document)
+
+visit(tree, 'emphasis', function (node) {
+  console.log(node)
+})
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Now, running &#x3C;code>node example.js&#x3C;/code> yields (ignoring positions for brevity):&#x3C;/p>&#x3C;pre>&#x3C;code class="language-js">{
+  type: 'emphasis',
+  children: [ { type: 'text', value: 'emphasis', position: [Object] } ]
+}
+{
+  type: 'emphasis',
+  children: [ { type: 'text', value: 'more emphasis', position: [Object] } ]
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;p>As the above log shows, nodes are objects. Each node is inside an array at the &#x3C;code>children&#x3C;/code> property of another node. In other words, to remove a node, it must be removed from its parents &#x3C;code>children&#x3C;/code>.&#x3C;/p>&#x3C;p>The problem then is to remove a value from an array. Standard JavaScript &#x3C;a href="https://developer.mozilla.org/docs/JavaScript/Reference/Global_Objects/Array">Array functions&#x3C;/a> can be used: namely, &#x3C;a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice">&#x3C;code>splice&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>We have the emphasis nodes, but we don’t have their parent, or the position in the parent’s &#x3C;code>children&#x3C;/code> field they are in. Luckily, the function given to &#x3C;code>visit&#x3C;/code> gets not only &#x3C;code>node&#x3C;/code>, but also that &#x3C;code>index&#x3C;/code> and &#x3C;code>parent&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/example.js
++++ b/example.js
+@@ -7,6 +7,6 @@ const document = await fs.readFile('example.md', 'utf8')
+
+ const tree = unified().use(remarkParse).parse(document)
+
+-visit(tree, 'emphasis', function (node) {
+-  console.log(node)
++visit(tree, 'emphasis', function (node, index, parent) {
++  console.log(node.type, index, parent?.type)
+ })
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Yields:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-txt">emphasis 1 paragraph
+emphasis 3 paragraph
+&#x3C;/code>&#x3C;/pre>&#x3C;p>&#x3C;code>parent&#x3C;/code> is a reference to the parent of &#x3C;code>node&#x3C;/code>, &#x3C;code>index&#x3C;/code> is the position at which &#x3C;code>node&#x3C;/code> is in &#x3C;code>parent&#x3C;/code>’s &#x3C;code>children&#x3C;/code>. With this information, and &#x3C;code>splice&#x3C;/code>, we can now remove emphasis nodes:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/example.js
++++ b/example.js
+@@ -8,5 +8,9 @@ const document = await fs.readFile('example.md', 'utf8')
+ const tree = unified().use(remarkParse).parse(document)
+
+ visit(tree, 'emphasis', function (node, index, parent) {
+-  console.log(node.type, index, parent?.type)
++  if (typeof index !== 'number' || !parent) return
++  // Note: this is buggy, see next section.
++  parent.children.splice(index, 1)
+ })
++
++console.log(tree)
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Yields:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-js">{
+  type: 'root',
+  children: [
+    {
+      type: 'paragraph',
+      children: [
+        {type: 'text', value: 'Some text with '},
+        {type: 'text', value: '.'}
+      ]
+    },
+    {
+      type: 'paragraph',
+      children: [
+        {type: 'text', value: 'Another paragraph with '},
+        {type: 'strong', children: [Array]},
+        {type: 'text', value: ' (and '},
+        {type: 'text', value: ').'}
+      ]
+    }
+  ]
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;p>This looks great, but beware of bugs. We are now changing the tree, while traversing it. That can cause bugs and performance problems.&#x3C;/p>&#x3C;p>When changing the tree, in most cases you should signal to &#x3C;code>visit&#x3C;/code> how it should continue. More information on how to signal what to do next, is documented in &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit-parents/#visittree-test-visitor-reverse">&#x3C;code>unist-util-visit-parents&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>In this case, we don’t want the removed node to be traversed (we want to skip it). And we want to continue with the node that is now at the position where our removed node was. To do that: return that information from &#x3C;code>visitor&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/example.js
++++ b/example.js
+@@ -1,7 +1,7 @@
+ import fs from 'node:fs/promises'
+ import remarkParse from 'remark-parse'
+ import {unified} from 'unified'
+-import {visit} from 'unist-util-visit'
++import {SKIP, visit} from 'unist-util-visit'
+
+ const document = await fs.readFile('example.md', 'utf8')
+
+@@ -9,8 +9,9 @@ const tree = unified().use(remarkParse).parse(document)
+
+ visit(tree, 'emphasis', function (node, index, parent) {
+   if (typeof index !== 'number' || !parent) return
+-  // Note: this is buggy, see next section.
+   parent.children.splice(index, 1)
++  // Do not traverse `node`, continue at the node *now* at `index`.
++  return [SKIP, index]
+ })
+
+ console.log(tree)
+&#x3C;/code>&#x3C;/pre>&#x3C;p>This yields the same output as before, but there’s no bug anymore. Nice, we can now remove nodes!&#x3C;/p>&#x3C;h3 id="user-content-replacing-a-node-with-its-children">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#replacing-a-node-with-its-children" class="" aria-label="Link to self">&#x3C;/a>Replacing a node with its children&#x3C;/h3>&#x3C;p>One more thing to make this example more useful: instead of dropping &#x3C;code>emphasis&#x3C;/code> &#x3C;em>and&#x3C;/em> its children, it might make more sense to replace the emphasis &#x3C;em>with&#x3C;/em> its children.&#x3C;/p>&#x3C;p>To do that, we can do the following:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/example.js
++++ b/example.js
+@@ -9,7 +9,7 @@ const tree = unified().use(remarkParse).parse(document)
+
+ visit(tree, 'emphasis', function (node, index, parent) {
+   if (typeof index !== 'number' || !parent) return
+-  parent.children.splice(index, 1)
++  parent.children.splice(index, 1, ...node.children)
+   // Do not traverse `node`, continue at the node *now* at `index`.
+   return [SKIP, index]
+ })
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Yields:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-js">{
+  type: 'root',
+  children: [
+    {
+      type: 'paragraph',
+      children: [
+        {type: 'text', value: 'Some text with '},
+        {type: 'text', value: 'emphasis'},
+        {type: 'text', value: '.'}
+      ]
+    },
+    {
+      type: 'paragraph',
+      children: [
+        {type: 'text', value: 'Another paragraph with '},
+        {type: 'strong', children: [Array]},
+        {type: 'text', value: ' (and '},
+        {type: 'text', value: 'more emphasis'},
+        {type: 'text', value: ').'}
+      ]
+    }
+  ]
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div></description></item><item><title>Tree traversal with TypeScript</title><dc:creator>Christian Murphy</dc:creator><link>https://unifiedjs.com/learn/recipe/tree-traversal-typescript/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/tree-traversal-typescript/</guid><pubDate>Tue, 09 Jun 2020 00:00:00 GMT</pubDate><dc:date>2020-06-09T00:00:00.000Z</dc:date><dc:modified>2024-08-05T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-traversing-trees-with-typescript">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal-typescript/#traversing-trees-with-typescript" class="" aria-label="Link to self">&#x3C;/a>Traversing trees with TypeScript&#x3C;/h2>&#x3C;p>📓 Please read the &#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">introduction to tree traversal in JavaScript&#x3C;/a> before reading this section.&#x3C;/p>&#x3C;p>A frequent task when working with &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> is to traverse trees to find certain nodes and then doing something with them (often validating or transforming them). Several type safe &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> utilities can be used to help with this.&#x3C;/p>&#x3C;h3 id="user-content-unist-util-visit">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal-typescript/#unist-util-visit" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/h3>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a> takes a syntax tree, a &#x3C;code>Test&#x3C;/code>, and a callback. The callback is called for each node in the tree that passes &#x3C;code>Test&#x3C;/code>.&#x3C;/p>&#x3C;p>For example if we want to increasing the heading level of all headings in a markdown document:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Root} from 'mdast'
+import {remark} from 'remark'
+import {visit} from 'unist-util-visit'
+
+const file = await remark()
+  .use(function () {
+    return function (tree: Root) {
+      // Check that the Node is a heading:
+      visit(tree, 'heading', function (node) {
+        // The types know `node` is a heading.
+        node.depth += 1
+      })
+    }
+  })
+  .process('## Hello, *World*!')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Or if we want to make all ordered lists in a markdown document unordered:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Root} from 'mdast'
+import {remark} from 'remark'
+import {visit} from 'unist-util-visit'
+
+const file = await remark()
+  .use(function () {
+    return function (tree: Root) {
+      // Check that the Node is a list:
+      visit(tree, 'list', function (node) {
+        if (node.ordered) {
+          // The types know `node` is an ordered list.
+          node.ordered = false
+        }
+      })
+    }
+  })
+  .process('1. list item')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>As always with TypeScript, make sure that the input values are typed correctly.&#x3C;/p>&#x3C;h3 id="user-content-unist-util-visit-parents">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal-typescript/#unist-util-visit-parents" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>unist-util-visit-parents&#x3C;/code>&#x3C;/h3>&#x3C;p>Sometimes it’s needed to know the ancestors of a node (all its parents). &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit-parents/">&#x3C;code>unist-util-visit-parents&#x3C;/code>&#x3C;/a> is like &#x3C;code>unist-util-visit&#x3C;/code> but includes a list of all parent nodes.&#x3C;/p>&#x3C;p>For example if we want to check if &#x3C;code>code&#x3C;/code> is in a &#x3C;code>pre&#x3C;/code>, at any depth, we could:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Root} from 'hast'
+import rehypeParse from 'rehype-parse'
+import rehypeStringify from 'rehype-stringify'
+import {unified} from 'unified'
+import {visitParents} from 'unist-util-visit-parents'
+
+const file = await unified()
+  .use(rehypeParse, {fragment: true})
+  .use(function () {
+    return function (tree: Root) {
+      visitParents(tree, 'element', function (node, parents) {
+        if (
+          node.tagName === 'code' &#x26;#x26;&#x26;#x26;
+          parents.some(function (parent) {
+            return parent.type === 'element' &#x26;#x26;&#x26;#x26; parent.tagName === 'pre'
+          })
+        ) {
+          console.log('`&#x26;#x3C;code>` in `&#x26;#x3C;pre>`')
+        }
+      })
+    }
+  })
+  .use(rehypeStringify)
+  .process(
+    "&#x26;#x3C;pre>&#x26;#x3C;code>console.log('hi!')&#x26;#x3C;/code>&#x26;#x3C;/pre>&#x26;#x3C;p>&#x26;#x3C;code>hello!&#x26;#x3C;/code>&#x26;#x3C;/p>"
+  )
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h3 id="user-content-unist-util-select">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal-typescript/#unist-util-select" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>unist-util-select&#x3C;/code>&#x3C;/h3>&#x3C;p>Sometimes CSS selectors are easier to read than several (nested) if/else statements. &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-select/">&#x3C;code>unist-util-select&#x3C;/code>&#x3C;/a> lets you do that. For example if we want to find all &#x3C;code>Paragraph&#x3C;/code>s that are somewhere in a &#x3C;code>Blockquote&#x3C;/code>, we could:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Paragraph, Root} from 'mdast'
+import {remark} from 'remark'
+import {selectAll} from 'unist-util-select'
+
+remark()
+  .use(function () {
+    return function (mdast: Root) {
+      const matches = selectAll('blockquote paragraph', mdast) as Paragraph[]
+      console.log(matches)
+    }
+  })
+  .process('> block quote')
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;/div></description></item><item><title>Syntax trees in TypeScript</title><dc:creator>Christian Murphy</dc:creator><link>https://unifiedjs.com/learn/guide/syntax-trees-typescript/</link><guid isPermaLink="false">https://unifiedjs.com/learn/guide/syntax-trees-typescript/</guid><pubDate>Tue, 09 Jun 2020 00:00:00 GMT</pubDate><dc:date>2020-06-09T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-how-to-work-with-syntax-trees-in-typescript">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#how-to-work-with-syntax-trees-in-typescript" class="" aria-label="Link to self">&#x3C;/a>How to work with syntax trees in TypeScript&#x3C;/h2>&#x3C;p>This guide will introduce you to using &#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a> and &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> with TypeScript.&#x3C;/p>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#basics">Basics&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#unist">unist&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#mdast-markdown">mdast (markdown)&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#hast-html">hast (HTML)&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#xast-xml">xast (XML)&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#nlcst-natural-language">nlcst (Natural language)&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#summary">Summary&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#next-steps">Next steps&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-basics">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#basics" class="" aria-label="Link to self">&#x3C;/a>Basics&#x3C;/h3>&#x3C;p>All &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> syntax trees are based off &#x3C;a href="https://github.com/syntax-tree/unist">unist&#x3C;/a>. The core types are available in a types only package: &#x3C;a href="https://www.npmjs.com/package/@types/unist">&#x3C;code>@types/unist&#x3C;/code>&#x3C;/a>. The main type is &#x3C;code>Node&#x3C;/code>. Everything else extends it. &#x3C;code>Literal&#x3C;/code> and &#x3C;code>Parent&#x3C;/code> are more specific types which also extend &#x3C;code>Node&#x3C;/code>.&#x3C;/p>&#x3C;p>The types provided by &#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a> are &#x3C;strong>abstract&#x3C;/strong> interfaces. Often, you will instead use more practical interfaces depending on what language you’re working with. Each language supported by &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a>, like markdown, HTML, and XML, has its own syntax tree standard which extends &#x3C;code>unist&#x3C;/code>.&#x3C;/p>&#x3C;p>Let’s take a look at these.&#x3C;/p>&#x3C;h3 id="user-content-unist">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#unist" class="" aria-label="Link to self">&#x3C;/a>unist&#x3C;/h3>&#x3C;h4 id="user-content-node">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#node" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>Node&#x3C;/code>&#x3C;/h4>&#x3C;p>&#x3C;code>Node&#x3C;/code> is the syntactic unit of syntax trees. Each node extends &#x3C;code>Node&#x3C;/code> (sometimes through &#x3C;code>Literal&#x3C;/code> or &#x3C;code>Parent&#x3C;/code>) and sets &#x3C;code>type&#x3C;/code> to a &#x3C;a href="https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types">string literal&#x3C;/a>. The type field tells us what kind of content the node is. This field uniquely identifies a kind of content. in TypeScript that’s called a &#x3C;a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions">discriminated union&#x3C;/a>. For example in markdown (&#x3C;a href="https://github.com/syntax-tree/mdast" class="">mdast&#x3C;/a>) &#x3C;code>Node&#x3C;/code> will be extended to make things such as a &#x3C;code>Heading&#x3C;/code> or &#x3C;code>Link&#x3C;/code>, which respectively use a &#x3C;code>type&#x3C;/code> field of &#x3C;code>'heading'&#x3C;/code> and &#x3C;code>'link'&#x3C;/code>.&#x3C;/p>&#x3C;p>A node can optionally include a &#x3C;code>Data&#x3C;/code> interface at the &#x3C;code>data&#x3C;/code> field. This is an object (dictionary) that stores extra metadata which is not standard to the node but defined by the ecosystem (utilities and plugins).&#x3C;/p>&#x3C;p>When a syntax tree is parsed from a file, it includes positional information: a &#x3C;code>Position&#x3C;/code> interface at the &#x3C;code>position&#x3C;/code> field. This describes where the node occurred in the source file.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">/**
+ * Info associated with nodes by the ecosystem.
+ *
+ * This space is guaranteed to never be specified by unist or specifications
+ * implementing unist.
+ * But you can use it in utilities and plugins to store data.
+ *
+ * This type can be augmented to register custom data.
+ * For example:
+ *
+ * ```ts
+ * declare module 'unist' {
+ *   interface Data {
+ *     // `someNode.data.myId` is typed as `number | undefined`
+ *     myId?: number | undefined
+ *   }
+ * }
+ * ```
+ */
+interface Data {}
+
+/**
+ * One place in a source file.
+ */
+interface Point {
+  /**
+   * Line in a source file (1-indexed integer).
+   */
+  line: number
+
+  /**
+   * Column in a source file (1-indexed integer).
+   */
+  column: number
+  /**
+   * Character in a source file (0-indexed integer).
+   */
+  offset?: number | undefined
+}
+
+/**
+ * Position of a node in a source document.
+ *
+ * A position is a range between two points.
+ */
+interface Position {
+  /**
+   * Place of the first character of the parsed source region.
+   */
+  start: Point
+
+  /**
+   * Place of the first character after the parsed source region.
+   */
+  end: Point
+}
+
+/**
+ * Abstract unist node.
+ *
+ * The syntactic unit in unist syntax trees are called nodes.
+ *
+ * This interface is supposed to be extended.
+ * If you can use {@link Literal} or {@link Parent}, you should.
+ * But for example in markdown, a `thematicBreak` (`***`), is neither literal
+ * nor parent, but still a node.
+ */
+interface Node {
+  /**
+   * Node type.
+   */
+  type: string
+
+  /**
+   * Info from the ecosystem.
+   */
+  data?: Data | undefined
+
+  /**
+   * Position of a node in a source document.
+   *
+   * Nodes that are generated (not in the original source document) must not
+   * have a position.
+   */
+  position?: Position | undefined
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h4 id="user-content-literal">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#literal" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>Literal&#x3C;/code>&#x3C;/h4>&#x3C;p>&#x3C;code>Literal&#x3C;/code> extends &#x3C;code>Node&#x3C;/code> and adds a &#x3C;code>value&#x3C;/code> property. For example a markdown &#x3C;code>Code&#x3C;/code> node extends &#x3C;code>Literal&#x3C;/code> and sets &#x3C;code>value&#x3C;/code> to be a &#x3C;code>string&#x3C;/code>.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">/**
+ * Abstract unist node that contains the smallest possible value.
+ *
+ * This interface is supposed to be extended.
+ *
+ * For example, in HTML, a `text` node is a leaf that contains text.
+ */
+interface Literal extends Node {
+  /**
+   * Plain value.
+   */
+  value: unknown
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h4 id="user-content-parent">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#parent" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>Parent&#x3C;/code>&#x3C;/h4>&#x3C;p>&#x3C;code>Parent&#x3C;/code> extends &#x3C;code>Node&#x3C;/code> and adds &#x3C;code>children&#x3C;/code>. Children represent other content which is inside or a part of this node.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">/**
+ * Abstract unist node that contains other nodes (*children*).
+ *
+ * This interface is supposed to be extended.
+ *
+ * For example, in XML, an element is a parent of different things, such as
+ * comments, text, and further elements.
+ */
+interface Parent extends Node {
+  /**
+   * List of children.
+   */
+  children: Node[]
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h4 id="user-content-pulling-unist-into-a-project">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#pulling-unist-into-a-project" class="" aria-label="Link to self">&#x3C;/a>Pulling unist into a project&#x3C;/h4>&#x3C;p>Install:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">npm install --save-dev @types/unist
+&#x3C;/code>&#x3C;/pre>&#x3C;p>To import the types into a TypeScript file, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Literal, Node, Parent} from 'unist'
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>To import the types in &#x3C;a href="https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html">JSDoc TypeScript&#x3C;/a>, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Literal, Node, Parent} from 'unist'
+ */
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h3 id="user-content-mdast-markdown">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#mdast-markdown" class="" aria-label="Link to self">&#x3C;/a>mdast (markdown)&#x3C;/h3>&#x3C;p>&#x3C;a href="https://github.com/syntax-tree/mdast">mdast&#x3C;/a> extends &#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a> with types specific for markdown such as &#x3C;code>Code&#x3C;/code>, &#x3C;code>Heading&#x3C;/code>, &#x3C;code>Link&#x3C;/code>, and many more. The specification includes a full list of nodes. The types are available in a types only package: &#x3C;a href="https://www.npmjs.com/package/@types/mdast">&#x3C;code>@types/mdast&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>Install:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">npm install --save-dev @types/mdast
+&#x3C;/code>&#x3C;/pre>&#x3C;p>To import the types into a TypeScript file, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Code, Heading, Link, Root} from 'mdast'
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>To import the types in &#x3C;a href="https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html">JSDoc TypeScript&#x3C;/a>, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Code, Heading, Link, Root} from 'mdast'
+ */
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h3 id="user-content-hast-html">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#hast-html" class="" aria-label="Link to self">&#x3C;/a>hast (HTML)&#x3C;/h3>&#x3C;p>&#x3C;a href="https://github.com/syntax-tree/hast">hast&#x3C;/a> extends &#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a> with types specific for HTML such as &#x3C;code>Comment&#x3C;/code>, &#x3C;code>Doctype&#x3C;/code>, &#x3C;code>Element&#x3C;/code>, and many more. The specification includes a full list of nodes. The types are available in a types only package: &#x3C;a href="https://www.npmjs.com/package/@types/hast">&#x3C;code>@types/hast&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>Install:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">npm install --save-dev @types/hast
+&#x3C;/code>&#x3C;/pre>&#x3C;p>To import the types into a TypeScript file, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Comment, Doctype, Element, Root} from 'hast'
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>To import the types in &#x3C;a href="https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html">JSDoc TypeScript&#x3C;/a>, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Comment, Doctype, Element, Root} from 'hast'
+ */
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h3 id="user-content-xast-xml">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#xast-xml" class="" aria-label="Link to self">&#x3C;/a>xast (XML)&#x3C;/h3>&#x3C;p>&#x3C;a href="https://github.com/syntax-tree/xast#readme">xast&#x3C;/a> extends &#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a> with types specific for XML such as &#x3C;code>Cdata&#x3C;/code>, &#x3C;code>Element&#x3C;/code>, &#x3C;code>Instruction&#x3C;/code>, and many more. The specification includes a full list of nodes. The types are available in a types only package: &#x3C;a href="https://www.npmjs.com/package/@types/xast">&#x3C;code>@types/xast&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>Install:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">npm install --save-dev @types/xast
+&#x3C;/code>&#x3C;/pre>&#x3C;p>To import the types into a TypeScript file, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Cdata, Element, Instruction, Root} from 'xast'
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>To import the types in &#x3C;a href="https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html">JSDoc TypeScript&#x3C;/a>, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Cdata, Element, Instruction, Root} from 'xast'
+ */
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h3 id="user-content-nlcst-natural-language">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#nlcst-natural-language" class="" aria-label="Link to self">&#x3C;/a>nlcst (Natural language)&#x3C;/h3>&#x3C;p>&#x3C;a href="https://github.com/syntax-tree/nlcst">nlcst&#x3C;/a> extends &#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a> with types specific for natural language such as &#x3C;code>Sentence&#x3C;/code>, &#x3C;code>Word&#x3C;/code>, and many more. The specification includes a full list of nodes. The types are available in a types only package: &#x3C;a href="https://www.npmjs.com/package/@types/nlcst">&#x3C;code>@types/nlcst&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>Install:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">npm install --save-dev @types/nlcst
+&#x3C;/code>&#x3C;/pre>&#x3C;p>To import the types into a TypeScript file, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Paragraph, Sentence, Word, Root} from 'nlcst'
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>To import the types in &#x3C;a href="https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html">JSDoc TypeScript&#x3C;/a>, use:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Paragraph, Sentence, Word, Root} from 'nlcst'
+ */
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h3 id="user-content-summary">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#summary" class="" aria-label="Link to self">&#x3C;/a>Summary&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> provides types for each language’s syntax tree&#x3C;/li>&#x3C;li>These types can be import into TypeScript projects and into JSDoc projects&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-next-steps">&#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/#next-steps" class="" aria-label="Link to self">&#x3C;/a>Next steps&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal-typescript/">Learn to traverse syntax trees with TypeScript&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/narrow-node-typescript/">Learn to narrow &#x3C;code>Node&#x3C;/code>s&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/build-a-syntax-tree/">Learn to build syntax trees&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;/div></description></item><item><title>Narrow nodes in TypeScript</title><dc:creator>Christian Murphy</dc:creator><link>https://unifiedjs.com/learn/recipe/narrow-node-typescript/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/narrow-node-typescript/</guid><pubDate>Tue, 09 Jun 2020 00:00:00 GMT</pubDate><dc:date>2020-06-09T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-how-to-narrow-nodes-in-typescript">&#x3C;a href="https://unifiedjs.com/learn/recipe/narrow-node-typescript/#how-to-narrow-nodes-in-typescript" class="" aria-label="Link to self">&#x3C;/a>How to narrow &#x3C;code>Node&#x3C;/code>s in TypeScript&#x3C;/h2>&#x3C;p>In most cases, when working with &#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a> (the syntax trees used by &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a>) in TypeScript, one actually works with a more specific syntax tree, such as &#x3C;a href="https://github.com/syntax-tree/mdast" class="">mdast&#x3C;/a> (markdown) or &#x3C;a href="https://github.com/syntax-tree/hast" class="">hast&#x3C;/a> (HTML). These syntax trees extend &#x3C;code>Node&#x3C;/code> and add more specific types. For example, a &#x3C;code>Link&#x3C;/code> is a particular and more narrow &#x3C;code>Node&#x3C;/code> in &#x3C;a href="https://github.com/syntax-tree/mdast" class="">mdast&#x3C;/a> and &#x3C;code>Element&#x3C;/code> in &#x3C;a href="https://github.com/syntax-tree/hast" class="">hast&#x3C;/a>.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Link} from 'mdast'
+
+// TS checks the types, here knowing that `url` is missing:
+const node: Link = {type: 'link', children: []}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>When you don’t know the exact input node, you likely still know you work with &#x3C;a href="https://github.com/syntax-tree/mdast" class="">mdast&#x3C;/a> or &#x3C;a href="https://github.com/syntax-tree/hast" class="">hast&#x3C;/a> or something else. In that case, you can use the &#x3C;code>Nodes&#x3C;/code> type (the &#x3C;code>s&#x3C;/code> is important) from the respective package. That type is a discriminated union of all possible node types in that syntax tree. Then, regular &#x3C;a href="https://www.typescriptlang.org/docs/handbook/2/narrowing.html">narrowing in TypeScript&#x3C;/a> works:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Nodes} from 'hast'
+
+const node = {type: 'comment', value: 'Hi!'} as Nodes
+
+if (node.type === 'comment') {
+  console.log(node) // TS knows this is `Comment`.
+} else {
+  console.log(node) // TS knows this is *not* `Comment`.
+}
+
+if ('value' in node) {
+  console.log(node) // TS knows this is `Comment` or `Text`.
+} else {
+  console.log(node) // TS knows this is *not* `Comment` or `Text`.
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>TypeScript sometimes gets confused when using a large union of many possible nodes. So, when making plugins and utilities that accept syntax trees representing whole documents, you can use the &#x3C;code>Root&#x3C;/code> type.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Root} from 'mdast'
+import {visit} from 'unist-util-visit'
+
+export default function myRemarkPlugin() {
+  return function (tree: Root) {
+    visit(tree, 'heading', function (node) {
+      node.depth += 1
+    })
+  }
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;/div></description></item><item><title>Build a syntax tree</title><dc:creator>Christian Murphy</dc:creator><link>https://unifiedjs.com/learn/recipe/build-a-syntax-tree/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/build-a-syntax-tree/</guid><pubDate>Tue, 09 Jun 2020 00:00:00 GMT</pubDate><dc:date>2020-06-09T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-how-to-build-a-syntax-tree">&#x3C;a href="https://unifiedjs.com/learn/recipe/build-a-syntax-tree/#how-to-build-a-syntax-tree" class="" aria-label="Link to self">&#x3C;/a>How to build a syntax tree&#x3C;/h2>&#x3C;p>It’s often useful to build new (fragments of) syntax trees when adding or replacing content. It’s possible to create trees with plain object and array literals (JSON) or programmatically with a small utility. Finally it’s even possible to use JSX to build trees.&#x3C;/p>&#x3C;h3 id="user-content-json">&#x3C;a href="https://unifiedjs.com/learn/recipe/build-a-syntax-tree/#json" class="" aria-label="Link to self">&#x3C;/a>JSON&#x3C;/h3>&#x3C;p>The most basic way to create a tree is with plain object and arrays. To prevent type errors, this can be checked with the types for the given syntax tree language, in this case &#x3C;a href="https://github.com/syntax-tree/mdast" class="">mdast&#x3C;/a>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-ts">import type {Root} from 'mdast'
+
+// Note the `: Root` is a TypeScript annotation.
+// For plain JavaScript, remove it (and the import).
+const mdast: Root = {
+  type: 'root',
+  children: [
+    {
+      type: 'paragraph',
+      children: [
+        {
+          type: 'text',
+          value: 'example'
+        }
+      ]
+    }
+  ]
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h4 id="user-content-unist-builder">&#x3C;a href="https://unifiedjs.com/learn/recipe/build-a-syntax-tree/#unist-builder" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>unist-builder&#x3C;/code>&#x3C;/h4>&#x3C;p>It’s also possible to build trees with &#x3C;a href="https://unifiedjs.com/explore/package/unist-builder/">&#x3C;code>unist-builder&#x3C;/code>&#x3C;/a>. It allows a more concise, “hyperscript” like syntax (which is also like &#x3C;code>React.createElement&#x3C;/code>):&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Root} from 'mdast'
+ */
+
+import {u} from 'unist-builder'
+
+/** @type {Root} */
+const mdast = u('root', [
+  u('paragraph', [
+    u('text', 'example')
+  ])
+])
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h4 id="user-content-hastscript">&#x3C;a href="https://unifiedjs.com/learn/recipe/build-a-syntax-tree/#hastscript" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>hastscript&#x3C;/code>&#x3C;/h4>&#x3C;p>When working with &#x3C;a href="https://github.com/syntax-tree/hast" class="">hast&#x3C;/a> (HTML), &#x3C;a href="https://unifiedjs.com/explore/package/hastscript/">&#x3C;code>hastscript&#x3C;/code>&#x3C;/a> can be used.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import {h, s} from 'hastscript'
+
+console.log(
+  h('div#some-id.foo', [
+    h('span', 'some text'),
+    h('input', {type: 'text', value: 'foo'}),
+    h('a.alpha.bravo.charlie', {download: true}, 'delta')
+  ])
+)
+
+// SVG:
+console.log(
+  s('svg', {viewBox: '0 0 500 500', xmlns: 'http://www.w3.org/2000/svg'}, [
+    s('title', 'SVG `&#x26;#x3C;circle>` element'),
+    s('circle', {cx: 120, cy: 120, r: 100})
+  ])
+)
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>&#x3C;code>hastscript&#x3C;/code> can also be used as a JSX configuration comment:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-tsx">/** @jsxImportSource hastscript */
+
+console.log(
+  &#x26;#x3C;form method="POST">
+    &#x26;#x3C;input type="text" name="foo" />
+    &#x26;#x3C;input type="text" name="bar" />
+    &#x26;#x3C;input type="submit" name="send" />
+  &#x26;#x3C;/form>
+)
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;h4 id="user-content-xastscript">&#x3C;a href="https://unifiedjs.com/learn/recipe/build-a-syntax-tree/#xastscript" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>xastscript&#x3C;/code>&#x3C;/h4>&#x3C;p>When working with &#x3C;a href="https://github.com/syntax-tree/xast" class="">xast&#x3C;/a> (XML), &#x3C;a href="https://unifiedjs.com/explore/package/xastscript/">&#x3C;code>xastscript&#x3C;/code>&#x3C;/a> can be used.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import {x} from 'xastscript'
+
+console.log(
+  x('album', {id: 123}, [
+    x('name', 'Exile in Guyville'),
+    x('artist', 'Liz Phair'),
+    x('releasedate', '1993-06-22')
+  ])
+)
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>&#x3C;code>xastscript&#x3C;/code> can also be used as a JSX configuration comment:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-tsx">/** @jsxImportSource xastscript */
+
+console.log(
+  &#x26;#x3C;album id={123}>
+    &#x26;#x3C;name>Born in the U.S.A.&#x26;#x3C;/name>
+    &#x26;#x3C;artist>Bruce Springsteen&#x26;#x3C;/artist>
+    &#x26;#x3C;releasedate>1984-04-06&#x26;#x3C;/releasedate>
+  &#x26;#x3C;/album>
+)
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;/div></description></item><item><title>Find a node</title><dc:creator>Merlijn Vos</dc:creator><link>https://unifiedjs.com/learn/recipe/find-node/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/find-node/</guid><pubDate>Fri, 10 Jan 2020 00:00:00 GMT</pubDate><dc:date>2020-01-10T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-how-to-find-a-node">&#x3C;a href="https://unifiedjs.com/learn/recipe/find-node/#how-to-find-a-node" class="" aria-label="Link to self">&#x3C;/a>How to find a node&#x3C;/h2>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/recipe/find-node/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/find-node/#what-is-a-node">What is a node&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/find-node/#finding-a-node">Finding a node&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-what-is-a-node">&#x3C;a href="https://unifiedjs.com/learn/recipe/find-node/#what-is-a-node" class="" aria-label="Link to self">&#x3C;/a>What is a node&#x3C;/h3>&#x3C;p>A node is a single language specific unit inside a &#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/">syntax tree&#x3C;/a>. For example: a heading in markdown, or anchor element in HTML. In &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a>, nodes follow the &#x3C;a href="https://github.com/syntax-tree/unist">unist&#x3C;/a> specification.&#x3C;/p>&#x3C;h3 id="user-content-finding-a-node">&#x3C;a href="https://unifiedjs.com/learn/recipe/find-node/#finding-a-node" class="" aria-label="Link to self">&#x3C;/a>Finding a node&#x3C;/h3>&#x3C;p>The concept of finding a node involves &#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">tree traversal&#x3C;/a> of a &#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/">syntax tree&#x3C;/a>.&#x3C;/p>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> compatible utilities should be used for finding a node. Utilities are functions that work with nodes. All specifications that extend &#x3C;a href="https://github.com/syntax-tree/unist">unist&#x3C;/a> can use the &#x3C;a href="https://github.com/syntax-tree/unist#list-of-utilities">unist utilities&#x3C;/a>, but they can also have their own utilities for more specific nodes.&#x3C;/p>&#x3C;p>To start finding nodes for your input you’ll need:&#x3C;/p>&#x3C;ul>&#x3C;li>a processor (such as &#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/">&#x3C;code>remark&#x3C;/code>&#x3C;/a>)&#x3C;/li>&#x3C;li>a utility of choice&#x3C;/li>&#x3C;/ul>&#x3C;p>For this example we use &#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/">&#x3C;code>remark&#x3C;/code>&#x3C;/a> and &#x3C;a href="https://github.com/syntax-tree/unist-util-find">&#x3C;code>unist-util-find&#x3C;/code>&#x3C;/a>. We want to find the first occurrence of emphasis in our markdown.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Root} from 'mdast'
+ */
+
+import {remark} from 'remark'
+import {find} from 'unist-util-find'
+
+await remark()
+  .use(function () {
+    /**
+     * @param {Root} tree
+     * @returns {undefined}
+     */
+    return function (tree) {
+      const node = find(tree, {type: 'emphasis'})
+      console.log(node)
+    }
+  })
+  .process('Some _emphasis_, **strongness**, _more emphasis_, and `code`.')
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>…yields:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-js">{
+  type: 'emphasis',
+  children: [ { type: 'text', value: 'emphasis', position: [Object] } ],
+  position: {
+    start: { line: 1, column: 6, offset: 5 },
+    end: { line: 1, column: 16, offset: 15 }
+  }
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Read more about &#x3C;a href="https://github.com/syntax-tree/unist-util-find">&#x3C;code>unist-util-find&#x3C;/code>&#x3C;/a> in its readme.&#x3C;/p>&#x3C;p>The package &#x3C;code>unist-util-find&#x3C;/code> is rather basic and slow. You likely want to &#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">traverse a tree&#x3C;/a> with &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a>&#x3C;/p>&#x3C;/div></description></item><item><title>Tree traversal</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/recipe/tree-traversal/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/tree-traversal/</guid><pubDate>Mon, 23 Dec 2019 00:00:00 GMT</pubDate><dc:date>2019-12-23T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-how-to-walk-a-tree">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#how-to-walk-a-tree" class="" aria-label="Link to self">&#x3C;/a>How to walk a tree&#x3C;/h2>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#tree-traversal">Tree traversal&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#set-up">Set up&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#traverse-the-tree">Traverse the tree&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#visiting-a-certain-kind-of-node">Visiting a certain kind of node&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-tree-traversal">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#tree-traversal" class="" aria-label="Link to self">&#x3C;/a>Tree traversal&#x3C;/h3>&#x3C;p>&#x3C;strong>Tree traversal&#x3C;/strong> is a common task when working with syntax trees. The term &#x3C;em>tree&#x3C;/em> here means a node and all its &#x3C;em>descendants&#x3C;/em> (all the nodes inside it). Traversal means stopping at every node to do something. So, tree traversal means doing something for every node in a tree.&#x3C;/p>&#x3C;p>Tree traversal is often also called “walking a tree”. Or “visiting a tree”.&#x3C;/p>&#x3C;p>To learn more, continue reading, but when working with &#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a> (&#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a>’s trees) you probably need either:&#x3C;/p>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit-parents/">&#x3C;code>unist-util-visit-parents&#x3C;/code>&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-set-up">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#set-up" class="" aria-label="Link to self">&#x3C;/a>Set up&#x3C;/h3>&#x3C;p>Glad you’re still here! Let’s say we have the following fragment of HTML, in a file &#x3C;code>example.html&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-html">&#x26;#x3C;p>
+  &#x26;#x3C;!-- A comment. -->
+  Some &#x26;#x3C;strong>strong importance&#x26;#x3C;/strong>, &#x26;#x3C;em>emphasis&#x26;#x3C;/em>, and a dash of
+  &#x26;#x3C;code>code&#x26;#x3C;/code>.
+&#x26;#x3C;/p>
+&#x3C;/code>&#x3C;/pre>&#x3C;p>You could parse that with the following code (using &#x3C;a href="https://unifiedjs.com/explore/package/unified/">&#x3C;code>unified&#x3C;/code>&#x3C;/a> and &#x3C;a href="https://unifiedjs.com/explore/package/rehype-parse/">&#x3C;code>rehype-parse&#x3C;/code>&#x3C;/a>):&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import fs from 'node:fs/promises'
+import rehypeParse from 'rehype-parse'
+import {unified} from 'unified'
+
+const document = await fs.readFile('example.html')
+
+const tree = unified().use(rehypeParse, {fragment: true}).parse(document)
+
+console.log(tree)
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Which would yield (ignoring positional info for brevity):&#x3C;/p>&#x3C;pre>&#x3C;code class="language-js">{
+  type: 'root',
+  children: [
+    {
+      type: 'element',
+      tagName: 'p',
+      properties: {},
+      children: [
+        { type: 'text', value: '\n  ' },
+        { type: 'comment', value: ' A comment. ' },
+        { type: 'text', value: '\n  Some ' },
+        {
+          type: 'element',
+          tagName: 'strong',
+          properties: {},
+          children: [ { type: 'text', value: 'strong importance' } ]
+        },
+        { type: 'text', value: ', ' },
+        {
+          type: 'element',
+          tagName: 'em',
+          properties: {},
+          children: [ { type: 'text', value: 'emphasis' } ]
+        },
+        { type: 'text', value: ', and a dash of\n  ' },
+        {
+          type: 'element',
+          tagName: 'code',
+          properties: {},
+          children: [ { type: 'text', value: 'code' } ]
+        },
+        { type: 'text', value: '.\n' }
+      ]
+    },
+    { type: 'text', value: '\n' }
+  ],
+  data: { quirksMode: false }
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;p>As we are all set up, we can traverse the tree.&#x3C;/p>&#x3C;h3 id="user-content-traverse-the-tree">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#traverse-the-tree" class="" aria-label="Link to self">&#x3C;/a>Traverse the tree&#x3C;/h3>&#x3C;p>A useful utility for that is &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a>, and it works like so:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import {visit} from 'unist-util-visit'
+
+// …
+
+visit(tree, function (node) {
+  console.log(node.type)
+})
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;pre>&#x3C;code class="language-txt">root
+element
+text
+comment
+text
+element
+text
+text
+element
+text
+text
+element
+text
+text
+text
+&#x3C;/code>&#x3C;/pre>&#x3C;p>We traversed the entire tree, and for each node, we printed its &#x3C;code>type&#x3C;/code>.&#x3C;/p>&#x3C;h3 id="user-content-visiting-a-certain-kind-of-node">&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/#visiting-a-certain-kind-of-node" class="" aria-label="Link to self">&#x3C;/a>Visiting a certain kind of node&#x3C;/h3>&#x3C;p>To “visit” only a certain &#x3C;code>type&#x3C;/code> of node, pass a test to &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a> like so:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">visit(tree, 'element', function (node) {
+  console.log(node.tagName)
+})
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;pre>&#x3C;code class="language-txt">p
+strong
+em
+code
+&#x3C;/code>&#x3C;/pre>&#x3C;p>You can do this yourself as well. The above works the same as:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">visit(tree, function (node) {
+  if (node.type === 'element') {
+    console.log(node.tagName)
+  }
+})
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>But the test passed to &#x3C;code>visit&#x3C;/code> can be more advanced, such as the following to visit different kinds of nodes.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">visit(tree, ['comment', 'text'], function (node) {
+  console.log([node.value])
+})
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;pre>&#x3C;code class="language-txt">[ '\n  ' ]
+[ ' A comment. ' ]
+[ '\n  Some ' ]
+[ 'strong importance' ]
+[ ', ' ]
+[ 'emphasis' ]
+[ ', and a dash of\n  ' ]
+[ 'code' ]
+[ '.\n' ]
+[ '\n' ]
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Sadly, TypeScript isn’t great with arrays and discriminated unions. When you want to do more complex tests with TypeScript, it’s recommended to omit the test and use explicit &#x3C;code>if&#x3C;/code> statements:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">visit(tree, function (node) {
+  if (node.type === 'comment' || node.type === 'text')  {
+    console.log([node.value])
+  }
+})
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Code that is more explicit and is understandable by TypeScript, is often also easier to understand by humans.&#x3C;/p>&#x3C;p>Read more about &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a> in its readme.&#x3C;/p>&#x3C;/div></description></item><item><title>Using plugins</title><link>https://unifiedjs.com/learn/guide/using-plugins/</link><guid isPermaLink="false">https://unifiedjs.com/learn/guide/using-plugins/</guid><pubDate>Thu, 12 Dec 2019 00:00:00 GMT</pubDate><dc:date>2019-12-12T00:00:00.000Z</dc:date><dc:modified>2024-08-05T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-using-plugins">&#x3C;a href="https://unifiedjs.com/learn/guide/using-plugins/#using-plugins" class="" aria-label="Link to self">&#x3C;/a>Using plugins&#x3C;/h2>&#x3C;p>Unfortunately, this guide is not yet written. We’re looking for help with that, if you want please edit this file on &#x3C;a href="https://github.com/unifiedjs/unifiedjs.github.io/blob/main/doc/learn/using-plugins.md">GitHub&#x3C;/a>.&#x3C;/p>&#x3C;/div></description></item></channel></rss>
