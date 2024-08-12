@@ -9,6 +9,7 @@ published: 2024-08-09
 tags:
   - browser
   - dom
+  - esbuild
   - hast
   - mdast
   - nlcst
@@ -78,7 +79,9 @@ And you want to use that in some HTML called `index.html`:
 
 To make `example.js` work in the browser,
 you can bundle it with esbuild.
-First, set up a package:
+First,
+set up a package.
+Go to the folder in your terminal and run:
 
 ```sh
 npm init --yes
@@ -95,7 +98,12 @@ Now, open `index.html` in a browser.
 When you open the console of your developer tools,
 you should see `Hello, <em>world</em>!`
 
-That’s it!
+You probably also want to configure the target environment for the browsers
+that you support.
+That way,
+JavaScript syntax which is too new for some browsers,
+will be transformed into older JavaScript syntax that works.
+Pass the [`--target`][esbuild-target] flag to do this.
 
 ### CDN
 
@@ -133,5 +141,7 @@ you can use it in a browser like this:
 ```
 
 [esbuild]: https://esbuild.github.io/
+
+[esbuild-target]: https://esbuild.github.io/api/#target
 
 [esmsh]: https://esm.sh/
