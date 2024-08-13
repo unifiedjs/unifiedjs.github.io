@@ -12,6 +12,8 @@ performant
 plugable
 programmatically
 readme
+shortcodes
+shortcode
 stringify
 syntaxes
 whitespace
@@ -30,6 +32,7 @@ MDX
 MacBook
 Otander
 Preact
+gemoji
 mdast
 nlcst
 npm
