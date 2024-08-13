@@ -13,6 +13,10 @@ interface UnifiedjsGenerateFields {
   /**
    * GitHub username of author; data specific to `unifiedjs.github.io`.
    */
+  archive?: boolean | undefined
+  /**
+   * GitHub username of author; data specific to `unifiedjs.github.io`.
+   */
   authorGithub?: string | undefined
   /**
    * Index of post; data specific to `unifiedjs.github.io`.

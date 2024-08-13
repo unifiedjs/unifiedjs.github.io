@@ -111,7 +111,7 @@ for (const d of input) {
 
   assert(file.data.matter)
   const {group, tags} = file.data.matter
-  assert(typeof group === 'string')
+  assert(group)
   meta.type = 'article'
   meta.tags = [group]
   if (tags) meta.tags.push(...tags)
@@ -145,7 +145,11 @@ for (const d of minidata) {
   const groupEntries = []
 
   for (const d of entries) {
-    if (d.data.matter && d.data.matter.group === slug) {
+    if (
+      d.data.matter &&
+      !d.data.matter.archive &&
+      d.data.matter.group === slug
+    ) {
       groupEntries.push(d)
     }
   }
@@ -440,7 +444,7 @@ for (const render of tasks) {
   assert(pathname)
   sitemapEntries.push({url: new URL(pathname, origin).href, modified})
 
-  if (matter.group) {
+  if (!matter.archive && matter.group) {
     learnFiles.push(file)
   }
 }
