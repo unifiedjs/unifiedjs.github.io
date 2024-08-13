@@ -32,7 +32,7 @@ It looks for a regex in the text and replaces it.
 ### Case
 
 Before we start, let’s first outline what we want to make.
-Say we have the following text file:
+Say we have the following file:
 
 ```markdown
 Look, the moon :new_moon_with_face:
@@ -111,8 +111,8 @@ We process that file with the plugin we’ll create next and finally we write
 it out again.
 
 Note that we directly depend on `remark`.
-This is a package that exposes a `unified` processor, and comes with the
-markdown parser and markdown compiler attached.
+This is a package that exposes a `unified` processor,
+and comes with the markdown parser and markdown compiler attached.
 
 Now we’ve got everything set up except for the plugin itself.
 We’ll do that in the next section.
@@ -258,6 +258,8 @@ Look, the moon 🌚
 ```
 
 That’s it!
+For a complete version of this plugin,
+see [`remark-gemoji`][remark-gemoji].
 
 If you haven’t already, check out the other articles in the
 [learn section][learn]!
@@ -271,6 +273,8 @@ If you haven’t already, check out the other articles in the
 [gemoji]: https://github.com/wooorm/gemoji/blob/main/support.md
 
 [visit]: https://github.com/syntax-tree/unist-util-visit
+
+[remark-gemoji]: https://github.com/remarkjs/remark-gemoji
 
 [learn]: /learn/
 
