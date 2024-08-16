@@ -6,7 +6,12 @@
 import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import {fileURLToPath} from 'node:url'
+import etc from '@wooorm/starry-night/etc'
 import sourceGitignore from '@wooorm/starry-night/source.gitignore'
+import sourceRegexpExtended from '@wooorm/starry-night/source.regexp.extended'
+import sourceRegexpPosix from '@wooorm/starry-night/source.regexp.posix'
+import sourceRegexp from '@wooorm/starry-night/source.regexp'
+import sourceSy from '@wooorm/starry-night/source.sy'
 import sourceTsx from '@wooorm/starry-night/source.tsx'
 import {common} from '@wooorm/starry-night'
 import remarkFrontmatter from 'remark-frontmatter'
@@ -79,7 +84,16 @@ export const article = unified()
   .use(rehypeRaw)
   .use(rehypeInferReadingTimeMeta)
   .use(rehypeStarryNight, {
-    grammars: [...common, sourceGitignore, sourceTsx],
+    grammars: [
+      ...common,
+      etc,
+      sourceGitignore,
+      sourceRegexpExtended,
+      sourceRegexpPosix,
+      sourceRegexp,
+      sourceSy,
+      sourceTsx
+    ],
     plainText: ['txt']
   })
   .use(rehypeTwoslash, {twoslash: {compilerOptions: commandLine.options}})
