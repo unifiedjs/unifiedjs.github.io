@@ -140,7 +140,7 @@ generate a table of contents,
 and (potentially) much more:
 that’s when to opt for unified.
 
-> A large part of MDX’s success has been leveraging the unified and remark
+> A large part of MDXs success has been leveraging the unified and remark
 > ecosystem.
 > I was able to get a prototype working in a few hours because I didn’t have to
 > worry about markdown parsing: remark gave it to me for free.

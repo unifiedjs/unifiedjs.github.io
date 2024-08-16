@@ -15,7 +15,7 @@ This basic build uses two shortcuts over the full build:
 The full build is a slow site to properly build!
 Takes about 20 minutes (🤯) on my tiny trusted 12 inch MacBook.
 The reason for this is that it crawls the whole ecosystem.
-We contact 5 API’s: GitHub, npm, npms, OpenCollective, and BundlePhobia.
+We contact 5 APIs: GitHub, npm, npms, OpenCollective, and BundlePhobia.
 When generating, it builds a performant static site.
 Everything is minified.
 Images are highly optimized.

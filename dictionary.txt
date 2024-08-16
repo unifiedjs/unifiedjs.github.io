@@ -1,4 +1,7 @@
 // Jargon
+APIs
+ASTs
+AST
 CLI
 XSS
 attacher
@@ -19,6 +22,7 @@ syntaxes
 whitespace
 
 // Names, products, etc.
+ATX
 BundlePhobia
 CDN
 CommonMark
@@ -28,10 +32,13 @@ HSL
 JSDoc
 JSON
 JSX
+MDXs
 MDX
 MacBook
 Otander
+PostCSS
 Preact
+Setext
 gemoji
 mdast
 nlcst
