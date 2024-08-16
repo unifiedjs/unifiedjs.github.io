@@ -20,5 +20,9 @@ export function helperSort(data) {
  */
 function score(d) {
   const matter = d.data.matter || {}
-  return matter.index || Number.POSITIVE_INFINITY
+  const published =
+    typeof matter.published === 'string'
+      ? new Date(matter.published)
+      : matter.published || undefined
+  return matter.index || published?.getTime() || Number.POSITIVE_INFINITY
 }
