@@ -29,6 +29,7 @@ CommonMark
 DOM
 GFM
 HSL
+ISC
 JSDoc
 JSON
 JSX

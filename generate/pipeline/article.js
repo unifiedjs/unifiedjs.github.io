@@ -104,13 +104,24 @@ export const article = unified()
     properties: {ariaLabel: 'Link to self', className: ['anchor']}
   })
   .use(rehypeAbbreviate, {
-    ignore: ['ATX', 'ECMAScript', 'ESLint', 'ID', 'JSDoc', 'JSX', 'MDX'],
+    ignore: [
+      'ATX',
+      'ECMAScript',
+      'ESLint',
+      'ID',
+      'ISC',
+      'JSDoc',
+      'JSX',
+      'MDX',
+      'MIT'
+    ],
     titles: {
       API: 'Application programming interface',
       ARIA: 'Accessible rich internet applications',
       AST: 'Abstract syntax tree',
       CDN: 'Content delivery network',
       CDATUM: 'Character data',
+      CI: 'Continuous integration',
       CLI: 'Command-line interface',
       CSS: 'Cascading style sheets',
       DOM: 'Document object model',
