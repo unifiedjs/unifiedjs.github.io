@@ -117,16 +117,6 @@
   url: https://wooorm.com/readability/
   gh: wooorm/readability
   src: /image/readability.png
-- title: PrettyHTML
-  short: Uses unified to format content
-  url: https://prettyhtml.netlify.com
-  gh: Prettyhtml/prettyhtml
-  src: /image/prettyhtml.png
-- title: Nextein
-  short: Uses unified to generate static sites
-  url: https://nextein.elmasse.io
-  gh: elmasse/nextein/
-  src: /image/nextein.png
 - title: nteract
   short: Uses unified for math in markdown
   url: https://nteract.io
