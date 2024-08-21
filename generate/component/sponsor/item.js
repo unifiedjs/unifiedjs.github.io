@@ -19,9 +19,13 @@ const oc = 'https://opencollective.com/'
  * @returns {Element}
  */
 export function item(d) {
-  const footer = [ocBadge(oc)]
+  const footer = []
 
-  if ('oc' in d && d.github) {
+  if ('oc' in d && d.oc) {
+    footer.push(ocBadge(d.oc))
+  }
+
+  if (d.github) {
     footer.push(ghBadge(d.github))
   }
 
