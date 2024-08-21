@@ -20,6 +20,7 @@ import {releases as dataReleases} from '../../data/releases.js'
 import {constantCollective} from '../util/constant-collective.js'
 import {fmtCompact} from '../util/fmt-compact.js'
 import {fmtPercent} from '../util/fmt-percent.js'
+import {fmtPlural} from '../util/fmt-plural.js'
 import {pickRandom} from '../util/pick-random.js'
 import {page} from './page.js'
 
@@ -85,18 +86,6 @@ export function home(data) {
     ],
     [
       h('.article.content', [
-        h('h2', 'Build'),
-        h('p', [
-          h('b', 'We provide the building blocks'),
-          ': from tiny, focussed, modular utilities to plugins that combine ',
-          'them to perform bigger tasks. ',
-          'And much, much more. ',
-          'You can build on unified, mixing and matching building blocks ',
-          'together, to make all kinds of interesting new things. '
-        ])
-      ]),
-      cases(data.users, {max: 6}),
-      h('.article.content', [
         h('h2', 'Learn'),
         h('p', [
           h('b', 'We provide the interface'),
@@ -106,9 +95,19 @@ export function home(data) {
           'make things with unified. '
         ])
       ]),
-      articlesList('/learn/', articlesSort(data.articles), {
-        max: 6
-      }),
+      articlesList('/learn/', articlesSort(data.articles), {max: 6}),
+      h('.article.content', [
+        h('h2', 'Sponsor'),
+        h('p', [
+          'To support our efforts financially, sponsor us on ',
+          h('a', {href: 'https://github.com/sponsors/unifiedjs'}, 'GitHub'),
+          ' or ',
+          h('a', {href: 'http://opencollective.com/unified'}, 'OpenCollective'),
+          '. ',
+          'This lets us spend more time maintaining our projects and developing new ones. '
+        ])
+      ]),
+      sponsors(data.sponsors, {max: 6}),
       h('.article.content', [
         h('h2', 'Explore'),
         h('p', [
@@ -132,6 +131,18 @@ export function home(data) {
       ]),
       listPackage(data, d, {trail: explore()}),
       h('.article.content', [
+        h('h2', 'Build'),
+        h('p', [
+          h('b', 'We provide the building blocks'),
+          ': from tiny, focussed, modular utilities to plugins that combine ',
+          'them to perform bigger tasks. ',
+          'And much, much more. ',
+          'You can build on unified, mixing and matching building blocks ',
+          'together, to make all kinds of interesting new things. '
+        ])
+      ]),
+      cases(data.users, {max: 6}),
+      h('.article.content', [
         h('h2', 'Work'),
         h('p', [
           'Maintaining the collective, developing new projects, keeping ',
@@ -143,22 +154,17 @@ export function home(data) {
           ' are currently open (',
           fmtPercent(open / (open + closed)),
           '). ',
-          'In the last 30 days, we’ve cut ' + releases + ' new releases.'
+          // Note: data is sometimes missing.
+          releases
+            ? 'In the last 30 days, we’ve cut ' +
+              releases +
+              ' new ' +
+              fmtPlural(releases, {one: 'release', other: 'releases'}) +
+              '.'
+            : undefined
         ])
       ]),
-      release(data),
-      h('.article.content', [
-        h('h2', 'Sponsor'),
-        h('p', [
-          'Thankfully, we are backed financially by our sponsors. ',
-          'This allows us to spend more time maintaining our projects and ',
-          'developing new ones. ',
-          'To support our efforts financially, sponsor or back us on ',
-          h('a', {href: 'http://opencollective.com/unified'}, 'OpenCollective'),
-          '.'
-        ])
-      ]),
-      sponsors(data.sponsors, {max: 6})
+      release(data)
     ]
   )
 

@@ -30,12 +30,17 @@ export function community(data) {
   return page(
     h('.row-l.column-l', {}, h('h2', {}, breadcrumbs('/community/'))),
     [
-      h('.article.content', [h('h3', 'Showcase'), casesByline()]),
-      cases(data.users, {max: 3}),
+      h('.article.content', [
+        h('p', [
+          'unified is an open source effort by people volunteering their time. ',
+          'A team of maintainers among the broader community. '
+        ]),
+        h('h3', 'Sponsors'),
+        sponsorsByline()
+      ]),
+      sponsors(data.sponsors, {max: 6}),
       h('.article.content', [h('h3', 'Team'), membersByline()]),
       members(data, sortMembers(data, data.humans), {max: 6}),
-      h('.article.content', [h('h3', 'Sponsors'), sponsorsByline()]),
-      sponsors(data.sponsors, {max: 6}),
       h('.article.content', [
         h('h3', 'Support'),
         h('p', [
@@ -96,7 +101,9 @@ export function community(data) {
           h('a', {href: '/explore/release/'}, 'Releases'),
           ' section for recent releases.'
         ])
-      ])
+      ]),
+      h('.article.content', [h('h3', 'Showcase'), casesByline()]),
+      cases(data.users, {max: 3})
     ]
   )
 }
