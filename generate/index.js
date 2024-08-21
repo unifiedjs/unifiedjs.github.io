@@ -3,15 +3,16 @@
  * @import {DataMap} from 'vfile'
  * @import {Entry as FeedEntry} from 'xast-util-feed'
  * @import {Entry as SitemapEntry} from 'xast-util-sitemap'
+ * @import {SponsorRaw as GhSponsor} from '../crawl/github-sponsors.js'
+ * @import {Sponsor as OcSponsor} from '../crawl/opencollective.js'
  * @import {Human} from '../data/humans.js'
  * @import {Release} from '../data/releases.js'
- * @import {Person as Sponsor} from '../data/sponsors.js'
  * @import {Team} from '../data/teams.js'
  * @import {Metadata} from './component/article/list.js'
  *
  * @typedef CommunityData
  * @property {ReadonlyArray<Human>} humans
- * @property {ReadonlyArray<Sponsor>} sponsors
+ * @property {ReadonlyArray<OcSponsor | GhSponsor>} sponsors
  * @property {ReadonlyArray<Team>} teams
  * @property {ReadonlyArray<ShowcaseUser>} users
  *
@@ -47,7 +48,7 @@ import {toXml} from 'xast-util-to-xml'
 import yaml from 'yaml'
 import {humans} from '../data/humans.js'
 import {releases as dataReleases} from '../data/releases.js'
-import {sponsors} from '../data/sponsors.js'
+import {sponsors as ocSponsors} from '../data/opencollective.js'
 import {teams} from '../data/teams.js'
 import {article as articlePipeline} from './pipeline/article.js'
 import {description as descriptionPipeline} from './pipeline/description.js'
@@ -75,6 +76,17 @@ import {sponsor} from './page/sponsors.js'
 import {topics} from './page/topics.js'
 import {topic} from './page/topic.js'
 import {data} from './data.js'
+
+const ghSponsors = /** @type {Array<GhSponsor>} */ (
+  JSON.parse(
+    await fs.readFile(
+      new URL('../data/github-sponsors.json', import.meta.url),
+      'utf8'
+    )
+  )
+)
+
+const sponsors = [...ocSponsors, ...ghSponsors]
 
 const origin = 'https://unifiedjs.com'
 

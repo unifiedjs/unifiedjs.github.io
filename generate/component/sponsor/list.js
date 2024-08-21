@@ -1,6 +1,7 @@
 /**
  * @import {Element} from 'hast'
- * @import {Person} from '../../../data/sponsors.js'
+ * @import {SponsorRaw as GhSponsor} from '../../../crawl/github-sponsors.js'
+ * @import {Sponsor as OcSponsor} from '../../../crawl/opencollective.js'
  * @import {Options} from '../../atom/macro/list.js'
  */
 
@@ -9,7 +10,7 @@ import {item} from './item.js'
 import {more} from './more.js'
 
 /**
- * @param {ReadonlyArray<Person>} d
+ * @param {ReadonlyArray<GhSponsor | OcSponsor>} d
  * @param {Options | undefined} [options]
  * @returns {Element}
  */

@@ -137,9 +137,10 @@
   "scripts": {
     "build": "tsc --build --clean && tsc --build && type-coverage",
     "crawl:ecosystem": "mkdir -p data; mkdir -p data/readme; node crawl/ecosystem.js --conditions development",
-    "crawl:sponsors": "mkdir -p data; node crawl/sponsors.js --conditions development",
+    "crawl:opencollective": "mkdir -p data; node crawl/opencollective.js --conditions development",
+    "crawl:github": "mkdir -p data; node crawl/github-sponsors.js --conditions development",
     "crawl:team": "mkdir -p data; node crawl/team.js --conditions development",
-    "crawl": "npm run crawl:sponsors && npm run crawl:team && npm run crawl:ecosystem",
+    "crawl": "npm run crawl:opencollective && npm run crawl:github && npm run crawl:team && npm run crawl:ecosystem",
     "format": "remark . --output --quiet && prettier . --log-level warn --write && stylelint \"**/*.css\" --fix && xo --fix",
     "generate:asset": "node generate/asset.js --conditions development",
     "generate:pages": "node generate/index.js --conditions development",

@@ -1,6 +1,7 @@
 /**
  * @import {Element} from 'hast'
- * @import {Person} from '../../../data/sponsors.js'
+ * @import {SponsorRaw as GhSponsor} from '../../../crawl/github-sponsors.js'
+ * @import {Sponsor as OcSponsor} from '../../../crawl/opencollective.js'
  */
 
 import {h} from 'hastscript'
@@ -10,41 +11,39 @@ import {oc as ocBadge} from '../../atom/micro/oc.js'
 import {tw as twitterBadge} from '../../atom/micro/tw.js'
 import {url as urlLine} from '../../atom/micro/url.js'
 
-const base = 'http://opencollective.com/'
+const gh = 'https://github.com/'
+const oc = 'https://opencollective.com/'
 
 /**
- * @param {Person} d
+ * @param {GhSponsor | OcSponsor} d
  * @returns {Element}
  */
 export function item(d) {
-  const {description, github, gold, image, name, oc, twitter, url} = d
-  const className = gold ? ['gold'] : []
   const footer = [ocBadge(oc)]
 
-  if (github) {
-    footer.push(ghBadge(github))
+  if ('oc' in d && d.github) {
+    footer.push(ghBadge(d.github))
   }
 
-  if (twitter) {
-    footer.push(twitterBadge(twitter))
+  if ('twitter' in d && d.twitter) {
+    footer.push(twitterBadge(d.twitter))
   }
 
-  if (url) {
-    footer.push(urlLine(url, {rel: ['nofollow', 'sponsored']}))
+  if (d.url) {
+    footer.push(urlLine(d.url, {rel: ['nofollow', 'sponsored']}))
   }
 
   return card(
-    base + oc,
+    'oc' in d ? oc + d.oc : gh + d.github,
     h('.column', [
       h('h3.row', [
         h('.thumbnail', {
-          className,
           role: 'presentation',
-          style: 'background-image:url(' + image + ')'
+          style: 'background-image:url(' + d.image + ')'
         }),
-        h('span.ellipsis', {}, name)
+        h('span.ellipsis', {}, d.name || d.github)
       ]),
-      description ? h('p.double-ellipsis', {}, description) : []
+      d.description ? h('p.double-ellipsis', {}, d.description) : []
     ]),
     footer
   )
