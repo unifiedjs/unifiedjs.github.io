@@ -101,7 +101,9 @@ export function home(data) {
         h('p', [
           'To support our efforts financially, sponsor us on ',
           h('a', {href: 'https://github.com/sponsors/unifiedjs'}, 'GitHub'),
-          ' or ',
+          ', ',
+          h('a', {href: 'https://thanks.dev'}, h('code', 'thanks.dev')),
+          ', or ',
           h('a', {href: 'http://opencollective.com/unified'}, 'OpenCollective'),
           '. ',
           'This lets us spend more time maintaining our projects and developing new ones. '

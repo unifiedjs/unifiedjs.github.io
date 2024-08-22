@@ -4,9 +4,6 @@
 
 import {h} from 'hastscript'
 
-const gh = 'https://github.com/sponsors/unifiedjs'
-const oc = 'http://opencollective.com/unified'
-
 /**
  * @returns {Element}
  */
@@ -17,9 +14,11 @@ export function byline() {
     'Financial support lets the team spend more time maintaining existing ',
     'projects and developing new ones. ',
     'To support unified, become a sponsor or backer on ',
-    h('a', {href: gh}, 'GitHub'),
-    ' or ',
-    h('a', {href: oc}, 'OpenCollective'),
+    h('a', {href: 'https://github.com/sponsors/unifiedjs'}, 'GitHub'),
+    ', ',
+    h('a', {href: 'https://thanks.dev'}, h('code', 'thanks.dev')),
+    ', or ',
+    h('a', {href: 'http://opencollective.com/unified'}, 'OpenCollective'),
     '.'
   ])
 }
