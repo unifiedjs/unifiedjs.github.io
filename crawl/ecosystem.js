@@ -543,7 +543,7 @@ async function crawlRepo(repo) {
    * @type {({
    *   errors?: Array<string>,
    *   data: {
-   *     repository: {
+   *     repository?: {
    *       defaultBranchRef?: {name: string},
    *       dependencyGraphManifests?: {nodes?: Array<{exceedsMaxSize: boolean, filename: string, parseable: boolean}>},
    *       diskUsage: number
@@ -624,7 +624,7 @@ async function crawlRepo(repo) {
   /** @type {Array<string>} */
   const manifests = []
 
-  if (defaultBranch && repository.dependencyGraphManifests?.nodes) {
+  if (defaultBranch && repository?.dependencyGraphManifests?.nodes) {
     for (const d of repository.dependencyGraphManifests.nodes) {
       if (
         d.filename.endsWith('package.json') &&
@@ -639,7 +639,7 @@ async function crawlRepo(repo) {
   /** @type {Array<string>} */
   const topics = []
 
-  if (repository.repositoryTopics?.nodes) {
+  if (repository?.repositoryTopics?.nodes) {
     for (const d of repository.repositoryTopics.nodes) {
       const name = d.topic.name
       if (validTag(name)) {
@@ -651,19 +651,19 @@ async function crawlRepo(repo) {
   return {
     project: {
       default: defaultBranch,
-      description: repository.description || '',
+      description: repository?.description || '',
       hasPackages: false,
-      issueClosed: repository.issueClosed?.totalCount || 0,
-      issueOpen: repository.issueOpen?.totalCount || 0,
+      issueClosed: repository?.issueClosed?.totalCount || 0,
+      issueOpen: repository?.issueOpen?.totalCount || 0,
       manifests,
-      prClosed: repository.prClosed?.totalCount || 0,
-      prOpen: repository.prOpen?.totalCount || 0,
+      prClosed: repository?.prClosed?.totalCount || 0,
+      prOpen: repository?.prOpen?.totalCount || 0,
       repo,
       // Size of repo in bytes.
-      size: repository.diskUsage * 1024,
-      stars: repository.stargazers?.totalCount || 0,
+      size: (repository?.diskUsage || 0) * 1024,
+      stars: repository?.stargazers?.totalCount || 0,
       topics,
-      url: repository.homepageUrl || undefined
+      url: repository?.homepageUrl || undefined
     },
     releases
   }
