@@ -260,4 +260,4 @@ Yields:
 
 [splice]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
 
-[visit-parents]: https://github.com/syntax-tree/unist-util-visit-parents#visittree-test-visitor-reverse
+[visit-parents]: https://github.com/syntax-tree/unist-util-visit-parents#visitparentstree-test-visitor-reverse

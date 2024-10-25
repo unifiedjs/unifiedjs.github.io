@@ -336,7 +336,7 @@ If you haven’t already, check out the other articles in the
 
 [is]: https://github.com/syntax-tree/unist-util-is
 
-[message]: https://github.com/vfile/vfile#vfilemessagereason-position-origin
+[message]: https://github.com/vfile/vfile#vfilemessagereason-options
 
 [learn]: /learn/
 

@@ -429,7 +429,7 @@ If you haven’t already, check out the other articles in the
 
 [npm]: https://www.npmjs.com
 
-[node]: https://nodejs.org
+[node]: https://nodejs.org/en
 
 [slug]: https://github.com/rehypejs/rehype-slug
 

@@ -456,19 +456,19 @@ If you haven’t already, check out the other articles in the
 
 [esbuild]: https://esbuild.github.io
 
-[gary-propost]: http://www.garyprovost.com
+[gary-propost]: https://www.garyprovost.com/
 
 [github-parse-english]: https://github.com/wooorm/parse-english
 
-[github-sindresorhus-xo]: https://github.com/sindresorhus/xo
+[github-sindresorhus-xo]: https://github.com/xojs/xo
 
 [github-unist-util-visit]: https://github.com/syntax-tree/unist-util-visit
 
-[gregoryciotti-tweet]: https://twitter.com/gregoryciotti/status/639837682844090369
+[gregoryciotti-tweet]: https://x.com/gregoryciotti/status/639837682844090369
 
 [prettier]: https://prettier.io
 
-[react]: https://reactjs.org
+[react]: https://react.dev/
 
 [unified-support]: https://github.com/unifiedjs/.github/blob/main/support.md
 

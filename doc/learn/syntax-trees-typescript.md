@@ -360,7 +360,7 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 [nlcst]: https://github.com/syntax-tree/nlcst
 
-[xast]: https://github.com/syntax-tree/xast#readme
+[xast]: https://github.com/syntax-tree/xast
 
 [ts-unist]: https://www.npmjs.com/package/@types/unist
 
