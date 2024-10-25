@@ -464,7 +464,7 @@ If you haven’t already, check out the other articles in the
 
 [github-unist-util-visit]: https://github.com/syntax-tree/unist-util-visit
 
-[gregoryciotti-tweet]: https://x.com/gregoryciotti/status/639837682844090369
+[gregoryciotti-tweet]: https://www.helpscout.com/blog/damn-hard-writing/
 
 [prettier]: https://prettier.io
 
