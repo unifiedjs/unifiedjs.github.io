@@ -489,6 +489,7 @@ abbr {
 
 .double-ellipsis {
   overflow: hidden;
+  /* stylelint-disable-next-line declaration-property-value-no-unknown */
   display: box;
   -webkit-line-clamp: 2;
   line-clamp: 2;
@@ -782,7 +783,7 @@ a.tag:focus .count {
 }
 
 .content li {
-  word-wrap: break-all;
+  word-wrap: break-word;
   margin-top: calc(0.25 * (1em + 1ex));
   margin-bottom: calc(0.25 * (1em + 1ex));
   margin-left: calc(1 * (1em + 1ex));

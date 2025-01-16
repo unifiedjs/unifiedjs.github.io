@@ -46,7 +46,7 @@ const config = {
     remarkPresetWooorm,
     remarkFrontmatter,
     [remarkRetext, naturalLanguage],
-    remarkValidateLinks,
+    [remarkValidateLinks, false],
     [remarkLintNoDeadUrls, 'https://unifiedjs.com'],
     [remarkLintFirstHeadingLevel, 2],
     [remarkLintNoHtml, false]

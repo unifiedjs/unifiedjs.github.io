@@ -23,7 +23,7 @@ them.
 It’s made with [React][] and runs in a browser.
 
 For this example we’ll create an app that visualizes sentence length.
-Based on a tip by [Gary Provost][gary-propost].
+Based on a tip by [Gary Provost][gary-provost].
 The visualization is based on
 [a tweet by `@gregoryciotti`][gregoryciotti-tweet].
 
@@ -456,7 +456,7 @@ If you haven’t already, check out the other articles in the
 
 [esbuild]: https://esbuild.github.io
 
-[gary-propost]: https://www.garyprovost.com/
+[gary-provost]: https://en.wikipedia.org/wiki/Gary_Provost
 
 [github-parse-english]: https://github.com/wooorm/parse-english
 

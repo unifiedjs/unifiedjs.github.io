@@ -1,5 +1,6 @@
 /// <reference lib="dom" />
 
+/* eslint-disable unicorn/prefer-global-this */
 /* eslint-env browser */
 
 /**
