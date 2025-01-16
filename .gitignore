@@ -1,6 +1,7 @@
-*.d.ts.map
 *.d.ts
 *.log
+*.map
+*.tsbuildinfo
 .DS_Store
 .env
 build/
