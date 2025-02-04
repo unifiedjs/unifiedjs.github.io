@@ -1,7 +1,6 @@
 ---
 archive: true
 authorGithub: wooorm
-authorTwitter: wooorm
 author: Titus Wormer
 description: Guide that shows how to create a plugin
 group: guide

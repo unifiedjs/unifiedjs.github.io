@@ -1,6 +1,5 @@
 ---
 authorGithub: Murderlon
-authorTwitter: Murderlon
 author: Merlijn Vos
 description: Guide that summarizes the what and why of unified
 group: guide

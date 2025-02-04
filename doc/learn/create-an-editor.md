@@ -1,6 +1,5 @@
 ---
 authorGithub: wooorm
-authorTwitter: wooorm
 author: Titus Wormer
 description: Guide that shows how to create a fancy app ✨
 group: guide

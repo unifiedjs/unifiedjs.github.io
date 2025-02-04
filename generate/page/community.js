@@ -14,7 +14,6 @@ import {byline as sponsorsByline} from '../component/sponsor/byline.js'
 import {list as sponsors} from '../component/sponsor/list.js'
 import {page} from './page.js'
 
-const twitter = 'https://twitter.com/unifiedjs'
 const org = 'https://github.com/unifiedjs'
 const base = org + '/.github/blob/HEAD/'
 const coc = base + 'code-of-conduct.md'
@@ -89,13 +88,6 @@ export function community(data) {
           ' section, or on GitHub and npm), describe each project in detail.'
         ]),
         h('h3', 'News'),
-        h('p', [
-          'Follow the ',
-          h('a', {href: twitter}, h('b', '@unifiedjs')),
-          ' account on Twitter for news. ',
-          'You can also tweet at this account with questions or suggestions, ',
-          'or mention it when you made something with unified! '
-        ]),
         h('p', [
           'See the ',
           h('a', {href: '/explore/release/'}, 'Releases'),

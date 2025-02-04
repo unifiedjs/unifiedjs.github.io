@@ -1,6 +1,5 @@
 ---
 authorGithub: wooorm
-authorTwitter: wooorm
 author: Titus Wormer
 description: How to do tree traversal (also known as walking or visiting a tree)
 group: recipe

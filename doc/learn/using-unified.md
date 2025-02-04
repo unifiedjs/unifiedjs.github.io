@@ -1,6 +1,5 @@
 ---
 authorGithub: wooorm
-authorTwitter: wooorm
 author: Titus Wormer
 description: Guide that delves into transforming markdown to HTML
 group: guide

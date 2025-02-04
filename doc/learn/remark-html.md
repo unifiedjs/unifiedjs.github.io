@@ -1,6 +1,5 @@
 ---
 authorGithub: wooorm
-authorTwitter: wooorm
 author: Titus Wormer
 description: How to use remark to turn markdown into HTML, and to allow embedded HTML inside markdown
 group: recipe

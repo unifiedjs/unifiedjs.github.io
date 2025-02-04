@@ -1,6 +1,5 @@
 ---
 authorGithub: wooorm
-authorTwitter: wooorm
 author: Titus Wormer
 description: Guide that shows how to share a plugin with the world.
 group: guide

@@ -1,6 +1,5 @@
 ---
 authorGithub: wooorm
-authorTwitter: wooorm
 author: Titus Wormer
 description: How to support GitHub-style tables in remark (or react-markdown)
 group: recipe

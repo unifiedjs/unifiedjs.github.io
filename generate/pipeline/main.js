@@ -66,8 +66,6 @@ export const main = unified()
     og: true,
     siteAuthor: 'unified collective',
     siteTags: ['ast', 'parse', 'process', 'stringify', 'transform', 'unified'],
-    siteTwitter: '@unifiedjs',
-    twitter: true,
     type: 'website'
   })
   .use(rehypeDefer)

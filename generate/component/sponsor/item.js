@@ -8,7 +8,6 @@ import {h} from 'hastscript'
 import {item as card} from '../../atom/card/item.js'
 import {gh as ghBadge} from '../../atom/micro/gh.js'
 import {oc as ocBadge} from '../../atom/micro/oc.js'
-import {tw as twitterBadge} from '../../atom/micro/tw.js'
 import {url as urlLine} from '../../atom/micro/url.js'
 
 const gh = 'https://github.com/'
@@ -27,10 +26,6 @@ export function item(d) {
 
   if (d.github) {
     footer.push(ghBadge(d.github))
-  }
-
-  if ('twitter' in d && d.twitter) {
-    footer.push(twitterBadge(d.twitter))
   }
 
   if (d.url) {

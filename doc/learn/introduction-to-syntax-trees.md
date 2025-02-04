@@ -1,6 +1,5 @@
 ---
 authorGithub: wooorm
-authorTwitter: wooorm
 author: Titus Wormer
 description: Guide that shows the basics of syntax trees (ASTs)
 group: guide

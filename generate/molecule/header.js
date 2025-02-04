@@ -4,16 +4,13 @@
 
 import {h} from 'hastscript'
 import {gh} from '../atom/icon/gh.js'
-import {tw} from '../atom/icon/tw.js'
 
 /**
  * @returns {ElementContent}
  */
 export function header() {
-  const twitter = tw()
   const github = gh()
 
-  enlarge(twitter)
   enlarge(github)
 
   return h('header.container', [
@@ -26,12 +23,6 @@ export function header() {
           h('li', {}, h('a', {href: '/community/'}, 'Community'))
         ]),
         h('ol.row.x-show-l.justify-end-l', [
-          h('li', [
-            h('a', {href: 'https://twitter.com/unifiedjs'}, [
-              twitter,
-              h('span.x-hide-l', 'Twitter')
-            ])
-          ]),
           h('li', [
             h('a', {href: 'https://github.com/unifiedjs'}, [
               github,

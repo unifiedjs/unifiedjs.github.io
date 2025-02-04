@@ -20,7 +20,6 @@ export function footer() {
           'li',
           h('a', {href: 'https://opencollective.com/unified'}, 'OpenCollective')
         ),
-        h('li', {}, h('a', {href: 'https://twitter.com/unifiedjs'}, 'Twitter')),
         h('li', {}, h('a', {href: 'https://github.com/unifiedjs'}, 'GitHub'))
       ])
     ])

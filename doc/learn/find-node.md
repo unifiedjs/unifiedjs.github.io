@@ -1,6 +1,5 @@
 ---
 authorGithub: Murderlon
-authorTwitter: Murderlon
 author: Merlijn Vos
 description: How to find a node in any unist syntax tree
 group: recipe
