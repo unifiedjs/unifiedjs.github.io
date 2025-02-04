@@ -1,5 +1,5 @@
 /**
- * @import {Element} from 'hast'
+ * @import {ElementContent, Element} from 'hast'
  * @import {SponsorRaw as GhSponsor} from '../../../crawl/github-sponsors.js'
  * @import {Sponsor as OcSponsor} from '../../../crawl/opencollective.js'
  */
@@ -18,6 +18,7 @@ const oc = 'https://opencollective.com/'
  * @returns {Element}
  */
 export function item(d) {
+  /** @type {Array<ElementContent>} */
   const footer = []
 
   if ('oc' in d && d.oc) {
