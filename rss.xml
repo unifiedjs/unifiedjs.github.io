@@ -1,0 +1,866 @@
+<?xml version="1.0" encoding="utf-8"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>unified - learn</title><description></description><link>https://unifiedjs.com/</link><lastBuildDate>Thu, 06 Nov 2025 08:21:14 GMT</lastBuildDate><dc:date>2025-11-06T08:21:14.142Z</dc:date><atom:link href="https://unifiedjs.com/rss.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><dc:language>en</dc:language><item><title>Publish a plugin</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/guide/publish-plugin/</link><guid isPermaLink="false">https://unifiedjs.com/learn/guide/publish-plugin/</guid><pubDate>Mon, 19 Aug 2024 00:00:00 GMT</pubDate><dc:date>2024-08-19T00:00:00.000Z</dc:date><dc:modified>2024-08-19T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-publish-a-plugin">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#publish-a-plugin" class="" aria-label="Link to self">&#x3C;/a>Publish a plugin&#x3C;/h2>&#x3C;p>This guide shows how to share a plugin with the world.&#x3C;/p>&#x3C;blockquote>&#x3C;p>Stuck? Have an idea for another guide? See &#x3C;a href="https://github.com/unifiedjs/.github/blob/main/support.md">&#x3C;code>support.md&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;/blockquote>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#intro">Intro&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#package-name">Package name&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#npm">npm&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#github">GitHub&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#export-map">Export map&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#export-default">&#x3C;code>export default&#x3C;/code>&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#docs">Docs&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#tests">Tests&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#license">License&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-intro">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#intro" class="" aria-label="Link to self">&#x3C;/a>Intro&#x3C;/h3>&#x3C;p>You may have a &#x3C;a href="https://unifiedjs.com/explore/package/unified/#plugin">plugin&#x3C;/a> locally, that you use in a project, and think others might find useful too.&#x3C;/p>&#x3C;p>Below you’ll find some rules on how to share plugins with the world.&#x3C;/p>&#x3C;h3 id="user-content-package-name">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#package-name" class="" aria-label="Link to self">&#x3C;/a>Package name&#x3C;/h3>&#x3C;p>The package name must be prefixed with &#x3C;code>rehype-&#x3C;/code>, &#x3C;code>remark-&#x3C;/code>, &#x3C;code>retext-&#x3C;/code>, and so on. The name of the ecosystem. Use this prefix &#x3C;strong>only&#x3C;/strong> for plugins. For presets, use &#x3C;code>rehype-preset-&#x3C;/code>, &#x3C;code>remark-preset-&#x3C;/code>, &#x3C;code>retext-preset-&#x3C;/code>, and so on.&#x3C;/p>&#x3C;h3 id="user-content-npm">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#npm" class="" aria-label="Link to self">&#x3C;/a>npm&#x3C;/h3>&#x3C;p>Plugins should be published to npm. You are free to publish them elsewhere too.&#x3C;/p>&#x3C;p>You should use a keyword &#x3C;code>rehype-plugin&#x3C;/code>, &#x3C;code>remark-plugin&#x3C;/code>, &#x3C;code>retext-plugin&#x3C;/code>, and so on, to tag your package.&#x3C;/p>&#x3C;h3 id="user-content-github">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#github" class="" aria-label="Link to self">&#x3C;/a>GitHub&#x3C;/h3>&#x3C;p>You may use GitHub. Or an alternative.&#x3C;/p>&#x3C;p>Only GitHub is crawled for the &#x3C;a href="https://unifiedjs.com/explore/">explore&#x3C;/a> page. You should use a topic &#x3C;code>rehype-plugin&#x3C;/code>, &#x3C;code>remark-plugin&#x3C;/code>, &#x3C;code>retext-plugin&#x3C;/code>, and so on, to tag your repository.&#x3C;/p>&#x3C;h3 id="user-content-export-map">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#export-map" class="" aria-label="Link to self">&#x3C;/a>Export map&#x3C;/h3>&#x3C;p>You must expose a plugin that can be imported from that package name. So, there must be a plugin at &#x3C;code>rehype-some-plugin&#x3C;/code>.&#x3C;/p>&#x3C;p>There may be several plugins in a package. One example is &#x3C;a href="https://unifiedjs.com/explore/package/rehype-mathjax/">&#x3C;code>rehype-mathjax&#x3C;/code>&#x3C;/a>, which has plugins exposed as &#x3C;code>rehype-mathjax/browser&#x3C;/code>, &#x3C;code>rehype-mathjax/chtml&#x3C;/code>, &#x3C;code>rehype-mathjax/svg&#x3C;/code>, and &#x3C;code>rehype-mathjax&#x3C;/code> (as an alias for &#x3C;code>rehype-mathjax/svg&#x3C;/code>). The reason for different plugins in the same project is that they each use different code. Which impact performance and bundle size.&#x3C;/p>&#x3C;h3 id="user-content-export-default">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#export-default" class="" aria-label="Link to self">&#x3C;/a>&#x3C;code>export default&#x3C;/code>&#x3C;/h3>&#x3C;p>Your package must expose a plugin at the default export. It must be a function that must work when passed as &#x3C;code>x&#x3C;/code> to &#x3C;code>unified().use(x)&#x3C;/code>.&#x3C;/p>&#x3C;p>There may be different exports too. One example is &#x3C;a href="https://unifiedjs.com/explore/package/remark-rehype/">&#x3C;code>remark-rehype&#x3C;/code>&#x3C;/a>, which also exposes useful things at &#x3C;code>defaultFootnoteBackContent&#x3C;/code>, &#x3C;code>defaultFootnoteBackLabel&#x3C;/code>, and &#x3C;code>defaultHandlers&#x3C;/code>, but the plugin itself is exported as &#x3C;code>default&#x3C;/code>.&#x3C;/p>&#x3C;h3 id="user-content-docs">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#docs" class="" aria-label="Link to self">&#x3C;/a>Docs&#x3C;/h3>&#x3C;p>Write a good readme. Explain what the plugin does, when it should be used or not, how to configure it.&#x3C;/p>&#x3C;h3 id="user-content-tests">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#tests" class="" aria-label="Link to self">&#x3C;/a>Tests&#x3C;/h3>&#x3C;p>Add thorough tests. Use a CI. You should test your project in all maintained versions of Node.js.&#x3C;/p>&#x3C;h3 id="user-content-license">&#x3C;a href="https://unifiedjs.com/learn/guide/publish-plugin/#license" class="" aria-label="Link to self">&#x3C;/a>License&#x3C;/h3>&#x3C;p>Add a license. It should be MIT or ISC, as that aligns with most of the JavaScript ecosystem. It must be an open source license.&#x3C;/p>&#x3C;/div></description></item><item><title>Intro to syntax trees</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/</link><guid isPermaLink="false">https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/</guid><pubDate>Wed, 14 Aug 2024 00:00:00 GMT</pubDate><dc:date>2024-08-14T00:00:00.000Z</dc:date><dc:modified>2024-08-14T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-introduction-to-syntax-trees">&#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/#introduction-to-syntax-trees" class="" aria-label="Link to self">&#x3C;/a>Introduction to syntax trees&#x3C;/h2>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> uses abstract syntax trees (abbreviated as ASTs), that plugins can work on. This guide introduces what ASTs are and how to work with them.&#x3C;/p>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/#what-is-an-ast">What is an AST?&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/#what-is-unist">What is unist?&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/#when-to-use-an-ast">When to use an AST?&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-what-is-an-ast">&#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/#what-is-an-ast" class="" aria-label="Link to self">&#x3C;/a>What is an AST?&#x3C;/h3>&#x3C;p>An abstract syntax tree (AST) is a tree representation of the syntax of programming languages. For us that’s typically markup languages.&#x3C;/p>&#x3C;p>As a JavaScript developer you may already know things that are like ASTs: The DOM and React’s virtual DOM. Or you may have heard of Babel, ESLint, PostCSS, Prettier, or TypeScript. They all use ASTs to inspect and transform code.&#x3C;/p>&#x3C;p>In &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a>, we support &#x3C;em>several&#x3C;/em> ASTs. The reason for different ASTs is that each markup language has several aspects that do not translate 1-to-1 to other markup languages. Taking markdown and HTML as an example, in some cases markdown has more info than HTML: markdown has several ways to add a link (“autolinks”: &#x3C;code>&#x26;#x3C;https://url>&#x3C;/code>, resource links: &#x3C;code>[label](url)&#x3C;/code>, and reference links with definitions: &#x3C;code>[label][id]&#x3C;/code> and &#x3C;code>[id]: url&#x3C;/code>). In other cases, HTML has more info than markdown. It has many tags, which add new meaning (semantics), that aren’t available in markdown. If there was one AST, it would be quite hard to do the tasks that several &#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> and &#x3C;a href="https://unifiedjs.com/explore/project/rehypejs/rehype/" class="">rehype&#x3C;/a> plugins now do.&#x3C;/p>&#x3C;p>See &#x3C;a href="https://unifiedjs.com/learn/recipe/build-a-syntax-tree/">“How to build a syntax tree”&#x3C;/a> for more info on how to make a tree. See &#x3C;a href="https://unifiedjs.com/learn/guide/syntax-trees-typescript/">“Syntax trees in TypeScript”&#x3C;/a> on how to work with ASTs in TypeScript.&#x3C;/p>&#x3C;h3 id="user-content-what-is-unist">&#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/#what-is-unist" class="" aria-label="Link to self">&#x3C;/a>What is unist?&#x3C;/h3>&#x3C;p>But all our ASTs have things in common. The bit in common is called &#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a>. By having a shared interface, we can also share tools that work on all ASTs. In practice, that means you can use for example &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a> to visit nodes in any supported AST.&#x3C;/p>&#x3C;p>See &#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">“Tree traversal”&#x3C;/a> for more info on &#x3C;code>unist-util-visit&#x3C;/code>.&#x3C;/p>&#x3C;p>&#x3C;a href="https://github.com/syntax-tree/unist" class="">unist&#x3C;/a> is different from the ASTs used in other tools. Quite noticeable because it uses a particular set of names for things: &#x3C;code>type&#x3C;/code>, &#x3C;code>children&#x3C;/code>, &#x3C;code>position&#x3C;/code>. But perhaps harder to see is that it’s compatible with JSON. It’s all objects and arrays. Strings, numbers. Where other tools use instances with methods, we use plain data. Years ago in &#x3C;a href="https://unifiedjs.com/explore/project/retextjs/retext/" class="">retext&#x3C;/a> we started out like that too. But we found that we preferred to be able to read and write a tree from/to a JSON file, to treat ASTs as data, and use more functional utilities.&#x3C;/p>&#x3C;h3 id="user-content-when-to-use-an-ast">&#x3C;a href="https://unifiedjs.com/learn/guide/introduction-to-syntax-trees/#when-to-use-an-ast" class="" aria-label="Link to self">&#x3C;/a>When to use an AST?&#x3C;/h3>&#x3C;p>You can use an AST when you want to inspect or transform content.&#x3C;/p>&#x3C;p>Say you wanted to count the number of headings in a markdown file. You could also do that with a regex:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">const value = `# Pluto
+
+Pluto is a dwarf planet in the Kuiper belt.
+
+## History
+
+### Discovery
+
+In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
+position of…`
+
+const expression = /^#+[^\r\n]+/gm
+const headings = [...value.matchAll(expression)].length
+
+console.log(headings) //=> 3
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>But what if the headings were in a code block? Or if Setext headings were used instead of ATX headings? The grammar of markdown is more complex than a regex can handle. That’s where an AST can help.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import {fromMarkdown} from 'mdast-util-from-markdown'
+import {visit} from 'unist-util-visit'
+
+const value = `# Pluto
+
+Pluto is a dwarf planet in the Kuiper belt.
+
+## History
+
+### Discovery
+
+In the 1840s, Urbain Le Verrier used Newtonian mechanics to predict the
+position of…`
+
+const tree = fromMarkdown(value)
+
+let headings = 0
+
+visit(tree, 'heading', function () {
+  headings++
+})
+
+console.log(headings) //=> 3
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>See &#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">“Tree traversal”&#x3C;/a> for more info on &#x3C;code>unist-util-visit&#x3C;/code>.&#x3C;/p>&#x3C;/div></description></item><item><title>Create a retext plugin</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/guide/create-a-retext-plugin/</link><guid isPermaLink="false">https://unifiedjs.com/learn/guide/create-a-retext-plugin/</guid><pubDate>Tue, 13 Aug 2024 00:00:00 GMT</pubDate><dc:date>2024-08-13T00:00:00.000Z</dc:date><dc:modified>2024-08-13T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-create-a-retext-plugin">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#create-a-retext-plugin" class="" aria-label="Link to self">&#x3C;/a>Create a retext plugin&#x3C;/h2>&#x3C;p>This guide shows how to create a plugin for &#x3C;a href="https://unifiedjs.com/explore/project/retextjs/retext/" class="">retext&#x3C;/a> that checks the amount of spaces between sentences.&#x3C;/p>&#x3C;blockquote>&#x3C;p>Stuck? Have an idea for another guide? See &#x3C;a href="https://github.com/unifiedjs/.github/blob/main/support.md">&#x3C;code>support.md&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;/blockquote>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#case">Case&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#setting-up">Setting up&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#plugin">Plugin&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#further-exercises">Further exercises&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-case">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#case" class="" aria-label="Link to self">&#x3C;/a>Case&#x3C;/h3>&#x3C;p>Before we start, let’s first outline what we want to make. Say we have the following text file:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown">One sentence. Two sentences.
+
+One sentence.  Two sentences.
+&#x3C;/code>&#x3C;/pre>&#x3C;p>We want to get a warning for the second paragraph, saying that one space instead of two spaces should be used.&#x3C;/p>&#x3C;p>In the next step we’ll write the code to use our plugin.&#x3C;/p>&#x3C;h3 id="user-content-setting-up">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#setting-up" class="" aria-label="Link to self">&#x3C;/a>Setting up&#x3C;/h3>&#x3C;p>Let’s set up a project. Create a folder, &#x3C;code>example&#x3C;/code>, enter it, and initialize a new project:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">mkdir example
+cd example
+npm init -y
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Then make sure the project is a module, so that &#x3C;code>import&#x3C;/code> and &#x3C;code>export&#x3C;/code> work, by changing &#x3C;code>package.json&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/package.json
++++ b/package.json
+@@ -1,6 +1,7 @@
+ {
+   "name": "example",
+   "version": "1.0.0",
++  "type": "module",
+   "main": "index.js",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" &#x26;#x26;&#x26;#x26; exit 1"
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Make sure &#x3C;code>example.md&#x3C;/code> exists with:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown">One sentence. Two sentences.
+
+One sentence.  Two sentences.
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Now, let’s create an &#x3C;code>example.js&#x3C;/code> file that will process our text file and report any found problems.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import fs from 'node:fs/promises'
+import {retext} from 'retext'
+import {reporter} from 'vfile-reporter'
+import retextSentenceSpacing from './plugin.js'
+
+const document = await fs.readFile('example.md', 'utf8')
+
+const file = await retext()
+  .use(retextSentenceSpacing)
+  .process(document)
+
+console.error(reporter(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;blockquote>&#x3C;p>Don’t forget to &#x3C;code>npm install retext vfile-reporter&#x3C;/code>!&#x3C;/p>&#x3C;/blockquote>&#x3C;p>If you read the guide on &#x3C;a href="https://unifiedjs.com/learn/guide/using-unified/">using unified&#x3C;/a>, you’ll see some familiar statements. First, we load dependencies, then we read the file in. We process that file with the plugin we’ll create next and finally we report either a fatal error or any found linting messages.&#x3C;/p>&#x3C;p>Note that we directly depend on &#x3C;code>retext&#x3C;/code>. This is a package that exposes a &#x3C;code>unified&#x3C;/code> processor, and comes with the parser and compiler attached.&#x3C;/p>&#x3C;p>When running our example (it doesn’t work yet though) we want to see a message for the second paragraph, saying that one space instead of two spaces should be used.&#x3C;/p>&#x3C;p>Now we’ve got everything set up except for the plugin itself. We’ll do that in the next section.&#x3C;/p>&#x3C;h3 id="user-content-plugin">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#plugin" class="" aria-label="Link to self">&#x3C;/a>Plugin&#x3C;/h3>&#x3C;p>We’ll need a plugin, and for our case also a transform which will inspect. Let’s create them in our plugin file &#x3C;code>plugin.js&#x3C;/code>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Root} from 'nlcst'
+ * @import {VFile} from 'vfile'
+ */
+
+export default function retextSentenceSpacing() {
+  /**
+   * @param {Root} tree
+   * @param {VFile} file
+   * @return {undefined}
+   */
+  return function (tree, file) {
+  }
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>First things first, we need to check &#x3C;code>tree&#x3C;/code> for a pattern. We can use a utility to help us to recursively walk our tree, namely &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a>. Let’s add that.&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/plugin.js
++++ b/plugin.js
+@@ -3,6 +3,8 @@
+  * @import {VFile} from 'vfile'
+  */
+
++import {visit} from 'unist-util-visit'
++
+ export default function retextSentenceSpacing() {
+   /**
+    * @param {Root} tree
+@@ -10,5 +12,8 @@ export default function retextSentenceSpacing() {
+    * @return {undefined}
+    */
+   return function (tree, file) {
++    visit(tree, 'ParagraphNode', function (node) {
++      console.log(node)
++    })
+   }
+ }
+&#x3C;/code>&#x3C;/pre>&#x3C;blockquote>&#x3C;p>Don’t forget to &#x3C;code>npm install unist-util-visit&#x3C;/code>.&#x3C;/p>&#x3C;/blockquote>&#x3C;p>If we now run our example with Node.js, as follows, we’ll see that visitor is called with both paragraphs in our example:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">node example.js
+&#x3C;/code>&#x3C;/pre>&#x3C;pre>&#x3C;code class="language-txt">{
+  type: 'ParagraphNode',
+  children: [
+    { type: 'SentenceNode', children: [Array], position: [Object] },
+    { type: 'WhiteSpaceNode', value: ' ', position: [Object] },
+    { type: 'SentenceNode', children: [Array], position: [Object] }
+  ],
+  position: {
+    start: { line: 1, column: 1, offset: 0 },
+    end: { line: 1, column: 29, offset: 28 }
+  }
+}
+{
+  type: 'ParagraphNode',
+  children: [
+    { type: 'SentenceNode', children: [Array], position: [Object] },
+    { type: 'WhiteSpaceNode', value: '  ', position: [Object] },
+    { type: 'SentenceNode', children: [Array], position: [Object] }
+  ],
+  position: {
+    start: { line: 3, column: 1, offset: 30 },
+    end: { line: 3, column: 30, offset: 59 }
+  }
+}
+no issues found
+&#x3C;/code>&#x3C;/pre>&#x3C;p>This output already shows that paragraphs contain two types of nodes: &#x3C;code>SentenceNode&#x3C;/code> and &#x3C;code>WhiteSpaceNode&#x3C;/code>. The latter is what we want to check, but the former is important because we only warn about whitespace between sentences in this plugin (that could be another plugin though).&#x3C;/p>&#x3C;p>Let’s now loop through the children of each paragraph. Only checking whitespace between sentences. We use a small utility for checking node types: &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-is/">&#x3C;code>unist-util-is&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/plugin.js
++++ b/plugin.js
+@@ -13,7 +13,23 @@ export default function retextSentenceSpacing() {
+    */
+   return function (tree, file) {
+     visit(tree, 'ParagraphNode', function (node) {
+-      console.log(node)
++      let index = -1
++
++      while (++index &#x26;#x3C; node.children.length) {
++        const previous = node.children[index - 1]
++        const child = node.children[index]
++        const next = node.children[index + 1]
++
++        if (
++          previous &#x26;#x26;&#x26;#x26;
++          next &#x26;#x26;&#x26;#x26;
++          previous.type === 'SentenceNode' &#x26;#x26;&#x26;#x26;
++          child.type === 'WhiteSpaceNode' &#x26;#x26;&#x26;#x26;
++          next.type === 'SentenceNode'
++        ) {
++          console.log(child)
++        }
++      }
+     })
+   }
+ }
+&#x3C;/code>&#x3C;/pre>&#x3C;p>If we now run our example with Node, as follows, we’ll see that only whitespace between sentences is logged.&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">node example.js
+&#x3C;/code>&#x3C;/pre>&#x3C;pre>&#x3C;code class="language-txt">{
+  type: 'WhiteSpaceNode',
+  value: ' ',
+  position: {
+    start: { line: 1, column: 14, offset: 13 },
+    end: { line: 1, column: 15, offset: 14 }
+  }
+}
+{
+  type: 'WhiteSpaceNode',
+  value: '  ',
+  position: {
+    start: { line: 3, column: 14, offset: 43 },
+    end: { line: 3, column: 16, offset: 45 }
+  }
+}
+no issues found
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Finally, let’s add a warning for the second whitespace, as it has more characters than needed. We can use &#x3C;a href="https://unifiedjs.com/explore/package/vfile/#vfilemessagereason-options">&#x3C;code>file.message()&#x3C;/code>&#x3C;/a> to associate a message with the file.&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/plugin.js
++++ b/plugin.js
+@@ -25,9 +25,15 @@ export default function retextSentenceSpacing() {
+           next &#x26;#x26;&#x26;#x26;
+           previous.type === 'SentenceNode' &#x26;#x26;&#x26;#x26;
+           child.type === 'WhiteSpaceNode' &#x26;#x26;&#x26;#x26;
+-          next.type === 'SentenceNode'
++          next.type === 'SentenceNode' &#x26;#x26;&#x26;#x26;
++          child.value.length !== 1
+         ) {
+-          console.log(child)
++          file.message(
++            'Unexpected `' +
++              child.value.length +
++              '` spaces between sentences, expected `1` space',
++            child
++          )
+         }
+       }
+     })
+&#x3C;/code>&#x3C;/pre>&#x3C;p>If we now run our example one final time, we’ll see a message for our problem!&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">$ node example.js
+3:14-3:16 warning Unexpected `2` spaces between sentences, expected `1` space
+
+⚠ 1 warning
+&#x3C;/code>&#x3C;/pre>&#x3C;h3 id="user-content-further-exercises">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-retext-plugin/#further-exercises" class="" aria-label="Link to self">&#x3C;/a>Further exercises&#x3C;/h3>&#x3C;p>One space between sentences isn’t for everyone. This plugin could receive the preferred amount of spaces instead of a hard-coded &#x3C;code>1&#x3C;/code>.&#x3C;/p>&#x3C;p>If you want to warn for tabs or newlines between sentences, maybe create a plugin for that too?&#x3C;/p>&#x3C;p>If you haven’t already, check out the other articles in the &#x3C;a href="https://unifiedjs.com/learn/">learn section&#x3C;/a>!&#x3C;/p>&#x3C;/div></description></item><item><title>Create a remark plugin</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/guide/create-a-remark-plugin/</link><guid isPermaLink="false">https://unifiedjs.com/learn/guide/create-a-remark-plugin/</guid><pubDate>Tue, 13 Aug 2024 00:00:00 GMT</pubDate><dc:date>2024-08-13T00:00:00.000Z</dc:date><dc:modified>2024-08-13T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-create-a-remark-plugin">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-remark-plugin/#create-a-remark-plugin" class="" aria-label="Link to self">&#x3C;/a>Create a remark plugin&#x3C;/h2>&#x3C;p>This guide shows how to create a plugin for &#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> that turns emoji shortcodes (&#x3C;a href="https://github.com/wooorm/gemoji/blob/main/support.md">gemoji&#x3C;/a>, such as &#x3C;code>:+1:&#x3C;/code>) into Unicode emoji (&#x3C;code>👍&#x3C;/code>). It looks for a regex in the text and replaces it.&#x3C;/p>&#x3C;blockquote>&#x3C;p>Stuck? Have an idea for another guide? See &#x3C;a href="https://github.com/unifiedjs/.github/blob/main/support.md">&#x3C;code>support.md&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;/blockquote>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-remark-plugin/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-remark-plugin/#case">Case&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-remark-plugin/#setting-up">Setting up&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-remark-plugin/#plugin">Plugin&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-case">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-remark-plugin/#case" class="" aria-label="Link to self">&#x3C;/a>Case&#x3C;/h3>&#x3C;p>Before we start, let’s first outline what we want to make. Say we have the following file:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown">Look, the moon :new_moon_with_face:
+&#x3C;/code>&#x3C;/pre>&#x3C;p>And we’d like to turn that into:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown">Look, the moon 🌚
+&#x3C;/code>&#x3C;/pre>&#x3C;p>In the next step we’ll write the code to use our plugin.&#x3C;/p>&#x3C;h3 id="user-content-setting-up">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-remark-plugin/#setting-up" class="" aria-label="Link to self">&#x3C;/a>Setting up&#x3C;/h3>&#x3C;p>Let’s set up a project. Create a folder, &#x3C;code>example&#x3C;/code>, enter it, and initialize a new project:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">mkdir example
+cd example
+npm init -y
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Then make sure the project is a module, so that &#x3C;code>import&#x3C;/code> and &#x3C;code>export&#x3C;/code> work, by changing &#x3C;code>package.json&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/package.json
++++ b/package.json
+@@ -1,6 +1,7 @@
+ {
+   "name": "example",
+   "version": "1.0.0",
++  "type": "module",
+   "main": "index.js",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" &#x26;#x26;&#x26;#x26; exit 1"
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Make sure &#x3C;code>input.md&#x3C;/code> exists with:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown">Look, the moon :new_moon_with_face:
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Now, let’s create an &#x3C;code>example.js&#x3C;/code> file that will process our file and report any found problems.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import fs from 'node:fs/promises'
+import {remark} from 'remark'
+import remarkGemoji from './plugin.js'
+
+const document = await fs.readFile('input.md', 'utf8')
+
+const file = await remark().use(remarkGemoji).process(document)
+
+await fs.writeFile('output.md', String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;blockquote>&#x3C;p>Don’t forget to &#x3C;code>npm install remark&#x3C;/code>!&#x3C;/p>&#x3C;/blockquote>&#x3C;p>If you read the guide on &#x3C;a href="https://unifiedjs.com/learn/guide/using-unified/">using unified&#x3C;/a>, you’ll see some familiar statements. First, we load dependencies, then we read the file in. We process that file with the plugin we’ll create next and finally we write it out again.&#x3C;/p>&#x3C;p>Note that we directly depend on &#x3C;code>remark&#x3C;/code>. This is a package that exposes a &#x3C;code>unified&#x3C;/code> processor, and comes with the markdown parser and markdown compiler attached.&#x3C;/p>&#x3C;p>Now we’ve got everything set up except for the plugin itself. We’ll do that in the next section.&#x3C;/p>&#x3C;h3 id="user-content-plugin">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-remark-plugin/#plugin" class="" aria-label="Link to self">&#x3C;/a>Plugin&#x3C;/h3>&#x3C;p>We’ll need a plugin, and for our case also a transform. Let’s create them in our plugin file &#x3C;code>plugin.js&#x3C;/code>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Root} from 'mdast'
+ */
+
+/**
+ * Turn gemoji shortcodes (`:+1:`) into emoji (`👍`).
+ *
+ * @returns
+ *   Transform.
+ */
+export default function remarkGemoji() {
+  /**
+   * @param {Root} tree
+   * @return {undefined}
+   */
+  return function (tree) {
+  }
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>That’s how most plugins start. A function that returns another function.&#x3C;/p>&#x3C;p>For this use case, we could walk the tree and replace nodes with &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a>, which is how many plugins work. But a different utility is even simpler: &#x3C;a href="https://github.com/syntax-tree/mdast-util-find-and-replace">&#x3C;code>mdast-util-find-and-replace&#x3C;/code>&#x3C;/a>. It looks for a regex and lets you then replace that match.&#x3C;/p>&#x3C;p>Let’s add that.&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/plugin.js
++++ b/plugin.js
+@@ -2,6 +2,8 @@
+  * @import {Root} from 'mdast'
+  */
+
++import {findAndReplace} from 'mdast-util-find-and-replace'
++
+ /**
+  * Turn gemoji shortcodes (`:+1:`) into emoji (`👍`).
+  *
+@@ -14,5 +16,16 @@ export default function remarkGemoji() {
+    * @return {undefined}
+    */
+   return function (tree) {
++    findAndReplace(tree, [
++      /:(\+1|[-\w]+):/g,
++      /**
++       * @param {string} _
++       * @param {string} $1
++       * @return {undefined}
++       */
++      function (_, $1) {
++        console.log(arguments)
++      }
++    ])
+   }
+ }
+&#x3C;/code>&#x3C;/pre>&#x3C;blockquote>&#x3C;p>Don’t forget to &#x3C;code>npm install mdast-util-find-and-replace&#x3C;/code>!&#x3C;/p>&#x3C;/blockquote>&#x3C;p>If we now run our example with Node.js, we’ll see that &#x3C;code>console.log&#x3C;/code> is called:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">node example.js
+&#x3C;/code>&#x3C;/pre>&#x3C;pre>&#x3C;code class="language-txt">[Arguments] {
+  '0': ':new_moon_with_face:',
+  '1': 'new_moon_with_face',
+  '2': {
+    index: 15,
+    input: 'Look, the moon :new_moon_with_face:',
+    stack: [ [Object], [Object], [Object] ]
+  }
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;p>This output shows that the regular expression matches the emoji shortcode. The second argument is the name of the emoji. That’s what we want.&#x3C;/p>&#x3C;p>We can look that name up to find the corresponding Unicode emoji. We can use the &#x3C;a href="https://github.com/wooorm/gemoji/blob/main/support.md">&#x3C;code>gemoji&#x3C;/code>&#x3C;/a> package for that. It exposes a &#x3C;code>nameToEmoji&#x3C;/code> record.&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/plugin.js
++++ b/plugin.js
+@@ -2,6 +2,7 @@
+  * @import {Root} from 'mdast'
+  */
+
++import {nameToEmoji} from 'gemoji'
+ import {findAndReplace} from 'mdast-util-find-and-replace'
+
+ /**
+@@ -21,10 +22,10 @@ export default function remarkGemoji() {
+       /**
+        * @param {string} _
+        * @param {string} $1
+-       * @return {undefined}
++       * @return {string | false}
+        */
+       function (_, $1) {
+-        console.log(arguments)
++        return Object.hasOwn(nameToEmoji, $1) ? nameToEmoji[$1] : false
+       }
+     ])
+   }
+&#x3C;/code>&#x3C;/pre>&#x3C;blockquote>&#x3C;p>Don’t forget to &#x3C;code>npm install gemoji&#x3C;/code>!&#x3C;/p>&#x3C;/blockquote>&#x3C;p>If we now run our example again with Node…&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">node example.js
+&#x3C;/code>&#x3C;/pre>&#x3C;p>…and open &#x3C;code>output.md&#x3C;/code>, we’ll see that the shortcode is replaced with the emoji!&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown">Look, the moon 🌚
+&#x3C;/code>&#x3C;/pre>&#x3C;p>That’s it! For a complete version of this plugin, see &#x3C;a href="https://unifiedjs.com/explore/package/remark-gemoji/">&#x3C;code>remark-gemoji&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>If you haven’t already, check out the other articles in the &#x3C;a href="https://unifiedjs.com/learn/">learn section&#x3C;/a>!&#x3C;/p>&#x3C;/div></description></item><item><title>Create a rehype plugin</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/guide/create-a-rehype-plugin/</link><guid isPermaLink="false">https://unifiedjs.com/learn/guide/create-a-rehype-plugin/</guid><pubDate>Tue, 13 Aug 2024 00:00:00 GMT</pubDate><dc:date>2024-08-13T00:00:00.000Z</dc:date><dc:modified>2024-08-13T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-create-a-rehype-plugin">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-rehype-plugin/#create-a-rehype-plugin" class="" aria-label="Link to self">&#x3C;/a>Create a rehype plugin&#x3C;/h2>&#x3C;p>This guide shows how to create a plugin for &#x3C;a href="https://unifiedjs.com/explore/project/rehypejs/rehype/" class="">rehype&#x3C;/a> that adds &#x3C;code>id&#x3C;/code> attributes to headings.&#x3C;/p>&#x3C;blockquote>&#x3C;p>Stuck? Have an idea for another guide? See &#x3C;a href="https://github.com/unifiedjs/.github/blob/main/support.md">&#x3C;code>support.md&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;/blockquote>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-rehype-plugin/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-rehype-plugin/#case">Case&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-rehype-plugin/#setting-up">Setting up&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-rehype-plugin/#plugin">Plugin&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-case">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-rehype-plugin/#case" class="" aria-label="Link to self">&#x3C;/a>Case&#x3C;/h3>&#x3C;p>Before we start, let’s first outline what we want to make. Say we have the following file:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-html">&#x26;#x3C;h1>Solar System&#x26;#x3C;/h1>
+&#x26;#x3C;h2>Formation and evolution&#x26;#x3C;/h2>
+&#x26;#x3C;h2>Structure and composition&#x26;#x3C;/h2>
+&#x26;#x3C;h3>Orbits&#x26;#x3C;/h3>
+&#x26;#x3C;h3>Composition&#x26;#x3C;/h3>
+&#x26;#x3C;h3>Distances and scales&#x26;#x3C;/h3>
+&#x26;#x3C;h3>Interplanetary environment&#x26;#x3C;/h3>
+&#x26;#x3C;p>…&#x26;#x3C;/p>
+&#x3C;/code>&#x3C;/pre>&#x3C;p>And we’d like to turn that into:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-html">&#x26;#x3C;h1 id="solar-system">Solar System&#x26;#x3C;/h1>
+&#x26;#x3C;h2 id="formation-and-evolution">Formation and evolution&#x26;#x3C;/h2>
+&#x26;#x3C;h2 id="structure-and-composition">Structure and composition&#x26;#x3C;/h2>
+&#x26;#x3C;h3 id="orbits">Orbits&#x26;#x3C;/h3>
+&#x26;#x3C;h3 id="composition">Composition&#x26;#x3C;/h3>
+&#x26;#x3C;h3 id="distances-and-scales">Distances and scales&#x26;#x3C;/h3>
+&#x26;#x3C;h3 id="interplanetary-environment">Interplanetary environment&#x26;#x3C;/h3>
+&#x26;#x3C;p>…&#x26;#x3C;/p>
+&#x3C;/code>&#x3C;/pre>&#x3C;p>In the next step we’ll write the code to use our plugin.&#x3C;/p>&#x3C;h3 id="user-content-setting-up">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-rehype-plugin/#setting-up" class="" aria-label="Link to self">&#x3C;/a>Setting up&#x3C;/h3>&#x3C;p>Let’s set up a project. Create a folder, &#x3C;code>example&#x3C;/code>, enter it, and initialize a new project:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">mkdir example
+cd example
+npm init -y
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Then make sure the project is a module, so that &#x3C;code>import&#x3C;/code> and &#x3C;code>export&#x3C;/code> work, by changing &#x3C;code>package.json&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/package.json
++++ b/package.json
+@@ -1,6 +1,7 @@
+ {
+   "name": "example",
+   "version": "1.0.0",
++  "type": "module",
+   "main": "index.js",
+   "scripts": {
+     "test": "echo \"Error: no test specified\" &#x26;#x26;&#x26;#x26; exit 1"
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Make sure &#x3C;code>input.html&#x3C;/code> exists with:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-html">&#x26;#x3C;h1>Solar System&#x26;#x3C;/h1>
+&#x26;#x3C;h2>Formation and evolution&#x26;#x3C;/h2>
+&#x26;#x3C;h2>Structure and composition&#x26;#x3C;/h2>
+&#x26;#x3C;h3>Orbits&#x26;#x3C;/h3>
+&#x26;#x3C;h3>Composition&#x26;#x3C;/h3>
+&#x26;#x3C;h3>Distances and scales&#x26;#x3C;/h3>
+&#x26;#x3C;h3>Interplanetary environment&#x26;#x3C;/h3>
+&#x26;#x3C;p>…&#x26;#x3C;/p>
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Now, let’s create an &#x3C;code>example.js&#x3C;/code> file that will process our file and report any found problems.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import fs from 'node:fs/promises'
+import {rehype} from 'rehype'
+import rehypeSlug from './plugin.js'
+
+const document = await fs.readFile('input.html', 'utf8')
+
+const file = await rehype()
+  .data('settings', {fragment: true})
+  .use(rehypeSlug)
+  .process(document)
+
+await fs.writeFile('output.html', String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;blockquote>&#x3C;p>Don’t forget to &#x3C;code>npm install rehype&#x3C;/code>!&#x3C;/p>&#x3C;/blockquote>&#x3C;p>If you read the guide on &#x3C;a href="https://unifiedjs.com/learn/guide/using-unified/">using unified&#x3C;/a>, you’ll see some familiar statements. First, we load dependencies, then we read the file in. We process that file with the plugin we’ll create next and finally we write it out again.&#x3C;/p>&#x3C;p>Note that we directly depend on &#x3C;code>rehype&#x3C;/code>. This is a package that exposes a &#x3C;code>unified&#x3C;/code> processor, and comes with the HTML parser and HTML compiler attached.&#x3C;/p>&#x3C;p>Now we’ve got everything set up except for the plugin itself. We’ll do that in the next section.&#x3C;/p>&#x3C;h3 id="user-content-plugin">&#x3C;a href="https://unifiedjs.com/learn/guide/create-a-rehype-plugin/#plugin" class="" aria-label="Link to self">&#x3C;/a>Plugin&#x3C;/h3>&#x3C;p>We’ll need a plugin and for our case also a transform. Let’s create them in our plugin file &#x3C;code>plugin.js&#x3C;/code>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">/**
+ * @import {Root} from 'hast'
+ */
+
+/**
+ * Add `id`s to headings.
+ *
+ * @returns
+ *   Transform.
+ */
+export default function rehypeSlug() {
+  /**
+   * @param {Root} tree
+   * @return {undefined}
+   */
+  return function (tree) {
+  }
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>That’s how most plugins start. A function that returns another function.&#x3C;/p>&#x3C;p>Next, for this use case, we can walk the tree and change nodes with &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit/">&#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/a>. That’s how many plugins work.&#x3C;/p>&#x3C;p>Let’s start there, to use &#x3C;code>unist-util-visit&#x3C;/code> to look for headings:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/plugin.js
++++ b/plugin.js
+@@ -2,6 +2,8 @@
+  * @import {Root} from 'hast'
+  */
+
++import {visit} from 'unist-util-visit'
++
+ /**
+  * Add `id`s to headings.
+  *
+@@ -14,5 +16,17 @@ export default function rehypeSlug() {
+    * @return {undefined}
+    */
+   return function (tree) {
++    visit(tree, 'element', function (node) {
++      if (
++        node.tagName === 'h1' ||
++        node.tagName === 'h2' ||
++        node.tagName === 'h3' ||
++        node.tagName === 'h4' ||
++        node.tagName === 'h5' ||
++        node.tagName === 'h6'
++      ) {
++        console.log(node)
++      }
++    })
+   }
+ }
+&#x3C;/code>&#x3C;/pre>&#x3C;blockquote>&#x3C;p>Don’t forget to &#x3C;code>npm install unist-util-visit&#x3C;/code>!&#x3C;/p>&#x3C;/blockquote>&#x3C;p>If we now run our example with Node.js, we’ll see that &#x3C;code>console.log&#x3C;/code> is called:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">node example.js
+&#x3C;/code>&#x3C;/pre>&#x3C;pre>&#x3C;code class="language-txt">{
+  type: 'element',
+  tagName: 'h1',
+  properties: {},
+  children: [ { type: 'text', value: 'Solar System', position: [Object] } ],
+  position: …
+}
+{
+  type: 'element',
+  tagName: 'h2',
+  properties: {},
+  children: [
+    {
+      type: 'text',
+      value: 'Formation and evolution',
+      position: [Object]
+    }
+  ],
+  position: …
+}
+…
+&#x3C;/code>&#x3C;/pre>&#x3C;p>This output shows that we find our heading element. That’s what we want.&#x3C;/p>&#x3C;p>Next we want to get a string representation of what is inside the headings. There’s another utility for that: &#x3C;a href="https://unifiedjs.com/explore/package/hast-util-to-string/">&#x3C;code>hast-util-to-string&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/plugin.js
++++ b/plugin.js
+@@ -2,6 +2,7 @@
+  * @import {Root} from 'hast'
+  */
+
++import {toString} from 'hast-util-to-string'
+ import {visit} from 'unist-util-visit'
+
+ /**
+@@ -25,7 +26,8 @@ export default function rehypeSlug() {
+         node.tagName === 'h5' ||
+         node.tagName === 'h6'
+       ) {
+-        console.log(node)
++        const value = toString(node)
++        console.log(value)
+       }
+     })
+   }
+&#x3C;/code>&#x3C;/pre>&#x3C;blockquote>&#x3C;p>Don’t forget to &#x3C;code>npm install hast-util-to-string&#x3C;/code>!&#x3C;/p>&#x3C;/blockquote>&#x3C;p>If we now run our example with Node.js, we’ll see the text printed:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">node example.js
+&#x3C;/code>&#x3C;/pre>&#x3C;pre>&#x3C;code class="language-txt">Solar System
+Formation and evolution
+Structure and composition
+Orbits
+Composition
+Distances and scales
+Interplanetary environment
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Then we want to turn that text into slugs. You have many options here. For this case, we’ll use &#x3C;a href="https://github.com/Flet/github-slugger">&#x3C;code>github-slugger&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/plugin.js
++++ b/plugin.js
+@@ -3,6 +3,7 @@
+  */
+
+ import {toString} from 'hast-util-to-string'
++import Slugger from 'github-slugger'
+ import {visit} from 'unist-util-visit'
+
+ /**
+@@ -17,6 +18,8 @@ export default function rehypeSlug() {
+    * @return {undefined}
+    */
+   return function (tree) {
++    const slugger = new Slugger()
++
+     visit(tree, 'element', function (node) {
+       if (
+         node.tagName === 'h1' ||
+@@ -27,7 +30,8 @@ export default function rehypeSlug() {
+         node.tagName === 'h6'
+       ) {
+         const value = toString(node)
+-        console.log(value)
++        const id = slugger.slug(value)
++        console.log(id)
+       }
+     })
+   }
+&#x3C;/code>&#x3C;/pre>&#x3C;blockquote>&#x3C;p>Don’t forget to &#x3C;code>npm install github-slugger&#x3C;/code>!&#x3C;/p>&#x3C;/blockquote>&#x3C;p>The reason &#x3C;code>const slugger = new Slugger()&#x3C;/code> is there, is because we want to create a new slugger for each document. If we’d create it outside of the function, we’d reuse the same slugger for each document, which would lead to slugs from different documents being mixed. That becomes a problem for documents with the same headings.&#x3C;/p>&#x3C;p>If we now run our example with Node.js, we’ll see the slugs printed:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">node example.js
+&#x3C;/code>&#x3C;/pre>&#x3C;pre>&#x3C;code class="language-txt">solar-system
+formation-and-evolution
+structure-and-composition
+orbits
+composition
+distances-and-scales
+interplanetary-environment
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Finally, we want to add the &#x3C;code>id&#x3C;/code> to the heading elements. This is also a good time to make sure we don’t overwrite existing &#x3C;code>id&#x3C;/code>s.&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/plugin.js
++++ b/plugin.js
+@@ -22,16 +22,17 @@ export default function rehypeSlug() {
+
+     visit(tree, 'element', function (node) {
+       if (
+-        node.tagName === 'h1' ||
+-        node.tagName === 'h2' ||
+-        node.tagName === 'h3' ||
+-        node.tagName === 'h4' ||
+-        node.tagName === 'h5' ||
+-        node.tagName === 'h6'
++        !node.properties.id &#x26;#x26;&#x26;#x26;
++        (node.tagName === 'h1' ||
++          node.tagName === 'h2' ||
++          node.tagName === 'h3' ||
++          node.tagName === 'h4' ||
++          node.tagName === 'h5' ||
++          node.tagName === 'h6')
+       ) {
+         const value = toString(node)
+         const id = slugger.slug(value)
+-        console.log(id)
++        node.properties.id = id
+       }
+     })
+   }
+&#x3C;/code>&#x3C;/pre>&#x3C;p>If we now run our example again with Node…&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">node example.js
+&#x3C;/code>&#x3C;/pre>&#x3C;p>…and open &#x3C;code>output.html&#x3C;/code>, we’ll see that the IDs are there!&#x3C;/p>&#x3C;pre>&#x3C;code class="language-html">&#x26;#x3C;h1 id="solar-system">Solar System&#x26;#x3C;/h1>
+&#x26;#x3C;h2 id="formation-and-evolution">Formation and evolution&#x26;#x3C;/h2>
+&#x26;#x3C;h2 id="structure-and-composition">Structure and composition&#x26;#x3C;/h2>
+&#x26;#x3C;h3 id="orbits">Orbits&#x26;#x3C;/h3>
+&#x26;#x3C;h3 id="composition">Composition&#x26;#x3C;/h3>
+&#x26;#x3C;h3 id="distances-and-scales">Distances and scales&#x26;#x3C;/h3>
+&#x26;#x3C;h3 id="interplanetary-environment">Interplanetary environment&#x26;#x3C;/h3>
+&#x26;#x3C;p>…&#x26;#x3C;/p>
+&#x3C;/code>&#x3C;/pre>&#x3C;p>That’s it! For a complete version of this plugin, see &#x3C;a href="https://unifiedjs.com/explore/package/rehype-slug/">&#x3C;code>rehype-slug&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>If you haven’t already, check out the other articles in the &#x3C;a href="https://unifiedjs.com/learn/">learn section&#x3C;/a>!&#x3C;/p>&#x3C;/div></description></item><item><title>unified in the browser</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/guide/unified-in-the-browser/</link><guid isPermaLink="false">https://unifiedjs.com/learn/guide/unified-in-the-browser/</guid><pubDate>Fri, 09 Aug 2024 00:00:00 GMT</pubDate><dc:date>2024-08-09T00:00:00.000Z</dc:date><dc:modified>2024-08-09T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-unified-in-the-browser">&#x3C;a href="https://unifiedjs.com/learn/guide/unified-in-the-browser/#unified-in-the-browser" class="" aria-label="Link to self">&#x3C;/a>unified in the browser&#x3C;/h2>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> is many different projects that are maintained on GitHub and distributed mainly through npm. Almost all the projects can be used anywhere: in Bun, Deno, Node.js, on the edge, or in browsers. To use our projects in a browser, you need to do one or two things. And there’s different ways to go about it.&#x3C;/p>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/guide/unified-in-the-browser/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/unified-in-the-browser/#bundle">Bundle&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/guide/unified-in-the-browser/#cdn">CDN&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-bundle">&#x3C;a href="https://unifiedjs.com/learn/guide/unified-in-the-browser/#bundle" class="" aria-label="Link to self">&#x3C;/a>Bundle&#x3C;/h3>&#x3C;p>A common way to use &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> in the browser is to bundle it with a bundler. You perhaps know bundlers already: webpack, Rollup, or esbuild. You might be using one. Or otherwise have a favorite. If not, &#x3C;a href="https://esbuild.github.io/">esbuild&#x3C;/a> is a good choice.&#x3C;/p>&#x3C;p>Bundling is almost always a good idea. It gives end users a single file to download. Often minified.&#x3C;/p>&#x3C;p>Say we have some code using &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> in &#x3C;code>example.js&#x3C;/code>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypeStringify)
+  .process('Hello, *world*!')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>And you want to use that in some HTML called &#x3C;code>index.html&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-html">&#x26;#x3C;!doctype html>
+&#x26;#x3C;meta charset=utf8>
+&#x26;#x3C;title>Example&#x26;#x3C;/title>
+&#x26;#x3C;script src=example.min.js type=module>&#x26;#x3C;/script>
+&#x3C;/code>&#x3C;/pre>&#x3C;p>To make &#x3C;code>example.js&#x3C;/code> work in the browser, you can bundle it with esbuild. First, set up a package. Go to the folder in your terminal and run:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">npm init --yes
+npm install esbuild --save-dev rehype-stringify remark-parse remark-rehype unified
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Then, bundle &#x3C;code>example.js&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-sh">npx esbuild --bundle --format=esm --minify --outfile=example.min.js example.js
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Now, open &#x3C;code>index.html&#x3C;/code> in a browser. When you open the console of your developer tools, you should see &#x3C;code>Hello, &#x26;#x3C;em>world&#x26;#x3C;/em>!&#x3C;/code>&#x3C;/p>&#x3C;p>You probably also want to configure the target environment for the browsers that you support. That way, JavaScript syntax which is too new for some browsers, will be transformed into older JavaScript syntax that works. Pass the &#x3C;a href="https://esbuild.github.io/api/#target">&#x3C;code>--target&#x3C;/code>&#x3C;/a> flag to do this.&#x3C;/p>&#x3C;h3 id="user-content-cdn">&#x3C;a href="https://unifiedjs.com/learn/guide/unified-in-the-browser/#cdn" class="" aria-label="Link to self">&#x3C;/a>CDN&#x3C;/h3>&#x3C;p>If you don’t want to bundle &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> yourself, you can use a CDN.&#x3C;/p>&#x3C;p>A CDN hosts files for you. And they can process them for you as well. The nice thing is that you do not have to install and bundle things yourself. The downside is that you’re dependent on a particular server that you do not control.&#x3C;/p>&#x3C;p>One such CDN is &#x3C;a href="https://esm.sh/">esm.sh&#x3C;/a>. Like the code above, you can use it in a browser like this:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-html">&#x26;#x3C;!doctype html>
+&#x26;#x3C;meta charset=utf8>
+&#x26;#x3C;title>Example&#x26;#x3C;/title>
+&#x26;#x3C;script type=module>
+  import rehypeStringify from 'https://esm.sh/rehype-stringify@10?bundle'
+  import remarkParse from 'https://esm.sh/remark-parse@11?bundle'
+  import remarkRehype from 'https://esm.sh/remark-rehype@11?bundle'
+  import {unified} from 'https://esm.sh/unified@11?bundle'
+
+  const file = await unified()
+    .use(remarkParse)
+    .use(remarkRehype)
+    .use(rehypeStringify)
+    .process('Hello, *world*!')
+
+  console.log(String(file))
+&#x26;#x3C;/script>
+&#x3C;/code>&#x3C;/pre>&#x3C;/div></description></item><item><title>Using plugins</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/guide/using-plugins/</link><guid isPermaLink="false">https://unifiedjs.com/learn/guide/using-plugins/</guid><pubDate>Thu, 08 Aug 2024 00:00:00 GMT</pubDate><dc:date>2024-08-08T00:00:00.000Z</dc:date><dc:modified>2024-08-08T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-using-plugins">&#x3C;a href="https://unifiedjs.com/learn/guide/using-plugins/#using-plugins" class="" aria-label="Link to self">&#x3C;/a>Using plugins&#x3C;/h2>&#x3C;p>You can use plugins and presets to extend &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> by calling &#x3C;a href="https://unifiedjs.com/explore/package/unified/#processoruseplugin-options">&#x3C;code>use&#x3C;/code>&#x3C;/a> on a processor.&#x3C;/p>&#x3C;p>A small example is:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeDocument from 'rehype-document'
+import rehypeFormat from 'rehype-format'
+import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {read} from 'to-vfile'
+import {unified} from 'unified'
+
+const file = await read('example.md')
+
+await unified()
+  .use(remarkParse)
+  .use(remarkRehype)
+  .use(rehypeDocument, {title: '👋🌍'})
+  .use(rehypeFormat)
+  .use(rehypeStringify)
+  .process(file)
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>This example shows how several plugins are used. It shows that the order in which plugins are used is important. And it shows that plugins can be configured by passing options to them. In this case, &#x3C;code>rehypeDocument&#x3C;/code> receives a &#x3C;code>title&#x3C;/code> field.&#x3C;/p>&#x3C;p>Using presets is similar:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeParse from 'rehype-parse'
+import rehypePresetMinify from 'rehype-preset-minify'
+import rehypeStringify from 'rehype-stringify'
+import {read} from 'to-vfile'
+import {unified} from 'unified'
+
+const file = await read('example.html')
+
+await unified()
+  .use(rehypeParse)
+  .use(rehypePresetMinify)
+  .use(rehypeStringify)
+  .process(file)
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Presets themselves cannot receive options. Sometimes, you still want to pass options to a particular plugin in a preset. To configure a plugin in a preset, use it after the preset, with the correct options:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeMinifyWhitespace from 'rehype-minify-whitespace'
+import rehypeParse from 'rehype-parse'
+import rehypePresetMinify from 'rehype-preset-minify'
+import rehypeStringify from 'rehype-stringify'
+import {read} from 'to-vfile'
+import {unified} from 'unified'
+
+const file = await read('example.html')
+
+await unified()
+  .use(rehypeParse)
+  .use(rehypePresetMinify)
+  .use(rehypeMinifyWhitespace, {newlines: true})
+  .use(rehypeStringify)
+  .process(file)
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;/div></description></item><item><title>HTML and remark</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/recipe/remark-html/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/remark-html/</guid><pubDate>Tue, 09 Mar 2021 00:00:00 GMT</pubDate><dc:date>2021-03-09T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-html-and-remark">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#html-and-remark" class="" aria-label="Link to self">&#x3C;/a>HTML and remark&#x3C;/h2>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> is a markdown compiler. It’s focus is markdown. It’s concerned with HTML in two ways:&#x3C;/p>&#x3C;ol>&#x3C;li>markdown is often turned into HTML&#x3C;/li>&#x3C;li>markdown sometimes has embedded HTML&#x3C;/li>&#x3C;/ol>&#x3C;p>When dealing with HTML and markdown, both &#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> and &#x3C;a href="https://unifiedjs.com/explore/project/rehypejs/rehype/" class="">rehype&#x3C;/a> are used. This article shows some examples of how to do that.&#x3C;/p>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-markdown-into-html">How to turn markdown into HTML&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown">How to turn HTML into markdown&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-allow-html-embedded-in-markdown">How to allow HTML embedded in markdown&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-properly-support-html-inside-markdown">How to properly support HTML inside markdown&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-how-to-turn-markdown-into-html">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-markdown-into-html" class="" aria-label="Link to self">&#x3C;/a>How to turn markdown into HTML&#x3C;/h3>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> handles markdown: it can parse and serialize it. But it’s &#x3C;strong>not&#x3C;/strong> for HTML. That’s what &#x3C;a href="https://unifiedjs.com/explore/project/rehypejs/rehype/" class="">rehype&#x3C;/a> does, which exists to parse and serialize HTML.&#x3C;/p>&#x3C;p>To turn markdown into HTML, we need &#x3C;a href="https://unifiedjs.com/explore/package/remark-parse/">&#x3C;code>remark-parse&#x3C;/code>&#x3C;/a>, &#x3C;a href="https://unifiedjs.com/explore/package/remark-rehype/">&#x3C;code>remark-rehype&#x3C;/code>&#x3C;/a>, and &#x3C;a href="https://unifiedjs.com/explore/package/rehype-stringify/">&#x3C;code>rehype-stringify&#x3C;/code>&#x3C;/a>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse) // Parse markdown content to a syntax tree
+  .use(remarkRehype) // Turn markdown syntax tree to HTML syntax tree, ignoring embedded HTML
+  .use(rehypeStringify) // Serialize HTML syntax tree
+  .process('*emphasis* and **strong**')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>This turns &#x3C;code>*emphasis* and **strong**&#x3C;/code> into &#x3C;code>&#x26;#x3C;em>emphasis&#x26;#x3C;/em> and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>&#x3C;/code>, but it does not support HTML embedded inside markdown (such as &#x3C;code>*emphasis* and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>&#x3C;/code>).&#x3C;/p>&#x3C;p>This solution &#x3C;strong>is safe&#x3C;/strong>: content you don’t trust cannot cause an XSS vulnerability.&#x3C;/p>&#x3C;h3 id="user-content-how-to-turn-html-into-markdown">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-turn-html-into-markdown" class="" aria-label="Link to self">&#x3C;/a>How to turn HTML into markdown&#x3C;/h3>&#x3C;p>We can also do the inverse. To turn HTML into markdown, we need &#x3C;a href="https://unifiedjs.com/explore/package/rehype-parse/">&#x3C;code>rehype-parse&#x3C;/code>&#x3C;/a>, &#x3C;a href="https://unifiedjs.com/explore/package/rehype-remark/">&#x3C;code>rehype-remark&#x3C;/code>&#x3C;/a>, and &#x3C;a href="https://unifiedjs.com/explore/package/remark-stringify/">&#x3C;code>remark-stringify&#x3C;/code>&#x3C;/a>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeParse from 'rehype-parse'
+import rehypeRemark from 'rehype-remark'
+import remarkStringify from 'remark-stringify'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(rehypeParse) // Parse HTML to a syntax tree
+  .use(rehypeRemark) // Turn HTML syntax tree to markdown syntax tree
+  .use(remarkStringify) // Serialize HTML syntax tree
+  .process('&#x26;#x3C;em>emphasis&#x26;#x3C;/em> and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>This turns &#x3C;code>&#x26;#x3C;em>emphasis&#x26;#x3C;/em> and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>&#x3C;/code> into &#x3C;code>*emphasis* and **strong**&#x3C;/code>.&#x3C;/p>&#x3C;h3 id="user-content-how-to-allow-html-embedded-in-markdown">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-allow-html-embedded-in-markdown" class="" aria-label="Link to self">&#x3C;/a>How to allow HTML embedded in markdown&#x3C;/h3>&#x3C;p>Markdown is a content format that’s great for the more basic things: it’s nicer to write &#x3C;code>*emphasis*&#x3C;/code> than &#x3C;code>&#x26;#x3C;em>emphasis&#x26;#x3C;/em>&#x3C;/code>. But, it’s limited: only a couple things are supported with its terse syntax. Luckily, for more complex things, markdown allows HTML inside it. A common example of this is to include a &#x3C;code>&#x26;#x3C;details>&#x3C;/code> element.&#x3C;/p>&#x3C;p>HTML embedded in markdown can be allowed when going from markdown to HTML by configuring &#x3C;a href="https://unifiedjs.com/explore/package/remark-rehype/">&#x3C;code>remark-rehype&#x3C;/code>&#x3C;/a> and &#x3C;a href="https://unifiedjs.com/explore/package/rehype-stringify/">&#x3C;code>rehype-stringify&#x3C;/code>&#x3C;/a>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype, {allowDangerousHtml: true}) // Pass raw HTML strings through.
+  .use(rehypeStringify, {allowDangerousHtml: true}) // Serialize the raw HTML strings
+  .process('*emphasis* and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>This solution &#x3C;strong>is not safe&#x3C;/strong>: content you don’t trust can cause XSS vulnerabilities.&#x3C;/p>&#x3C;h3 id="user-content-how-to-properly-support-html-inside-markdown">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-html/#how-to-properly-support-html-inside-markdown" class="" aria-label="Link to self">&#x3C;/a>How to properly support HTML inside markdown&#x3C;/h3>&#x3C;p>To properly support HTML embedded inside markdown, we need another plugin: &#x3C;a href="https://unifiedjs.com/explore/package/rehype-raw/">&#x3C;code>rehype-raw&#x3C;/code>&#x3C;/a>. This plugin will take the strings of HTML embedded in markdown and parse them with an actual HTML parser.&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import rehypeRaw from 'rehype-raw'
+import rehypeStringify from 'rehype-stringify'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const file = await unified()
+  .use(remarkParse)
+  .use(remarkRehype, {allowDangerousHtml: true})
+  .use(rehypeRaw) // *Parse* the raw HTML strings embedded in the tree
+  .use(rehypeStringify)
+  .process('*emphasis* and &#x26;#x3C;strong>strong&#x26;#x3C;/strong>')
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>This solution &#x3C;strong>is not safe&#x3C;/strong>: content you don’t trust can cause XSS vulnerabilities.&#x3C;/p>&#x3C;p>But because we now have a complete HTML syntax tree, we can sanitize that tree. For a safe solution, add &#x3C;a href="https://unifiedjs.com/explore/package/rehype-sanitize/">&#x3C;code>rehype-sanitize&#x3C;/code>&#x3C;/a> right before &#x3C;code>rehype-stringify&#x3C;/code>.&#x3C;/p>&#x3C;/div></description></item><item><title>Support tables in remark</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/recipe/remark-table/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/remark-table/</guid><pubDate>Wed, 24 Feb 2021 00:00:00 GMT</pubDate><dc:date>2021-02-24T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-how-to-support-tables-in-remark">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables-in-remark" class="" aria-label="Link to self">&#x3C;/a>How to support tables in remark&#x3C;/h2>&#x3C;p>Tables are a non-standard feature in markdown: they are &#x3C;strong>not&#x3C;/strong> defined in &#x3C;a href="https://commonmark.org/">CommonMark&#x3C;/a> and will not work everywhere.&#x3C;/p>&#x3C;p>Tables are an extension that GitHub supports in their &#x3C;a href="https://github.github.com/gfm/">GFM&#x3C;/a>. They work on &#x3C;code>github.com&#x3C;/code> in most places: a readme, issue, PR, discussion, comment, etc.&#x3C;/p>&#x3C;p>&#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> and &#x3C;a href="https://unifiedjs.com/explore/package/unified/" class="">unified&#x3C;/a> can support them through a plugin: &#x3C;a href="https://github.com/remarkjs/remark-gfm">&#x3C;code>remark-gfm&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#what-are-tables">What are tables?&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-write-tables">How to write tables&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables">How to support tables&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables-in-react-markdown">How to support tables in &#x3C;code>react-markdown&#x3C;/code>&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-what-are-tables">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#what-are-tables" class="" aria-label="Link to self">&#x3C;/a>What are tables?&#x3C;/h3>&#x3C;p>Tables in markdown are used for tabular data and look like this:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown">| Beep |   No.  |   Boop |
+| :--- | :----: | -----: |
+| beep |  1024  |    xyz |
+| boop | 338845 |    tuv |
+| foo  |  10106 | qrstuv |
+| bar  |   45   |   lmno |
+&#x3C;/code>&#x3C;/pre>&#x3C;p>The result on a website would look something like this:&#x3C;/p>&#x3C;table>&#x3C;thead>&#x3C;tr>&#x3C;th align="left">Beep&#x3C;/th>&#x3C;th align="center">No.&#x3C;/th>&#x3C;th align="right">Boop&#x3C;/th>&#x3C;/tr>&#x3C;/thead>&#x3C;tbody>&#x3C;tr>&#x3C;td align="left">beep&#x3C;/td>&#x3C;td align="center">1024&#x3C;/td>&#x3C;td align="right">xyz&#x3C;/td>&#x3C;/tr>&#x3C;tr>&#x3C;td align="left">boop&#x3C;/td>&#x3C;td align="center">338845&#x3C;/td>&#x3C;td align="right">tuv&#x3C;/td>&#x3C;/tr>&#x3C;tr>&#x3C;td align="left">foo&#x3C;/td>&#x3C;td align="center">10106&#x3C;/td>&#x3C;td align="right">qrstuv&#x3C;/td>&#x3C;/tr>&#x3C;tr>&#x3C;td align="left">bar&#x3C;/td>&#x3C;td align="center">45&#x3C;/td>&#x3C;td align="right">lmno&#x3C;/td>&#x3C;/tr>&#x3C;/tbody>&#x3C;/table>&#x3C;h3 id="user-content-how-to-write-tables">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-write-tables" class="" aria-label="Link to self">&#x3C;/a>How to write tables&#x3C;/h3>&#x3C;p>Use pipe characters (&#x3C;code>|&#x3C;/code>) between cells in a row. A new line starts a new row. You don’t have to align the pipes (&#x3C;code>|&#x3C;/code>) to form a nice grid. But it does make the source more readable.&#x3C;/p>&#x3C;p>The first row is the &#x3C;em>table header&#x3C;/em> and its cells are the labels for their respective column.&#x3C;/p>&#x3C;p>The second row is the &#x3C;em>alignment row&#x3C;/em> and there must be as many cells in it as in the header row. Each “cell” must include a dash (&#x3C;code>-&#x3C;/code>). A cell can be aligned left with a colon at the start (&#x3C;code>:-&#x3C;/code>), aligned right with a colon at the end (&#x3C;code>-:&#x3C;/code>), or aligned center with colons at the start and end (&#x3C;code>:-:&#x3C;/code>). This alignment cell is used to align all corresponding cells in its column.&#x3C;/p>&#x3C;p>Further rows are the &#x3C;em>table body&#x3C;/em> and are optional. Their cells are the table data.&#x3C;/p>&#x3C;h3 id="user-content-how-to-support-tables">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables" class="" aria-label="Link to self">&#x3C;/a>How to support tables&#x3C;/h3>&#x3C;p>As tables are non-standard, &#x3C;a href="https://unifiedjs.com/explore/project/remarkjs/remark/" class="">remark&#x3C;/a> does not support them by default. But it can support them with a plugin: &#x3C;a href="https://github.com/remarkjs/remark-gfm">&#x3C;code>remark-gfm&#x3C;/code>&#x3C;/a>. Let’s say we have some markdown with a GFM table, in an &#x3C;code>example.md&#x3C;/code> file:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-markdown"># Table
+
+| Branch  | Commit           |
+| ------- | ---------------- |
+| main    | 0123456789abcdef |
+| staging | fedcba9876543210 |
+&#x3C;/code>&#x3C;/pre>&#x3C;p>And a module set up to transform markdown with tables to HTML, &#x3C;code>example.js&#x3C;/code>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import fs from 'node:fs/promises'
+import rehypeStringify from 'rehype-stringify'
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import {unified} from 'unified'
+
+const document = await fs.readFile('example.md', 'utf8')
+
+const file = await unified()
+  .use(remarkParse) // Parse markdown.
+  .use(remarkGfm) // Support GFM (tables, autolinks, tasklists, strikethrough).
+  .use(remarkRehype) // Turn it into HTML.
+  .use(rehypeStringify) // Serialize HTML.
+  .process(document)
+
+console.log(String(file))
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Now, running &#x3C;code>node example.js&#x3C;/code> yields:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-html">&#x26;#x3C;h1>Table&#x26;#x3C;/h1>
+&#x26;#x3C;table>
+&#x26;#x3C;thead>
+&#x26;#x3C;tr>
+&#x26;#x3C;th>Branch&#x26;#x3C;/th>
+&#x26;#x3C;th>Commit&#x26;#x3C;/th>
+&#x26;#x3C;/tr>
+&#x26;#x3C;/thead>
+&#x26;#x3C;tbody>
+&#x26;#x3C;tr>
+&#x26;#x3C;td>main&#x26;#x3C;/td>
+&#x26;#x3C;td>0123456789abcdef&#x26;#x3C;/td>
+&#x26;#x3C;/tr>
+&#x26;#x3C;tr>
+&#x26;#x3C;td>staging&#x26;#x3C;/td>
+&#x26;#x3C;td>fedcba9876543210&#x26;#x3C;/td>
+&#x26;#x3C;/tr>
+&#x26;#x3C;/tbody>
+&#x26;#x3C;/table>
+&#x3C;/code>&#x3C;/pre>&#x3C;h3 id="user-content-how-to-support-tables-in-react-markdown">&#x3C;a href="https://unifiedjs.com/learn/recipe/remark-table/#how-to-support-tables-in-react-markdown" class="" aria-label="Link to self">&#x3C;/a>How to support tables in &#x3C;code>react-markdown&#x3C;/code>&#x3C;/h3>&#x3C;p>As tables are non-standard, &#x3C;code>react-markdown&#x3C;/code> does not support them by default. But it can support them with a plugin: &#x3C;a href="https://github.com/remarkjs/remark-gfm">&#x3C;code>remark-gfm&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>Let’s say we have some markdown with a GFM table, in an &#x3C;code>example.md&#x3C;/code> file:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import React from 'react'
+import {createRoot} from 'react-dom/client'
+import Markdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
+
+const markdown = `| Branch | Commit |
+| - | - |
+| main | 0123456789abcdef |`
+
+createRoot(document.body).render(
+  &#x26;#x3C;Markdown remarkPlugins={[remarkGfm]}>{markdown}&#x26;#x3C;/Markdown>
+)
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Yields in JSX:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-tsx">console.log(
+  &#x26;#x3C;>
+    &#x26;#x3C;h1>Table&#x26;#x3C;/h1>
+    &#x26;#x3C;table>
+      &#x26;#x3C;thead>
+        &#x26;#x3C;tr>
+          &#x26;#x3C;th>Branch&#x26;#x3C;/th>
+          &#x26;#x3C;th>Commit&#x26;#x3C;/th>
+        &#x26;#x3C;/tr>
+      &#x26;#x3C;/thead>
+      &#x26;#x3C;tbody>
+        &#x26;#x3C;tr>
+          &#x26;#x3C;td>main&#x26;#x3C;/td>
+          &#x26;#x3C;td>0123456789abcdef&#x26;#x3C;/td>
+        &#x26;#x3C;/tr>
+      &#x26;#x3C;/tbody>
+    &#x26;#x3C;/table>
+  &#x26;#x3C;/>
+)
+&#x3C;/code>&#x3C;/pre>&#x3C;/div></description></item><item><title>Remove a node</title><dc:creator>Titus Wormer</dc:creator><link>https://unifiedjs.com/learn/recipe/remove-node/</link><guid isPermaLink="false">https://unifiedjs.com/learn/recipe/remove-node/</guid><pubDate>Mon, 15 Jun 2020 00:00:00 GMT</pubDate><dc:date>2020-06-15T00:00:00.000Z</dc:date><dc:modified>2024-08-02T00:00:00.000Z</dc:modified><description>&#x3C;div>&#x3C;h2 id="user-content-how-to-remove-a-node">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#how-to-remove-a-node" class="" aria-label="Link to self">&#x3C;/a>How to remove a node&#x3C;/h2>&#x3C;p>Once you have found the node(s) you want to remove (see &#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">tree traversal&#x3C;/a>), you can remove them.&#x3C;/p>&#x3C;h3 id="user-content-contents">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#contents" class="" aria-label="Link to self">&#x3C;/a>Contents&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#prerequisites">Prerequisites&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#removing-a-node">Removing a node&#x3C;/a>&#x3C;/li>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#replacing-a-node-with-its-children">Replacing a node with its children&#x3C;/a>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-prerequisites">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#prerequisites" class="" aria-label="Link to self">&#x3C;/a>Prerequisites&#x3C;/h3>&#x3C;ul>&#x3C;li>&#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">Tree traversal&#x3C;/a> — intro on how to walk trees and find specific nodes with &#x3C;code>unist-util-visit&#x3C;/code>&#x3C;/li>&#x3C;/ul>&#x3C;h3 id="user-content-removing-a-node">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#removing-a-node" class="" aria-label="Link to self">&#x3C;/a>Removing a node&#x3C;/h3>&#x3C;p>For the most part, removing nodes has to do with finding them first (see &#x3C;a href="https://unifiedjs.com/learn/recipe/tree-traversal/">tree traversal&#x3C;/a>), so let’s say we already have some code to find all &#x3C;code>emphasis&#x3C;/code> nodes.&#x3C;/p>&#x3C;p>First, our &#x3C;code>example.md&#x3C;/code> file:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-md">Some text with *emphasis*.
+
+Another paragraph with **importance** (and *more emphasis*).
+&#x3C;/code>&#x3C;/pre>&#x3C;p>And a module, &#x3C;code>example.js&#x3C;/code>:&#x3C;/p>&#x3C;div>&#x3C;pre>&#x3C;code class="language-js">import fs from 'node:fs/promises'
+import remarkParse from 'remark-parse'
+import {unified} from 'unified'
+import {visit} from 'unist-util-visit'
+
+const document = await fs.readFile('example.md', 'utf8')
+
+const tree = unified().use(remarkParse).parse(document)
+
+visit(tree, 'emphasis', function (node) {
+  console.log(node)
+})
+&#x3C;/code>&#x3C;/pre>&#x3C;/div>&#x3C;p>Now, running &#x3C;code>node example.js&#x3C;/code> yields (ignoring positions for brevity):&#x3C;/p>&#x3C;pre>&#x3C;code class="language-js">{
+  type: 'emphasis',
+  children: [ { type: 'text', value: 'emphasis', position: [Object] } ]
+}
+{
+  type: 'emphasis',
+  children: [ { type: 'text', value: 'more emphasis', position: [Object] } ]
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;p>As the above log shows, nodes are objects. Each node is inside an array at the &#x3C;code>children&#x3C;/code> property of another node. In other words, to remove a node, it must be removed from its parents &#x3C;code>children&#x3C;/code>.&#x3C;/p>&#x3C;p>The problem then is to remove a value from an array. Standard JavaScript &#x3C;a href="https://developer.mozilla.org/docs/JavaScript/Reference/Global_Objects/Array">Array functions&#x3C;/a> can be used: namely, &#x3C;a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice">&#x3C;code>splice&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>We have the emphasis nodes, but we don’t have their parent, or the position in the parent’s &#x3C;code>children&#x3C;/code> field they are in. Luckily, the function given to &#x3C;code>visit&#x3C;/code> gets not only &#x3C;code>node&#x3C;/code>, but also that &#x3C;code>index&#x3C;/code> and &#x3C;code>parent&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/example.js
++++ b/example.js
+@@ -7,6 +7,6 @@ const document = await fs.readFile('example.md', 'utf8')
+
+ const tree = unified().use(remarkParse).parse(document)
+
+-visit(tree, 'emphasis', function (node) {
+-  console.log(node)
++visit(tree, 'emphasis', function (node, index, parent) {
++  console.log(node.type, index, parent?.type)
+ })
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Yields:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-txt">emphasis 1 paragraph
+emphasis 3 paragraph
+&#x3C;/code>&#x3C;/pre>&#x3C;p>&#x3C;code>parent&#x3C;/code> is a reference to the parent of &#x3C;code>node&#x3C;/code>, &#x3C;code>index&#x3C;/code> is the position at which &#x3C;code>node&#x3C;/code> is in &#x3C;code>parent&#x3C;/code>’s &#x3C;code>children&#x3C;/code>. With this information, and &#x3C;code>splice&#x3C;/code>, we can now remove emphasis nodes:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/example.js
++++ b/example.js
+@@ -8,5 +8,9 @@ const document = await fs.readFile('example.md', 'utf8')
+ const tree = unified().use(remarkParse).parse(document)
+
+ visit(tree, 'emphasis', function (node, index, parent) {
+-  console.log(node.type, index, parent?.type)
++  if (typeof index !== 'number' || !parent) return
++  // Note: this is buggy, see next section.
++  parent.children.splice(index, 1)
+ })
++
++console.log(tree)
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Yields:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-js">{
+  type: 'root',
+  children: [
+    {
+      type: 'paragraph',
+      children: [
+        {type: 'text', value: 'Some text with '},
+        {type: 'text', value: '.'}
+      ]
+    },
+    {
+      type: 'paragraph',
+      children: [
+        {type: 'text', value: 'Another paragraph with '},
+        {type: 'strong', children: [Array]},
+        {type: 'text', value: ' (and '},
+        {type: 'text', value: ').'}
+      ]
+    }
+  ]
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;p>This looks great, but beware of bugs. We are now changing the tree, while traversing it. That can cause bugs and performance problems.&#x3C;/p>&#x3C;p>When changing the tree, in most cases you should signal to &#x3C;code>visit&#x3C;/code> how it should continue. More information on how to signal what to do next, is documented in &#x3C;a href="https://unifiedjs.com/explore/package/unist-util-visit-parents/#visitparentstree-test-visitor-reverse">&#x3C;code>unist-util-visit-parents&#x3C;/code>&#x3C;/a>.&#x3C;/p>&#x3C;p>In this case, we don’t want the removed node to be traversed (we want to skip it). And we want to continue with the node that is now at the position where our removed node was. To do that: return that information from &#x3C;code>visitor&#x3C;/code>:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/example.js
++++ b/example.js
+@@ -1,7 +1,7 @@
+ import fs from 'node:fs/promises'
+ import remarkParse from 'remark-parse'
+ import {unified} from 'unified'
+-import {visit} from 'unist-util-visit'
++import {SKIP, visit} from 'unist-util-visit'
+
+ const document = await fs.readFile('example.md', 'utf8')
+
+@@ -9,8 +9,9 @@ const tree = unified().use(remarkParse).parse(document)
+
+ visit(tree, 'emphasis', function (node, index, parent) {
+   if (typeof index !== 'number' || !parent) return
+-  // Note: this is buggy, see next section.
+   parent.children.splice(index, 1)
++  // Do not traverse `node`, continue at the node *now* at `index`.
++  return [SKIP, index]
+ })
+
+ console.log(tree)
+&#x3C;/code>&#x3C;/pre>&#x3C;p>This yields the same output as before, but there’s no bug anymore. Nice, we can now remove nodes!&#x3C;/p>&#x3C;h3 id="user-content-replacing-a-node-with-its-children">&#x3C;a href="https://unifiedjs.com/learn/recipe/remove-node/#replacing-a-node-with-its-children" class="" aria-label="Link to self">&#x3C;/a>Replacing a node with its children&#x3C;/h3>&#x3C;p>One more thing to make this example more useful: instead of dropping &#x3C;code>emphasis&#x3C;/code> &#x3C;em>and&#x3C;/em> its children, it might make more sense to replace the emphasis &#x3C;em>with&#x3C;/em> its children.&#x3C;/p>&#x3C;p>To do that, we can do the following:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-diff">--- a/example.js
++++ b/example.js
+@@ -9,7 +9,7 @@ const tree = unified().use(remarkParse).parse(document)
+
+ visit(tree, 'emphasis', function (node, index, parent) {
+   if (typeof index !== 'number' || !parent) return
+-  parent.children.splice(index, 1)
++  parent.children.splice(index, 1, ...node.children)
+   // Do not traverse `node`, continue at the node *now* at `index`.
+   return [SKIP, index]
+ })
+&#x3C;/code>&#x3C;/pre>&#x3C;p>Yields:&#x3C;/p>&#x3C;pre>&#x3C;code class="language-js">{
+  type: 'root',
+  children: [
+    {
+      type: 'paragraph',
+      children: [
+        {type: 'text', value: 'Some text with '},
+        {type: 'text', value: 'emphasis'},
+        {type: 'text', value: '.'}
+      ]
+    },
+    {
+      type: 'paragraph',
+      children: [
+        {type: 'text', value: 'Another paragraph with '},
+        {type: 'strong', children: [Array]},
+        {type: 'text', value: ' (and '},
+        {type: 'text', value: 'more emphasis'},
+        {type: 'text', value: ').'}
+      ]
+    }
+  ]
+}
+&#x3C;/code>&#x3C;/pre>&#x3C;/div></description></item></channel></rss>
