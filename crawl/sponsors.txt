@@ -1,6 +1,7 @@
 -baocasino
 -guest-c78d32a1
 -guest-408805a9
+-guest-7747b954
 -github-1
 -github-sponsors
 -greenpromocode-com
@@ -24,6 +25,7 @@ danoc
 dopplerteam
 emmatown
 expo1
+fhodierne
 fred-edwards
 frontendmasters
 gatsbyjs
@@ -38,6 +40,7 @@ jrfnl
 knksmith57
 kvnsmth
 lars-trieloff
+marek-stapff
 markdown-space
 matt-vague
 mgan
