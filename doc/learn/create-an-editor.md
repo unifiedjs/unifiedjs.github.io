@@ -23,8 +23,8 @@ It’s made with [React][] and runs in a browser.
 
 For this example we’ll create an app that visualizes sentence length.
 Based on a tip by [Gary Provost][gary-provost].
-The visualization is based on
-[a tweet by `@gregoryciotti`][gregoryciotti-tweet].
+The visualization is based on a now deleted tweet by
+`@gregoryciotti`.
 
 You can also [view this project][wooorm-write-music] with some more features
 online.
@@ -424,11 +424,7 @@ Update `index.jsx` like so:
 
 This imports [`unist-util-visit`][github-unist-util-visit] and then defines
 some hues.
-We’re trying to recreate that
-[visual by `@gregoryciotti`][gregoryciotti-tweet].
-From that image,
-I deducted these hues.
-But you could use any hues you like!
+You could use any hues you like!
 
 Then,
 for each sentence,
@@ -462,8 +458,6 @@ If you haven’t already, check out the other articles in the
 [github-sindresorhus-xo]: https://github.com/xojs/xo
 
 [github-unist-util-visit]: https://github.com/syntax-tree/unist-util-visit
-
-[gregoryciotti-tweet]: https://www.helpscout.com/blog/damn-hard-writing/
 
 [prettier]: https://prettier.io
 
