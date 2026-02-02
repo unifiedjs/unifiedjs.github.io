@@ -1,3 +1,7 @@
+/**
+ * @import {Options} from 'remark-lint-no-dead-urls'
+ */
+
 import fs from 'node:fs/promises'
 import dictionaryEn from 'dictionary-en'
 import remarkFrontmatter from 'remark-frontmatter'
@@ -47,7 +51,13 @@ const config = {
     remarkFrontmatter,
     [remarkRetext, naturalLanguage],
     [remarkValidateLinks, false],
-    [remarkLintNoDeadUrls, 'https://unifiedjs.com'],
+    [
+      remarkLintNoDeadUrls,
+      /** @type {Options} */ ({
+        // Behind CF.
+        skipUrlPatterns: [/^https:\/\/www\.npmjs\.com\//]
+      })
+    ],
     [remarkLintFirstHeadingLevel, 2],
     [remarkLintNoHtml, false]
   ]
