@@ -1,9 +1,12 @@
 import fs from 'node:fs/promises'
 import process from 'node:process'
-import dotenv from 'dotenv'
 import yaml from 'yaml'
 
-dotenv.config()
+try {
+  process.loadEnvFile()
+} catch {
+  // Ignore.
+}
 
 const ghToken = process.env.GH_TOKEN
 

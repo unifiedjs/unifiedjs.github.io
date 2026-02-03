@@ -2,7 +2,6 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import process from 'node:process'
 import cssnano from 'cssnano'
-import dotenv from 'dotenv'
 import esbuild from 'esbuild'
 import {glob} from 'glob'
 import postcssPresetEnv from 'postcss-preset-env'
@@ -12,7 +11,11 @@ import {read, write} from 'to-vfile'
 import {reporter} from 'vfile-reporter'
 import {VFile} from 'vfile'
 
-dotenv.config()
+try {
+  process.loadEnvFile()
+} catch {
+  // Ignore.
+}
 
 const postCssProcessor = postcss(
   postcssPresetEnv({stage: 0}),

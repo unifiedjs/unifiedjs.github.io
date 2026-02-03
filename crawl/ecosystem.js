@@ -154,13 +154,16 @@ import assert from 'node:assert/strict'
 import fs from 'node:fs/promises'
 import process from 'node:process'
 import bytes from 'bytes'
-import dotenv from 'dotenv'
 import hostedGitInfo from 'hosted-git-info'
 import randomUseragent from 'random-useragent'
 import {constantCollective} from '../generate/util/constant-collective.js'
 import {constantTopic} from '../generate/util/constant-topic.js'
 
-dotenv.config()
+try {
+  process.loadEnvFile()
+} catch {
+  // Ignore.
+}
 
 const ghToken = process.env.GH_TOKEN
 assert.ok(ghToken)
