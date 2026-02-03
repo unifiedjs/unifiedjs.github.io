@@ -9,6 +9,8 @@
     "lib": ["es2022"],
     "module": "node16",
     "moduleResolution": "node16",
+    // Needed for `flexsearch`s broken types.
+    "skipLibCheck": true,
     "strict": true,
     "target": "es2022"
   },

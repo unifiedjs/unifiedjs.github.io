@@ -89,7 +89,7 @@ export default function rehypeRewriteUrls(options) {
       }
 
       url = rewriteNpm(url, origin) || rewriteGithub(url, origin) || url
-      assert(url)
+      assert.ok(url)
 
       // Minify / make relative.
       if (url && url.origin === origin) {

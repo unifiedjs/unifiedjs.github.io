@@ -136,7 +136,7 @@ visit(tree, function (node) {
 })
 ```
 
-```txt
+```text
 root
 element
 text
@@ -175,7 +175,7 @@ visit(tree, 'element', function (node) {
 })
 ```
 
-```txt
+```text
 p
 strong
 em
@@ -219,7 +219,7 @@ visit(tree, ['comment', 'text'], function (node) {
 })
 ```
 
-```txt
+```text
 [ '\n  ' ]
 [ ' A comment. ' ]
 [ '\n  Some ' ]
@@ -258,10 +258,10 @@ is often also easier to understand by humans.
 
 Read more about [`unist-util-visit`][visit] in its readme.
 
-[visit]: https://github.com/syntax-tree/unist-util-visit
-
-[visit-parents]: https://github.com/syntax-tree/unist-util-visit-parents
+[rehype-parse]: https://github.com/rehypejs/rehype/tree/HEAD/packages/rehype-parse
 
 [unified]: https://github.com/unifiedjs/unified
 
-[rehype-parse]: https://github.com/rehypejs/rehype/tree/HEAD/packages/rehype-parse
+[visit]: https://github.com/syntax-tree/unist-util-visit
+
+[visit-parents]: https://github.com/syntax-tree/unist-util-visit-parents

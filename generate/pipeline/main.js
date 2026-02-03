@@ -88,9 +88,9 @@ function move() {
    */
   return function (_, file) {
     const meta = file.data.meta
-    assert(meta)
+    assert.ok(meta)
     const pathname = meta.pathname
-    assert(typeof pathname === 'string')
+    assert.ok(typeof pathname === 'string')
     const parts = pathname.slice(1).split('/')
     const last = parts.pop()
 
@@ -113,7 +113,7 @@ function mkdir() {
    * @returns {Promise<undefined>}
    */
   return async function (_, file) {
-    assert(file.dirname)
+    assert.ok(file.dirname)
     await fs.mkdir(file.dirname, {recursive: true})
   }
 }

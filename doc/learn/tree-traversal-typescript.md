@@ -151,10 +151,10 @@ remark()
   .process('> block quote')
 ```
 
+[select]: https://github.com/syntax-tree/unist-util-select
+
 [tree-traversal]: /learn/recipe/tree-traversal/
 
 [visit]: https://github.com/syntax-tree/unist-util-visit
 
 [visit-parents]: https://github.com/syntax-tree/unist-util-visit-parents
-
-[select]: https://github.com/syntax-tree/unist-util-select

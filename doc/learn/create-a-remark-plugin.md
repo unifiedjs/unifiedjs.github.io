@@ -195,7 +195,7 @@ we’ll see that `console.log` is called:
 node example.js
 ```
 
-```txt
+```text
 [Arguments] {
   '0': ':new_moon_with_face:',
   '1': 'new_moon_with_face',
@@ -265,16 +265,16 @@ If you haven’t already, check out the other articles in the
 
 <!--Definitions-->
 
-[support]: https://github.com/unifiedjs/.github/blob/main/support.md
-
 [find-and-replace]: https://github.com/syntax-tree/mdast-util-find-and-replace
 
 [gemoji]: https://github.com/wooorm/gemoji/blob/main/support.md
 
-[visit]: https://github.com/syntax-tree/unist-util-visit
+[learn]: /learn/
 
 [remark-gemoji]: https://github.com/remarkjs/remark-gemoji
 
-[learn]: /learn/
+[support]: https://github.com/unifiedjs/.github/blob/main/support.md
 
 [use]: /learn/guide/using-unified/
+
+[visit]: https://github.com/syntax-tree/unist-util-visit

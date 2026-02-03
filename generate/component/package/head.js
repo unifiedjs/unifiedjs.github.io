@@ -38,7 +38,7 @@ export function head(data, id) {
     scope = undefined
   }
 
-  assert(packageName)
+  assert.ok(packageName)
 
   return [
     h('.row-l.column-nl', [

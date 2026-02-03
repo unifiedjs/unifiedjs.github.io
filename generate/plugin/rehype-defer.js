@@ -27,8 +27,8 @@ export default function rehypeDefer() {
     /** @type {BuildVisitor<Root, 'element'>} */
     function visitor(node, index, parent) {
       if (node.tagName === 'script') {
-        assert(parent)
-        assert(typeof index === 'number')
+        assert.ok(parent)
+        assert.ok(typeof index === 'number')
         if (
           !node.properties.type ||
           !/module/i.test(String(node.properties.type))

@@ -35,6 +35,6 @@ trick!
 npm i && UNIFIED_OPTIMIZE_IMAGES=1 npm t
 ```
 
-[site]: https://unifiedjs.com
-
 [screenshot]: screenshot.png
+
+[site]: https://unifiedjs.com

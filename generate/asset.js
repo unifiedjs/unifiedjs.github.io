@@ -44,7 +44,7 @@ for (const fp of paths) {
     const result = await pipeline(file)
     const files = Array.isArray(result) ? result : [result]
     for (const file of files) {
-      assert(file.dirname)
+      assert.ok(file.dirname)
       file.dirname = 'build' + file.dirname.replace(/^asset/, '')
       await fs.mkdir(file.dirname, {recursive: true})
       await write(file)
@@ -52,7 +52,7 @@ for (const fp of paths) {
       console.error(reporter(file))
     }
   } else {
-    assert(file.dirname)
+    assert.ok(file.dirname)
     file.dirname = 'build/' + file.dirname.replace(/^asset\//, '')
     await fs.mkdir(file.dirname, {recursive: true})
     await fs.copyFile(file.history[0], file.path)
@@ -117,7 +117,7 @@ async function transformPng(file) {
   await read(file)
   const sharpPipeline = sharp(file.value)
   const metadata = await sharpPipeline.metadata()
-  assert(metadata.width)
+  assert.ok(metadata.width)
 
   const files = [file]
 

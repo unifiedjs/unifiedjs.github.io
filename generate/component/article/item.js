@@ -17,7 +17,7 @@ export function item(d) {
   const data = {...matter, ...meta}
   const {authorGithub, author, description, pathname, tags, title} = data
 
-  assert(pathname)
+  assert.ok(pathname)
 
   let authorDisplay = h('span.ellipsis', {}, author)
 

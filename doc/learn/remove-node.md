@@ -109,7 +109,7 @@ Luckily, the function given to `visit` gets not only `node`, but also that
 
 Yields:
 
-```txt
+```text
 emphasis 1 paragraph
 emphasis 3 paragraph
 ```
@@ -253,10 +253,10 @@ Yields:
 }
 ```
 
-[tree-traversal]: /learn/recipe/tree-traversal/
-
 [array]: https://developer.mozilla.org/docs/JavaScript/Reference/Global_Objects/Array
 
 [splice]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice
+
+[tree-traversal]: /learn/recipe/tree-traversal/
 
 [visit-parents]: https://github.com/syntax-tree/unist-util-visit-parents#visitparentstree-test-visitor-reverse

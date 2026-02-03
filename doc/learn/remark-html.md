@@ -160,18 +160,18 @@ But because we now have a complete HTML syntax tree, we can sanitize that tree.
 For a safe solution, add [`rehype-sanitize`][rehype-sanitize] right before
 `rehype-stringify`.
 
-[remark-parse]: https://github.com/remarkjs/remark/tree/main/packages/remark-parse
-
-[remark-stringify]: https://github.com/remarkjs/remark/tree/main/packages/remark-stringify
-
-[remark-rehype]: https://github.com/remarkjs/remark-rehype
-
 [rehype-parse]: https://github.com/rehypejs/rehype/tree/main/packages/rehype-parse
-
-[rehype-stringify]: https://github.com/rehypejs/rehype/tree/main/packages/rehype-stringify
-
-[rehype-remark]: https://github.com/rehypejs/rehype-remark
 
 [rehype-raw]: https://github.com/rehypejs/rehype-raw
 
+[rehype-remark]: https://github.com/rehypejs/rehype-remark
+
 [rehype-sanitize]: https://github.com/rehypejs/rehype-sanitize
+
+[rehype-stringify]: https://github.com/rehypejs/rehype/tree/main/packages/rehype-stringify
+
+[remark-parse]: https://github.com/remarkjs/remark/tree/main/packages/remark-parse
+
+[remark-rehype]: https://github.com/remarkjs/remark-rehype
+
+[remark-stringify]: https://github.com/remarkjs/remark/tree/main/packages/remark-stringify

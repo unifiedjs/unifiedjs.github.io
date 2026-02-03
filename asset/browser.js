@@ -1,7 +1,5 @@
 /// <reference lib="dom" />
 
-/* eslint-env browser */
-
 import {computePosition, shift} from '@floating-ui/dom'
 
 if ('paintWorklet' in CSS) {

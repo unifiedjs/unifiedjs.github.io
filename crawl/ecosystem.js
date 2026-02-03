@@ -163,9 +163,9 @@ import {constantTopic} from '../generate/util/constant-topic.js'
 dotenv.config()
 
 const ghToken = process.env.GH_TOKEN
-assert(ghToken)
+assert.ok(ghToken)
 const npmToken = process.env.NPM_TOKEN
-assert(npmToken)
+assert.ok(npmToken)
 
 const hawkgirl = 'application/vnd.github.hawkgirl-preview+json'
 const ghEndpoint = 'https://api.github.com/graphql'
@@ -697,7 +697,7 @@ async function getManifest(project, manifest) {
   const target = [project.default || 'master', manifest].join(':')
   const parts = manifest.split('/')
   const tail = parts.pop()
-  assert(tail === 'package.json')
+  assert.ok(tail === 'package.json')
   const manifestBase = parts.join('/') || undefined
   /** @type {string | undefined} */
   let packageJsonText
@@ -767,7 +767,7 @@ async function getManifest(project, manifest) {
  * @returns {Promise<PackageInfo | undefined>}
  */
 async function getPackage(project, manifest, packageJson) {
-  assert(packageJson.name) // Checked earlier.
+  assert.ok(packageJson.name) // Checked earlier.
   // const {manifestBase, project} = ctx
   const {repo} = project
   /** @type {NpmsPackageResult | undefined} */

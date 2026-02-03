@@ -12,7 +12,7 @@
     "@floating-ui/dom": "^1.0.0",
     "@types/bytes": "^3.0.0",
     "@types/d3-scale": "^4.0.0",
-    "@types/node": "^22.0.0",
+    "@types/node": "^25.0.0",
     "@types/random-useragent": "^0.3.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
@@ -24,10 +24,11 @@
     "d3-scale": "^4.0.0",
     "devlop": "^1.0.0",
     "dictionary-en": "^4.0.0",
-    "dotenv": "^16.0.0",
-    "esbuild": "^0.24.0",
-    "flexsearch": "^0.7.0",
-    "glob": "^11.0.0",
+    "dotenv": "^17.0.0",
+    "esbuild": "^0.27.0",
+    "flexsearch": "^0.8.0",
+    "glob": "^13.0.0",
+    "globals": "^17.3.0",
     "hast-util-find-and-replace": "^5.0.0",
     "hast-util-from-html": "^2.0.0",
     "hast-util-heading-rank": "^3.0.0",
@@ -38,7 +39,7 @@
     "hast-util-to-dom": "^4.0.0",
     "hast-util-to-html": "^9.0.0",
     "hastscript": "^9.0.0",
-    "hosted-git-info": "^8.0.0",
+    "hosted-git-info": "^9.0.0",
     "html-url-attributes": "^3.0.0",
     "humanize-url": "^3.0.0",
     "javascript-time-ago": "^2.0.0",
@@ -46,11 +47,10 @@
     "pick-random": "^4.0.0",
     "pluralize": "^8.0.0",
     "postcss": "^8.0.0",
-    "postcss-preset-env": "^10.0.0",
+    "postcss-preset-env": "^11.0.0",
     "prettier": "^3.0.0",
-    "pretty-bytes": "^6.0.0",
+    "pretty-bytes": "^7.0.0",
     "random-useragent": "^0.5.0",
-    "react-markdown": "^9.0.0",
     "rehype": "^13.0.0",
     "rehype-autolink-headings": "^7.0.0",
     "rehype-document": "^7.0.0",
@@ -77,7 +77,7 @@
     "remark-lint-no-dead-urls": "^2.0.0",
     "remark-lint-no-html": "^4.0.0",
     "remark-parse": "^11.0.0",
-    "remark-preset-wooorm": "^10.0.0",
+    "remark-preset-wooorm": "^11.0.0",
     "remark-rehype": "^11.0.0",
     "remark-retext": "^6.0.0",
     "remark-toc": "^9.0.0",
@@ -94,14 +94,14 @@
     "retext-spell": "^6.0.0",
     "retext-syntax-mentions": "^4.0.0",
     "retext-syntax-urls": "^4.0.0",
-    "sharp": "^0.33.0",
+    "sharp": "^0.34.0",
     "spdx-license-list": "^6.0.0",
     "strip-comments": "^2.0.0",
-    "stylelint": "^16.0.0",
-    "stylelint-config-standard": "^37.0.0",
+    "stylelint": "^17.0.0",
+    "stylelint-config-standard": "^40.0.0",
     "to-vfile": "^8.0.0",
     "type-coverage": "^2.0.0",
-    "type-fest": "^4.0.0",
+    "type-fest": "^5.0.0",
     "typescript": "^5.0.0",
     "unified": "^11.0.0",
     "unified-stream": "^3.0.0",
@@ -117,7 +117,7 @@
     "xast-util-sitemap": "^2.0.0",
     "xast-util-to-xml": "^4.0.0",
     "xastscript": "^4.0.0",
-    "xo": "^0.60.0",
+    "xo": "^1.0.0",
     "yaml": "^2.0.0"
   },
   "homepage": "https://unifiedjs.com",
@@ -160,48 +160,5 @@
     "strict": true
   },
   "type": "module",
-  "version": "1.0.0",
-  "xo": {
-    "overrides": [
-      {
-        "files": [
-          "**/*.ts"
-        ],
-        "rules": {
-          "@typescript-eslint/array-type": [
-            "error",
-            {
-              "default": "generic"
-            }
-          ],
-          "@typescript-eslint/ban-types": [
-            "error",
-            {
-              "extendDefaults": true
-            }
-          ],
-          "@typescript-eslint/consistent-type-definitions": [
-            "error",
-            "interface"
-          ]
-        }
-      }
-    ],
-    "prettier": true,
-    "rules": {
-      "complexity": "off",
-      "no-await-in-loop": "off",
-      "unicorn/no-process-exit": "off",
-      "unicorn/prefer-top-level-await": "off",
-      "unicorn/prevent-abbreviations": [
-        "error",
-        {
-          "replacements": {
-            "src": false
-          }
-        }
-      ],
-      "unicorn/prefer-query-selector": "off"
-    }
-  }
+  "version": "1.0.0"
 }

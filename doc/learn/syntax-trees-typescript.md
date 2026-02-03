@@ -352,28 +352,28 @@ To import the types in [JSDoc TypeScript][ts-jsdoc], use:
 
 <!-- Definitions -->
 
-[unist]: https://github.com/syntax-tree/unist
+[hast]: https://github.com/syntax-tree/hast
 
 [mdast]: https://github.com/syntax-tree/mdast
 
-[hast]: https://github.com/syntax-tree/hast
-
 [nlcst]: https://github.com/syntax-tree/nlcst
-
-[xast]: https://github.com/syntax-tree/xast
-
-[ts-unist]: https://www.npmjs.com/package/@types/unist
-
-[ts-mdast]: https://www.npmjs.com/package/@types/mdast
-
-[ts-hast]: https://www.npmjs.com/package/@types/hast
-
-[ts-nlcst]: https://www.npmjs.com/package/@types/nlcst
-
-[ts-xast]: https://www.npmjs.com/package/@types/xast
-
-[ts-jsdoc]: https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html
 
 [ts-discriminated-union]: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#discriminated-unions
 
+[ts-hast]: https://www.npmjs.com/package/@types/hast
+
+[ts-jsdoc]: https://www.typescriptlang.org/docs/handbook/intro-to-js-ts.html
+
 [ts-literal]: https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types
+
+[ts-mdast]: https://www.npmjs.com/package/@types/mdast
+
+[ts-nlcst]: https://www.npmjs.com/package/@types/nlcst
+
+[ts-unist]: https://www.npmjs.com/package/@types/unist
+
+[ts-xast]: https://www.npmjs.com/package/@types/xast
+
+[unist]: https://github.com/syntax-tree/unist
+
+[xast]: https://github.com/syntax-tree/xast

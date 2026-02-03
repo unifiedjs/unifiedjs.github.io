@@ -184,7 +184,7 @@ called with both paragraphs in our example:
 node example.js
 ```
 
-```txt
+```text
 {
   type: 'ParagraphNode',
   children: [
@@ -259,7 +259,7 @@ between sentences is logged.
 node example.js
 ```
 
-```txt
+```text
 {
   type: 'WhiteSpaceNode',
   value: ' ',
@@ -329,14 +329,14 @@ If you haven’t already, check out the other articles in the
 
 <!--Definitions-->
 
-[support]: https://github.com/unifiedjs/.github/blob/main/support.md
-
-[visit]: https://github.com/syntax-tree/unist-util-visit
-
 [is]: https://github.com/syntax-tree/unist-util-is
-
-[message]: https://github.com/vfile/vfile#vfilemessagereason-options
 
 [learn]: /learn/
 
+[message]: https://github.com/vfile/vfile#vfilemessagereason-options
+
+[support]: https://github.com/unifiedjs/.github/blob/main/support.md
+
 [use]: /learn/guide/using-unified/
+
+[visit]: https://github.com/syntax-tree/unist-util-visit

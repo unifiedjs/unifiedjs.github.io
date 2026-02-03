@@ -205,6 +205,8 @@ things:
 
 [esm-sh]: https://esm.sh
 
+[intro-to-syntax-trees]: /learn/guide/introduction-to-syntax-trees/
+
 [john]: https://github.com/johno
 
 [marked]: https://github.com/markedjs/marked
@@ -221,6 +223,8 @@ things:
 
 [rehype-starry-night]: https://github.com/rehypejs/rehype-starry-night
 
+[remark-directive]: https://github.com/remarkjs/remark-directive
+
 [remark-gfm]: https://github.com/remarkjs/remark-gfm
 
 [remark-lint]: https://github.com/remarkjs/remark-lint
@@ -229,18 +233,14 @@ things:
 
 [remark-retext]: https://github.com/remarkjs/remark-retext
 
-[retext-spell]: https://github.com/retextjs/retext-spell
-
 [remark-toc]: https://github.com/remarkjs/remark-toc
-
-[remark-directive]: https://github.com/remarkjs/remark-directive
 
 [retext-equality]: https://github.com/retextjs/retext-equality
 
 [retext-repeated-words]: https://github.com/retextjs/retext-repeated-words
 
-[using-unified]: /learn/guide/using-unified/
+[retext-spell]: https://github.com/retextjs/retext-spell
 
 [using-plugins]: /learn/guide/using-plugins/
 
-[intro-to-syntax-trees]: /learn/guide/introduction-to-syntax-trees/
+[using-unified]: /learn/guide/using-unified/

@@ -36,14 +36,14 @@ const packageValue = await fs.readFile('package.json', 'utf8')
 /** @type {PackageJson} */
 const packageJson = JSON.parse(packageValue)
 const origin = packageJson.homepage
-assert(typeof origin === 'string')
+assert.ok(typeof origin === 'string')
 
 const configPath = typescript.findConfigFile(
   fileURLToPath(import.meta.url),
   typescript.sys.fileExists,
   'tsconfig.json'
 )
-assert(configPath)
+assert.ok(configPath)
 const commandLine = typescript.getParsedCommandLineOfConfigFile(
   configPath,
   undefined,
@@ -58,7 +58,7 @@ const commandLine = typescript.getParsedCommandLineOfConfigFile(
     useCaseSensitiveFileNames: typescript.sys.useCaseSensitiveFileNames
   }
 )
-assert(commandLine)
+assert.ok(commandLine)
 
 export const article = unified()
   .use(remarkParse)

@@ -113,7 +113,7 @@ for (const d of input) {
 
   matter(file)
   const slug = file.stem
-  assert(slug)
+  assert.ok(slug)
   let meta = file.data.meta
 
   if (!meta) {
@@ -121,9 +121,9 @@ for (const d of input) {
     file.data.meta = meta
   }
 
-  assert(file.data.matter)
+  assert.ok(file.data.matter)
   const {group, tags} = file.data.matter
-  assert(group)
+  assert.ok(group)
   meta.type = 'article'
   meta.tags = [group]
   if (tags) meta.tags.push(...tags)
@@ -205,7 +205,7 @@ for (const section of sections) {
     tags,
     title
   }
-  assert(entries)
+  assert.ok(entries)
   page(function () {
     return articles(meta, entries)
   }, meta)
@@ -453,7 +453,7 @@ for (const render of tasks) {
   const matter = file.data.matter || {}
   const pathname = matter.pathname || meta.pathname
   const modified = matter.modified || meta.modified
-  assert(pathname)
+  assert.ok(pathname)
   sitemapEntries.push({url: new URL(pathname, origin).href, modified})
 
   if (!matter.archive && matter.group) {
@@ -488,8 +488,8 @@ await fs.writeFile(
 console.error('✔ `/sitemap.xml`')
 
 learnFiles.sort(function (a, b) {
-  assert(a.data.matter?.published)
-  assert(b.data.matter?.published)
+  assert.ok(a.data.matter?.published)
+  assert.ok(b.data.matter?.published)
   return (
     new Date(b.data.matter.published).valueOf() -
     new Date(a.data.matter.published).valueOf()
@@ -503,13 +503,13 @@ const learnEntries = []
 for (const file of newestLearnFiles) {
   const tree = fromHtml(file.value)
   const body = select('main', tree)
-  assert(body)
+  assert.ok(body)
   const fragment = sanitize(body)
 
   const {matter, meta} = file.data
-  assert(matter)
-  assert(meta)
-  assert(meta.pathname)
+  assert.ok(matter)
+  assert.ok(meta)
+  assert.ok(meta.pathname)
   const base = new URL(meta.pathname, origin)
 
   visit(fragment, 'element', function (node, index, parent) {

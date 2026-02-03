@@ -31,7 +31,7 @@ export function item(d) {
     footer.push(ghBadge(gh))
   }
 
-  assert(url)
+  assert.ok(url)
   footer.push(urlLine(url))
 
   return card(

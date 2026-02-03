@@ -60,7 +60,7 @@ You can swap those out for your favorite tools.
 
 Let’s first outline our project structure:
 
-```txt
+```text
 demo/
 ├─ bundle.mjs
 ├─ index.css
@@ -148,7 +148,7 @@ Alright!
 Now, let’s set up our JavaScript.
 Start by adding the following to `index.jsx`:
 
-```jsx twoslash
+```js twoslash
 /// <reference lib="dom" />
 /* eslint-env browser */
 import ReactDom from 'react-dom/client'
@@ -459,6 +459,8 @@ If you haven’t already, check out the other articles in the
 
 [github-unist-util-visit]: https://github.com/syntax-tree/unist-util-visit
 
+[learn]: /learn/
+
 [prettier]: https://prettier.io
 
 [react]: https://react.dev/
@@ -466,5 +468,3 @@ If you haven’t already, check out the other articles in the
 [unified-support]: https://github.com/unifiedjs/.github/blob/main/support.md
 
 [wooorm-write-music]: https://wooorm.com/write-music/
-
-[learn]: /learn/

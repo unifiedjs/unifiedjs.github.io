@@ -16,11 +16,11 @@ import {page} from './page.js'
  */
 export function article(tree, file) {
   const {matter, meta} = file.data
-  assert(matter)
-  assert(meta)
+  assert.ok(matter)
+  assert.ok(meta)
   const {title} = matter
   const {pathname} = meta
-  assert(pathname)
+  assert.ok(pathname)
 
   return page(
     h('.row-l.column-l', {}, h('h2', {}, breadcrumbs(pathname, title))),

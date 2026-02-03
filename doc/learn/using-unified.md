@@ -418,42 +418,42 @@ If you haven’t already, check out the other articles in the
 
 <!--Definitions-->
 
-[support]: https://github.com/unifiedjs/.github/blob/main/support.md
-
-[parse]: https://github.com/remarkjs/remark/tree/HEAD/packages/remark-parse
-
-[stringify]: https://github.com/rehypejs/rehype/tree/HEAD/packages/rehype-stringify
-
-[remark-rehype]: https://github.com/remarkjs/remark-rehype
-
-[npm]: https://www.npmjs.com
-
-[node]: https://nodejs.org/en
-
-[slug]: https://github.com/rehypejs/rehype-slug
-
-[toc]: https://github.com/remarkjs/remark-toc
-
 [document]: https://github.com/rehypejs/rehype-document
-
-[to-vfile]: https://github.com/vfile/to-vfile
-
-[reporter]: https://github.com/vfile/vfile-reporter
 
 [english]: https://github.com/retextjs/retext/tree/HEAD/packages/retext-english
 
+[html-and-remark]: /learn/recipe/remark-html/
+
 [indefinite-article]: https://github.com/retextjs/retext-indefinite-article
-
-[remark-retext]: https://github.com/remarkjs/remark-retext
-
-[retext-plugins]: https://github.com/retextjs/retext/blob/HEAD/doc/plugins.md
-
-[remark-plugins]: https://github.com/remarkjs/remark/blob/HEAD/doc/plugins.md
-
-[rehype-plugins]: https://github.com/rehypejs/rehype/blob/HEAD/doc/plugins.md
-
-[rehype-format]: https://github.com/rehypejs/rehype-format
 
 [learn]: /learn/
 
-[html-and-remark]: /learn/recipe/remark-html/
+[node]: https://nodejs.org/en
+
+[npm]: https://www.npmjs.com
+
+[parse]: https://github.com/remarkjs/remark/tree/HEAD/packages/remark-parse
+
+[rehype-format]: https://github.com/rehypejs/rehype-format
+
+[rehype-plugins]: https://github.com/rehypejs/rehype/blob/HEAD/doc/plugins.md
+
+[remark-plugins]: https://github.com/remarkjs/remark/blob/HEAD/doc/plugins.md
+
+[remark-rehype]: https://github.com/remarkjs/remark-rehype
+
+[remark-retext]: https://github.com/remarkjs/remark-retext
+
+[reporter]: https://github.com/vfile/vfile-reporter
+
+[retext-plugins]: https://github.com/retextjs/retext/blob/HEAD/doc/plugins.md
+
+[slug]: https://github.com/rehypejs/rehype-slug
+
+[stringify]: https://github.com/rehypejs/rehype/tree/HEAD/packages/rehype-stringify
+
+[support]: https://github.com/unifiedjs/.github/blob/main/support.md
+
+[to-vfile]: https://github.com/vfile/to-vfile
+
+[toc]: https://github.com/remarkjs/remark-toc

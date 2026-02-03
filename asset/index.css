@@ -31,7 +31,7 @@ html {
   color-scheme: light dark;
   font-family: system-ui;
   text-size-adjust: 100%;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   font-kerning: normal;
   font-feature-settings: 'kern', 'liga', 'clig', 'calt';
 }
@@ -663,7 +663,7 @@ a.tag:focus .count {
 }
 
 .content pre {
-  word-wrap: normal;
+  overflow-wrap: normal;
   background-color: rgb(0 0 0 / 4%);
   overflow: auto;
   padding: calc(1em + 1ex);
@@ -691,7 +691,7 @@ a.tag:focus .count {
   white-space: pre;
   word-break: normal;
   overflow: visible;
-  word-wrap: normal;
+  overflow-wrap: normal;
 }
 
 .content hr {
@@ -783,7 +783,7 @@ a.tag:focus .count {
 }
 
 .content li {
-  word-wrap: break-word;
+  overflow-wrap: break-word;
   margin-top: calc(0.25 * (1em + 1ex));
   margin-bottom: calc(0.25 * (1em + 1ex));
   margin-left: calc(1 * (1em + 1ex));

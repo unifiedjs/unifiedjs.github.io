@@ -151,8 +151,8 @@ console.log(
 
 <!-- Definitions -->
 
-[u]: https://github.com/syntax-tree/unist-builder
-
 [h]: https://github.com/syntax-tree/hastscript
+
+[u]: https://github.com/syntax-tree/unist-builder
 
 [x]: https://github.com/syntax-tree/xastscript

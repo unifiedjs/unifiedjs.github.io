@@ -218,7 +218,7 @@ we’ll see that `console.log` is called:
 node example.js
 ```
 
-```txt
+```text
 {
   type: 'element',
   tagName: 'h1',
@@ -281,7 +281,7 @@ we’ll see the text printed:
 node example.js
 ```
 
-```txt
+```text
 Solar System
 Formation and evolution
 Structure and composition
@@ -344,7 +344,7 @@ we’ll see the slugs printed:
 node example.js
 ```
 
-```txt
+```text
 solar-system
 formation-and-evolution
 structure-and-composition
@@ -417,16 +417,16 @@ If you haven’t already, check out the other articles in the
 
 <!--Definitions-->
 
-[support]: https://github.com/unifiedjs/.github/blob/main/support.md
+[github-slugger]: https://github.com/Flet/github-slugger
 
 [hast-util-to-string]: https://github.com/rehypejs/rehype-minify/tree/main/packages/hast-util-to-string
 
-[github-slugger]: https://github.com/Flet/github-slugger
-
-[visit]: https://github.com/syntax-tree/unist-util-visit
+[learn]: /learn/
 
 [rehype-slug]: https://github.com/rehypejs/rehype-slug
 
-[learn]: /learn/
+[support]: https://github.com/unifiedjs/.github/blob/main/support.md
 
 [use]: /learn/guide/using-unified/
+
+[visit]: https://github.com/syntax-tree/unist-util-visit

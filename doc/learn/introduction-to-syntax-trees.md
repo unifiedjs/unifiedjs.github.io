@@ -147,10 +147,10 @@ console.log(headings) //=> 3
 
 See [“Tree traversal”][tree-traversal] for more info on `unist-util-visit`.
 
-[unist-util-visit]: https://github.com/syntax-tree/unist-util-visit
-
 [build-a-syntax-tree]: /learn/recipe/build-a-syntax-tree/
 
 [syntax-trees-in-typescript]: /learn/guide/syntax-trees-typescript/
 
 [tree-traversal]: /learn/recipe/tree-traversal/
+
+[unist-util-visit]: https://github.com/syntax-tree/unist-util-visit
