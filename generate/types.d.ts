@@ -4,8 +4,9 @@ export {}
 /**
  * Map of choices; `other` is required.
  */
-export interface PluralRules
-  extends Partial<Record<Intl.LDMLPluralRule, string>> {
+export interface PluralRules extends Partial<
+  Record<Intl.LDMLPluralRule, string>
+> {
   other: string
 }
 
