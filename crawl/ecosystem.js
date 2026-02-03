@@ -501,9 +501,11 @@ async function searchOrg(org) {
 
 /**
  * @param {string} repo
+ * @param {{attempt?: number | null | undefined}} [options]
  * @returns {Promise<{project: RawProject, releases: Array<RawRelease>}>}
  */
-async function crawlRepo(repo) {
+async function crawlRepo(repo, options) {
+  const attempt = options?.attempt ?? 0
   const [owner, name] = repo.split('/')
 
   const response = await fetch(ghEndpoint, {
@@ -539,7 +541,8 @@ async function crawlRepo(repo) {
     },
     method: 'POST'
   })
-  const json = /**
+
+  /**
    * @type {({
    *   errors?: Array<string>,
    *   data: {
@@ -559,7 +562,21 @@ async function crawlRepo(repo) {
    *     }
    *   }
    * })}
-   */ (await response.json())
+   */
+  let json
+
+  try {
+    json = await response.json()
+  } catch (error) {
+    if (attempt < 3) {
+      console.warn('%s: error crawling, sleeping: %s', repo, error)
+      await sleep(1000 * 10)
+      console.warn('%s: retrying after sleep, attempt %d', repo, attempt + 2)
+      return crawlRepo(repo, {attempt: attempt + 1})
+    }
+
+    throw error
+  }
 
   // Manifests aren’t always loaded, giving errors here: print them.
   if (json.errors) {
@@ -915,9 +932,11 @@ async function getReadme(project, manifestBase) {
 
 /**
  * @param {string} name
+ * @param {{attempt?: number | null | undefined}} [options]
  * @returns {Promise<number>}
  */
-async function getDownloads(name) {
+async function getDownloads(name, options) {
+  const attempt = options?.attempt ?? 0
   const endpoint = [
     npmDownloadsEndpoint,
     'point',
@@ -929,10 +948,24 @@ async function getDownloads(name) {
     // Passing an npm token recently seems to crash npm.
     // headers: {Authorization: 'Bearer ' + npmToken}
   })
-  const result =
-    /** @type {{downloads: number, end: string, start: string}} */ (
-      await response.json()
-    )
+  /** @type {{downloads: number, end: string, start: string}} */
+  let result
+  try {
+    result = await response.json()
+  } catch (error) {
+    if (attempt < 3) {
+      console.warn('%s: error fetching downloads, sleeping: %s', name, error)
+      await sleep(1000 * 10)
+      console.warn(
+        '%s: retrying downloads after sleep, attempt %d',
+        name,
+        attempt + 2
+      )
+      return getDownloads(name, {attempt: attempt + 1})
+    }
+
+    throw error
+  }
 
   return result.downloads
 }
@@ -968,7 +1001,13 @@ async function getSize(name) {
   // what it displays on the site:
   // * https://bundlephobia.com/api/size?package=micromark@3.0.0 = 14273
   // * https://bundlephobia.com/package/micromark@3.0.0 = 13.9kb
-  return (((bytes.parse(value) / 1024) * 1000) / 1024) * 1000
+  const result = bytes.parse(value)
+  if (result === null) {
+    console.warn('%s: could not parse size: %s', name, value)
+    return
+  }
+
+  return (((result / 1024) * 1000) / 1024) * 1000
 }
 
 /**
@@ -987,4 +1026,14 @@ function validTag(d) {
  */
 function recentRelease(date) {
   return date.valueOf() > Date.now() - 60 * 24 * 60 * 60 * 1000
+}
+
+/**
+ * @param {number} ms
+ * @returns {Promise<undefined>}
+ */
+function sleep(ms) {
+  return new Promise(function (resolve) {
+    setTimeout(resolve, ms)
+  })
 }
