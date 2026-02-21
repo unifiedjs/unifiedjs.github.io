@@ -47,6 +47,7 @@ mgan
 mitchellhamilton
 motif
 netlify
+oc-javascript-fund
 odiak
 opencollective
 radwebhosting
