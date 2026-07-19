@@ -1,3 +1,4 @@
+/* eslint-disable unicorn/prefer-native-coercion-functions */
 /**
  * @typedef OcAccount
  *   Open Collective account.
@@ -28,7 +29,7 @@
  *
  * @typedef OcMember
  *   Open Collective member.
- * @property {Readonly<OcAccount>} account
+ * @property {Readonly<OcAccount> | undefined} account
  *   Account.
  * @property {Readonly<{value: number}>} totalDonations
  *   Total donations.
@@ -132,6 +133,7 @@ const seen = new Set()
 const members = []
 
 for (const d of collectiveBody.data.collective.members.nodes) {
+  if (!d.account) continue
   const oc = d.account.slug
   const github = d.account.githubHandle || undefined
   let url = d.account.website || undefined
