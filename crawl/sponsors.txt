@@ -45,6 +45,7 @@ markdown-space
 matt-vague
 mgan
 mitchellhamilton
+mochajs
 motif
 netlify
 oc-javascript-fund
